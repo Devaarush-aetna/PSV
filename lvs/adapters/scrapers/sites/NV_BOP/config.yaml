@@ -1,0 +1,183 @@
+identity:
+  source_id: "NV_BOP"
+  board_name: "Nevada Board of Psychological Examiners"
+  state: "NV"
+  country: "US"
+  profession_codes: ["Ph.D"]
+  base_url: "https://nbop.securerims.com/DirectoryofPsychologists.php"
+  archetype: "classic_html_form"
+
+# ------------------------------------------------------------
+# Page analysis (captured 2026-06-03):
+#   Platform  : SecureRIMS PHP portal (server-rendered)
+#   Search UI : HTML form (name="searchForm"), POST to
+#               ?action=search_registrants
+#   Inputs    : #lastname (last_name), #first_name, #city, #postal
+#   Search btn: <input type="button" class="searchButton"
+#               onclick="document.searchForm.submit();">
+#   No search-type dropdown — separate input per mode
+#
+#   Results   : nested <table> per registrant inside form#listingForm
+#               each row: Name | "Details" link (a.reg_detail_link)
+#               sub-rows: REGISTRY #: XXX | DATE of Expiry: DD-Mon-YYYY
+#   Detail nav: onclick calls show_registrant_info(url) which POSTs
+#               listingForm to ?action=show&rID=NNN
+#   Pagination: a.splitPageLink wrapping Next arrow image;
+#               absent on last page (natural stop condition)
+#
+#   Detail fields (label.search_field_label + span.search_field_value):
+#     Last Name, First Name, Status, Registry Type, Registry#,
+#     Registry Date, Effective Date, Expiry Date, Degree,
+#     Disciplinary Action, address block (unlabelled span)
+# ------------------------------------------------------------
+
+search:
+  modes:
+    - mode: "last_name"
+      input_selector: "#lastname"
+    - mode: "first_name"
+      input_selector: "#first_name"
+  form:
+    search_by_dropdown:
+      strategy: "none"
+    search_input:
+      selector: "#lastname"
+      fallback_selectors:
+        - "#first_name"
+        - "input[name='last_name']"
+        - "input[type='text']"
+    search_button:
+      selector: "input.searchButton"
+      fallback_selectors:
+        - "input[onclick*='searchForm.submit']"
+        - "input[type='button']"
+  results_wait:
+    strategy: "element_visible"
+    selector: "a.reg_detail_link"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no registrants found"
+      - "0 registrant"
+      - "no records found"
+      - "no results found"
+      - "no matching registrant"
+
+results:
+  type: "table"
+  has_detail_page: true
+  detail_trigger:
+    type: "view_button"
+    selector: "a.reg_detail_link"
+  pagination:
+    enabled: true
+    strategy: "next_button"
+    next_selector: "a.splitPageLink"
+    disabled_class: "disabled"
+
+detail:
+  wait:
+    strategy: "element_visible"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "label.search_field_label"
+      - "span.search_field_value"
+      - "div.search_field_value"
+  strategies:
+    - type: "css_label_value"
+    - type: "label_sibling"
+  field_map:
+    # label_sibling strips trailing ":" — keys match stripped label text
+    "Last Name": "last_name"
+    "First Name": "first_name"
+    "Status": "status"
+    "Registry Type": "license_type"
+    "Registry #": "license_number"
+    "Registry#": "license_number"
+    "Registry Date": "issue_date"
+    "Effective Date": "effective_date"
+    "Expiry Date": "expiration_date"
+    "Degree": "degree"
+    "Institution": "institution"
+    "Disciplinary Action": "disciplinary_flag"
+    # Heading name extracted by _extract_heading_name as "Name"
+    "Name": "full_name"
+    # Unlabelled address span keyed by its section heading (Pass 2 in css_label_value)
+    "Business Contact": "address"
+  sections: []
+  back_navigation:
+    strategy: "browser_back"
+    wait_after_ms: 2000
+
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_first_name: "{first_name}"
+    licensee_last_name: "{last_name}"
+    licensee_full_name: "{full_name}"
+    license_type: "{license_type}"
+    status: "{status}"
+    effective_date: "{effective_date}"
+    issue_date: "{issue_date}"
+    expiration_date: "{expiration_date}"
+    address: "{address}"
+  status_map:
+    "active": "active"
+    "Active": "active"
+    "inactive": "inactive"
+    "Inactive": "inactive"
+    "expired": "expired"
+    "Expired": "expired"
+    "suspended": "suspended"
+    "Suspended": "suspended"
+    "revoked": "revoked"
+    "Revoked": "revoked"
+    "probation": "probation"
+    "Probation": "probation"
+  date_formats:
+    - "%B %d, %Y"
+    - "%d-%b-%Y"
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: "chromium"
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: "local"
+  local_path: "./evidence/NV_BOP/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-03"
+  tos_review_ticket: "LVS-110"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Highsmith"
+  expect:
+    license_number: "PY0706"
+    status: "active"
+    full_name_contains: "Highsmith"

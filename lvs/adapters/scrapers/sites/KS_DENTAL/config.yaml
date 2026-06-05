@@ -1,0 +1,135 @@
+identity:
+  source_id: KS_DENTAL
+  board_name: Kansas Dental Board
+  state: KS
+  country: US
+  profession_codes: [DDS, DMD, RDH, DA]
+  base_url: "https://www.kansas.gov/dental-verification/start.do"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='licNum']"
+    - mode: last_name
+      input_selector: "input[name='lastName']"
+    - mode: first_name
+      input_selector: "input[name='firstName']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='licNum']"
+    search_button:
+      selector: "input[type='submit'], button[type='submit']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no match"
+
+# After submit the result is rendered directly on the same page (search.do).
+# single_record type runs extract_detail() against the results page itself.
+results:
+  type: single_record
+  has_detail_page: false
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: dt_dd
+    - type: two_column_table
+    - type: four_column_table
+    - type: label_sibling
+  field_map:
+    "License No": license_number
+    "License Number": license_number
+    "Lic Number": license_number
+    "Lic No": license_number
+    "License #": license_number
+    "Name": full_name
+    "Licensee Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "Type": license_type
+    "License Type": license_type
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "Expiry Date": expiration_date
+    "Year Expire": expiration_date
+    "Issue Date": issue_date
+    "Original Date": issue_date
+    "Issue/Renewal Date": last_renewal_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Zip": zip_code
+    "Zip Code": zip_code
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%d-%b-%y"
+    - "%d-%b-%Y"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "13578"
+  expect:
+    license_number: "13578"
+    status: "active"
+    full_name_contains: "Smith"

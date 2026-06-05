@@ -1,0 +1,127 @@
+identity:
+  source_id: DE_LICENSING
+  board_name: Delaware Professional & Occupational Licensing
+  state: DE
+  country: US
+  profession_codes: []
+  # Socrata JSON API endpoint — no browser navigation required.
+  # The engine's socrata_api archetype makes a direct HTTP GET request.
+  base_url: "https://data.delaware.gov/resource/pjnv-eaih.json"
+  archetype: socrata_api
+
+search:
+  # input_selector stores the Socrata API field name used in the SoQL WHERE clause.
+  # license_number: exact match on license_no field
+  # last_name / first_name: case-insensitive LIKE match on respective fields
+  modes:
+    - mode: license_number
+      input_selector: "license_no"
+    - mode: last_name
+      input_selector: "last_name"
+    - mode: first_name
+      input_selector: "first_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 5000
+
+results:
+  type: table
+  has_detail_page: false
+
+# Socrata API returns JSON records directly — field_map translates Socrata
+# column names to the engine's canonical field names.
+detail:
+  field_map:
+    "license_no": license_number
+    "first_name": first_name
+    "last_name": last_name
+    "name": full_name
+    "full_name": full_name
+    "business_name": full_name
+    "profession_name": license_type
+    "license_type": license_type
+    "license_subtype": license_type
+    "profession": license_type
+    "status": status
+    "license_status": status
+    "expiration_date": expiration_date
+    "effective_date": effective_date
+    "issue_date": issue_date
+    "original_issue_date": issue_date
+    "address1": address
+    "address": address
+    "city": city
+    "state": state_code
+    "zip_code": zip_code
+    "zip": zip_code
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Current": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "inactive": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "expired": expired
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+    "revoked": revoked
+  date_formats:
+    - "%Y-%m-%dT%H:%M:%S.%f"
+    - "%Y-%m-%dT%H:%M:%S"
+    - "%Y-%m-%d"
+    - "%m/%d/%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+  skip: true
+  skip_reason: "proxy_required: DE_LICENSING uses socrata_api archetype which requires LVS_PROXY_SERVER or PROXY_NID/PROXY_PASSWORD env vars to reach data.delaware.gov"

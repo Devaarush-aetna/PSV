@@ -1,0 +1,286 @@
+# ============================================================
+# BOARD CONFIGURATION — Nevada State Board of Dental Examiners
+# ============================================================
+#
+# Page analysis (captured 2026-06-03):
+#   Platform  : Custom AngularJS 1.x SPA (ng-app="natApp"), NOT Thentia Cloud
+#   Archetype : ag_grid_spa (closest match — JS SPA with ng-repeat Bootstrap table,
+#               no AG Grid; see SPEC.md for full analysis)
+#   Search UI : Plain HTML form — NO search-by dropdown; three independent text inputs:
+#                 Last Name   → input[name='LastName']
+#                 First Name  → input[name='FirstName']
+#                 License No  → input[name='LicenseNumber']
+#               Search btn  : input[type='submit'][value='Search']
+#   Results   : Bootstrap table (table.verify-table) rendered by ng-repeat
+#               Columns: Credentials | Practitioner Name | Speciality Details |
+#                        Location | Status | Public Health | Action (View Details btn)
+#   Detail    : INLINE expansion in same page (no URL change, no browser_back needed)
+#               Triggered by: input[value='View Details']
+#               Container  : div.detail-container > table.view-details-table
+#               Fields     : Full Name, Office name, Primary Office Address,
+#                            City/State/Zip, Office Phone, Graduated From,
+#                            Graduation Date, + sub-tables: License Info,
+#                            Permits, Board Action/Malpractice
+#   Close det : a[ng-click*='isDetailsVisible=false']  (or Link:has-text('Close'))
+#   Pagination: uib-pagination component (AngularJS UI Bootstrap)
+#               ul.pagination.cus-pagination; page links: li.pagination-page a
+#               Prev/Next: li.pagination-prev|pagination-next a
+#   No results: tbody is empty (no tr rows) — no status message text displayed
+# ============================================================
+
+# ─── A. Identity ───────────────────────────────────────────
+identity:
+  source_id: "NV_DENTAL"
+  board_name: "Nevada State Board of Dental Examiners"
+  state: "NV"
+  country: "US"
+  profession_codes: ["DMD", "DDS"]
+  base_url: "https://online.nvdental.org/#/VerifyLicense"
+  archetype: "ag_grid_spa"
+
+# ─── B. Search interface ───────────────────────────────────
+search:
+  # Three independent inputs — no search-by dropdown
+  modes:
+    - mode: "last_name"
+      input_selector: "input[name='LastName']"
+      dropdown_value: null
+    - mode: "first_name"
+      input_selector: "input[name='FirstName']"
+      dropdown_value: null
+    - mode: "license_number"
+      input_selector: "input[name='LicenseNumber']"
+      dropdown_value: null
+
+  form:
+    search_by_dropdown:
+      strategy: "none"
+      selector: null
+
+    search_input:
+      # Default to last_name; engine overrides per mode using modes[*].input_selector
+      selector: "input[name='LastName']"
+      fallback_selectors:
+        - "input[aria-label='Last Name']"
+        - "input[name='FirstName']"
+        - "input[aria-label='First Name']"
+        - "input[name='LicenseNumber']"
+        - "input[aria-label='License Number']"
+
+    search_button:
+      selector: "input[type='submit'][value='Search']"
+      fallback_selectors:
+        - "input[ng-click*='getLicenseReportList']"
+        - "input[type='submit'][class*='btn-success']"
+
+  results_wait:
+    # Wait for View Details buttons to appear (not just table rows — the table is
+    # pre-populated with 9 rows before any search, but View Details buttons only
+    # appear after the AngularJS ng-repeat updates with search results, ~1s after click).
+    strategy: "element_visible"
+    selector: "input[value='View Details']"
+    timeout_ms: 20000
+    # No "no results found" text — empty results detected by 0 View Details buttons
+    no_results_indicators: []
+
+# ─── C. Results extraction ─────────────────────────────────
+results:
+  type: "table"
+
+  table:
+    row_selector: "table.verify-table tbody tr[ng-repeat-start], table.verify-table tbody tr:not([ng-repeat-end])"
+    cell_selector: "td"
+    columns:
+      0: "credentials"      # "Dentist" | "Dental Hygienist"
+      1: "full_name"        # "Smith, Sydney M , DDS"  (Last, First Middle, Degree)
+      2: "specialty"        # "Dentist" (speciality detail)
+      3: "location"         # City, State (blank for disciplinary cases)
+      4: "status"           # "Active" | "Revoked-Non Renewal" | etc.
+      5: "public_health"    # flag column (usually blank)
+      # col 6 = Action column (View Details button — not a data field)
+
+  has_detail_page: true
+  detail_trigger:
+    # "View Details" is an inline toggle — no page navigation
+    type: "view_button"
+    selector: "input[value='View Details']"
+    fallback_selectors:
+      - "input[ng-click*='getLicenseDetails']"
+      - "input[type='button'][class*='btn-info']"
+
+  pagination:
+    enabled: true
+    strategy: "page_numbers"
+    # uib-pagination renders page number <a> links; click next page number
+    next_selector: "ul.cus-pagination li.pagination-next a"
+    page_selector: "ul.cus-pagination li.pagination-page a"
+    disabled_class: "disabled"
+
+# ─── D. Detail page extraction ─────────────────────────────
+detail:
+  wait:
+    # Detail expands inline — wait for the container to appear (ng-hide removed)
+    strategy: "element_visible"
+    selector: "div.detail-container"
+    timeout_ms: 10000
+    fallback_selectors:
+      - "table.view-details-table"
+      - "tr[ng-repeat-end]:not(.ng-hide)"
+
+  # Extraction strategy: two-column table with label.bold in left td
+  strategies:
+    - type: "two_column_table"
+      row_selector: "table.view-details-table > tbody > tr"
+      label_selector: "td:first-child label.bold"
+      value_selector: "td:last-child"
+    - type: "label_sibling"
+
+  field_map:
+    "Full Name": "full_name"
+    "Office name": "office_name"
+    "Primary Office Address": "address"
+    "City, State Zip": "city_state_zip"
+    "Office Phone": "phone"
+    "Graduated From": "school"
+    "Graduation Date": "graduation_date"
+
+  # Sub-tables embedded in the detail panel
+  sections:
+    - name: "License Information"
+      type: "header_mapped_table"
+      selector: "tr:not(.ng-hide) div.detail-container table.table:first-of-type"
+      field: "license_info"
+      columns:
+        "License Information": "license_number"
+        "Status": "status"
+        "Original License Date": "issue_date"
+        "Expiration Date": "expiration_date"
+
+    - name: "Permits"
+      type: "header_mapped_table"
+      selector: "table.verify-table.ml5:first-of-type"
+      field: "permits"
+      columns:
+        "Permit": "permit_type"
+        "Permit Number": "permit_number"
+        "Permit Status": "permit_status"
+        "Issue Date": "permit_issue_date"
+        "Exp Date": "permit_expiration_date"
+
+    - name: "Board Action / Malpractice"
+      type: "header_mapped_table"
+      selector: "table.verify-table.ml5:last-of-type"
+      field: "disciplinary_actions"
+      columns:
+        "Action Type": "action_type"
+        "Date": "action_date"
+        "Document Link": "document_url"
+
+  # Close the inline detail after extraction
+  back_navigation:
+    # Click the "Close detail" link — no browser_back needed (inline panel)
+    strategy: "breadcrumb_click"
+    selector: "a[ng-click*='isDetailsVisible=false'], a.Link"
+    wait_after_ms: 500
+
+# ─── E. Output mapping ─────────────────────────────────────
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_full_name: "{full_name}"
+    license_type: "{credentials}"
+    status: "{status}"
+    issue_date: "{issue_date}"
+    expiration_date: "{expiration_date}"
+    address: "{address}"
+    city: "{city}"
+    state_code: "{state_code}"
+    zip_code: "{zip_code}"
+    disciplinary_actions: "{disciplinary_actions}"
+    source_url: "{_source_url}"
+
+  status_map:
+    # Values observed in licence count summary table on the search page
+    "Active": "active"
+    "active": "active"
+    "Inactive": "inactive"
+    "inactive": "inactive"
+    "Revoked-Non Renewal": "revoked"
+    "Revoked-Board Action": "revoked"
+    "Voluntary Surrender-Board Action": "revoked"
+    "Suspended-Non Renewal": "suspended"
+    "Suspended-Board Action": "suspended"
+    "Retired": "inactive"
+    "Disabled": "inactive"
+    "expired": "expired"
+    "lapsed": "expired"
+    "probation": "probation"
+
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+  # Post-processor: split "Last, First M , DDS" into components
+  post_processors:
+    full_name:
+      - type: "split_name_with_suffix"
+        pattern: "^(?P<last>[^,]+),\\s*(?P<first>[^,]+?)\\s*,\\s*(?P<suffix>DMD|DDS|RDH)?$"
+        fields:
+          last: "licensee_last_name"
+          first: "licensee_first_name"
+          suffix: "license_degree"
+    city_state_zip:
+      - type: "split_city_state_zip"
+        pattern: "^(?P<city>[^,]+),\\s*(?P<state>[A-Z]{2})\\s+(?P<zip>\\d{5}(?:-\\d{4})?)$"
+        fields:
+          city: "city"
+          state: "state_code"
+          zip: "zip_code"
+
+# ─── F. Transport policy ───────────────────────────────────
+transport:
+  browser: "chromium"
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+# ─── G. Evidence capture ───────────────────────────────────
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: "local"
+  local_path: "./evidence/NV_DENTAL/{run_id}/"
+
+# ─── H. Compliance ────────────────────────────────────────
+compliance:
+  tos_review_date: "2026-06-03"
+  tos_review_ticket: "LVS-120"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "LL-251-11"
+  expect:
+    license_number: "LL-251-11"
+    status: "expired"
+    full_name_contains: "Highsmith"
+    min_records: 1

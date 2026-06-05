@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python smoke_all.py --dry-run)",
+      "Bash(python smoke_all.py --filter WA_HEALTH)",
+      "Bash(python smoke_all.py)",
+      "Bash(python smoke_all.py --filter KS_BSRB KS_DENTAL KS_KSBHADA)",
+      "Bash(python run.py --config sites/KS_KSBHADA/config.yaml --mode last_name --query \"Burroughs\")",
+      "Bash(python smoke_all.py --filter KS_KSBHADA)",
+      "Bash(python run.py --config sites/NV_CHIRO/config.yaml --mode license_number --query \"B02060\")",
+      "Bash(python run.py --config sites/NV_PT/config.yaml --mode license_number --query \"3485\")",
+      "Bash(python run.py --config sites/NV_NVADGC/config.yaml --mode license_number --query \"01952-I\")",
+      "Bash(wait)",
+      "Bash(python run.py --config sites/NV_DENTAL/config.yaml --mode last_name --query \"Highsmith\")",
+      "Bash(python run.py --config sites/NV_DENTAL/config.yaml --mode license_number --query \"LL-251-11\")",
+      "Bash(python smoke_all.py --filter NV_DENTAL)"
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en" class="k-webkit k-webkit124"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/styles/thentiacloud/thentiacloud.all.min.css">
+
+    <!-- BRAND SPECIFIC -->
+
+    <link rel="shortcut icon" href="https://nsbom.us.thentiacloud.com/thentiacloud/5.0/portal/static/favicon.png">
+    <link rel="apple-touch-icon" href="https://nsbom.us.thentiacloud.com/thentiacloud/5.0/portal/static/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/webs/portal/styles/css.php?q=1780578746.7339">
+    <script src="/webs/portal/scripts/thentiacloud.register.all.min.js?q=1780578746.7339"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.1.118/js/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="https://integrations.autoaddress.com/jscontrol/autoaddress.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://nsbom.us.thentiacloud.com/thentiacloud/5.0/portal/static/complaintCustomCode.js"></script>
+
+    <title>Nevada State Board of Osteopathic Medicine</title>
+
+</head>
+<body style="overflow-y: auto; padding-bottom: 70px; position: relative" data-ng-app="thentiacloud.register" class="nscsw-css ng-scope" ng-controller="thentiacloud.register.index.controller">
+<div class="loader ng-hide" ng-show="loading" style=""></div>
+<sandbox-indicator ng-show="" class="ng-hide"><div class="hd-black-bar-wrapper">
+    <div class="hd-stripped-bar"></div>
+    <div class="hd-black-bar"><span>🏰</span> This is a Sandbox Environment</div>
+</div></sandbox-indicator>
+<div class="hd-blue-bar no-print" style="display: flex; align-items: flex-start; justify-content: flex-end;" role="region" aria-label="SHARED_LABEL_PORTAL_ACTIONS_AND_LANGUAGE">
+    <div ng-show="showRedirectButton('')" class="ng-hide">
+        <div>
+            <button class="btn btn-outline-public" ng-click="goToNewUI('')">
+                <i class="fa fa-repeat icon-container"></i>
+                <span class="hidden-xs ng-scope" translate="SHARED_BUTTON_REDIRECT_TO_NEW_UI">Try New UI</span>
+            </button>
+        </div>
+    </div>
+    <!-- ngIf: languageDataSource --><div style="display: none;" ng-if="languageDataSource" class="ng-scope">
+        <span class="k-widget k-dropdown k-header lang-dropdown ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-parse" unselectable="on" role="listbox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-owns="lang-dropdown_listbox" aria-disabled="false" aria-readonly="false" aria-busy="false" aria-activedescendant="lang-dropdown_option_selected" style=""><span unselectable="on" class="k-dropdown-wrap k-state-default"><span unselectable="on" class="k-input ng-scope">EN</span><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-i-arrow-s">select</span></span></span><select autocomplete="off" kendo-drop-down-list="" k-data-source="languageDataSource" k-data-text-field="'code'" k-data-value-field="'id'" k-template="'#= name #'" ng-model="pref.lang" ng-change="switchLanguage()" class="lang-dropdown ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-parse" id="lang-dropdown" data-role="dropdownlist" style="display: none;"><option value="en-us" selected="selected">EN</option></select></span>
+    </div><!-- end ngIf: languageDataSource -->
+    <div class="clearfix"></div>
+</div>
+
+<div class="header-bar no-print" role="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 hidden-sm hidden-md hidden-lg">
+                                    <a href="/webs/portal/" aria-label="Nevada State Board of Osteopathic Medicine">
+                        <!-- ngIf: showHeaderLogo('en-us', true) --><img class="mobile-logo ng-scope" src="https://nsbom.us.thentiacloud.com/thentiacloud/5.0/portal/static/logo.png" alt="Nevada State Board of Osteopathic Medicine Logo" style="display: block;padding: 10px 0;max-width: 400px;max-height: 400px" ng-if="showHeaderLogo('en-us', true)"><!-- end ngIf: showHeaderLogo('en-us', true) -->                    </a>
+                            </div>
+            <div class="col-md-12 hidden-xs">
+                                    <a href="/webs/portal/" aria-label="Nevada State Board of Osteopathic Medicine">
+                        <!-- ngIf: showHeaderLogo('en-us', true) --><img class="mobile-logo ng-scope" src="https://nsbom.us.thentiacloud.com/thentiacloud/5.0/portal/static/logo.png" alt="Nevada State Board of Osteopathic Medicine Logo" style="display: block;padding: 10px 0;max-width: 400px;max-height: 400px" ng-if="showHeaderLogo('en-us', true)"><!-- end ngIf: showHeaderLogo('en-us', true) -->                    </a>
+                            </div>
+        </div>
+    </div>
+</div>
+
+<main id="main-content" role="main">
+    <div class="container">
+        <!-- ngIf: !loading --><!-- uiView: --><div ng-if="!loading" ui-view="" class="hd-controller ng-scope" style=""></div><!-- end ngIf: !loading -->
+    </div>
+</main>
+
+<footer class="powered-by register" role="contentinfo" aria-label="Powered by">
+    <span translate="SHARED_LABEL_POWERED_BY" class="ng-scope">Powered by</span>
+    <a href="https://www.thentia.com" target="_blank" rel="noopener noreferrer">Thentia Cloud</a>
+</footer>
+
+
+<div class="k-list-container k-popup k-group k-reset" id="lang-dropdown-list" data-role="popup" style="position: absolute; height: auto; display: none;"><ul unselectable="on" class="k-list k-reset" tabindex="-1" role="listbox" aria-hidden="true" id="lang-dropdown_listbox" aria-live="off" style="overflow: auto; height: auto;"><li tabindex="-1" role="option" unselectable="on" class="k-item ng-scope k-state-selected k-state-focused" id="lang-dropdown_option_selected" aria-selected="true">English</li></ul></div></body></html>

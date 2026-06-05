@@ -1,0 +1,303 @@
+# ============================================================
+# BOARD CONFIGURATION — Nevada State Board of Osteopathic Medicine
+# ============================================================
+#
+# Page analysis (captured 2026-06-04):
+#   Platform  : Thentia Cloud SPA (portalus.thentiacloud.net) — same engine
+#               as NV_CHIRO (nvcpbn) and NV_PT (nptb); subdomain nsbom.
+#   Archetype : thentia_cloud
+#   Search UI : Single keywords input — NO search-by dropdown.
+#                 input#keywords   → used for last_name / first_name / license_number
+#               Search btn  : button.btn-brand
+#   Results   : Bootstrap table (table.table) rendered by Angular
+#               Columns: License # | First Name | Last Name | City |
+#                        License Type | Status | Expiration Date | Action
+#   Detail    : Separate URL  (#/register/profile/<id>)  — URL change on click.
+#               Trigger     : a.btn-single  (text "View")
+#               Extraction  : dt/dd + field-label/field-value CSS classes
+#               Sections    : Board Actions, Place of Practice,
+#                             Education History, Malpractice Information
+#   Pagination: "Next Page" link — a[title='Next Page']
+#   No results: Text "No Records Found" appears in tbody
+# ============================================================
+
+# ─── A. Identity ───────────────────────────────────────────
+identity:
+  source_id: "NV_OSTEO"
+  board_name: "Nevada State Board of Osteopathic Medicine"
+  state: "NV"
+  country: "US"
+  profession_codes: ["DO"]
+  base_url: "https://nsbom.portalus.thentiacloud.net/webs/portal/register/#/"
+  archetype: "thentia_cloud"
+
+# ─── B. Search interface ───────────────────────────────────
+search:
+  # Single keywords input — no search-by dropdown (same as NV_CHIRO / NV_PT)
+  modes:
+    - mode: "license_number"
+      dropdown_value: "License Number"
+    - mode: "last_name"
+      dropdown_value: "Last Name"
+    - mode: "first_name"
+      dropdown_value: "First Name"
+
+  form:
+    search_by_dropdown:
+      strategy: "none"
+      selector: ""
+
+    search_input:
+      selector: "input[id='keywords']"
+      fallback_selectors:
+        - "input[placeholder*='Search']"
+        - "input[placeholder*='search']"
+        - "input[type='text']"
+        - "input[type='search']"
+
+    search_button:
+      selector: "button.btn-brand"
+      fallback_selectors:
+        - "[aria-label='Search']"
+        - "button[type='submit']"
+        - "button[class*='search']"
+
+  results_wait:
+    strategy: "element_visible"
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+      - "0 result"
+      - "no licensees found"
+      - "no matching records"
+
+# ─── C. Results extraction ─────────────────────────────────
+results:
+  type: "table"
+
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: "license_number"
+      1: "first_name"
+      2: "last_name"
+      3: "city"
+      4: "license_type"
+      5: "status"
+      6: "expiration_date"
+      # col 7 = Action column (View button — not a data field)
+
+  has_detail_page: true
+  detail_trigger:
+    type: "view_button"
+    selector: "a.btn-single"
+    fallback_selectors:
+      - "a:has-text('View')"
+      - "button:has-text('View')"
+      - "input[value='View']"
+
+  pagination:
+    enabled: true
+    strategy: "next_button"
+    next_selector: "a[title='Next Page'], a.next, [aria-label='Next'], a:has-text('>')"
+    disabled_class: "disabled"
+
+# ─── D. Detail page extraction ─────────────────────────────
+detail:
+  wait:
+    strategy: "url_change"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "div[class*='profile']"
+      - "div[class*='detail']"
+      - "dl"
+      - "dt"
+
+  # Multi-strategy cascade — tried in order until one yields results
+  strategies:
+    - type: "dt_dd"
+    - type: "label_sibling"
+    - type: "field_label_value"
+    - type: "two_column_table"
+    - type: "four_column_table"
+
+  field_map:
+    # License identifiers
+    "License Number": "license_number"
+    "License No": "license_number"
+    "Lic No": "license_number"
+    "License #": "license_number"
+    # Name variants
+    "First Name": "first_name"
+    "Legal First Name": "first_name"
+    "Last Name": "last_name"
+    "Legal Last Name": "last_name"
+    "Middle Name": "middle_name"
+    "Name": "full_name"
+    "Licensee Name": "full_name"
+    # License details
+    "License Type": "license_type"
+    "License Category": "license_type"
+    "License Status": "status"
+    "Status": "status"
+    # Dates
+    "Issue Date": "issue_date"
+    "Issuance Date": "issue_date"
+    "Original License Date": "issue_date"
+    "Original Date of Licensure": "issue_date"
+    "Initial License Date": "issue_date"
+    "Effective Date": "effective_date"
+    "Expiration Date": "expiration_date"
+    "Exp Date": "expiration_date"
+    "License Expiration Date": "expiration_date"
+    # Address
+    "Address": "address"
+    "Street Address": "address"
+    "Public Address": "address"
+    "Business Address": "address"
+    "City": "city"
+    "Public City": "city"
+    "Business City": "city"
+    "State": "state_code"
+    "Province/State": "state_code"
+    "Public State": "state_code"
+    "Zip": "zip_code"
+    "Zip Code": "zip_code"
+    "Postal Code": "zip_code"
+    "Public ZIP Code": "zip_code"
+    "Business Zip Code": "zip_code"
+    # Disciplinary
+    "Discipline": "disciplinary_actions"
+    "Board Actions": "disciplinary_actions"
+
+  sections:
+    - name: "Board Actions"
+      type: "header_mapped_table"
+      field: "disciplinary_actions"
+    - name: "Place of Practice"
+      type: "header_mapped_table"
+      field: "practice_locations"
+    - name: "Education History"
+      type: "header_mapped_table"
+      field: "education_history"
+    - name: "Malpractice Information"
+      type: "header_mapped_table"
+      field: "malpractice_info"
+    - name: "Specialties"
+      type: "header_mapped_table"
+      field: "specialties"
+
+  back_navigation:
+    strategy: "browser_back"
+    wait_after_ms: 1500
+
+# ─── E. Output mapping ─────────────────────────────────────
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_first_name: "{first_name}"
+    licensee_last_name: "{last_name}"
+    licensee_middle_name: "{middle_name}"
+    licensee_full_name: "{full_name}"
+    license_type: "{license_type}"
+    status: "{status}"
+    effective_date: "{effective_date}"
+    issue_date: "{issue_date}"
+    expiration_date: "{expiration_date}"
+    disciplinary_actions: "{disciplinary_actions}"
+    address: "{address}"
+    city: "{city}"
+    state_code: "{state_code}"
+    zip_code: "{zip_code}"
+    source_url: "{_source_url}"
+
+  status_map:
+    "Active": "active"
+    "active": "active"
+    "Clear/Active": "active"
+    "clear/active": "active"
+    "Current": "active"
+    "current": "active"
+    "Valid": "active"
+    "valid": "active"
+    "Inactive": "inactive"
+    "inactive": "inactive"
+    "Retired": "inactive"
+    "retired": "inactive"
+    "Expired": "expired"
+    "expired": "expired"
+    "Lapsed": "expired"
+    "lapsed": "expired"
+    "Suspended": "suspended"
+    "suspended": "suspended"
+    "Suspended-Non Renewal": "suspended"
+    "Suspended-Board Action": "suspended"
+    "Revoked": "revoked"
+    "revoked": "revoked"
+    "Revoked-Non Renewal": "revoked"
+    "Revoked-Board Action": "revoked"
+    "Voluntary Surrender": "revoked"
+    "Voluntary Surrender-Board Action": "revoked"
+    "Surrendered": "revoked"
+    "surrendered": "revoked"
+    "Probation": "probation"
+    "probation": "probation"
+    "On Probation": "probation"
+    "Restricted": "suspended"
+
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+    - "%b-%d-%Y"
+    - "%B-%d-%Y"
+    - "%b-%Y"
+
+# ─── F. Transport policy ───────────────────────────────────
+transport:
+  browser: "chromium"
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+# ─── G. Evidence capture ───────────────────────────────────
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: "local"
+  local_path: "./evidence/NV_OSTEO/{run_id}/"
+
+# ─── H. Compliance ────────────────────────────────────────
+compliance:
+  tos_review_date: "2026-06-04"
+  tos_review_ticket: "LVS-130"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "TBD"
+  expect:
+    min_records: 1
+  skip: true
+  skip_reason: "network_blocked: portalus.thentiacloud.net unreachable on corporate network (Zscaler); replace TBD query once network is restored"

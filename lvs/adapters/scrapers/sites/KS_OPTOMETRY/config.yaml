@@ -1,0 +1,142 @@
+identity:
+  source_id: KS_OPTOMETRY
+  board_name: Kansas Board of Optometry
+  state: KS
+  country: US
+  profession_codes: [OD]
+  base_url: "https://www.kansas.gov/ssrv-optometry/search/search.html"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='licenseNumber']"
+    - mode: last_name
+      input_selector: "input[name='lastName']"
+    - mode: first_name
+      input_selector: "input[name='firstName']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='licenseNumber']"
+    search_button:
+      selector: "input[name='search']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr, table tr"
+    cell_selector: "td"
+    columns:
+      0: "full_name"
+      1: "address"
+      2: "city"
+      3: "license_number"
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a[href*='details.html']"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 15000
+  strategies:
+    - type: dt_dd
+    - type: two_column_table
+    - type: four_column_table
+    - type: label_sibling
+    - type: field_label_value
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "License Expiration": expiration_date
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "Initial License Date": issue_date
+    "Issue Date": issue_date
+    "License Type": license_type
+    "Type": license_type
+    "Street Address": address
+    "Address": address
+    "City": city
+    "State": state_code
+    "Zip": zip_code
+    "Zip Code": zip_code
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Current": active
+    "current": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 5
+    full_name_contains: "Smith"

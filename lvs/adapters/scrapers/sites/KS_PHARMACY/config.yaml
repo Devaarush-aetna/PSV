@@ -1,0 +1,146 @@
+identity:
+  source_id: KS_PHARMACY
+  board_name: Kansas State Board of Pharmacy
+  state: KS
+  country: US
+  profession_codes: [RPh, PharmD]
+  base_url: "https://ksbop.elicensesoftware.com/portal.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input#txtLPRNum"
+    - mode: last_name
+      input_selector: "input#txtName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#txtLPRNum"
+    search_button:
+      selector: "input#btnSearch"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tr"
+    cell_selector: "td"
+    columns:
+      0: "full_name"
+      1: "aka"
+      2: "license_number"
+      3: "city"
+      4: "state_code"
+      5: "license_type"
+      6: "status"
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a[href*='xid=']"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: dt_dd
+    - type: label_sibling
+  field_map:
+    "License/Registration Number": license_number
+    "L/P/R #": license_number
+    "License #": license_number
+    "First Name": first_name
+    "Last Name": last_name
+    "Name": full_name
+    "Name or Business": full_name
+    "Status": status
+    "License Status": status
+    "Expires": expiration_date
+    "Expiration Date": expiration_date
+    "Issued": issue_date
+    "Issue Date": issue_date
+    "Effective": effective_date
+    "Effective Date": effective_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Zip": zip_code
+    "Description": license_type
+    "License Type": license_type
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Current": active
+    "current": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "cancelled": inactive
+    "Probation": probation
+    "probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Baker"
+  expect:
+    min_records: 1
+    full_name_contains: "BAKER"

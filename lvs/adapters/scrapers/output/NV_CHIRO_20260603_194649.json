@@ -1,0 +1,56 @@
+[
+  {
+    "source_id": "NV_CHIRO",
+    "license_number": "B02060",
+    "licensee_first_name": "FRANCISCO",
+    "licensee_last_name": "CRUZ",
+    "licensee_full_name": "FRANCISCO CRUZ",
+    "licensee_middle_name": null,
+    "licensee_suffix": null,
+    "license_type": "Chiropractic Physician",
+    "profession_code": "DC",
+    "status": "active",
+    "effective_date": null,
+    "expiration_date": "2026-12-31",
+    "issue_date": "2024-08-12",
+    "last_renewal_date": null,
+    "address": "6085 W. Twain Ave., #201",
+    "city": "Las Vegas",
+    "state_code": "Nevada",
+    "zip_code": "89103",
+    "disciplinary_actions": [
+      {
+        "Type": "None"
+      }
+    ],
+    "source_url": "https://nvcpbn.portalus.thentiacloud.net/webs/portal/register/#/profile/B02060/0/20/all/all/false/66ba2ec0514a2873bffc054c",
+    "scraped_at": "2026-06-03T19:46:47.387203",
+    "evidence_html_path": "evidence\\NV_CHIRO\\297468ae\\detail_page.html",
+    "evidence_screenshot_path": "evidence\\NV_CHIRO\\297468ae\\detail_page.png",
+    "raw_fields": {
+      "full_name": "FRANCISCO CRUZ",
+      "license_number": "B02060",
+      "license_type": "Chiropractic Physician",
+      "status": "Active",
+      "issue_date": "08/12/2024",
+      "expiration_date": "12/31/2026",
+      "address": "6085 W. Twain Ave., #201",
+      "Street Address 2": "N/A",
+      "city": "Las Vegas",
+      "state_code": "Nevada",
+      "zip_code": "89103",
+      "disciplinary_actions": [
+        {
+          "Type": "None"
+        }
+      ],
+      "practice_locations": [],
+      "authorizations": [],
+      "specialties": [],
+      "_source_url": "https://nvcpbn.portalus.thentiacloud.net/webs/portal/register/#/profile/B02060/0/20/all/all/false/66ba2ec0514a2873bffc054c",
+      "html_path": "evidence\\NV_CHIRO\\297468ae\\detail_page.html",
+      "screenshot_path": "evidence\\NV_CHIRO\\297468ae\\detail_page.png"
+    },
+    "used_ai": false
+  }
+]

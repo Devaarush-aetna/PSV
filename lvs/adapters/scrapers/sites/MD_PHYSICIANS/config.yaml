@@ -1,0 +1,141 @@
+identity:
+  source_id: MD_PHYSICIANS
+  board_name: Maryland Board of Physicians
+  state: MD
+  country: US
+  profession_codes: ["MD", "DO"]
+  base_url: "https://www.mbp.state.md.us/bpqapp/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#txtLicense"
+      button_selector: "#btnLICENSE"
+    - mode: last_name
+      input_selector: "#LastName"
+      button_selector: "#btnLastName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#txtLicense"
+    search_button:
+      selector: "#btnLICENSE"
+  results_wait:
+    strategy: element_visible
+    selector: "#btnLICNO2, #listbox_Names"
+    timeout_ms: 15000
+    no_results_indicators:
+      - "no records were found"
+      - "no match found"
+      - "not found"
+
+results:
+  # license_number mode: single button link that goes directly to detail
+  # last_name mode: <select> listbox with many options
+  # The type is overridden per-mode at runtime; default covers license_number
+  type: table
+  has_detail_page: true
+  detail_trigger:
+    type: view_button
+    selector: "#btnLICNO2"
+  select_list:
+    selector: "#listbox_Names"
+    submit_selector: ""
+    option_separator: "-"
+    navigation_strategy: license_number_search
+    license_number_mode: license_number
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: element_visible
+    timeout_ms: 15000
+    fallback_selectors:
+      - "#Lic_no"
+      - "#Name"
+  strategies:
+    - type: element_ids
+      id_map:
+        Lic_no: "License Number"
+        Name: "Name"
+        Lic_Type: "License Type"
+        Lic_Status: "License Status"
+        Org_Lic_Date: "Original License Date"
+        Expiration_Date: "Expiration Date"
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "License Type": license_type
+    "License Status": status
+    "Original License Date": issue_date
+    "Expiration Date": expiration_date
+  back_navigation:
+    strategy: url_navigate
+    url_fragment: "bpqapp/"
+    wait_after_ms: 2000
+
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_full_name: "{full_name}"
+    license_type: "{license_type}"
+    status: "{status}"
+    issue_date: "{issue_date}"
+    expiration_date: "{expiration_date}"
+  status_map:
+    "active": active
+    "Active": active
+    "inactive": inactive
+    "Inactive": inactive
+    "expired": expired
+    "Expired": expired
+    "suspended": suspended
+    "Suspended": suspended
+    "revoked": revoked
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  robots_txt_compliant: true
+  requires_captcha: false
+  requires_login: false
+
+smoke_test:
+  mode: license_number
+  query: "D0091066"
+  expect:
+    license_number: "D0091066"
+    status: "active"
+    full_name_contains: "Zeserson"

@@ -1,0 +1,148 @@
+﻿identity:
+  source_id: "MA_HEALTH"
+  board_name: "Massachusetts Health License Verification"
+  state: "MA"
+  country: "US"
+  profession_codes: ["RN", "LPN", "MD", "DO", "PT", "OT", "DC", "PA", "NP"]
+  base_url: "https://checkahealthlicense.mass.gov/search"
+  archetype: "ag_grid_spa"
+
+search:
+  modes:
+    - mode: "name"
+      dropdown_value: "BY_LICENSEE_NAME"
+    - mode: "license_number"
+      dropdown_value: "BY_LICENSE_NUMBER"
+  form:
+    search_by_dropdown:
+      strategy: "radio"
+      selector: "input[type='radio']"
+    search_input:
+      selector: "#licensee-last-name-input"
+      fallback_selectors:
+        - "#licensee-first-name-or-organization-input"
+        - "#licensee-license-number-input"
+        - "input[type='text']"
+    search_button:
+      selector: "button.search-button"
+      fallback_selectors:
+        - "button:has-text('Search')"
+  results_wait:
+    strategy: "element_visible"
+    selector: "div.ag-row:not(.ag-header-row)"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "0 results found"
+
+results:
+  type: "ag_grid"
+  ag_grid_columns:
+    - "License Number"
+    - "License Type"
+    - "License Status"
+    - "First Name"
+    - "Middle Name"
+    - "Last Name"
+    - "Suffix"
+    - "Organization Name"
+    - "Address"
+    - "Issue Date"
+    - "Last Issue/Renewal Date"
+    - "Expiration Date"
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: "infinite_scroll"
+
+detail:
+  wait:
+    strategy: "element_visible"
+    timeout_ms: 15000
+  strategies: []
+  field_map:
+    "License Number": "license_number"
+    "License Type": "license_type"
+    "License Status": "status"
+    "First Name": "first_name"
+    "Middle Name": "licensee_middle_name"
+    "Last Name": "last_name"
+    "Suffix": "licensee_suffix"
+    "Organization Name": "full_name"
+    "Address": "address"
+    "Issue Date": "issue_date"
+    "Last Issue/Renewal Date": "last_renewal_date"
+    "Expiration Date": "expiration_date"
+  sections: []
+  back_navigation:
+    strategy: "browser_back"
+    wait_after_ms: 0
+
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_first_name: "{first_name}"
+    licensee_last_name: "{last_name}"
+    licensee_full_name: "{full_name}"
+    licensee_middle_name: "{licensee_middle_name}"
+    licensee_suffix: "{licensee_suffix}"
+    license_type: "{license_type}"
+    status: "{status}"
+    issue_date: "{issue_date}"
+    last_renewal_date: "{last_renewal_date}"
+    expiration_date: "{expiration_date}"
+    address: "{address}"
+  status_map:
+    "active": "active"
+    "current": "active"
+    "inactive": "inactive"
+    "expired": "expired"
+    "suspended": "suspended"
+    "revoked": "revoked"
+    "probation": "probation"
+    "lapsed": "expired"
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+    - "%B %d, %Y"
+
+transport:
+  browser: "chromium"
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: "local"
+  local_path: "./evidence/MA_HEALTH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-05-15"
+  tos_review_ticket: "LVS-105"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 10

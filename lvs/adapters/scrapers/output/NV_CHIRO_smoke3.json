@@ -1,0 +1,38 @@
+[
+  {
+    "source_id": "NV_CHIRO",
+    "license_number": "",
+    "licensee_first_name": null,
+    "licensee_last_name": null,
+    "licensee_full_name": null,
+    "licensee_middle_name": null,
+    "licensee_suffix": null,
+    "license_type": null,
+    "profession_code": "DC",
+    "status": "unknown",
+    "effective_date": null,
+    "expiration_date": null,
+    "issue_date": null,
+    "last_renewal_date": null,
+    "address": null,
+    "city": null,
+    "state_code": null,
+    "zip_code": null,
+    "disciplinary_actions": [],
+    "source_url": "https://nvcpbn.portalus.thentiacloud.net/webs/portal/register/#/profile/B02060/0/20/all/all/false/66ba2ec0514a2873bffc054c",
+    "scraped_at": "2026-06-02T18:01:46.649606",
+    "evidence_html_path": "evidence\\NV_CHIRO\\750d37a8\\detail_page.html",
+    "evidence_screenshot_path": "evidence\\NV_CHIRO\\750d37a8\\detail_page.png",
+    "raw_fields": {
+      "disciplinary_actions": [],
+      "practice_locations": [],
+      "authorizations": [],
+      "specialties": [],
+      "_source_url": "https://nvcpbn.portalus.thentiacloud.net/webs/portal/register/#/profile/B02060/0/20/all/all/false/66ba2ec0514a2873bffc054c",
+      "_used_ai": false,
+      "html_path": "evidence\\NV_CHIRO\\750d37a8\\detail_page.html",
+      "screenshot_path": "evidence\\NV_CHIRO\\750d37a8\\detail_page.png"
+    },
+    "used_ai": false
+  }
+]

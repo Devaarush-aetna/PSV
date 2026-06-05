@@ -1,0 +1,1051 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" ng-app="natApp" lang="en" class="ng-scope"><head><style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style><style type="text/css">.uib-time input{width:50px;}</style><style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style><style type="text/css">.uib-datepicker-popup.dropdown-menu{display:block;float:none;margin:0;}.uib-button-bar{padding:10px 9px 2px;}</style><style type="text/css">.uib-position-measure{display:block !important;visibility:hidden !important;position:absolute !important;top:-9999px !important;left:-9999px !important;}.uib-position-scrollbar-measure{position:absolute !important;top:-9999px !important;width:50px !important;height:50px !important;overflow:scroll !important;}.uib-position-body-scrollbar-measure{overflow:scroll !important;}</style><style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-left,.uib-right{width:100%}</style><style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <!-- Start Bootstrap CSS -->
+
+    <link href="/app/content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/app/content/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/app/content/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="/app/content/css/print.min.css" rel="stylesheet">
+    <link href="/app/content/css/bootstrap-switch.min.css" rel="stylesheet">
+
+    <!-- End Bootstrap CSS -->
+    <!-- Start Custom CSS -->
+
+    <link href="/app/content/css/validation.css" rel="stylesheet">
+    <link href="/app/content/css/natcustom.css" rel="stylesheet">
+    <link href="/app/content/css/login/login.css" rel="stylesheet">
+    <link href="/app/content/css/backoffice/Admin.css" rel="stylesheet">
+    <link href="/app/content/css/backoffice/button.css" rel="stylesheet">
+    <link href="/app/content/css/Header.css" rel="stylesheet">
+    <link href="/app/content/css/navigation.css" rel="stylesheet">
+    <link href="/app/content/css/editor.css" rel="stylesheet">
+    <link href="/app/content/css/jsTree/default/style.min.css" rel="stylesheet">
+    <link href="/app/content/css/SearchPanelnew.css" rel="stylesheet">
+    <link href="/app/content/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <link href="/app/content/css/jquery-ui-1.8.23.custom.css" rel="stylesheet">
+    <link href="/app/content/css/angular-datepicker.min.css" rel="stylesheet">
+    <link href="/app/content/css/angular-text.css" rel="stylesheet">
+    <link href="/app/content/css/spectrum.css" rel="stylesheet">
+
+    <!-- End Custom CSS -->
+    <!--Responsive Css Start-->
+    <link href="app/content/css/responsive.css" rel="stylesheet">
+    <!--Responsive Css End-->
+
+    <script src="/app/scripts/vendor/jquery-1.11.3.min.js"></script>
+    <script src="/app/scripts/vendor/jquery.base64.js"></script>
+    <script src="/app/scripts/vendor/bootstrap.min.js"></script>
+    <script src="/app/scripts/vendor/moment.js"></script>
+    <script src="/app/scripts/vendor/bootstrap-datepicker.js"></script>
+    <script src="/app/scripts/vendor/editor.js"></script>
+    <!-- Start AngularJS Scripts -->
+    <script src="/app/scripts/vendor/jspdf.min.js"></script>
+    <script src="/app/scripts/vendor/angular.min.js"></script>
+    <script src="/app/scripts/vendor/angular-ui-router.min.js"></script>
+    <script src="/app/scripts/vendor/angular-sanitize.min.js"></script>
+    <script src="/app/scripts/vendor/angular-animate.min.js"></script>
+    <script src="/app/scripts/vendor/angular-cookies.min.js"></script>
+    <script src="/app/scripts/vendor/dirPagination.js"></script>
+    <script src="/app/scripts/vendor/jsTree/jstree.min.js"></script>
+    <script src="/app/scripts/vendor/jsTree/jsTree.directive.js"></script>
+    <script src="/app/scripts/vendor/jquery-ui-1.8.23.custom.min.js"></script>
+    <script src="/app/scripts/vendor/datatables.min.js"></script>
+    <script src="/app/scripts/vendor/lodash.js"></script>
+    <script src="/app/app.module.js"></script>
+    <script src="app/app.route-authorization.module.js"></script>
+    <script src="/app/app.route.js"></script>
+    <script src="/app/app.config.js"></script>
+    <script src="/app/app.run.js"></script>
+    <script src="/app/app.constant.js"></script>
+    <script src="/app/app.web-api-url.constant.js"></script>
+    <script src="/app/core/core.module.js"></script>
+    <script src="/app/components/backoffice/individual/individual.module.js"></script>
+    <script src="/app/components/report/report.module.js"></script>
+    <script src="/app/components/individual/application/InitialApplication.module.js"></script>
+    <script src="/app/components/report/report.constant.js"></script>
+    <script src="/app/scripts/vendor/html2canvas.js" type="text/javascript"></script>
+    <script src="/app/scripts/vendor/pdfmake.min.js" type="text/javascript"></script>
+    <!-- <script src="http://cdn.tinymce.com/4/tinymce.min.js" type="text/javascript"></script> -->
+    <script src="/app/scripts/vendor/print.min.js" type="text/javascript"></script>
+    <script src="app/scripts/vendor/angular-base64-upload.js"></script>
+    <script src="/app/scripts/vendor/angular-recaptcha.min.js"></script>
+    <script src="/app/scripts/vendor/textAngular/textAngular-rangy.min.js"></script>
+    <script src="/app/scripts/vendor/textAngular/textAngular-sanitize.min.js"></script>
+    <script src="/app/scripts/vendor/textAngular/textAngular.min.js"></script><style></style>
+    <script src="/app/scripts/vendor/textAngular/textAngular-dropdownToggle.js"></script>
+    <script src="/app/scripts/vendor/colorpicker/spectrum.js"></script>
+    <script src="/app/scripts/vendor/colorpicker/angular-spectrum-colorpicker.min.js"></script>
+    <script src="/app/scripts/vendor/ng-file-upload/ng-file-upload-shim.js"></script>
+    <script src="/app/scripts/vendor/ng-file-upload/ng-file-upload.js"></script>
+
+    <script src="//cdn.ckeditor.com/4.8.0/full/ckeditor.js"></script><style>.cke{visibility:hidden;}</style>
+    <!-- <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script> -->
+    <script src="/app/scripts/vendor/ckeditor/ckeditor.js"></script>
+    <script src="/app/scripts/vendor/ckeditor/angular-ckeditor.min.js"></script>
+
+    <script src="//cdn.ckeditor.com/4.8.0/full/ckeditor.js"></script>
+    <script src="/app/scripts/vendor/ckeditor/angular-ckeditor.min.js"></script>
+
+    <!-- End AngularJS Scripts -->
+    <!-- Start Bootstrap Scripts -->
+    <script src="/app/scripts/vendor/bootstrap-switch.min.js"></script>
+    <!--<script src="/app/scripts/vendor/ui-bootstrap-tpls-0.12.1.min.js"></script>-->
+    <!--<script src="/app/scripts/vendor/ui-bootstrap-tpls-2.1.3.min.js"></script>-->
+    <script src="/app/scripts/vendor/ui-bootstrap-tpls-2.4.0.min.js"></script>
+
+    <!-- End Bootstrap Scripts -->
+
+    <!-- Begin Canned Reports Module -->
+    <script src="/app/components/report/canned-reports/canned-reports.directive.js" type="text/javascript"></script>
+    <script src="/app/components/report/canned-reports/canned-reports.service.js" type="text/javascript"></script>
+    <script src="/app/components/report/canned-reports/canned-reports.controller.js" type="text/javascript"></script>
+    <script src="/app/core/data/config-files/components/report/canned-reports/canned-reports.logic.js" type="text/javascript"></script>
+    <script src="/app/core/data/config-files/components/report/canned-reports/canned-reports.validation.js" type="text/javascript"></script>
+    <!-- End Canned Reports Module -->
+
+    <!-- inlumon reference table loader starts here-->
+    <script src="/app/core/directive/inlumon-ref-table-loader/inlumon-ref-table-loader.directive.js"></script>
+    <!-- inlumon reference table loader ends here-->
+
+    <!-- Start Custom Scripts -->
+
+    <script src="/app/scripts/vendor/jquery.mask.min.js"></script>
+    <script src="/app/scripts/vendor/mask.js"></script>
+    <script src="/app/scripts/validation.js"></script>
+    <script src="/app/scripts/natcustom.js"></script>
+    <!-- End Custom Scripts -->
+
+    <!-- Begin Wait For All -->
+    <script src="/app/core/directive/wait-for-all/wait-for-all.directive.js" type="text/javascript"></script>
+    <!-- End Wait For All -->
+
+    <!-- inlumon form builder starts here-->
+    <script src="/app/core/directive/inlumon-form/inlumon-form-builder.directive.js"></script>
+    <!-- inlumon form builder ends here-->
+
+        <!-- Begin Inlumon Content -->
+    <script src="/app/core/directive/inlumon-content/inlumon-content.service.js" type="text/javascript"></script>
+    <script src="/app/core/directive/inlumon-content/inlumon-content.directive.js" type="text/javascript"></script>
+    <!-- End Inlumon Content -->
+
+    
+    <!-- Start Controllers For Individual -->
+    <script src="/app/global.controller.js"></script>
+    <script src="/app/main.controller.js"></script>
+    <script src="/app/core/layout/header/header-backoffice/header-backoffice.controller.js"></script>
+    <script src="/app/components/dashboard/dashboard-applicant.controller.js"></script>
+    <script src="/app/components/dashboard/dashboard-licensee.controller.js"></script>
+    <script src="/app/components/dashboard/online-InitialLicenseApplication.controller.js"></script>
+    <script src="/app/core/layout/header/header-licensee/header-licensee.controller.js"></script>
+    <script src="/app/components/individual/license/renewal/license-renewal-hasna.controller.js"></script>
+    <script src="/app/components/individual/license/renewal/license-renewal-application-online.controller.js?q=1"></script>
+    <script src="/app/components/individual/license/renewal/license-renewal-application.controller.js"></script>
+    <script src="/app/components/individual/application/InitialLicenseApplication.controller.js"></script>
+    <script src="/app/components/individual/application/NewInitialLicenseApplication.controller.js"></script>
+    <script src="/app/components/individual/application/certification-registration.controller.js"></script>
+    <script src="/app/components/individual/application/directives/acknowledgement/acknowledgement.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newacknowledgement/acknowledgement.controller.js"></script>
+    <script src="/app/components/individual/application/directives/certification/certification.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newcertification/certification.controller.js"></script>
+    <script src="/app/components/individual/application/directives/checklist/checklist.controller.js"></script>
+    <script src="/app/components/individual/application/directives/type-of-service/type-of-service.controller.js"></script>
+    <script src="/app/components/individual/application/directives/staff-review/staff-review.controller.js"></script>
+    <script src="/app/components/individual/application/directives/child-support/child-support.controller.js"></script>
+    <script src="/app/components/individual/application/directives/license-info/license-info.controller.js"></script>
+    <script src="/app/components/individual/application/directives/license-output/license-output.controller.js"></script>
+    <script src="/app/components/individual/application/directives/veteran-info/veteran-info.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newveteran-info/veteran-info.controller.js"></script>
+    <script src="/app/components/individual/application/directives/upload-document/upload-document.controller.js"></script>
+    <script src="/app/components/individual/application/directives/education/education.controller.js"></script>
+    <script src="/app/components/individual/application/directives/neweducation/education.controller.js"></script>
+    <script src="/app/components/individual/application/directives/examination/examination.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newexamination/examination.controller.js"></script>
+    <script src="/app/components/individual/application/directives/cpr-certification/cpr-certification.controller.js"></script>
+    <script src="/app/components/individual/application/directives/Assistant/Assistant.controller.js"></script>
+    <script src="/app/components/individual/application/directives/employment/employment.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newemployment/employment.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newapplciation-license-type/newapplciation-license-type.controller.js"></script>
+    <script src="/app/components/individual/application/directives/instructions/instructions.controller.js"></script>
+    <script src="/app/components/individual/application/directives/survey/survey.controller.js"></script>
+    <script src="/app/components/individual/application/directives/dental-auxiliaries/dental-auxiliaries.controller.js"></script>
+    <script src="/app/components/individual/application/directives/renewal-type/renewal-type.controller.js"></script>
+    <script src="/app/components/individual/application/directives/public-health-endorsed/public-health-endorsed.controller.js"></script>
+    <script src="/app/components/individual/application/directives/permit/permit.controller.js"></script>
+    <script src="/app/components/individual/application/directives/anesthesia/anesthesia.controller.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/legal-info.controller.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/legal-info-v4.controller.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/individual-legal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newlegal-info/individual-legal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/license-history/license-history.controller.js"></script>
+    <script src="/app/components/individual/application/directives/license-type/license-type.controller.js"></script>
+    <script src="/app/components/individual/application/directives/fee-payment/fee-payment.controller.js"></script>
+    <script src="/app/components/individual/application/directives/fee-details/fee-details.controller.js"></script>
+    <script src="/app/components/individual/application/directives/personal/personal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/personal-v2/personal-renewal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/newpersonal/personal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/training/training.controller.js"></script>
+    <script src="/app/components/individual/application/directives/professional-references/professional-references.controller.js"></script>
+    <script src="app/components/individual/application/directives/common/common-directives.js"></script>
+
+    <!--<script src="/app/components/login/login-without-email.controller.js"></script>
+    <script src="/app/components/login/register.controller.js"></script>
+    <script src="/app/components/login/register-new-applicant.controller.js"></script>
+    <script src="/app/components/login/login-w-email.controller.js"></script>-->
+    <script src="/app/components/individual/payment/payment.controller.js"></script>
+    <script src="/app/components/individual/payment/payment-conformation.controller.js"></script>
+    <!--<script src="/app/components/login/change-password.controller.js"></script>-->
+    <script src="/app/components/individual/license/output/license-renewal-pdf.controller.js"></script>
+
+    <script src="/app/components/login/app-login-module.js"></script>
+    <script src="/app/components/login/change-password.controller.js"></script>
+    <script src="/app/components/login/login-with-email.controller.js"></script>
+    <script src="/app/components/login/login-with-email.service.js"></script>
+    <script src="/app/components/login/login-without-email.controller.js"></script>
+    <script src="/app/components/login/login-wo-email.service.js"></script>
+    <script src="app/components/login/forgot-password.controller.js"></script>
+
+    <script src="/app/components/account/app-account-module.js"></script>
+    <script src="/app/components/account/Register-factory.js"></script>
+    <script src="/app/components/account/register-new-applicant.controller.js"></script>
+    <script src="/app/components/account/register.controller.js"></script>
+    <script src="/app/components/individual/license/verify/verify-license.controller.js"></script>
+
+    <script src="/app/components/individual/application/directives/ce-education/ce-education.controller.js"></script>
+
+    <!-- End Controllers For Individual -->
+    <!--Individual License Application Services -->
+    <script src="/app/components/individual/application/directives/ce-education/ce-education.service.js"></script>
+   
+    <script src="/app/components/individual/application/directives/acknowledgement/acknowledgement.service.js"></script>
+    <script src="/app/components/individual/application/directives/certification/certification.service.js"></script>
+    <script src="/app/components/individual/application/directives/checklist/checklist.service.js"></script>
+    <script src="/app/components/individual/application/directives/type-of-service/type-of-service.service.js"></script>
+    <script src="/app/components/individual/application/directives/staff-review/staff-review.service.js"></script>
+    <script src="/app/components/individual/application/directives/child-support/child-support.service.js"></script>
+    <script src="/app/components/individual/application/directives/license-info/license-info.service.js"></script>
+    <script src="/app/components/individual/application/directives/license-output/license-output.service.js"></script>
+    <script src="/app/components/individual/application/directives/veteran-info/veteran-info.service.js"></script>
+    <script src="/app/components/individual/application/directives/upload-document/upload-document.service.js"></script>
+    <script src="/app/components/individual/application/directives/education/education.service.js"></script>
+    <script src="/app/components/individual/application/directives/examination/examination.service.js"></script>
+    <script src="/app/components/individual/application/directives/cpr-certification/cpr-certification.service.js"></script>
+    <script src="/app/components/individual/application/directives/Assistant/Assistant.service.js"></script>
+    <script src="/app/components/individual/application/directives/employment/employment.service.js"></script>
+    <script src="/app/components/individual/application/directives/instructions/instructions.service.js"></script>
+    <script src="/app/components/individual/application/directives/survey/survey.service.js"></script>
+    <script src="/app/components/individual/application/directives/dental-auxiliaries/dental-auxiliaries.service.js"></script>
+    <script src="/app/components/individual/application/directives/renewal-type/renewal-type.service.js"></script>
+    <script src="/app/components/individual/application/directives/permit/permit.service.js"></script>
+    <script src="/app/components/individual/application/directives/anesthesia/anesthesia.service.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/legal-info.service.js"></script>
+    <script src="/app/components/individual/application/directives/license-history/license-history.service.js"></script>
+    <script src="/app/components/individual/application/directives/license-type/license-type.service.js"></script>
+    <script src="/app/components/individual/application/directives/fee-payment/fee-payment.service.js"></script>
+    <script src="/app/components/individual/application/directives/fee-details/fee-details.service.js"></script>
+    <script src="/app/components/individual/application/directives/personal/personal.service.js"></script>
+    <script src="/app/components/individual/application/directives/training/training.service.js"></script>
+    <script src="/app/components/individual/application/directives/status.service.js"></script>
+    <script src="/app/components/individual/application/directives/professional-references/professional-references.service.js"></script>
+    <!--Individual License Application Services -->
+    <!--Common directives-->
+    <script src="/app/core/directive/convert-to-number/convert-to-number.directive.js"></script>
+    <script src="/app/core/directive/datepicker-localdate/datepicker-localdate.directive.js"></script>
+    <script src="/app/core/directive/bootstrap-datepicker/bootstrap-datepicker.directive.js"></script>
+    <script src="/app/core/directive/multiple-file-upload/multiple-file-upload.directive.js"></script>
+    <script src="/app/core/directive/multiple-file-upload-list/multiple-file-upload-list.directive.js"></script>
+    <script src="/app/core/directive/nat-alphabet/nat-alphabet.directive.js"></script>
+    <script src="/app/core/directive/nat-number/nat-number.directive.js"></script>
+    <script src="/app/core/directive/nat-required/nat-required.directive.js"></script>
+    <script src="/app/core/directive/nat-email/nat-email.directive.js"></script>
+    <script src="/app/core/directive/nat-regex/nat-regex.directive.js"></script>
+    <script src="/app/core/directive/nat-phone/nat-phone.directive.js"></script>
+    <script src="/app/core/directive/nat-minlength/nat-minlength.directive.js"></script>
+    <script src="/app/core/directive/nat-url/nat-url.directive.js"></script>
+    <script src="/app/core/directive/nat-date-range/nat-date-range.directive.js"></script>
+    <script src="/app/core/directive/nat-date-format/nat-date-format.directive.js"></script>
+    <script src="/app/core/directive/nat-map-enter-key/nat-map-enter-key.directive.js"></script>
+    <script src="/app/core/directive/on-finish-render/on-finish-render.directive.js"></script>
+    <script src="/app/core/directive/emailer/EmailDirective.js"></script>
+    <!--Common directives-->
+    <!--Individual License Application Directives -->
+    <script src="/app/components/individual/application/directives/ce-education/ce-education.directive.js"></script>
+  
+    <script src="/app/components/individual/application/directives/professional-references/professional-references.directive.js"></script>
+    <script src="/app/components/individual/application/directives/child-support/child-support.directive.js"></script>
+    <script src="/app/components/individual/application/directives/license-info/license-info.directive.js"></script>
+    <script src="/app/components/individual/application/directives/license-output/license-output.directive.js"></script>
+    <script src="/app/components/individual/application/directives/veteran-info/veteran-info.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newveteran-info/veteran-info.directive.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/legal-info.directive.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/legal-info-v4.directive.js"></script>
+    <script src="/app/components/individual/application/directives/legal-info/individual-legal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newlegal-info/individual-legal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/acknowledgement/acknowledgement.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newacknowledgement/acknowledgement.directive.js"></script>
+    <script src="/app/components/individual/application/directives/checklist/checklist.directive.js"></script>
+    <script src="/app/components/individual/application/directives/type-of-service/type-of-service.directive.js"></script>
+    <script src="/app/components/individual/application/directives/staff-review/staff-review.directive.js"></script>
+    <script src="/app/components/individual/application/directives/upload-document/upload-document.directive.js"></script>
+    <script src="/app/components/individual/application/directives/fee-payment/fee-payment.directive.js"></script>
+    <script src="/app/components/individual/application/directives/fee-details/fee-details.directive.js"></script>
+    <script src="/app/components/individual/application/directives/certification/certification.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newcertification/certification.directive.js"></script>
+    <script src="/app/components/individual/application/directives/education/education.directive.js"></script>
+    <script src="/app/components/individual/application/directives/neweducation/education.directive.js"></script>
+    <script src="/app/components/individual/application/directives/examination/examination.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newexamination/examination.directive.js"></script>
+    <script src="/app/components/individual/application/directives/cpr-certification/cpr-certification.directive.js"></script>
+    <script src="/app/components/individual/application/directives/Assistant/Assistant.directive.js"></script>
+    <script src="/app/components/individual/application/directives/employment/employment.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newemployment/employment.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newapplciation-license-type/newapplciation-license-type.directive.js"></script>
+    <script src="/app/components/individual/application/directives/instructions/instructions.directive.js"></script>
+    <script src="/app/components/individual/application/directives/survey/survey.directive.js"></script>
+    <script src="/app/components/individual/application/directives/dental-auxiliaries/dental-auxiliaries.directive.js"></script>
+    <script src="/app/components/individual/application/directives/renewal-type/renewal-type.directive.js"></script>
+    <script src="/app/components/individual/application/directives/public-health-endorsed/public-health-endorsed.directive.js"></script>
+    <script src="/app/components/individual/application/directives/permit/permit.directive.js"></script>
+    <script src="/app/components/individual/application/directives/anesthesia/anesthesia.directive.js"></script>
+    <script src="/app/components/individual/application/directives/license-history/license-history.directive.js"></script>
+    <script src="/app/components/individual/application/directives/license-type/license-type.directive.js"></script>
+    <script src="/app/components/individual/application/directives/personal/personal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/personal-v2/personal-renewal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/newpersonal/personal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/training/training.directive.js"></script>
+    <!--Individual License Application Directives -->
+    <!--Filters-->
+    <script src="/app/core/filter/unsafe/unsafe.js"></script>
+    <script src="/app/core/filter/search/search.js"></script>
+    <!--Filters-->
+    <!--Common Service-->
+    <script src="/app/core/service/form-validation.service.js"></script>
+    <script src="/app/core/service/utility.service.js"></script>
+    <script src="/app/core/service/configuration.service.js"></script>
+    <script src="/app/core/service/lookup.service.js"></script>
+    <script src="/app/core/service/type-values.service.js"></script>
+    <script src="/app/core/service/content.service.js"></script>
+    <script src="/app/core/service/country-state.service.js"></script>
+    <script src="/app/core/service/html-to-pdf-generation.js"></script>
+    <script src="/app/core/service/logging.service.js"></script>
+    <script src="/app/core/directive/multiple-file-upload/multiple-file-upload.service.js"></script>
+    <!--Common Service-->
+    <!--Common Controller-->
+    <script src="/app/core/directive/multiple-file-upload/multiple-file-upload.controller.js"></script>
+    <script src="/app/core/directive/multiple-file-upload-list/multiple-file-upload-list.controller.js"></script>
+    <!--Common Controller-->
+    <!--Start Controller For Back Office-->
+    <script src="/app/components/backoffice/login/login-staff.controller.js"></script>
+    <script src="/app/components/backoffice/license/renewal/license-renewal-application-backoffice.controller.js"></script>
+    <script src="/app/components/backoffice/license/renewal/license-renewal-backoffice-listing.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/license-application-listing.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/certification-registration-listing.controller.js"></script>
+
+    <script src="/app/components/backoffice/license/application/GeneralAnesthesiaSitePermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/PediatricModerateSedationSitePermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/ModerateSedationPermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/ModerateSedationPermitYounger.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/PediatricModerateSedationAdministratorPermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/ModerateSedationSitePermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/GeneralAnesthesiaPermit.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/PublicHealthEndorsement.controller.js"></script>
+    <script src="/app/components/backoffice/license/application/license-application-hasna-bo.controller.js"></script>
+    <script src="/app/components/backoffice/ui/dashboard-staff.controller.js"></script>
+    <script src="/app/components/backoffice/individual/individual.controller.js"></script>
+    <script src="/app/components/backoffice/individual/search/search.controller.js"></script>
+    <script src="/app/components/backoffice/individual/personal/personal.controller.js"></script>
+    <script src="/app/components/backoffice/individual/address/address.controller.js"></script>
+    <script src="/app/components/backoffice/individual/financial/financial.controller.js"></script>
+    <script src="/app/components/backoffice/individual/permit/permit.controller.js"></script>
+    <script src="/app/components/backoffice/individual/notes/notes.controller.js"></script>
+    <script src="/app/components/backoffice/individual/log/log.controller.js"></script>
+    <script src="/app/components/backoffice/individual/correspondence/correspondence.controller.js"></script>
+    <script src="/app/components/backoffice/individual/document/document.controller.js"></script>
+    <script src="/app/components/backoffice/individual/verification/verification.controller.js"></script>
+    <script src="/app/components/backoffice/individual/employment/employment.controller.js"></script>
+    <script src="/app/components/backoffice/individual/correspondence/correspondence.service.js"></script>
+    <script src="/app/components/backoffice/individual/education/education.controller.js"></script>
+    <script src="/app/components/backoffice/individual/application-data/application-data.controller.js"></script>
+    <script src="/app/components/backoffice/individual/license/license.controller.js"></script>
+    <script src="/app/components/backoffice/individual/allegation/allegation.controller.js"></script>
+    <script src="/app/components/backoffice/individual/name/name.controller.js"></script>
+    <script src="/app/components/backoffice/individual/military/military.controller.js"></script>
+    <script src="/app/components/backoffice/individual/dental-auxiliary/dental-auxiliary.controller.js"></script>
+    <script src="/app/components/backoffice/individual/crp/crp.controller.js"></script>
+    <script src="/app/components/backoffice/individual/certification/certification.controller.js"></script>
+    <script src="/app/components/backoffice/individual/certification/certification.service.js"></script>
+    <script src="/app/components/backoffice/individual/PHDE/PHDE.controller.js"></script>
+    <script src="/app/components/backoffice/individual/PHDE/PHDE.service.js"></script>
+
+    <!--<script src="/app/components/backoffice/usercontrol/uc-license-renewal-hasna-bo/uc-license-renewal-hasna-bo.controller.js"></script>-->
+    <script src="/app/components/backoffice/administrator/administrator.module.js"></script>
+    <script src="/app/components/backoffice/administrator/user-account/user-account.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/user-account/user-account.service.js"></script>
+    <script src="/app/components/backoffice/administrator/user-roles/roles.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/user-roles/roles.service.js"></script>
+    <script src="/app/components/backoffice/administrator/user-roles/set-permissions.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/user-roles/set-permissions.service.js"></script>
+    <script src="/app/components/backoffice/administrator/password-management/password-management.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/password-management/password-management.service.js"></script>
+    <script src="/app/components/backoffice/administrator/template-message/template-message.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/template-message/template-message.service.js"></script>
+    <script src="/app/components/backoffice/administrator/document-management/document-management.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/document-management/document-management.service.js"></script>
+    <script src="/app/components/backoffice/administrator/content-management/content-management.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/content-management/content-management.service.js"></script>
+
+    <script src="/app/components/backoffice/secure-communication/secure-communication.controller.js"></script>
+    <script src="/app/components/backoffice/secure-communication/secure-communication.factory.js"></script>
+    <!-- Admin Configuration -->
+    <script src="/app/components/backoffice/administrator/configuration/configuration.service.js"></script>
+    <script src="/app/components/backoffice/administrator/configuration/configuration.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/configuration/deficiency-reason-directive/deficiency-reason-directive.js"></script>
+    <script src="/app/components/backoffice/administrator/configuration/deficiency-reason-directive/deficiency-reason-directive-factory.js"></script>
+    <script src="/app/components/backoffice/administrator/configuration/deficiency-reason-directive/deficiency-reason-directive-controller.js"></script>
+
+    <!-- Admin -->
+    <script src="app/components/backoffice/administrator/bulkemail/bulkemail.controller.js"></script>
+    <script src="app/components/backoffice/administrator/bulkemail/bulkemail.service.js"></script>
+    <script src="app/components/backoffice/administrator/configuration/config-configtype-directive/config-configtype-directive-controller.js"></script>
+    <script src="app/components/backoffice/administrator/configuration/config-configtype-directive/config-configtype-directive-factory.js"></script>
+    <script src="app/components/backoffice/administrator/configuration/config-configtype-directive/config-configtype-directive.js"></script>
+
+    <script src="/app/components/backoffice/administrator/council-info.controller.js"></script>
+    <script src="app/components/backoffice/usercontrol/uc-license-renewal-hasna-bo/uc-license-renewal-payment.controller.js"></script>
+    <script src="app/components/backoffice/usercontrol/uc-license-renewal-hasna-bo/uc-license-renewal-hasna-bo-email.controller.js"></script>
+    <script src="app/components/report/licensure/licensure-report.controller.js"></script>
+    <script src="app/components/report/daily-deposit/daily-deposit-report.controller.js"></script>
+    <script src="app/components/report/mailing-list/mailing-list-report.controller.js"></script>
+    <script src="app/components/report/probation-list/probation-list-report.controller.js"></script>
+    <script src="app/components/report/occupational-licensing/occupational-licensing-report.controller.js"></script>
+    <script src="app/components/report/veteran-data/veteran-data-report.controller.js"></script>
+    <script src="app/components/report/pending-renewal/pending-renewal-report.controller.js"></script>
+    <script src="app/components/report/pending-approval/pending-approval-report.controller.js"></script>
+    <script src="app/components/report/all-data/all-data-report.controller.js"></script>
+    <script src="app/components/report/business/business-report.controller.js"></script>
+    <!--End Controller For Back Office-->
+    <script src="/app/components/individual/application/initial-permit-application.controller.js"></script>
+    <script src="/app/components/individual/application/initial-speciality-certification-application.controller.js"></script>
+    <script src="/app/components/individual/application/directives/personal/permit/permit-personal.controller.js"></script>
+    <script src="/app/components/individual/application/directives/personal/permit/permit-personal.directive.js"></script>
+    <script src="/app/components/individual/application/directives/personal/permit/permit-personal.service.js"></script>
+    <script src="/app/components/individual/application/directives/personal/permit/address/address.controller.js"></script>
+    <script src="/app/components/individual/application/directives/personal/permit/address/address.service.js"></script>
+
+    <script src="/app/components/individual/application/directives/phdhe-hygienists/phdhe-hygienists.controller.js"></script>
+    <script src="/app/components/individual/application/directives/phdhe-hygienists/phdhe-hygienists.service.js"></script>
+    <script src="/app/components/individual/application/directives/phdhe-hygienists/phdhe-hygienists.directive.js"></script>
+    <script src="/app/components/backoffice/individual/finance/finance.controller.js"></script>
+    <!-- <script src="/app/components/individual/application/directives/acknowledgement/permit/permit.acknowledgment.service.js"></script> -->
+
+    <!-- Begin Built-in Type Extensions -->
+    <script src="/app/scripts/built-in-type-extensions.js" type="text/javascript"></script>
+    <!-- End Built-in Type Extensions -->
+
+    <!-- Begin InLumon Loader Directive -->
+    <link href="/app/core/directive/inlumon-loader/inlumon-loader.css" rel="stylesheet">
+    <script src="/app/core/directive/inlumon-loader/inlumon-loader-directive.js" type="text/javascript"></script>
+    <!-- End InLumon Loader Directive -->
+
+    <!-- Begin InLumon Table Directive -->
+    <link href="/app/core/directive/inlumon-table/inlumon-table-template.css" rel="stylesheet">
+    <script src="/app/core/directive/inlumon-table/inlumon-table-directive.js" type="text/javascript"></script>
+    <script src="/app/core/directive/inlumon-table/inlumon-table-controller.js" type="text/javascript"></script>
+    <!-- End InLumon Table Directive -->
+    
+    <!-- Begin InLumon CSS -->
+    <script src="/app/core/directive/inlumon-css/inlumon-css.directive.js" type="text/javascript"></script>
+    <!-- End InLumon CSS -->
+
+    <!-- Begin InLumon Activity Logging Directive -->
+    <script src="/app/core/directive/inlumon-activity-logging/inlumon-activity-logging.service.js" type="text/javascript"></script>
+    <script src="/app/core/directive/inlumon-activity-logging/inlumon-activity-logging.directive.js" type="text/javascript"></script>
+    <!-- End InLumon Activity Logging Directive -->
+
+    <!-- Begin Status Messages Directive -->
+    <script src="/app/core/directive/status-messages/status-messages.directive.js" type="text/javascript"></script>
+    <script src="/app/core/directive/status-messages/status-messages.controller.js" type="text/javascript"></script>
+    <!-- End Status Messages Directive -->
+
+    <!-- Begin Query & Reporting -->
+    <script src="/app/components/report/query-reporting/query-reporting.module.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting.service.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-utility.service.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-condition-block.directive.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-condition-block.controller.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-join-conditions.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-join-selector.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-bulk-email.controller.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-multipath-selector.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting-expression-editor.controller.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-maker.directive.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-maker.controller.js" type="text/javascript"></script>
+    <script src="/app/components/report/query-reporting/query-reporting.controller.js" type="text/javascript"></script>
+    <!-- End Query & Reporting -->
+
+    <!-- Begin Field Search Reporting -->
+    <script src="/app/components/report/field-search-reporting/field-search-reporting.module.js" type="text/javascript"></script>
+    <script src="/app/components/report/field-search-reporting/field-search-reporting.controller.js" type="text/javascript"></script>
+    <script src="/app/components/report/field-search-reporting/field-search-reporting-select.controller.js" type="text/javascript"></script>
+	<script src="/app/components/report/field-search-reporting/field-search-reporting-load-query.controller.js" type="text/javascript"></script>
+	<script src="/app/components/report/field-search-reporting/field-search-reporting-utility.service.js" type="text/javascript"></script>
+    <!-- End Field Search Reporting -->
+
+	<!-- Begin Utility Directives -->
+    <script src="/app/core/directive/utility-directives/utility-directives.js" type="text/javascript"></script>
+    <!-- End Utility Directives-->
+	
+    <!-- Begin Task Management -->
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-management.module.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-management.service.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-management.controller.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/create-task.controller.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-execution-log-details.directive.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-execution-log-details.controller.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-execution-log.service.js" type="text/javascript"></script>
+    <script src="/app/components/backoffice/administrator/task-management-dev/task-execution-log.controller.js" type="text/javascript"></script>
+    <!-- End Task Management -->
+
+
+    <!--Start Individual Services>-->
+    <script src="/app/components/services/token-key.service.js"></script>
+    <!--<script src="/app/components/services/configuration.service.js"></script>-->
+    <script src="/app/components/services/login-wo-email.service.js"></script>
+    <script src="/app/components/services/license-renewal-hasna.service.js"></script>
+    <script src="/app/components/services/council-Info.service.js"></script>
+    <script src="/app/components/services/individual-document-save.service.js"></script>
+    <script src="/app/components/services/process-payment.service.js"></script>
+    <script src="/app/components/services/backoffice-individual.service.js"></script>
+    <script src="/app/components/services/license-renewal-service.js"></script>
+    <script src="/app/components/backoffice/individual/personal/personal.service.js"></script>
+    <script src="/app/components/backoffice/individual/address/address.service.js"></script>
+    <script src="/app/components/backoffice/individual/permit/permit.service.js"></script>
+    <script src="/app/components/backoffice/individual/notes/notes.service.js"></script>
+    <script src="/app/components/backoffice/individual/allegation/allegation.service.js"></script>
+    <script src="/app/components/backoffice/individual/finance/finance.service.js"></script>
+
+    <script src="/app/components/backoffice/individual/employment/employment.service.js"></script>
+    <script src="/app/components/backoffice/individual/education/education.service.js"></script>
+    <script src="/app/components/backoffice/individual/application-data/application-data.service.js"></script>
+    <script src="/app/components/backoffice/individual/license/license.service.js"></script>
+    <script src="/app/components/backoffice/individual/name/name.service.js"></script>
+    <script src="/app/components/backoffice/individual/search/search.service.js"></script>
+    <script src="/app/components/backoffice/individual/crp/crp.service.js"></script>
+    <script src="/app/components/backoffice/individual/dental-auxiliary/dental-auxiliary.service.js"></script>
+    <script src="/app/components/backoffice/individual/document/document.service.js"></script>
+
+    <script src="/app/components/services/change-password.service.js"></script>
+    <script src="/app/components/services/message-factory.js"></script>
+    <!--End Services-->
+    <!--Start Back Office Services-->
+    <script src="/app/components/services/council-info.service.js" type="text/javascript"></script>
+    <script src="/app/components/services/login-w-email.service.js"></script>
+    <script src="/app/components/services/backoffice-loginstaff.service.js"></script>
+    <script src="/app/components/services/backoffice-license-renewal-hasna_bo.service.js"></script>
+    <script src="/app/components/services/backoffice-provider.service.js"></script>
+
+    <script src="/app/components/report/report.service.js"></script>
+    <script src="/app/components/backoffice/license/application/license-application-listing.service.js"></script>
+    <script src="/app/components/individual/application/InitialLicenseApplication.service.js"></script>
+    <script src="/app/components/individual/application/initialSpecialityCertificationApplication.service.js"></script>
+    <!--End Services-->
+
+    <!--Start Individual Dashboard-->
+    <script src="/app/components/individual-dashboard/individual-dashboard.module.js"></script>
+    <script src="/app/components/individual-dashboard/individual-dashboard.controller.js?q=1"></script>
+
+    <!-- Reference Table -->
+    <script src="/app/components/backoffice/administrator/referencetable/referencetable-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/referencetable-factory.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/referencetable-form-directive/referencetable-form-directive-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/referencetable-form-directive/referencetable-form-directive-factory.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/referencetable-form-directive/referencetable-form-directive.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/dynamic-input-directive/dynamic-input-directive-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/referencetable/dynamic-input-directive/dynamic-input-directive-directive.js"></script>
+    <!--  -->
+
+    <!-- Profile Management -->
+    <script src="/app/components/backoffice/administrator/profile-management/profile-mgmt.module.js"></script>
+    <script src="/app/components/backoffice/administrator/profile-management/profile-mgmt.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/profile-management/profile-mgmt.factory.js"></script>
+    <script src="/app/components/backoffice/administrator/profile-management/add-user-profile-directive/add-user-profile-directive.controller.js"></script>
+    <script src="/app/components/backoffice/administrator/profile-management/add-user-profile-directive/add-user-profile.directive.js"></script>
+    <!-- Profile Management Ends Here-->
+
+    <!-- Dashboard -->
+    <script src="/app/core/directive/emailer-directive/emailer-controller.js"></script>
+    <script src="/app/core/directive/emailer-directive/emailer-directive.js"></script>
+    <script src="/app/core/directive/emailer-directive/emailer-factory.js"></script>
+    <script src="/app/core/directive/individual-personalinfo-directive/individual-personalinfo-controller.js"></script>
+    <script src="/app/core/directive/individual-personalinfo-directive/individual-personalinfo-directive.js"></script>
+    <script src="/app/core/directive/individual-personalinfo-directive/individual-personalinfo-factory.js"></script>
+    <script src="/app/core/directive/AddressDirective/address-directive-controller.js"></script>
+    <script src="/app/core/directive/AddressDirective/address-directive-service.js"></script>
+    <script src="/app/core/directive/AddressDirective/address-directive.js"></script>
+    <script src="/app/core/directive/ContactDirective/contact-directive-controller.js"></script>
+    <script src="/app/core/directive/ContactDirective/contact-directive-service.js"></script>
+    <script src="/app/core/directive/ContactDirective/contact-directive.js"></script>
+    <script src="/app/core/directive/individual-dashboardconfig-directive/individual-dashboardconfig-controller.js"></script>
+    <script src="/app/core/directive/individual-dashboardconfig-directive/individual-dashboardconfig-directive.js"></script>
+    <script src="/app/core/directive/individual-dashboardconfig-directive/individual-dashboardconfig-factory.js"></script>
+    <script src="/app/core/directive/dashboard-application-details-directive/dashboard-application-details-factory.js"></script>
+    <script src="/app/core/directive/dashboard-application-details-directive/dashboard-application-details-controller.js"></script>
+    <script src="/app/core/directive/dashboard-application-details-directive/dashboard-application-details-directive.js"></script>
+    <script src="/app/core/directive/dashboard-payment-directive/dashboard-payment-controller.js"></script>
+    <script src="/app/core/directive/dashboard-payment-directive/dashboard-payment-directive.js"></script>
+    <script src="/app/core/directive/dashboard-payment-directive/dashboard-payment-factory.js"></script>
+    <script src="/app/components/dashboard/dashboard-applicant.factory.js"></script>
+    <script src="/app/scripts/doc-drop-redirect-prevent.js"></script>
+
+    <script src="/app/components/backoffice/administrator/task-management/taskmanager-module.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/taskmanager-factory.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/createtask-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/automatedmanualtasks-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/task-execution-logdetails-list/task-execution-logdetails-controller.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/task-execution-logdetails-list/task-executionlog-list-directive.js"></script>
+    <script src="/app/components/backoffice/administrator/task-management/task-execution-list/task-execution-list-controller.js"></script>
+
+    <!-- Business Entity -->
+    <script src="/app/components/individual/businessentity/businessentity.service.js"></script>
+    <script src="/app/components/individual/businessentity/businessentity-status.service.js"></script>
+
+
+    <!-- Provider Multiple document upload -->
+    <script src="/app/core/directive/provider-multiple-file-upload/provider-multiple-file-upload.controller.js"></script>
+    <script src="/app/core/directive/provider-multiple-file-upload/provider-multiple-file-upload.directive.js"></script>
+    <script src="/app/core/directive/provider-multiple-file-upload/provider-multiple-file-upload.service.js"></script>
+    <script src="/app/core/directive/provider-multiple-file-upload-list/provider-multiple-file-upload-list.controller.js"></script>
+    <script src="/app/core/directive/provider-multiple-file-upload-list/provider-multiple-file-upload-list.directive.js"></script>
+
+    <script src="/app/components/individual/application/directives/provider-fee-payment/fee-payment.controller.js"></script>
+    <script src="/app/components/individual/application/directives/provider-fee-payment/fee-payment.directive.js"></script>
+    <script src="/app/components/individual/application/directives/provider-fee-payment/fee-payment.service.js"></script>
+
+    <!-- Firms -->
+    <script src="/app/components/backoffice/firms/firmsSearchDataFill.controller.js"></script>
+    <script src="/app/components/backoffice/firms/firms.controller.js"></script>
+    <script src="/app/components/backoffice/firms/responsible-charge/responsible-charge.controller.js"></script>
+    <script src="/app/components/backoffice/firms/address/address.controller.js"></script>
+    <script src="/app/components/backoffice/firms/finance/finance.controller.js"></script>
+    <script src="/app/components/backoffice/firms/finance/finance.service.js"></script>
+    <script src="/app/components/backoffice/firms/license/license.controller.js"></script>
+    <script src="/app/components/backoffice/firms/log/log.controller.js"></script>
+    <script src="/app/components/backoffice/firms/name/name.controller.js"></script>
+    <script src="/app/components/backoffice/firms/comment/comment.controller.js"></script>
+    <script src="/app/components/backoffice/firms/DCH-Information/DCH-Information.controller.js"></script>
+    <script src="app/components/backoffice/firms/peer/Peer.controller.js"></script>
+    <script src="app/components/backoffice/firms/Discipline/Discipline.controller.js"></script>
+    <script src="/app/components/backoffice/firms/provider-ownership/provider-ownership.controller.js"></script>
+    <script src="/app/components/backoffice/firms/provider-ownership/provider-ownership.service.js"></script>
+
+    <script src="/app/components/backoffice/firms/scope-of-practice/scope-of-practice.controller.js"></script>
+    <script src="/app/components/backoffice/firms/scope-of-practice/scope-of-practice.service.js"></script>
+    <script src="/app/components/backoffice/firms/history-disclosure/history-disclosure.controller.js"></script>
+    <script src="/app/components/backoffice/firms/history-disclosure/history-disclosure.service.js"></script>
+    <script src="/app/components/backoffice/firms/dea/dea.controller.js"></script>
+    <script src="/app/components/backoffice/firms/dea/dea.service.js"></script>
+    <script src="/app/components/backoffice/firms/log/log.service.js"></script>
+    <!--firm Search Service start-->
+    <script src="/app/components/backoffice/firms/responsible-charge/responsible-charge.service.js"></script>
+    <script src="/app/components/backoffice/firms/name/name.service.js"></script>
+    <script src="/app/components/backoffice/firms/license/license.service.js"></script>
+    <script src="/app/components/backoffice/firms/address/address.service.js"></script>
+    <script src="/app/components/backoffice/individual/finance/finance.service.js"></script>
+    <script src="/app/components/backoffice/firms/comment/comment.service.js"></script>
+    <script src="/app/components/backoffice/firms/DCH-Information/DCH-Information.service.js"></script>
+    <script src="app/components/backoffice/firms/peer/Peer.service.js"></script>
+    <script src="app/components/backoffice/firms/Discipline/Discipline.service.js"></script>
+    <script src="/app/components/backoffice/firms/firms.module.js"></script>
+    <script src="/app/components/backoffice/firms/firms-renewal.controller.js"></script>
+    <script src="/app/components/backoffice/firms/firms-renewal.factory.js"></script>
+    <script src="/app/components/backoffice/firms/firm-add-directive/firm-add-directive.js"></script>
+    <script src="/app/components/backoffice/firms/firm-add-directive/firm-addlicense-directived.js"></script>
+    <script src="/app/components/backoffice/firms/firm-add-directive/firmsadd.controller.js"></script>
+    <script src="/app/components/backoffice/firms/document/document.controller.js"></script>
+    <script src="/app/components/backoffice/firms/provider-correspondence/provider-correspondence.service.js"></script>
+    <script src="/app/components/backoffice/firms/provider-correspondence/provider-correspondence.controller.js"></script>
+
+    <script src="/app/components/backoffice/firms/firm-other-information/firm-other-information.controller.js"></script>
+
+    <script src="/app/components/backoffice/firms/provider-jursidictions/provider-jursidictions.controller.js"></script>
+    <script src="/app/components/backoffice/firms/provider-jursidictions/provider-jursidictions.service.js"></script>
+
+    <script src="/app/components/backoffice/firms/provider-applicationdata/provider-applicationdata.controller.js"></script>
+    <script src="/app/components/backoffice/firms/provider-applicationdata/provider-applicationdata.service.js"></script>
+    <!--  -->
+    <script src="/app/components/backoffice/firms/compliance/compliance.controller.js"></script>
+    <script src="/app/components/backoffice/firms/compliance/compliance.service.js"></script>
+    <script src="/app/components/backoffice/firms/notes/notes.controller.js"></script>
+    <script src="/app/components/backoffice/firms/notes/notes.service.js"></script>
+    <script src="/app/components/services/firm-renewal-hasna.service.js"></script>
+
+    <script src="/app/components/backoffice/individual/Associated-with-Firm/Associated-with-Firm.controller.js"></script>
+
+    <script src="/app/components/backoffice/individual/Associated-with-Firm/Associated-with-Firm.service.js"></script>
+    <!--  -->
+    <script src="/app/components/individual/application/directives/firm-information/firm-information.service.js"></script>
+    <script src="/app/components/individual/application/directives/firm-information/firm-information.controller.js"></script>
+    <script src="/app/components/individual/application/directives/firm-information/firm-information.directive.js"></script>
+    <script src="/app/components/individual/application/directives/firm-associate-information/firm-associate-information.controller.js"></script>
+    <script src="/app/components/individual/application/directives/firm-associate-information/firm-associate-information.directive.js"></script>
+    <script src="/app/components/individual/application/directives/firm-associate-information/firm-associate-information.service.js"></script>
+
+
+    <title class="ng-binding">Nevada State Board of Dental Examiners</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="app/content/images/favicon.png">
+</head>
+
+<body inlumon-loader="displayMainLoader" inlumon-loader-fixed="true" log-activity="App Body" class="modal-open">
+    <!-- uiView: main --><main ui-view="main" class="ng-scope"><!-- uiView: header --><div ui-view="header" class="ng-scope"><div id="headerlogin" class="ng-scope">
+    <div class="container">
+        <div class="inner">
+            <div id="logo_text">
+                <div class="licensee-box-logo all-form license-input row">
+                    <!--<div class="headerlicensee-fst-logo col-sm-3 col-md-3">
+                            <img src="/app/content/images/logo_1.png" alt="Board logo" style="height:90px;" />
+</div>-->
+                    <div class="headerlicensee-sec-logo col-sm-2 col-md-2">
+                        <img src="/app/content/images/nevada_seal_online.png" alt="Board seal" style="height:90px;">
+                    </div>
+                    <div class="headerlicensee-middle-logo col-sm-7 col-md-7">
+                        <span class="ng-binding">Nevada State Board of Dental Examiners</span>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="box-logo-right">
+                 <img src="/Styles/UI_Common/Images/logo.png" alt="Board logo" />
+             </div>-->
+        </div>
+    </div>
+</div>
+<br class="ng-scope">
+<div class="container ng-scope">
+    <div class="rounded-container p10 status-message" style="display: none;">
+        <span></span>
+        <a><i class="fa fa-times"></i></a>
+    </div>
+    <div class="rounded-container p10 status-message-ng ng-hide" ng-class="statusMessage.messageType" ng-show="statusMessage.showMessage">
+        <span class="ng-binding"></span>
+        <a ng-click="hideStatusMessage()"><i class="fa fa-times"></i></a>
+    </div>
+    <!--<div class="rounded-container p10 status-message warning">
+        <span>Record is saved with warning.</span>
+        <a><i class="fa fa-times"></i></a>
+    </div>
+    <div class="rounded-container p10 status-message error">
+        <span>Error saving record.</span>
+        <a><i class="fa fa-times"></i></a>
+    </div>-->
+    <div class="rounded-container p10 validation-summary">
+        <a><i class="fa fa-times"></i></a>
+    </div>
+</div></div>
+<!-- uiView: content --><div ui-view="content" class="ng-scope"><div class="container rounded-container peel-shadows verify-license ng-scope">
+    <div class="get-started-content">
+        <div class="MainPageSearch">
+            <div class="searchHeader">
+                <h3>VERIFY LICENSE</h3>
+            </div>
+            <div class="license-desc">
+                <p>
+                    License information on this site reflects information in the Nevada State Board of Dental Examiners database; however, applications
+                    and forms are subject to standard processing time, and the information here does not reflect pending
+                    changes which are being reviewed.
+                </p>
+                <p>
+                    Enter License Number or First Name or Last Name to check on the license status of your dental examiners. If you don't know
+                    the exact spelling of the name, type only the first few letters. You do not need to enter value in all
+                    fields to begin a search.
+                </p>
+            </div>
+            <form class="form-horizontal ng-valid ng-dirty ng-valid-parse ng-submitted">
+                <div class="form-group">
+                    <label class="control-label col-md-5">Last Name :</label>
+                    <div class="col-md-7">
+                        <input aria-label="Last Name" name="LastName" type="text" ng-model="searchData.LastName" autocomplete="off" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" style="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-5">First Name :</label>
+                    <div class="col-md-7">
+                        <input aria-label="First Name" name="FirstName" ng-model="searchData.FirstName" type="text" autocomplete="off" class="ng-pristine ng-untouched ng-valid ng-empty" style="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-5">License Number :</label>
+                    <div class="col-md-7">
+                        <input aria-label="License Number" name="LicenseNumber" ng-model="searchData.LicenseNumber" type="text" autocomplete="off" class="ng-pristine ng-untouched ng-valid ng-empty" style="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-7">
+                        <input type="submit" value="Search" ng-click="getLicenseReportList()" class="btn btn-success" style="">
+                        <input type="submit" value="Reset" ng-click="reset()" class="btn btn-default" style="">
+                        <!--<a class="btn btn-success" ng-click="searchItem=true;">Search</a>
+                        <input type="submit" value="Reset" ng-click="searchItem=false;" class="btn btn-default">-->
+                    </div>
+                </div>
+            </form>
+
+            <!-- ngIf: !!showSearchGrid --><div class="searchoption mt10 ng-scope" ng-if="!!showSearchGrid">
+                <div class="license-desc">
+                    <p>
+                        For a more detailed view of a licensee's information, click the View Details button on the row for which you want detailed
+                        information. To clear the search and enter new search, click on the Reset button above.
+                    </p>
+                </div>
+                <div class="gridUpperDiv mt30">
+                    <div class="show-records-div pull-right">
+                        <label class="control-label">Show : </label>
+                        <select aria-label="Show entries per page" ng-model="Pager.pageSize" class="form-control input-sm ng-pristine ng-untouched ng-valid ng-not-empty" ng-change="getLicenseReportList(1)" convert-to-number="">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <label class="control-label">entries</label>
+                    </div>
+                </div>
+                <div>
+                    <table class="table verify-table">
+                        <thead class="light-blue renewalbo-ulheader color-white">
+                            <tr>
+                                <!-- ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w100" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false --><a ng-if="header.sortable!=false" ng-click="SortRecords(header)" class="ng-binding ng-scope">Credentials</a><!-- end ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w80" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false --><a ng-if="header.sortable!=false" ng-click="SortRecords(header)" class="ng-binding ng-scope">Practitioner Name</a><!-- end ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w80" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false --><a ng-if="header.sortable!=false" ng-click="SortRecords(header)" class="ng-binding ng-scope">Speciality Details</a><!-- end ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w120" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false --><a ng-if="header.sortable!=false" ng-click="SortRecords(header)" class="ng-binding ng-scope">Location</a><!-- end ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w40" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false --><a ng-if="header.sortable!=false" ng-click="SortRecords(header)" class="ng-binding ng-scope">Status</a><!-- end ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w80" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false --><span ng-if="header.sortable==false" class="ng-binding ng-scope">Public Health</span><!-- end ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers --><th ng-repeat="header in Headers" class="text-center ng-scope w50" ng-class="header.class">
+                                    <!-- ngIf: header.sortable!=false -->
+                                    <!-- ngIf: header.sortable==false --><span ng-if="header.sortable==false" class="ng-binding ng-scope">Action</span><!-- end ngIf: header.sortable==false -->
+                                </th><!-- end ngRepeat: header in Headers -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ngRepeat: license in LicenseList --><tr ng-repeat-start="license in LicenseList" class="ng-scope">
+                                <td class="text-center ng-binding">Limited License Dental</td>
+                                <td class="text-center ng-binding">John M Highsmith , DDS</td>
+                                <td class="text-center ng-binding">
+                                    <!-- {{((!!license.LicenseSpecialityName && license.LicenseSpecialityName.toLowerCase().startsWith('s'))?license.LicenseSpecialityName:'')}} -->
+                                    Limited License Dentist
+                                </td>
+                                <!-- ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') --><td class="text-center ng-binding ng-scope" ng-if="!(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action')">Las Vegas NV 89134</td><!-- end ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                                <!-- ngIf: (license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                                <td class="text-center ng-binding">Expired</td>
+                                <td class="text-center"></td>
+                                <td class="text-center">
+                                    <input type="button" ng-show="!license.isDetailsVisible" ng-click="getLicenseDetails(license);" value="View Details" class="btn btn-xs btn-info ng-hide">
+                                </td>
+                            </tr>
+                            <!-- ngInclude: '/app/components/individual/license/verify/verify-license-detail.html' --><tr ng-repeat-end="" ng-show="!!license.isDetailsVisible" data-ng-include="'/app/components/individual/license/verify/verify-license-detail.html'" class="ng-scope"><td colspan="7" class="ng-scope">
+    <div class="detail-container">
+        <table class="view-details-table">
+            <tbody>
+                <tr>
+                    <td align="right">
+                        <label class="bold">Full Name :</label>
+                    </td>
+                    <td class="ng-binding">Highsmith, John Marshall
+                        , DDS</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold"> Office name :</label>
+                    </td>
+                    <!-- ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') --><td ng-if="!(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action')" class="ng-binding ng-scope">
+                        LVI Global
+                    </td><!-- end ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                    <!-- ngIf: (license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold"> Primary Office Address :</label>
+                    </td>
+                    <!-- ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') --><td ng-if="!(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action')" class="ng-binding ng-scope">
+                        1401 Hillshire Dr, Ste 200 
+                    </td><!-- end ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                    <!-- ngIf: (license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold"> City, State Zip :</label>
+                    </td>
+                    <!-- ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') --><td ng-if="!(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action')" class="ng-binding ng-scope">Las Vegas, NV 89134</td><!-- end ngIf: !(license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                    <!-- ngIf: (license.LicenseStatusTypeName=='Suspended-Board Action' || license.LicenseStatusTypeName=='Revoked-Board Action' || license.LicenseStatusTypeName=='Voluntary Surrender-Board Action') -->
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold">Office Phone :</label>
+                    </td>
+                    <td class="ng-binding"></td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold">Graduated From :</label>
+                    </td>
+                    <td class="ng-binding">North Carolina-University of North Carolina School of Dentistry</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <label class="bold">Graduation Date :</label>
+                    </td>
+                    <td class="ng-binding">12/30/1983</td>
+                </tr>
+                <tr> 
+                    <td colspan="2">
+                        <table class="table table-striped table-bordered">
+                            <thead class="light-blue renewalbo-ulheader color-white">
+                                <tr>
+                                    <th>License Information</th>
+                                    <th>Status</th>
+                                    <th>Original License Date</th>
+                                    <th>Expiration Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ngRepeat: LicenseDetails in license.licenseDetail.LicenseList| limitTo:1 --><tr ng-repeat="LicenseDetails in license.licenseDetail.LicenseList| limitTo:1" class="ng-scope"> 
+                                          <td style="padding-left: 40px;" class="ng-binding">
+                                                      LL-251-11
+                                            </td>
+                                            <td class="ng-binding">Expired </td>
+                                            <td class="ng-binding">01/26/2012</td>
+                                            <td class="ng-binding"> 
+
+                                                <!-- {{ ([6,25,11].includes(LicenseDetails.LicenseStatusTypeId)) 
+                                                 ? '' 
+                                                 : (LicenseDetails.LicenseStatusTypeId == 3 
+                                                 ? (LicenseDetails.PreviousExpirationDate | date:'MM/dd/yyyy') 
+                                                 : (LicenseDetails.LicenseExpirationDate | date:'MM/dd/yyyy')) 
+                                                 }} -->
+                                                <!-- {{(LicenseDetails.LicenseExpirationDate | date:'MM/dd/yyyy')}} -->
+                                                01/25/2014
+                                            </td> 
+                                    
+                                </tr><!-- end ngRepeat: LicenseDetails in license.licenseDetail.LicenseList| limitTo:1 -->
+                                <!-- <tr ng-repeat="history in license.licenseDetail.IndividualLicenseHistroyList | filter: {IndividualLicenseId: LicenseDetails.IndividualLicenseId}">
+                                    <td style="padding-left: 40px;">
+                                        <span class="glyphicon glyphicon-arrow-right"></span> History
+                                    </td>
+                                    <td>{{history.LicenseStatusTypeName}}</td>
+                                    <td>{{history.StatusChangeStartDate|date:'MM/dd/yyyy'}}</td>
+                                    <td>{{history.StatusChangeEndDate|date:'MM/dd/yyyy'}}</td>
+                                </tr> -->
+                                <!-- <tr ng-repeat-end ng-if="(license.licenseDetail.IndividualLicenseHistroyList | filter: {IndividualLicenseId: LicenseDetails.IndividualLicenseId}).length === 0">
+                                    <td colspan="4" class="text-muted text-center">
+                                        <em>No history records available</em>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="ml5 mt30">
+                            <b>Permits :</b>
+                        </div>  
+                        <table class="table verify-table ml5">
+                            <thead class="light-blue renewalbo-ulheader color-white">
+                                <tr>
+                                    <th>Permit</th>
+                                    <th class="text-center">Permit Number </th>
+                                    <th class="text-center">Permit Status</th>
+                                    <th class="text-center">Issue Date</th>
+                                    <th class="text-center">Exp Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ngRepeat: permit in license.licenseDetail.PermitList -->
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="ml5 mt30">
+                            <b>Board Action / Malpractice :</b>
+                        </div>
+                        <table class="table verify-table ml5">
+                            <thead class="light-blue renewalbo-ulheader color-white">
+                                <tr>
+                                    <th class="text-center">Action Type </th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Document Link</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ngRepeat: malPractice in license.licenseDetail.MalpracticeList -->
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <a class="Link" ng-click="license.isDetailsVisible=false">← Close detail</a>
+    </div>
+</td></tr><!-- end ngRepeat: license in LicenseList -->
+                        </tbody>
+                    </table>
+                    <div ng-hide="Pager.totalRecords==0 || !LicenseList" class="mob-pages text-center mtop2" align="center">
+                        <ul uib-pagination="" total-items="Pager.totalRecords" ng-model="Pager.currentPage" max-size="Pager.maxSize" class="pagination-sm cus-pagination ng-untouched ng-valid ng-isolate-scope pagination ng-not-empty ng-dirty ng-valid-parse" boundary-links="true" items-per-page="Pager.pageSize" ng-change="getLicenseReportList()"><!-- ngIf: ::boundaryLinks --><li ng-if="::boundaryLinks" ng-class="{disabled: noPrevious()||ngDisabled}" class="pagination-first ng-scope disabled"><a href="" ng-click="selectPage(1, $event)" ng-disabled="noPrevious()||ngDisabled" uib-tabindex-toggle="" class="ng-binding" disabled="disabled" tabindex="-1">First</a></li><!-- end ngIf: ::boundaryLinks -->
+<!-- ngIf: ::directionLinks --><li ng-if="::directionLinks" ng-class="{disabled: noPrevious()||ngDisabled}" class="pagination-prev ng-scope disabled"><a href="" ng-click="selectPage(page - 1, $event)" ng-disabled="noPrevious()||ngDisabled" uib-tabindex-toggle="" class="ng-binding" disabled="disabled" tabindex="-1">Previous</a></li><!-- end ngIf: ::directionLinks -->
+<!-- ngRepeat: page in pages track by $index --><li ng-repeat="page in pages track by $index" ng-class="{active: page.active,disabled: ngDisabled&amp;&amp;!page.active}" class="pagination-page ng-scope active"><a href="" ng-click="selectPage(page.number, $event)" ng-disabled="ngDisabled&amp;&amp;!page.active" uib-tabindex-toggle="" class="ng-binding">1</a></li><!-- end ngRepeat: page in pages track by $index --><li ng-repeat="page in pages track by $index" ng-class="{active: page.active,disabled: ngDisabled&amp;&amp;!page.active}" class="pagination-page ng-scope"><a href="" ng-click="selectPage(page.number, $event)" ng-disabled="ngDisabled&amp;&amp;!page.active" uib-tabindex-toggle="" class="ng-binding">2</a></li><!-- end ngRepeat: page in pages track by $index --><li ng-repeat="page in pages track by $index" ng-class="{active: page.active,disabled: ngDisabled&amp;&amp;!page.active}" class="pagination-page ng-scope"><a href="" ng-click="selectPage(page.number, $event)" ng-disabled="ngDisabled&amp;&amp;!page.active" uib-tabindex-toggle="" class="ng-binding">3</a></li><!-- end ngRepeat: page in pages track by $index --><li ng-repeat="page in pages track by $index" ng-class="{active: page.active,disabled: ngDisabled&amp;&amp;!page.active}" class="pagination-page ng-scope"><a href="" ng-click="selectPage(page.number, $event)" ng-disabled="ngDisabled&amp;&amp;!page.active" uib-tabindex-toggle="" class="ng-binding">4</a></li><!-- end ngRepeat: page in pages track by $index --><li ng-repeat="page in pages track by $index" ng-class="{active: page.active,disabled: ngDisabled&amp;&amp;!page.active}" class="pagination-page ng-scope"><a href="" ng-click="selectPage(page.number, $event)" ng-disabled="ngDisabled&amp;&amp;!page.active" uib-tabindex-toggle="" class="ng-binding">5</a></li><!-- end ngRepeat: page in pages track by $index -->
+<!-- ngIf: ::directionLinks --><li ng-if="::directionLinks" ng-class="{disabled: noNext()||ngDisabled}" class="pagination-next ng-scope"><a href="" ng-click="selectPage(page + 1, $event)" ng-disabled="noNext()||ngDisabled" uib-tabindex-toggle="" class="ng-binding">Next</a></li><!-- end ngIf: ::directionLinks -->
+<!-- ngIf: ::boundaryLinks --><li ng-if="::boundaryLinks" ng-class="{disabled: noNext()||ngDisabled}" class="pagination-last ng-scope"><a href="" ng-click="selectPage(totalPages, $event)" ng-disabled="noNext()||ngDisabled" uib-tabindex-toggle="" class="ng-binding">Last</a></li><!-- end ngIf: ::boundaryLinks -->
+</ul>
+                    </div>
+                </div>
+            </div><!-- end ngIf: !!showSearchGrid -->
+            <!-- ngIf: !showSearchGrid -->
+        </div>
+    </div>
+</div></div>
+<!-- uiView: footer --><div ui-view="footer" class="ng-scope"><div id="footer" class="ng-scope">
+    <div id="footer_bottom">
+        <div class="inner">
+            <div id="copyright">
+                <center>
+                    Copyright © 2018 |
+                    <a target="_blank" href="http://dental.nv.gov/" class="ng-binding">Nevada State Board of Dental Examiners</a>
+                    | All Rights Reserved
+                </center>
+            </div>
+            <div id="footer_right_area"> </div>
+            <div class="clearboth"> </div>
+        </div>
+    </div>
+</div>
+
+</div></main>
+    <div class="modal fade nat-loader" id="ModalLoader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: block;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fa fa-spinner fa-pulse fa-4x"></i>
+                    </div>
+                    <div id="DIVLoadingMessage" class="text-center mt10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body></html>

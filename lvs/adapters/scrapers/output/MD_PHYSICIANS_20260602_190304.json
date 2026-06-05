@@ -1,0 +1,36 @@
+[
+  {
+    "source_id": "MD_PHYSICIANS",
+    "license_number": "D0091066",
+    "licensee_first_name": "Quick",
+    "licensee_last_name": "Links",
+    "licensee_full_name": "Quick Links",
+    "licensee_middle_name": null,
+    "licensee_suffix": null,
+    "license_type": null,
+    "profession_code": "MD",
+    "status": "unknown",
+    "effective_date": null,
+    "expiration_date": null,
+    "issue_date": null,
+    "last_renewal_date": null,
+    "address": null,
+    "city": null,
+    "state_code": null,
+    "zip_code": null,
+    "disciplinary_actions": [],
+    "source_url": "https://www.mbp.state.md.us/bpqapp/",
+    "scraped_at": "2026-06-02T19:03:02.139127",
+    "evidence_html_path": "evidence\\MD_PHYSICIANS\\0e973dd3\\detail_page.html",
+    "evidence_screenshot_path": "evidence\\MD_PHYSICIANS\\0e973dd3\\detail_page.png",
+    "raw_fields": {
+      "full_name": "Quick Links",
+      "_source_url": "https://www.mbp.state.md.us/bpqapp/",
+      "_used_ai": false,
+      "html_path": "evidence\\MD_PHYSICIANS\\0e973dd3\\detail_page.html",
+      "screenshot_path": "evidence\\MD_PHYSICIANS\\0e973dd3\\detail_page.png",
+      "license_number": "D0091066"
+    },
+    "used_ai": false
+  }
+]
