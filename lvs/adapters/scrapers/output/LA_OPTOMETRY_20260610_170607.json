@@ -1,0 +1,31 @@
+[
+  {
+    "source_id": "LA_OPTOMETRY",
+    "license_number": "",
+    "licensee_first_name": "Laura",
+    "licensee_last_name": "Buisson",
+    "licensee_full_name": "Laura Buisson",
+    "licensee_middle_name": null,
+    "licensee_suffix": null,
+    "license_type": null,
+    "profession_code": "OD",
+    "status": "unknown",
+    "effective_date": null,
+    "expiration_date": null,
+    "issue_date": null,
+    "last_renewal_date": null,
+    "address": null,
+    "city": null,
+    "state_code": null,
+    "zip_code": null,
+    "disciplinary_actions": [],
+    "source_url": "",
+    "scraped_at": "2026-06-10T17:06:06.938081",
+    "evidence_html_path": null,
+    "evidence_screenshot_path": null,
+    "raw_fields": {
+      "full_name": "Laura Buisson"
+    },
+    "used_ai": false
+  }
+]

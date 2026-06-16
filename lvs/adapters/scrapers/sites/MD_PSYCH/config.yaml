@@ -1,0 +1,151 @@
+identity:
+  source_id: MD_PSYCH
+  board_name: Maryland Board of Examiners of Psychologists
+  state: MD
+  country: US
+  profession_codes: [PSYCH]
+  # ASP.NET WebForms portal at mdbnc.health.maryland.gov/psychverification/ — MainContent_ prefix
+  # (different from bodyContentPlaceHolder_ used by bsweVerification/AUDVerification boards).
+  # License search: #MainContent_licenseNoSearch + #MainContent_search2.
+  # Name search:    #MainContent_lastNameSearch  + #MainContent_search1.
+  # Results grids:
+  #   Name:    #MainContent_verificationNameGridView tbody tr — [0]=LastName [1]=FirstName [2]=LicNum [3]=link
+  #   License: #MainContent_verificationLicGridView tbody tr — same structure
+  # Detail: generic table, th=label + td=value per row (th_td_table strategy).
+  #   Fields: Full Name, License Number, Status, License Type, Original Lic Date, License Expiration Date.
+  base_url: "https://mdbnc.health.maryland.gov/psychverification/Default.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#MainContent_licenseNoSearch"
+      button_selector: "#MainContent_search2"
+    - mode: last_name
+      input_selector: "#MainContent_lastNameSearch"
+      button_selector: "#MainContent_search1"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#MainContent_lastNameSearch"
+    search_button:
+      selector: "#MainContent_search1"
+  results_wait:
+    # MD_PSYCH uses "Open Details Page" links (NOT "View Details" like other MD boards)
+    strategy: element_visible
+    selector: "a:has-text('Open Details Page')"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records found"
+      - "no match"
+      - "not found"
+      - "0 records"
+
+results:
+  type: table
+  table:
+    # Both name-grid and lic-grid share the same structure; row_selector targets both
+    row_selector: "#MainContent_verificationNameGridView tbody tr, #MainContent_verificationLicGridView tbody tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: last_name
+      1: first_name
+      2: license_number
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a:has-text('Open Details Page')"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a#MainContent_btnNext"
+    disabled_class: "aspNetDisabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "table"
+    timeout_ms: 15000
+  strategies:
+    - type: th_td_table
+  field_map:
+    "Full Name": full_name
+    "full name": full_name
+    "License Number": license_number
+    "license number": license_number
+    "Status": status
+    "status": status
+    "License Type": license_type
+    "license type": license_type
+    "Original Lic Date": issue_date
+    "original lic date": issue_date
+    "License Expiration Date": expiration_date
+    "license expiration date": expiration_date
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Non-renewed": expired
+    "Non Renewed": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "Retired": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

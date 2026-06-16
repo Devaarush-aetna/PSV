@@ -1,0 +1,133 @@
+identity:
+  source_id: AL_ALBME
+  board_name: Alabama Board of Medical Examiners and Medical Licensure Commission
+  state: AL
+  country: US
+  profession_codes: [MD, DO, PA]
+  # roster.aspx returns a CSV of all active AL licenses when submitted as an ASP.NET POST.
+  # csv_extractor loads the page, reads hidden __VIEWSTATE tokens, and POSTs to receive the CSV.
+  # NOTE: Requires PROXY=proxy:9119 — site unreachable directly on corporate network (Zscaler).
+  base_url: "https://dashboard.albme.gov/Verification/roster.aspx"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: post_form
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  # CSV columns: LICENSE NUMBER, FIRST NAME, MIDDLE NAME, LAST NAME, SUFFIX,
+  #              LICENSE TYPE, LICENSE SUBTYPE, LICENSE SUFFIX, LICENSE STATUS,
+  #              ISSUE DATE, EXPIRATION DATE, SPECIALTY/TYPE OF PRACTICE,
+  #              MEDICAL SCHOOL, PUBLIC ACTIONS?, SUPERVISING PHYSICIAN
+  search_columns:
+    license_number: "LICENSE NUMBER"
+    last_name: "LAST NAME"
+    first_name: "FIRST NAME"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 500
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LICENSE NUMBER": license_number
+    "FIRST NAME": first_name
+    "MIDDLE NAME": licensee_middle_name
+    "LAST NAME": last_name
+    "SUFFIX": licensee_suffix
+    "LICENSE TYPE": license_type
+    "LICENSE STATUS": status
+    "ISSUE DATE": issue_date
+    "EXPIRATION DATE": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Probation": probation
+    "probation": probation
+    "Temporary": active
+    "Administrative Hold": suspended
+    "Retired": inactive
+    "Cancelled": inactive
+    "Deceased": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 6000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-08"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

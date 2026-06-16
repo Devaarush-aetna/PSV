@@ -1,0 +1,938 @@
+<!DOCTYPE html><html lang="en"><head><title>
+	Licensee Search | North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists
+</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha512-Dop/vW3iOtayerlYAqCgkVr2aTr2ErwwTYOvRFUpzl2VhCMJyjQF0Q9TjUXIo6JhuM/3i0vVEt2e/7QQmnHQqw==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha512-iy8EXLW01a00b26BaqJWaCmk9fJ4PsMdgNRqV96KwMPSH+blO82OHzisF/zQbRIIi8m0PiO10dpS0QxrcXsisw==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" integrity="sha512-aEe/ZxePawj0+G2R+AaIxgrQuKT68I28qh+wgLrcAJOz3rxCP+TwrK5SPN+E5I+1IQjNtcfvb96HDagwrKRdBw==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/v4-shims.min.css" integrity="sha512-4yDn1AmIfvyydlRqsIga3JribpHu5HdkIFTBZjJPcz01tcsd8B9UwObwZCGez1ZOyUNnxjNQNcZEElhkguF76Q==" crossorigin="anonymous" referrerpolicy="no-referrer"><link rel="stylesheet" type="text/css" href="/common/css/gateway.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css" integrity="sha512-fZNmykQ6RlCyzGl9he+ScLrlU0LWeaR6MO/Kq9lelfXOw54O63gizFMSD5fVgZvU1YfDIc6mxom5n60qJ1nCrQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="/scripts/cmssettings.js?v=6.0.9622.25615"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha512-oBTprMeNEKCnqfuqKd6sbvFzmFQtlXS3e0C/RGFV0hD6QzhHV+ODfaQbAlmY6/q0ubbwlAM/nCJjkrgA3waLzg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" integrity="sha512-QoJS4DOhdmG8kbbHkxmB/rtPdN62cGWXAdAFWWJPvUFF1/zxcPSdAnn4HhYZSIlVoLVEJ0LesfNlusgm2bPfnA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha512-GDey37RZAxFkpFeJorEUwNoIbkTwsyC736KNSYucu1WJWFK9qTdzYub8ATxktr6Dwke7nbFaioypzbDOQykoRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="/common/application-validator/validator.js?v=6.0.9622.25615"></script>
+    <script type="text/javascript" src="/scripts/jquery.tspan.addressReq.js?v=6.0.9622.25615"></script>
+    
+    <script type="text/javascript" src="/common/application-validator/alert-override.js?v=6.0.9622.25615"></script>
+    <script src="/Scripts/jquery-cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js" integrity="sha512-lxQ4VnKKW7foGFV6L9zlSe+6QppP9B2t+tMMaV4s4iqAv4iHIyXED7O+fke1VeLNaRdoVkVt8Hw/jmZ+XocsXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
+
+    <!-- Check if JavaScript is disabled -->
+    <noscript>
+	    <style>
+		    form { display: none; }
+	    </style>
+	    <div class="text-center">
+		    It seems JavaScript is either disabled or not supported by your browser.
+		    JavaScript must be enabled in order for you to receive the best user experience.
+	    </div>
+    </noscript>
+
+    
+
+    </head>
+<body>
+    <form method="post" action="./results.aspx" id="Form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+
+        <input name="__RequestVerificationToken" type="hidden" value="uRT6cDDS8W40RzZF_uy9SxCDBPFmdZlGWhio2Q9m_rS6xPD4zM25alPjys07by5eVzk9J5e9_MVX4--YGYE0NPNFidVXIiccNuad7badW6Y1">
+
+        
+
+        <!-- HEADER -->
+        <div id="header">
+            <div class="navbar">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a id="LogoLink" class="navbar-brand text-uppercase" href="https://www.ncboeslpa.org">
+								<img src="/common/images/logo.png" alt="North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists Logo">
+                        </a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="mobile-menu">
+                        <div class="navbar-app-title text-uppercase text-right hidden-sm hidden-xs">
+                            Licensee Search
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBHEADER -->
+        
+
+        <!-- LICENSE VERIFICATION SUB NAVIGATION -->
+        
+        <div id="subheader" class="hidden-print">
+            <div class="container">
+                <ul>
+                    
+                    <li><a href="/Verification/search.aspx">Home</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="clearfix"></div>
+        <!-- CONTENT -->
+        <div id="content" class="container MainContent" style="">
+            
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Search Results
+			<span class="pull-right">90 Records Found</span>
+		</div>
+
+		<div class="panel-body">
+			
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th><a onclick="ChangeSort('LicType');" id="btnLicType" class="btn" href="javascript:__doPostBack('ctl00$Content$LicenseRepeater$ctl00$btnLicType','')">Type</a> </th>
+								<th><a onclick="ChangeSort('Name');" id="btnName" class="btn" href="javascript:__doPostBack('ctl00$Content$LicenseRepeater$ctl00$btnName','')">Name</a></th>
+								<th><a onclick="ChangeSort('Location');" id="btnLocation" class="btn" href="javascript:__doPostBack('ctl00$Content$LicenseRepeater$ctl00$btnLocation','')">Location</a></th>
+								<th><a onclick="ChangeSort('LicNum');" id="btnLic" class="btn" href="javascript:__doPostBack('ctl00$Content$LicenseRepeater$ctl00$btnLic','')">License #</a></th>
+                                <th><a onclick="ChangeSort('Status');" id="btnStatus" class="btn" href="javascript:__doPostBack('ctl00$Content$LicenseRepeater$ctl00$btnStatus','')">Status</a></th>
+							</tr>
+						</thead>
+						<tbody>
+				
+					<tr>
+						<td>Temporary SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=12327">Abigail Joy Smith</a></td>
+						<td>Durham, NC</td>
+						<td>30004433</td>
+                        <td><span class="label label-info">Inactive</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=101229">Abigail Joy Smith</a></td>
+						<td>Durham, NC</td>
+						<td>30005363</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10260">Abigail Reeves Smith</a></td>
+						<td>Chinquapin, NC</td>
+						<td>30002649</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4531">Allyson Razzeto Smith</a></td>
+						<td>Boone, NC</td>
+						<td>10941</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4118">Anna Smith</a></td>
+						<td>Grimesland, NC</td>
+						<td>10346</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1663">Anna W. Smith</a></td>
+						<td>Matthews, NC</td>
+						<td>4596</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5074">Aria H. Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>11818</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=11163">Ashley Lynn Smith</a></td>
+						<td>Hillsborough, NC</td>
+						<td>30003822</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4315">Ashley Marie Smith</a></td>
+						<td>Clayton, NC</td>
+						<td>10237</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=8780">Ayanna Maia Smith</a></td>
+						<td>Columbia, SC</td>
+						<td>15116</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2763">Beth Ann Smith</a></td>
+						<td>Holly Springs, NC</td>
+						<td>4403</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=101174">Brooke Caitlin Smith</a></td>
+						<td>Shreveport, LA</td>
+						<td>30005302</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=6135">Camille Blue Smith</a></td>
+						<td>Holly Springs, NC</td>
+						<td>13277</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5443">Cara Bell Smith</a></td>
+						<td>Durham, NC</td>
+						<td>12352</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Temporary SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10436">Caroline Smith</a></td>
+						<td>Belmont, NC</td>
+						<td>30002131</td>
+                        <td><span class="label label-danger">Suspended</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7392">Cassandra Renee-Newton Smith</a></td>
+						<td>Spencer, NC</td>
+						<td>14907</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=11038">Charlotte Draper Smith</a></td>
+						<td>Waxhaw, NC</td>
+						<td>30003741</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1368">Christina Elizabeth Smith</a></td>
+						<td>Albemarle, NC</td>
+						<td>7051</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1329">Christina Michelle Smith</a></td>
+						<td>Monroe, NC</td>
+						<td>6748</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=3409">Christina Villegas Smith</a></td>
+						<td>Apex, NC</td>
+						<td>7590</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=9533">Courtney Smith</a></td>
+						<td>Chapel Hill, NC</td>
+						<td>30001032</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5451">Courtney Lee Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>12300</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4629">Daria Marie Smith</a></td>
+						<td>Wendell, NC</td>
+						<td>10753</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1647">Deanna C. Smith</a></td>
+						<td>Mooresville, NC</td>
+						<td>6283</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=100129">Diane Elizabeth Smith</a></td>
+						<td>Export, PA</td>
+						<td>30004576</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7722">Dori J. Smith</a></td>
+						<td>Hickory, NC</td>
+						<td>14491</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7267">Dori Marie Smith</a></td>
+						<td>Tuscon, AZ</td>
+						<td>14141</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5243">Elisa Desiree Smith</a></td>
+						<td>Greensboro, NC</td>
+						<td>12184</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4763">Elizabeth Yopp Smith</a></td>
+						<td>Louisburg, NC</td>
+						<td>11011</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>SLP-Assistant</td>
+						<td><a href="/Verification/viewer.aspx?ID=8551">Ellen Elizabeth Smith</a></td>
+						<td>Lexington, NC</td>
+						<td>0389</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Temporary SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=12304">Emily Elizabeth Smith</a></td>
+						<td>Fayetteville, NC</td>
+						<td>30004403</td>
+                        <td><span class="label label-info">Inactive</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=101132">Emily Elizabeth Smith</a></td>
+						<td>Fayetteville, NC</td>
+						<td>30005251</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=6801">Erin Whitley Smith</a></td>
+						<td>Franklinton, NC</td>
+						<td>14083</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1268">Gina Howell Smith</a></td>
+						<td>Concord, NC</td>
+						<td>1493</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=9864">Hailey Purcell Smith</a></td>
+						<td>Burlington, NC</td>
+						<td>30001374</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10201">Haley Smith</a></td>
+						<td>Lumberton, NC</td>
+						<td>30002607</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Temporary SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=100315">Hannah Smith</a></td>
+						<td>Waxhaw, NC</td>
+						<td>30004741</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1683">Holly R. Smith</a></td>
+						<td>Statesville, NC</td>
+						<td>6812</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=3781">Jacklyn Lee Smith</a></td>
+						<td>Benson, NC</td>
+						<td>9752</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1596">Jama Turbyfill Smith</a></td>
+						<td>Lincolnton, NC</td>
+						<td>6271</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=100514">Jennifer Smith</a></td>
+						<td>Charleston, SC</td>
+						<td>30004867</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=3003">Jennifer Kroohs Smith</a></td>
+						<td>Cary, NC</td>
+						<td>5604</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10254">Jessica Lynn Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>30002650</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=8327">Jessica Renée Smith</a></td>
+						<td>Philadelphia, PA</td>
+						<td>15072</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=3699">Karen M. Smith</a></td>
+						<td>Holly Springs, NC</td>
+						<td>9232</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4159">Kelly Elizabeth Smith</a></td>
+						<td>Asheville, NC</td>
+						<td>10364</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2333">Kerry Eileen Smith</a></td>
+						<td>New Bern, NC</td>
+						<td>3318</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1395">Kimberly Zupko Smith</a></td>
+						<td>Charlotte, NC</td>
+						<td>6468</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=8056">Kristin K. Smith</a></td>
+						<td>Dobson, NC</td>
+						<td>30000455</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=6020">Laura Lee Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>13124</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=2745">Leslie A. Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>2093</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=831">Lindsey Noelle Smith</a></td>
+						<td>New Bern, NC</td>
+						<td>8060</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5109">Lucia F. Smith</a></td>
+						<td>APEX, NC</td>
+						<td>11864</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=8091">Madeline Rose Smith</a></td>
+						<td>Fayetteville, NC</td>
+						<td>14921</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4509">Maggie W. Smith</a></td>
+						<td>Goldsboro, NC</td>
+						<td>10950</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10389">Margaret Smith</a></td>
+						<td>Summerville, SC</td>
+						<td>30002075</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Temporary SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=12030">Mary Grace Smith</a></td>
+						<td>Marion, NC</td>
+						<td>30004080</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5365">Megan LaFuria Smith</a></td>
+						<td>Fayetteville, NC</td>
+						<td>11777</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=11554">Mekell Smith</a></td>
+						<td>Layton, UT</td>
+						<td>30003452</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=2243">Michelle P. Smith</a></td>
+						<td>Pensacola, FL</td>
+						<td>8205</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=5852">Nancy Clarita Vallejo Smith</a></td>
+						<td>Durham, NC</td>
+						<td>12875</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4684">Nicole Denman Smith</a></td>
+						<td>Kernersville, NC</td>
+						<td>10921</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=379">Nicole Kathleen Smith</a></td>
+						<td>Lexington, NC</td>
+						<td>6147</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4852">Noel Mott Smith</a></td>
+						<td>Warren, OH</td>
+						<td>11506</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7434">Pamela Smith</a></td>
+						<td>Stony Point, NC</td>
+						<td>14301</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=100835">Rachel Elizabeth Smith</a></td>
+						<td>Sarasota, FL</td>
+						<td>30005126</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>SLP-Assistant</td>
+						<td><a href="/Verification/viewer.aspx?ID=8664">Rebecca Lauren Smith</a></td>
+						<td>Fayetteville, NC</td>
+						<td>0559</td>
+                        <td><span class="label label-danger">Suspended</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10508">Renate Smith</a></td>
+						<td>Carthage, NC</td>
+						<td>30002203</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=9571">Renee Smith</a></td>
+						<td>Ft Bragg, NC</td>
+						<td>15540</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2755">Sandra DeLaguila Smith</a></td>
+						<td>Fuquay Varina, NC</td>
+						<td>3494</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4194">Sara Smith</a></td>
+						<td>Pisgah Forest, NC</td>
+						<td>10101</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4924">Sarah Elizabeth Smith</a></td>
+						<td>Chapel Hill, NC</td>
+						<td>11152</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2502">Sarah S. Smith</a></td>
+						<td>Mebane, NC</td>
+						<td>6857</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7191">Shannon Elizabeth Smith</a></td>
+						<td>Apex, NC</td>
+						<td>13975</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=6372">Sherri Lyn Smith</a></td>
+						<td>Durham, NC</td>
+						<td>13129</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=12246">Stacie Elaine Smith</a></td>
+						<td>Allen, TX</td>
+						<td>30004346</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=962">Stephanie Jarrett Smith</a></td>
+						<td>Clemmons, NC</td>
+						<td>9056</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=184">Stephanie Regina Smith</a></td>
+						<td>Raleigh, NC</td>
+						<td>4216</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2391">Susan Harris Smith</a></td>
+						<td>Wilmington, NC</td>
+						<td>1578</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=7290">Tamika S. Smith</a></td>
+						<td>Macon, NC</td>
+						<td>14182</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4613">Tanya R. Smith</a></td>
+						<td>Clayton, NC</td>
+						<td>11173</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=6574">Wanda Renee Smith</a></td>
+						<td>Shelby, NC</td>
+						<td>13318</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>SLP-Assistant</td>
+						<td><a href="/Verification/viewer.aspx?ID=8393">Wendy Reid Smith</a></td>
+						<td>Burgaw, NC</td>
+						<td>0133</td>
+                        <td><span class="label label-danger">Suspended</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=11606">Alexandra Smith Butterick</a></td>
+						<td>Cary, NC</td>
+						<td>30003510</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent AUD</td>
+						<td><a href="/Verification/viewer.aspx?ID=2178">John Rutherfoord Smith, Jr.</a></td>
+						<td>Sylva, NC</td>
+						<td>3043</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=2078">Roderick Lee Smith, Jr.</a></td>
+						<td>Newland, NC</td>
+						<td>5096</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=4979">ShaTona A. Smith-Anderson</a></td>
+						<td>Rolesville, NC</td>
+						<td>9856</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=10381">Sierra Smith-Sneed</a></td>
+						<td>Durham, NC</td>
+						<td>30002770</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=8768">Melissa Danielle Smitherman</a></td>
+						<td>Charlotte, NC</td>
+						<td>30000808</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+					<tr>
+						<td>Permanent SLP</td>
+						<td><a href="/Verification/viewer.aspx?ID=1072">Anjelenia Smithers</a></td>
+						<td>Providence, NC</td>
+						<td>7069</td>
+                        <td><span class="label label-success">Active</span></td>
+					</tr>
+				
+						</tbody>
+					</table>
+				
+		</div>
+	</div>
+
+    <div class="ButtonGroup">
+        <a href="https://portal.ncboeslpa.org/Verification/results.aspx?PDF=true" class="btn btn-primary" target="_blank">Print</a>
+        <a href="/Verification/search.aspx" class="btn btn-primary">Back to Home</a>
+    </div>
+
+	
+
+<div class="text-center" style="margin: 15px 0;">
+	<span class="text-muted">Information loaded from this database is current as of 6/15/2026 4:00:32 PM</span>
+	
+</div>
+
+	<input type="hidden" name="ctl00$Content$hdnSortOrder" id="hdnSortOrder">
+
+        </div>
+
+        <div id="overlay">
+            <div>
+                <i class="fa fa-circle-o-notch fa-spin"></i>
+                <br>
+                Loading
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            document.f1rst = new CMSSettings();
+            document.f1rst.AppPath = "https://portal.ncboeslpa.org/";
+            document.f1rst.StaticPath = "https://portal.ncboeslpa.org/";
+            document.f1rst.IsDebug = false;
+
+            function ClearCookies() {
+                $.cookie('ApplicationName', '', { path: '/', expires: -1 });
+                $.cookie('ApplicationLink', '', { path: '/', expires: -1 });
+            }
+
+            window.onbeforeunload = function () {
+                $("#overlay").fadeIn();
+            }
+
+            $(function () {
+                $("[title],[data-toggle='tooltip']").tooltip({
+                    placement: "auto",
+                    html: true,
+                    container: "body",
+                });
+
+                var alerts = $("#AlertMenu li").length;
+                if (alerts > 0) {
+                    $("#AlertMenu").addClass("not-empty");
+                    $("#AlertLink").css("color", "#d9534f");
+                    $("#AlertLink .fa").addClass("fa-beat");
+                    $("#AlertNumber").text(alerts);
+                    if (alerts == 1) {
+                        $("#AlertText").text("Alert");
+                    }
+                }
+            });
+        </script>
+
+        
+
+	<script type="text/javascript">
+		function ChangeSort(column) {
+			$("#hdnSortOrder").val(column);
+        }
+    </script>
+
+
+
+        
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="69D12AFC">
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="gQr6RhBeCInF7wHJN9JkpB4ylKwE4SJA3ZkEDmB18XVI4B5U+D+if3zrK5Ei9CBWEjPcaWm8NnwbWSOmHPY74OzuUkm5HwO8ynS3QxEFpWd0v2YlgEZFwhHv/wbpY25LSBkNe22zKhoRMHdM5ytg9eVcMmTvXr/Au86Jx1GfWe7kUdestGRD0lZyMPeJg/FJa+AUPxD3ndD8xS7TWLquXUuz6W87J8Uxx6XGqYHbNm9X5UDXklmPDB5rZzVav/Ed">
+</div>
+
+<script language="javascript"><!--
+
+					var txt = '';
+					if (txt.length > 0){
+						alert(txt);
+					}
+//--></script>
+</form>
+<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;f4a30e8a3a1a4a508f6389a95cdb0f26&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+
+</body></html>

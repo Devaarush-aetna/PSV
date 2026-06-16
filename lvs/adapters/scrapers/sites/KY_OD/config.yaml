@@ -1,0 +1,141 @@
+identity:
+  source_id: KY_OD
+  board_name: Kentucky Board of Optometric Examiners
+  state: KY
+  country: US
+  profession_codes: [OD]
+  base_url: "https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=8"
+  archetype: classic_html_form
+
+# web1.ky.gov GenSearch portal — same structure as KY_MEDBOARD (AGY=8).
+# Note: all active OD licenses expire on March 1st of each year.
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#usLicenseSearch_txtField2"
+    - mode: last_name
+      input_selector: "#usLicenseSearch_txtField1"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#usLicenseSearch_txtField2"
+    search_button:
+      selector: "#usLicenseSearch_btnSearch"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "0 record"
+      - "not found"
+  post_search_click: "#usLicenseList_rdbtGrid"
+
+results:
+  type: table
+  table:
+    row_selector: "#Form1 table tr"
+    cell_selector: "td"
+    skip_first_row: true
+    # AGY=8 grid layout differs from other web1.ky.gov boards:
+    # col0=first_name  col1=middle_name  col2=last_name  col3=address  col4=city  col5=state
+    columns:
+      0: first_name
+      1: middle_name
+      2: last_name
+      3: address
+      4: city
+      5: state_code
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+    - type: dt_dd
+    - type: label_sibling
+  field_map:
+    "Name": full_name
+    "Licensee Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Number": license_number
+    "License No": license_number
+    "License Type": license_type
+    "Type": license_type
+    "Status": status
+    "License Status": status
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "Issue Date": issue_date
+    "City": city
+    "State": state_code
+    "Address": address
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "cancelled": inactive
+    "Probation": probation
+    "probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

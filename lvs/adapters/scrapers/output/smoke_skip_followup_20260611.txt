@@ -1,0 +1,19 @@
+2026-06-11 22:30:20,023 [INFO] run — [FL_MQA] run_id=9a9ee690  query=last_name/Smith
+2026-06-11 22:30:24,715 [INFO] engine.navigator — [FL_MQA] Navigating to https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders
+2026-06-11 22:30:29,689 [INFO] engine.navigator — Filled search input 'input[name='SearchDto.LastName']' with 'Smith'
+2026-06-11 22:30:32,280 [INFO] engine.navigator — Clicked search button 'input[type='submit']'
+
+Smoke-testing 6 board config(s)  [concurrency=2, headed=False]
+
+Board                  Mode           Query                    Status   Detail
+--------------------------------------------------------------------------------------------------------------------------------
+FL_MQA                 last_name      Smith                    PASS     [?] ELIZABETH DELANEY SMITH - unknown (+19 more) (190.6s)
+ID_DOPL                last_name      Smith                    SKIP     engine_unsupported: Angular SPA at edopl.idaho.gov — search button not found by configured selectors (re-confirmed 2026-06-11). Dynamic DOM requires --headed inspection; idaho_dopl_scraper_v1.py uses runtime selector discovery. Engine cannot replicate this without DOM-discovery feature.
+MN_EMS                 last_name      Smith                    SKIP     engine_unsupported: Angular SPA at emslm.mn.gov — results render as <div> rows not <tr>; engine table extractor finds 0 records (re-confirmed 2026-06-11). Detail uses hash routing #/lookup/user/detail/{uuid} which engine cannot follow.
+MN_MEDPRACTICE         last_name      Smith                    SKIP     engine_unsupported: Angular SPA at bmp.hlb.state.mn.us — search executes but returns 0 records (re-confirmed 2026-06-11); accordion-based inline detail expansion not interactable by engine table extractor.
+OR_HLO                 last_name      Smith                    SKIP     engine_unsupported: ASP.NET UpdatePanel at elite.hlo.state.or.us — Start Search click does not trigger AJAX result refresh; engine extracts form filter table instead of results (re-confirmed 2026-06-11).
+TX_OPTOMETRY           last_name      Smith                    SKIP     captcha_blocked: Texas HPC datamart (vo.licensing.hpc.texas.gov) requires reCAPTCHA on searchByName.do; engine cannot locate search input on selSearchType.do landing page (re-confirmed 2026-06-11). Set compliance.requires_captcha=true once captcha-bypass policy approved.
+--------------------------------------------------------------------------------------------------------------------------------
+
+Summary: 1 PASS  0 FAIL  5 SKIP  0 MISSING
+

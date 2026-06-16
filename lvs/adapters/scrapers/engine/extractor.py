@@ -37,7 +37,7 @@ async def _extract_heading_name(page: Page) -> dict:
                     for kw in ("board", "license", "nevada", "state", "search", "portal", "register",
                                "result", "detail", "verification", "information", "occupational",
                                "health", "credentialing", "optometry", "pharmacy", "dental", "profile",
-                               "directory", "psycholog", "registry", "lookup")
+                               "directory", "psycholog", "registry", "lookup", "definition")
                 ):
                     result["Name"] = text
                     return result
@@ -145,6 +145,32 @@ async def _extract_two_column_table(page: Page) -> dict:
                         result[key] = val
     except Exception as e:
         log.debug("two_column_table strategy failed: %s", e)
+    return result
+
+
+async def _extract_th_td_table(page: Page) -> dict:
+    """Extract from tables where each row has one <th> (label) and one <td> (value)."""
+    result: dict = {}
+    try:
+        tables = page.locator("table")
+        count = await tables.count()
+        for t in range(count):
+            table = tables.nth(t)
+            rows = table.locator("tr")
+            row_count = await rows.count()
+            for r in range(row_count):
+                row = rows.nth(r)
+                ths = row.locator("th")
+                tds = row.locator("td")
+                th_count = await ths.count()
+                td_count = await tds.count()
+                if th_count == 1 and td_count == 1:
+                    key = (await ths.nth(0).inner_text()).strip().rstrip(":")
+                    val = (await tds.nth(0).inner_text()).strip()
+                    if key and "\n" not in key and "\t" not in key:
+                        result[key] = val
+    except Exception as e:
+        log.debug("th_td_table strategy failed: %s", e)
     return result
 
 
@@ -430,6 +456,7 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
         "label_sibling": _extract_label_sibling,
         "field_label_value": _extract_field_label_value,
         "two_column_table": _extract_two_column_table,
+        "th_td_table": _extract_th_td_table,
         "four_column_table": _extract_four_column_table,
         "br_column_table": _extract_br_column_table,
         "strong_label": _extract_strong_label,
@@ -474,6 +501,75 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
     return combined
 
 
+async def extract_vertical_kv(page_or_frame, vkv) -> list[dict]:
+    """Extract records from a vertical label:value layout (no <table>).
+
+    Walks `label_selector` nodes inside `container_selector`, treats each
+    `record_marker_label` occurrence as the start of a new record, and assigns
+    the text immediately following each label as its value. Labels are mapped
+    via `field_map` to canonical field names.
+    """
+    records: list[dict] = []
+    try:
+        # JS-based scan is the cleanest way to walk DOM + extract sibling text in one shot.
+        raw = await page_or_frame.evaluate(
+            """({containerSelector, labelSelector, markerLabel}) => {
+                const root = document.querySelector(containerSelector);
+                if (!root) return [];
+                const labels = [...root.querySelectorAll(labelSelector)];
+                const out = [];
+                let current = null;
+                const markerLc = markerLabel.toLowerCase().replace(/[:\\s]+$/, '');
+                for (const lbl of labels) {
+                    const labelText = (lbl.textContent || '').trim().replace(/[:\\s]+$/, '');
+                    if (!labelText) continue;
+                    // Capture sibling text or parent-residual text
+                    let value = '';
+                    const next = lbl.nextSibling;
+                    if (next && next.nodeType === 3) {
+                        value = (next.textContent || '').trim();
+                    }
+                    if (!value) {
+                        const sib = lbl.nextElementSibling;
+                        if (sib) value = (sib.textContent || '').trim();
+                    }
+                    if (!value) {
+                        const parentText = (lbl.parentElement?.textContent || '').trim();
+                        value = parentText.replace(lbl.textContent || '', '').replace(/^[:\\s-]+/, '').trim();
+                    }
+                    if (labelText.toLowerCase() === markerLc) {
+                        if (current && Object.keys(current).length) out.push(current);
+                        current = {};
+                    }
+                    if (current !== null) {
+                        current[labelText] = value;
+                    }
+                }
+                if (current && Object.keys(current).length) out.push(current);
+                return out;
+            }""",
+            {
+                "containerSelector": vkv.container_selector,
+                "labelSelector": vkv.label_selector,
+                "markerLabel": vkv.record_marker_label,
+            },
+        )
+        if vkv.max_records and len(raw) > vkv.max_records:
+            raw = raw[: vkv.max_records]
+        for r in raw:
+            mapped: dict = {}
+            for k, v in r.items():
+                canonical = vkv.field_map.get(k) or vkv.field_map.get(k.lower())
+                if canonical:
+                    mapped[canonical] = v
+                else:
+                    mapped[k] = v
+            records.append(mapped)
+    except Exception as e:
+        log.warning("extract_vertical_kv failed: %s", e)
+    return records
+
+
 async def extract_results_table(page: Page, config: ResultsConfig) -> list[dict]:
     """Extract rows directly from a results table (no detail page click)."""
     records: list[dict] = []
@@ -484,17 +580,53 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> list[dict]
     if not tbl_cfg:
         return records
 
+    # vertical_kv layout: no <table>, scan labelled fields
+    if tbl_cfg.vertical_kv:
+        ctx = page
+        if tbl_cfg.iframe_selector:
+            frame = page.frame_locator(tbl_cfg.iframe_selector)
+            try:
+                # frame_locator → use the underlying frame for evaluate()
+                ctx = await page.frame(name=None) or page
+                # Easier: query iframe element and grab content_frame()
+                el = await page.query_selector(tbl_cfg.iframe_selector)
+                if el:
+                    frm = await el.content_frame()
+                    if frm:
+                        ctx = frm
+            except Exception:
+                pass
+        return await extract_vertical_kv(ctx, tbl_cfg.vertical_kv)
+
+    # iframe-scoped table extraction
+    ctx = page
+    if tbl_cfg.iframe_selector:
+        try:
+            el = await page.query_selector(tbl_cfg.iframe_selector)
+            if el:
+                frm = await el.content_frame()
+                if frm:
+                    ctx = frm
+                    log.info("Extracting from iframe '%s'", tbl_cfg.iframe_selector)
+        except Exception as e:
+            log.warning("iframe_selector '%s' resolution failed: %s", tbl_cfg.iframe_selector, e)
+
     try:
-        rows = page.locator(tbl_cfg.row_selector)
+        if tbl_cfg.table_selector is not None and tbl_cfg.table_index is not None:
+            table = ctx.locator(tbl_cfg.table_selector).nth(tbl_cfg.table_index)
+            rows = table.locator(tbl_cfg.row_selector)
+        else:
+            rows = ctx.locator(tbl_cfg.row_selector)
         count = await rows.count()
-        for i in range(count):
+        start = 1 if tbl_cfg.skip_first_row else 0
+        for i in range(start, count):
             row = rows.nth(i)
             cells = row.locator(tbl_cfg.cell_selector)
             rec: dict = {}
             for idx, field_name in tbl_cfg.columns.items():
                 if idx < await cells.count():
                     rec[field_name] = (await cells.nth(idx).inner_text()).strip()
-            if rec:
+            if rec and any(v for v in rec.values() if isinstance(v, str) and v.strip()):
                 records.append(rec)
     except Exception as e:
         log.warning("extract_results_table failed: %s", e)

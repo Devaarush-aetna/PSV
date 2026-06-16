@@ -1,0 +1,120 @@
+identity:
+  source_id: NV_OPTOMETRY
+  board_name: Nevada State Board of Optometry
+  state: NV
+  country: US
+  profession_codes: [OD]
+  base_url: "https://nvoptometry.org"
+  archetype: pdf_bulk
+
+# PDF roster — monthly publication at nvoptometry.org.
+# URL pattern: https://nvoptometry.org/wp-content/uploads/YYYY/MM/Verification-YYYYMMDD.pdf
+# UPDATE pdf_bulk.pdfs[0].url each month with the latest verification PDF URL.
+pdf_bulk:
+  pdfs:
+    - url: "https://nvoptometry.org/wp-content/uploads/2026/05/Verification-20260601.pdf"
+      format: default
+  cache_days: 7
+  cache_dir: "./pdfs"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    # Normalized keys (from pdf_extractor.normalize_output) → engine canonical field names
+    "License Number": license_number
+    "Last Name": last_name
+    "First Name": first_name
+    "Middle Name": middle_name
+    "Status": status
+    "Expiration": expiration_date
+    "Issued": issue_date
+    # Pass-through headers not caught by normalize_output
+    "Certifications": license_type
+    "Disciplinary": address    # repurpose address field for disciplinary note
+    "City": city
+    "State": state_code
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "inactive": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "expired": expired
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

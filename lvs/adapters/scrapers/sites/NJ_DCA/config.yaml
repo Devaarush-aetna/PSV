@@ -1,0 +1,154 @@
+identity:
+  source_id: NJ_DCA
+  board_name: New Jersey Division of Consumer Affairs — License Verification
+  state: NJ
+  country: US
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, OTA, PA, PHARM, SW, MFT, LPC, AUD, SLP, PSYCH]
+  # mylicense.com portal — single search form, table#datagrid_results, detail page with element IDs.
+  # License search input: input[name*='license'] (searches by license number directly)
+  # Name search inputs: input[name*='first'] / input[name*='last']
+  # Search button: input[type='submit'][value='Search'] or button:has-text('Search')
+  # Results: table#datagrid_results — Row 0=header, Row 1+=data; each row has 7 columns.
+  # Detail page element IDs: #full_name, #license_no, #sec_lic_status, #profession_id, #issue, #expiration_date
+  base_url: "https://newjersey.mylicense.com/verification/Search.aspx?facility=N"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name*='license']"
+      button_selector: "input[type='submit'][value='Search']"
+    - mode: last_name
+      input_selector: "input[name*='last']"
+      button_selector: "input[type='submit'][value='Search']"
+    - mode: first_name
+      input_selector: "input[name*='first']"
+      button_selector: "input[type='submit'][value='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name*='last']"
+    search_button:
+      selector: "input[type='submit'][value='Search']"
+  results_wait:
+    strategy: element_visible
+    selector: "table#datagrid_results"
+    timeout_ms: 15000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    row_selector: "table#datagrid_results > tbody > tr"
+    # mylicense.com nests a sub-table inside the Name cell — descendant 'td' would shift columns.
+    cell_selector: "xpath=./td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: license_number
+      2: profession_code
+      3: license_type
+      4: status
+      5: city
+      6: state_code
+  # Detail page navigation has frequent 60s+ timeouts on Details.aspx; results table already
+  # carries license_number/license_type/status, which is enough for verification.
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "#full_name"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "#license_no"
+      - "#sec_lic_status"
+  strategies:
+    - type: element_ids
+      id_map:
+        full_name: "Full Name"
+        license_no: "License Number"
+        sec_lic_status: "License Status"
+        profession_id: "License Type"
+        issue: "Issue Date"
+        expiration_date: "Expiration Date"
+        addr_city: "City"
+        addr_state: "State"
+  field_map:
+    "Full Name": full_name
+    "License Number": license_number
+    "License Status": status
+    "License Type": license_type
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "Retired": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

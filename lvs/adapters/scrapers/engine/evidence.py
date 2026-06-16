@@ -51,6 +51,6 @@ async def capture_evidence(
     return paths
 
 
-def resolve_evidence_path(config: EvidenceConfig, source_id: str, run_id: str) -> str:
+def resolve_evidence_path(config: EvidenceConfig, source_id: str, run_id: str, month: str) -> str:
     """Return resolved local evidence directory path."""
-    return config.local_path.format(source_id=source_id, run_id=run_id)
+    return config.local_path.format(source_id=source_id, run_id=run_id, month=month)

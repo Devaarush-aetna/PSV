@@ -1,0 +1,163 @@
+identity:
+  source_id: "NC_CHIRO"
+  board_name: "North Carolina Board of Chiropractic Examiners"
+  state: "NC"
+  country: "US"
+  profession_codes: ["DC"]
+  # WordPress/custom form at ncchiroboard.com.
+  # From North_Carolina_Board_of_Chiropractic_Examiners_web_Scraping.py:
+  #   Attribute-pattern selectors used (input[name*='last' i], etc.).
+  #   Search button: input[value='SEARCH'] OR button:has-text('SEARCH').
+  #   Results: table with columns Name, License#, Location, Licensed Dates, Disciplinary, Specialties, Status.
+  #   Detail link in cells[0]; Next page via a[aria-label='Next page'].
+  base_url: "https://ncchiroboard.com/non-certified-license-verification-request/"
+  archetype: classic_html_form
+
+# 2026-06-15 (session 29): /non-certified-license-verification-request/ has a real
+# public search form (not just a paid-request form). Inputs: LastName, FirstName,
+# city, License (select). Submit is button#search.button (type=button — fires JS,
+# NOT a form submit). Form method is GET, action posts back to the same URL.
+search:
+  modes:
+    - mode: license_number
+      input_selector: "select[name='License']"
+      button_selector: "button#search"
+    - mode: last_name
+      input_selector: "input[name='LastName']"
+      button_selector: "button#search"
+    - mode: first_name
+      input_selector: "input[name='FirstName']"
+      button_selector: "button#search"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='LastName']"
+    search_button:
+      selector: "button#search"
+      fallback_selectors:
+        - "button.button:has-text('SEARCH')"
+        - "button:has-text('SEARCH')"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr td, .results-table tr td, .wpdt-c table tr td"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no records found"
+      - "no results"
+      - "0 records"
+      - "no match"
+      - "no licensees found"
+
+# 2026-06-15 (session 29 iter 2): results render in a Syncfusion EJ2 Grid with
+# tr.e-row data rows and td.e-rowcell cells. Column order verified from evidence:
+# 0=Name, 1=License#, 2=Location, 3=Licensed Dates (issued+expires), 4=Disciplinary
+# Action, 5=Specialties, 6=Status. The header sits in a separate table (e-headercell)
+# so we target tr.e-row directly to skip headers.
+results:
+  type: table
+  table:
+    row_selector: "tr.e-row"
+    cell_selector: "td.e-rowcell"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: city
+      3: issue_date
+      4: disciplinary_actions
+      5: specialty
+      6: status
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a[aria-label='Go to next page'], .e-pager .e-next, a[aria-label='Next page']"
+    disabled_class: "e-disable"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: ".form-group, dl, table"
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: dt_dd
+    - type: label_sibling
+    - type: field_label_value
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License #": license_number
+    "License Type": license_type
+    "Status": status
+    "License Status": status
+    "Issue Date": issue_date
+    "Licensed Date": issue_date
+    "Expiration Date": expiration_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Specialty": specialty
+    "Disciplinary Action": disciplinary_actions
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/NC_CHIRO/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 29): skip lifted. The "non-certified" verification request
+  # page has a real public search form (LastName/FirstName/city/License select +
+  # button#search). Prior session 28 confused this with the paid /license-
+  # verification-request/ certified-letter form.

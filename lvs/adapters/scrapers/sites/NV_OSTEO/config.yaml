@@ -90,14 +90,7 @@ results:
       6: "expiration_date"
       # col 7 = Action column (View button — not a data field)
 
-  has_detail_page: true
-  detail_trigger:
-    type: "view_button"
-    selector: "a.btn-single"
-    fallback_selectors:
-      - "a:has-text('View')"
-      - "button:has-text('View')"
-      - "input[value='View']"
+  has_detail_page: false
 
   pagination:
     enabled: true
@@ -295,9 +288,8 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  mode: license_number
-  query: "TBD"
+  mode: last_name
+  query: "Hatch"
   expect:
     min_records: 1
-  skip: true
-  skip_reason: "network_blocked: portalus.thentiacloud.net unreachable on corporate network (Zscaler); replace TBD query once network is restored"
+    full_name_contains: "Hatch"

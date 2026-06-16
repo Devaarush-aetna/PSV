@@ -1,0 +1,99 @@
+identity:
+  source_id: NY_APPEARANCE
+  board_name: New York State Department of State — Active Appearance Enhancement and Barber Individual Licenses
+  state: NY
+  country: US
+  profession_codes: [AE, BARBER, COSM, ESTH, NAIL]
+  # Socrata JSON API — dataset ucu3-8265 on data.ny.gov.
+  # socrata_bulk_csv archetype uses Playwright browser page.goto() (not APIRequestContext)
+  # so it works through corporate Zscaler SSL inspection.
+  # NOTE: license_number mode may not return results for hyphenated NY license formats
+  # (e.g. AEC-15-05266) because the engine strips non-digits for substring matching.
+  # Use last_name mode for reliable searching.
+  base_url: "https://data.ny.gov/resource/ucu3-8265.json"
+  archetype: socrata_bulk_csv
+
+search:
+  # input_selector = Socrata field name used in SoQL WHERE clause.
+  # license_holder_name stores full name in "LASTNAME FIRSTNAME M" format.
+  modes:
+    - mode: license_number
+      input_selector: "license_number"
+    - mode: last_name
+      input_selector: "license_holder_name"
+    - mode: first_name
+      input_selector: "license_holder_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+
+results:
+  type: table
+  has_detail_page: false
+
+# Socrata JSON field names → canonical engine field names.
+# Dataset contains only active licenses — status field is absent (all are active).
+detail:
+  field_map:
+    "license_number": license_number
+    "license_type": license_type
+    "license_holder_name": full_name
+    "license_effective_term": issue_date
+    "license_expiration_date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+  date_formats:
+    - "%Y-%m-%dT%H:%M:%S.%f"
+    - "%Y-%m-%dT%H:%M:%S"
+    - "%Y-%m-%d"
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-07"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "SMITH"

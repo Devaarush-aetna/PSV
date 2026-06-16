@@ -1,0 +1,106 @@
+identity:
+  source_id: "NC_OPTOMETRY"
+  board_name: "North Carolina State Board of Examiners in Optometry"
+  state: "NC"
+  country: "US"
+  profession_codes: ["OD"]
+  base_url: "https://www.ncoptometry.org/verify-a-license"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+    - mode: license_number
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[type='text']"
+    search_button:
+      selector: "button[type='submit']"
+  results_wait:
+    strategy: delay
+    timeout_ms: 5000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: full_name
+      1: license_number
+      2: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+  date_formats:
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NC_OPTOMETRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  # 2026-06-15 (session 28): NOT an engine gap — this is an external data-access
+  # blocker. The licensee roster is a cross-origin Google Drive "atari" iframe at
+  # gstatic.com/atari/embeds/<id>. Playwright's content_frame() returns None for
+  # cross-origin iframes (same-origin policy), so iframe_selector + table extraction
+  # cannot read it. The atari ID itself is opaque (not a Google Sheets ID).
+  # ENGINE WORK CANNOT FIX THIS. Unblock paths require external action:
+  #   (a) ask NCSBEO for the underlying Google Sheets share URL → then csv_bulk
+  #       with download_strategy: google_sheet_link (already supported by engine), OR
+  #   (b) ask NCSBEO for a static CSV/PDF roster URL → then csv_bulk/pdf_bulk, OR
+  #   (c) reverse-engineer the atari ID → underlying Sheets ID via Google Sites
+  #       structure inspection (low confidence, ToS-grey).
+  skip_reason: "external_data_access: cross-origin Google Drive atari iframe (gstatic.com/atari/embeds/<id>) on ncoptometry.org/verify-a-license. Cross-origin policy blocks Playwright content_frame() — not an engine gap. Unblock requires NCSBEO providing a public Sheets/CSV/PDF URL OR reverse-engineering the atari→Sheets ID mapping."

@@ -1,0 +1,113 @@
+identity:
+  source_id: WY_DIETETICS
+  board_name: Wyoming Dietetics Licensing Board
+  state: WY
+  country: US
+  profession_codes: [LD, DIET]
+  # Wyoming Google Sheets public roster — 7-day cache.
+  # Link selector opens Google Sheet; export as CSV.
+  # CSV has 3 description rows before header (header_row: 3).
+  # Columns confirmed from WY_CHIRO live sheet: LASTNAME, FIRSTNAME, INITIAL, LicNo, Issued, Expires, License Status
+  base_url: "https://dietetics.wyo.gov/consumers/lookup"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: google_sheet_link
+  link_selector: "a[aria-label='List of Active Licenses']"
+  header_row: 3
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  search_columns:
+    license_number: "LICNO"
+    last_name: "LASTNAME"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LASTNAME": last_name
+    "LICNO": license_number
+    "ISSDATE": issue_date
+    "EXPDATE": expiration_date
+    "License Status": status
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/WY_DIETETICS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

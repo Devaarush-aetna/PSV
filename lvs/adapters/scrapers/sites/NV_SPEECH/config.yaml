@@ -1,0 +1,154 @@
+identity:
+  source_id: NV_SPEECH
+  board_name: Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board
+  state: NV
+  country: US
+  profession_codes: [SLP, AUD, HIS]
+  base_url: "https://www.nvspeechhearing.org/verify/"
+  archetype: classic_html_form
+
+# PHP-based portal at nvspeechhearing.org/verify/.
+# Confirmed live field names: inputLicenseNo, inputLastName, inputFirstName.
+# Submit is a <button type='submit'> (no id). Results navigate to /verify/results/.
+# Results table: table#verify-results (Bootstrap), all columns in tbody (no separate thead row needed).
+# Confirmed column order: Name | Profession (AUD/SLP/HIS) | License# | Issue Date | Expiry Date | Status | ...
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='inputLicenseNo']"
+      button_selector: "button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']"
+    - mode: last_name
+      input_selector: "input[name='inputLastName']"
+      button_selector: "button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']"
+    - mode: first_name
+      input_selector: "input[name='inputFirstName']"
+      button_selector: "button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='inputLastName']"
+    search_button:
+      selector: "button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']"
+  results_wait:
+    strategy: url_change
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+      - "no licenses found"
+      - "not found"
+
+results:
+  type: table
+  table:
+    table_selector: "table#verify-results"
+    table_index: 0
+    row_selector: "tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    # Confirmed column order from live site (Bootstrap table, header in thead):
+    # Name | Profession | License# | Issue Date | Expiry Date | Status | ...
+    columns:
+      0: full_name
+      1: license_type
+      2: license_number
+      3: issue_date
+      4: expiration_date
+      5: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 2000
+  strategies:
+    - type: dt_dd
+    - type: label_sibling
+    - type: two_column_table
+    - type: four_column_table
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "Name": full_name
+    "Licensee Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Type": license_type
+    "Type": license_type
+    "Status": status
+    "License Status": status
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "Expiration": expiration_date
+    "Issue Date": issue_date
+    "Issued": issue_date
+    "City": city
+    "State": state_code
+    "Address": address
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

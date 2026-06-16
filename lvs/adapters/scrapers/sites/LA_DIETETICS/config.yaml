@@ -1,0 +1,130 @@
+identity:
+  source_id: LA_DIETETICS
+  board_name: Louisiana Board of Examiners in Dietetics and Nutrition
+  state: LA
+  country: US
+  profession_codes: [LD, RD]
+  # ColdFusion index.cfm portal at lbedn.org.
+  # From Louisiana_DieteticsNutrition_DieteticsNutritionists_Scraper.py:
+  #   GET search params: n=name (combined), l=license, p=profession code
+  #   Form input: input[name="n"] = name search
+  #               input[name="l"] = license number
+  #               select[name="p"] = profession (33=Dietitian, 41=Provisional)
+  #   Results: <li class="row"> cards; name in <h3>, fields in <span> key:value pairs.
+  # NOTE: Engine table extractor sees li.row with cell_selector="h3" — extracts name only.
+  #       License number / status are in span key-value pairs and require engine enhancement
+  #       for full extraction (cfm_li_row strategy). Currently name-only extraction.
+  base_url: "https://www.lbedn.org/index.cfm/licensee-search"
+  archetype: classic_html_form
+
+search:
+  pre_search_click: "a#btn-refine-search"
+  # 2026-06-15 (session 28): results are grouped by profession in Bootstrap
+  # accordion panels — panel-body is empty until its header is clicked, which
+  # fires AJAX that loads <li class="row">. New engine field post_search_click_all
+  # iterates every match and clicks each visible accordion header so all panels
+  # populate before extraction. Selector covers both Bootstrap collapse triggers
+  # (data-toggle="collapse") and any anchor-style profession headers.
+  post_search_click_all: ".panel-heading a, [data-toggle='collapse'], a[data-target*='#panel'], a[href^='#panel']"
+  modes:
+    - mode: license_number
+      input_selector: "input[name='l']"
+    - mode: last_name
+      input_selector: "input[name='n']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='n']"
+    search_button:
+      selector: "a#btn-licensee-search"
+  results_wait:
+    # network_idle catches the initial form-submit landing; post_search_click_all
+    # then expands each accordion (which fires per-panel AJAX). Engine waits for
+    # networkidle again after the click sweep so all li.row entries land.
+    strategy: network_idle
+    timeout_ms: 35000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no match"
+
+results:
+  type: table
+  table:
+    row_selector: "li.row"
+    cell_selector: "h3"
+    skip_first_row: false
+    columns:
+      0: "full_name"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/LA_DIETETICS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 28): skip lifted. Engine gap (accordion-expand) closed by
+  # adding post_search_click_all to navigator.py — engine now clicks every visible
+  # match and waits for networkidle. Page timeout extended to 35s for lbedn.org's
+  # known-slow corporate-proxy response. If smoke fails on lbedn.org reachability,
+  # the unblock is not the engine — it's network/DNS access from the run host.

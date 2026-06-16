@@ -1,0 +1,115 @@
+identity:
+  source_id: NV_PODIATRY
+  board_name: Nevada Board of Podiatry
+  state: NV
+  country: US
+  profession_codes: [DPM]
+  # Certemy Angular SPA — live-filter table at app.certemy.com.
+  # Same archetype as LA_ADRA.
+  # Live column headers discovered 2026-06-10:
+  #   First name, Last name, License, Credential ID, Expiration Status,
+  #   Expiration date, Original issue date, Renewal Date, Disciplinary Actions
+  base_url: "https://app.certemy.com/public-registry/7a4cd67a-0473-4f45-8dff-a88975fc3269"
+  archetype: certemy
+
+search:
+  modes:
+    - mode: last_name
+    - mode: license_number
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input.search-input"
+    search_button:
+      selector: "input.search-input"
+  results_wait:
+    strategy: network_idle
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "[aria-label='Next page'], .mat-paginator-navigation-next"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "First name": first_name
+    "Last name": last_name
+    "License": license_type
+    "Credential ID": license_number
+    "Expiration Status": status
+    "Expiration date": expiration_date
+    "Original issue date": issue_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Not Expired": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%Y-%m-%d"
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1440
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1

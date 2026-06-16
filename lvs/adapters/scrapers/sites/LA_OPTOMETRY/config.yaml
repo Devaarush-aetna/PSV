@@ -1,0 +1,121 @@
+identity:
+  source_id: LA_OPTOMETRY
+  board_name: Louisiana State Board of Optometry Examiners
+  state: LA
+  country: US
+  profession_codes: [OD]
+  # MemberLeap directory portal at memberleap.com/members/directory/search_bootstrap.php?org_id=LSBO
+  # Search fields confirmed from standalone script Louisiana_OptometryExaminer_Optometrist_Scraper.py:
+  #   input[name="business_name"]     = name search
+  #   input[id="dynamic_field_2898"]  = license number (custom field)
+  #   input[id="search_button"]       = submit
+  # Results: AJAX card list in div#result-output; each div.search-result has div.name-plate (name).
+  # Detail profile pages exist but require separate navigation; not used for smoke test.
+  base_url: "https://www.memberleap.com/members/directory/search_bootstrap.php?org_id=LSBO"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input[name='business_name']"
+      button_selector: "input[id='search_button']"
+    - mode: license_number
+      input_selector: "input[id='dynamic_field_2898']"
+      button_selector: "input[id='search_button']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='business_name']"
+    search_button:
+      selector: "input[id='search_button']"
+  results_wait:
+    # MemberLeap AJAX: wait for result cards to appear rather than networkidle
+    # (networkidle fires before the AJAX response populates div.search-result cards)
+    strategy: element_visible
+    selector: "div.search-result"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results found"
+      - "no members found"
+      - "0 results"
+      - "no records"
+
+results:
+  type: table
+  table:
+    row_selector: "div.search-result"
+    cell_selector: "div.name-plate"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License Status": status
+    "License Original Issue Date": issue_date
+    "License Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Buisson"
+  expect:
+    min_records: 1
+    full_name_contains: "Buisson"

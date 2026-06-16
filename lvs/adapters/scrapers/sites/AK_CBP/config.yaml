@@ -1,0 +1,136 @@
+identity:
+  source_id: AK_CBP
+  board_name: Alaska Division of Corporations, Business and Professional Licensing
+  state: AK
+  country: US
+  profession_codes: []
+  # CBP main page hosts a "Professional License Download" link that resolves to a
+  # dated CSV of all active AK professional licenses (refreshed weekly).
+  # csv_extractor navigates here, finds the link by text, and fetches it via JS fetch.
+  # NOTE: Requires PROXY=proxy:9119 — site unreachable directly on corporate network (Zscaler).
+  base_url: "https://www.commerce.alaska.gov/cbp/main/"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: link_text
+  link_text: "Professional License Download"
+  cache_days: 30  # board publishes weekly; 30-day cache tolerates download failures on stale-by-1-day evictions
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  # CSV columns: LicenseNum, Owners, DBA, Program, ProfType, Status,
+  #              DateIssued, DateEffective, DateExpired, ADDRESS1, ADDRESS2, CITY, STATE, ZIP
+  search_columns:
+    license_number: "LicenseNum"
+    last_name: "Owners"       # Owners contains full name; substring match catches last-name hits
+    full_name: "Owners"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: full_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 500
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LicenseNum": license_number
+    "Owners": full_name
+    "Program": license_type
+    "ProfType": license_type
+    "Status": status
+    "DateIssued": issue_date
+    "DateEffective": effective_date
+    "DateExpired": expiration_date
+    "ADDRESS1": address
+    "CITY": city
+    "STATE": state_code
+    "ZIP": zip_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Current": active
+    "current": active
+    "CURRENT": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Cancelled": inactive
+    "cancelled": inactive
+    "Denied": inactive
+    "Lapsed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 6000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-08"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

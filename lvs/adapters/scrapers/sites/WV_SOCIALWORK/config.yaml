@@ -1,0 +1,114 @@
+identity:
+  source_id: "WV_SOCIALWORK"
+  board_name: "West Virginia Board of Social Work"
+  state: "WV"
+  country: "US"
+  profession_codes: ["LCSW", "LMSW", "LBSW"]
+  base_url: "https://www.wvsocialworkboard.org/Licensure/License-Verification"
+  archetype: classic_html_form
+
+# DNN SQLViewPro module — form fields:
+#   #dnn_ctr434_SQLViewPro_LicenseNumber_txtParameter
+#   #dnn_ctr434_SQLViewPro_FirstName_txtParameter
+#   #dnn_ctr434_SQLViewPro_LastName_txtParameter
+# Submit: #dnn_ctr434_SQLViewPro_cmdAction (NOT the page's GO search box).
+# Result table: #dnn_ctr434_SQLViewPro_ReportBase2_dgCommand (3 cols: last, first, license #).
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#dnn_ctr434_SQLViewPro_LicenseNumber_txtParameter"
+      button_selector: "#dnn_ctr434_SQLViewPro_cmdAction"
+    - mode: last_name
+      input_selector: "#dnn_ctr434_SQLViewPro_LastName_txtParameter"
+      button_selector: "#dnn_ctr434_SQLViewPro_cmdAction"
+    - mode: first_name
+      input_selector: "#dnn_ctr434_SQLViewPro_FirstName_txtParameter"
+      button_selector: "#dnn_ctr434_SQLViewPro_cmdAction"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#dnn_ctr434_SQLViewPro_LastName_txtParameter"
+    search_button:
+      selector: "#dnn_ctr434_SQLViewPro_cmdAction"
+  results_wait:
+    strategy: ajax_row_count
+    selector: "#dnn_ctr434_SQLViewPro_ReportBase2_dgCommand tr"
+    timeout_ms: 25000
+    min_rows: 2
+    stable_ticks: 2
+    poll_interval_ms: 500
+    # Page chrome contains generic "no results" text (search box placeholder),
+    # so rely purely on the row-count signal — no body-text indicators.
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: "#dnn_ctr434_SQLViewPro_ReportBase2_dgCommand tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: last_name
+      1: first_name
+      2: license_number
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/WV_SOCIALWORK/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

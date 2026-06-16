@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="en" class="k-webkit k-webkit124"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/styles/thentiacloud/thentiacloud.all.min.css">
+
+    <!-- BRAND SPECIFIC -->
+
+    <link rel="shortcut icon" href="https://azabe.us.thentiacloud.com/thentiacloud/5.0/portal/static/favicon.png">
+    <link rel="apple-touch-icon" href="https://azabe.us.thentiacloud.com/thentiacloud/5.0/portal/static/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/webs/portal/styles/css.php?q=1781556929.757">
+    <script src="/webs/portal/scripts/thentiacloud.register.all.min.js?q=1781556929.7571"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.1.118/js/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="https://integrations.autoaddress.com/jscontrol/autoaddress.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    
+    <title>State of Arizona Acupuncture Board of Examiners</title>
+
+</head>
+<body style="overflow-y: auto; padding-bottom: 70px; position: relative" data-ng-app="thentiacloud.register" class="nscsw-css ng-scope" ng-controller="thentiacloud.register.index.controller">
+<div class="loader ng-hide" ng-show="loading" style=""></div>
+<sandbox-indicator ng-show="" class="ng-hide"><div class="hd-black-bar-wrapper">
+    <div class="hd-stripped-bar"></div>
+    <div class="hd-black-bar"><span>🏰</span> This is a Sandbox Environment</div>
+</div></sandbox-indicator>
+<div class="hd-blue-bar no-print" style="display: flex; align-items: flex-start; justify-content: flex-end;" role="region" aria-label="SHARED_LABEL_PORTAL_ACTIONS_AND_LANGUAGE">
+    <div ng-show="showRedirectButton('')" class="ng-hide">
+        <div>
+            <button class="btn btn-outline-public" ng-click="goToNewUI('')">
+                <i class="fa fa-repeat icon-container"></i>
+                <span class="hidden-xs ng-scope" translate="SHARED_BUTTON_REDIRECT_TO_NEW_UI">Try New UI</span>
+            </button>
+        </div>
+    </div>
+    <!-- ngIf: languageDataSource --><div style="display: none;" ng-if="languageDataSource" class="ng-scope">
+        <span class="k-widget k-dropdown k-header lang-dropdown ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-parse" unselectable="on" role="listbox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-owns="lang-dropdown_listbox" aria-disabled="false" aria-readonly="false" aria-busy="false" aria-activedescendant="lang-dropdown_option_selected" style=""><span unselectable="on" class="k-dropdown-wrap k-state-default"><span unselectable="on" class="k-input ng-scope">EN</span><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-i-arrow-s">select</span></span></span><select autocomplete="off" kendo-drop-down-list="" k-data-source="languageDataSource" k-data-text-field="'code'" k-data-value-field="'id'" k-template="'#= name #'" ng-model="pref.lang" ng-change="switchLanguage()" class="lang-dropdown ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-parse" id="lang-dropdown" data-role="dropdownlist" style="display: none;"><option value="en-us" selected="selected">EN</option></select></span>
+    </div><!-- end ngIf: languageDataSource -->
+    <div class="clearfix"></div>
+</div>
+
+<div class="header-bar no-print" role="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 hidden-sm hidden-md hidden-lg">
+                                    <a href="/webs/portal/" aria-label="State of Arizona Acupuncture Board of Examiners">
+                        <!-- ngIf: showHeaderLogo('en-us', true) --><img class="mobile-logo ng-scope" src="https://azabe.us.thentiacloud.com/thentiacloud/5.0/portal/static/logo.png" alt="State of Arizona Acupuncture Board of Examiners Logo" style="display: block;padding: 10px 0;max-width: 300px" ng-if="showHeaderLogo('en-us', true)"><!-- end ngIf: showHeaderLogo('en-us', true) -->                    </a>
+                            </div>
+            <div class="col-md-12 hidden-xs">
+                                    <a href="/webs/portal/" aria-label="State of Arizona Acupuncture Board of Examiners">
+                        <!-- ngIf: showHeaderLogo('en-us', true) --><img class="mobile-logo ng-scope" src="https://azabe.us.thentiacloud.com/thentiacloud/5.0/portal/static/logo.png" alt="State of Arizona Acupuncture Board of Examiners Logo" style="display: block;padding: 10px 0;max-width: 300px" ng-if="showHeaderLogo('en-us', true)"><!-- end ngIf: showHeaderLogo('en-us', true) -->                    </a>
+                            </div>
+        </div>
+    </div>
+</div>
+
+<main id="main-content" role="main">
+    <div class="container">
+        <!-- ngIf: !loading --><!-- uiView: --><div ng-if="!loading" ui-view="" class="hd-controller ng-scope" style=""><div class="loader ng-scope ng-hide" ng-show="isLoading" style=""></div>
+
+<!-- ngIf: !isLoading --><div ng-if="!isLoading" class="ng-scope" style="">
+
+    <div class="hd-search" style="margin: 0 auto;">
+        <h1 id="register-results-heading" class="sr-only ng-scope" translate="REGISTER_RESULTS_HEADING">REGISTER_RESULTS_HEADING</h1>
+        <div class="row" style="margin: 20px 0">
+            <div class="col-sm-6" style="padding: 0">
+                <!-- ngIf: resultCount > 20 -->
+                <!-- ngIf: resultCount <= 20 --><span ng-if="resultCount &lt;= 20" translate="REGISTER_RESULTS_LABEL_SHOWING_ONE_PAGE" translate-values="{ resultCount: resultCount }" style="display: inline-block; margin-bottom: 10px;" class="ng-scope">Showing 6 result(s) for:</span><!-- end ngIf: resultCount <= 20 -->
+                <span class="result-keyword ng-binding">Smith</span>
+            </div>
+            <div class="col-sm-6 text-right" style="padding: 0">
+                <a class="btn btn-light" href="#/">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <span translate="SHARED_BUTTON_SEARCH_AGAIN" class="ng-scope">Search Again</span>
+                </a>
+                <!-- ngIf: !siteConfig.port_disable_public_register_download --><a class="btn btn-light ng-scope" href="/webs/portal/register/download/profile.php?keyword=Smith&amp;licenseType=all&amp;licenseStatus=all&amp;disciplined=false&amp;lang=en-us" target="_blank" ng-if="!siteConfig.port_disable_public_register_download">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <span translate="SHARED_BUTTON_DOWNLOAD_CSV" class="ng-scope">Download (.csv)</span>
+                </a><!-- end ngIf: !siteConfig.port_disable_public_register_download -->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <!-- ngIf: displayInfoPanel() -->
+        <table-builder-ui data="results" config-options="tableConfigOptions" class="ng-isolate-scope"><div class="hidden-xs" style="overflow-x: auto">
+    <!-- ngIf: $ctrl.downloadCsvUrl && $ctrl.allowDownload -->
+    <table class="table table-striped table-bordered" style="margin-bottom: 0;word-wrap: break-word">
+        <thead>
+        <tr>
+            <!-- ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope" style="">License Number</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">First Name</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">Last Name</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">City</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">License Type</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">License Status</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">License Expiration Date</th><!-- end ngRepeat: title in $ctrl.headers track by $index --><th ng-repeat="title in $ctrl.headers track by $index" class="ng-binding ng-scope">Disciplinary Action</th><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><th ng-if="$ctrl.hasActions" class="ng-scope" style=""></th><!-- end ngIf: $ctrl.hasActions -->
+        </tr>
+        </thead>
+        <tbody>
+        <!-- ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope" style="">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">LAC-000594</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Nancy</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Arrowsmith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">N/A</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Expired</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">09/30/2014</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">LAC-000625</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Scott</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Smith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">N/A</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Expired</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">04/22/2009</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">CAU-000118</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Karen</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Smith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">N/A</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Auricular Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Expired</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">05/31/2014</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">LAC-010744</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Matthew</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Smith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">N/A</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Expired</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">10/31/2025</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">LAC-000741</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Michele</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Smith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Tucson</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Active</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">10/31/2026</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data --><tr ng-repeat="item in $ctrl.data" ng-style="{'background-color': (item.customRowBackgroundCSS &amp;&amp; item.customRowBackgroundCSS.showCondition) ? item.customRowBackgroundCSS.color : 'f9f9f9'}" class="ng-scope">
+            <!-- ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">LAC-001024</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">William</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Smith</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Phoenix</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Acupuncturist</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">Active</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">01/31/2027</td><!-- end ngRepeat: (key, value) in item.columnValues --><td ng-repeat="(key, value) in item.columnValues" ng-bind-html="value" class="ng-binding ng-scope">No</td><!-- end ngRepeat: (key, value) in item.columnValues -->
+            <!-- ngIf: $ctrl.showFiles -->
+            <!-- ngIf: $ctrl.hasActions --><td ng-if="$ctrl.hasActions" class="ng-scope">
+                <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                    <!-- ngIf: !$ctrl.customizeEditText -->
+                    <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+                </a><!-- end ngIf: $ctrl.canEdit -->
+                <!-- ngIf: $ctrl.canDelete -->
+                <!-- ngRepeat: custom in item.customizeActions -->
+            </td><!-- end ngIf: $ctrl.hasActions -->
+        </tr><!-- end ngRepeat: item in $ctrl.data -->
+        <!-- ngIf: !$ctrl.data.length -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Table Mobile-->
+<div class="hidden-sm hidden-md hidden-lg">
+    <!-- ngIf: $ctrl.downloadCsvUrl && $ctrl.allowDownload -->
+    <!-- ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid rgb(204, 204, 204); padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">LAC-000594</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Nancy</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Arrowsmith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">N/A</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Expired</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">09/30/2014</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid #cccccc; padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">LAC-000625</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Scott</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Smith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">N/A</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Expired</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">04/22/2009</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid #cccccc; padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">CAU-000118</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Karen</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Smith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">N/A</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Auricular Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Expired</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">05/31/2014</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid #cccccc; padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">LAC-010744</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Matthew</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Smith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">N/A</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Expired</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">10/31/2025</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid #cccccc; padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">LAC-000741</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Michele</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Smith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Tucson</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Active</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">10/31/2026</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data --><div class="table-mobile-single ng-scope" style="border: 1px solid #cccccc; padding: 15px;" ng-repeat="item in $ctrl.data">
+        <!-- ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Number</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">LAC-001024</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">First Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">William</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Last Name</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Smith</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">City</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Phoenix</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Type</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Acupuncturist</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Status</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">Active</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">License Expiration Date</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">01/31/2027</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index --><div ng-repeat="title in $ctrl.headers track by $index" class="ng-scope">
+            <div class="row">
+                <label class="col-xs-12 col-sm-12"><strong class="ng-binding">Disciplinary Action</strong></label>
+                <div class="col-xs-12 col-sm-12 ng-binding" ng-bind-html="$ctrl.getDataArray(item)[$index]">No</div>
+            </div>
+            <div style="padding:5px;"></div>
+        </div><!-- end ngRepeat: title in $ctrl.headers track by $index -->
+        <!-- ngIf: $ctrl.showFiles -->
+        <!-- ngIf: $ctrl.hasActions --><div ng-if="$ctrl.hasActions" class="ng-scope">
+            <!-- ngIf: $ctrl.canEdit --><a class="btn btn-single ng-scope" href="" ng-click="$ctrl.editFn(item)" ng-if="$ctrl.canEdit">
+                <!-- ngIf: !$ctrl.customizeEditText -->
+                <!-- ngIf: $ctrl.customizeEditText --><span ng-if="$ctrl.customizeEditText" ng-bind-html="$ctrl.customizeEditText | translate" class="ng-binding ng-scope"><i class="fa fa-search"></i> View</span><!-- end ngIf: $ctrl.customizeEditText -->
+            </a><!-- end ngIf: $ctrl.canEdit -->
+            <!-- ngIf: $ctrl.canDelete -->
+            <!-- ngRepeat: custom in item.customizeActions -->
+        </div><!-- end ngIf: $ctrl.hasActions -->
+    </div><!-- end ngRepeat: item in $ctrl.data -->
+    <!-- ngIf: $ctrl.data.length === 0 -->
+</div>
+
+<!-- ngIf: $ctrl.canAdd -->
+</table-builder-ui>
+
+        <div class="hd-pagination">
+            <!-- ngIf: resultCount > 20 -->
+            <!-- ngIf: resultCount < 20 --><div ng-if="resultCount &lt; 20" style="display: inline-block; padding: 20px;" class="ng-scope"></div><!-- end ngIf: resultCount < 20 -->
+            <div style="margin-right: 16px;margin-top: 12px;text-align: right;display: inline-block;float: right;">
+                <!-- ngIf: resultCount > 20 -->
+                <!-- ngIf: resultCount <= 20 --><span ng-if="resultCount &lt;= 20" translate="REGISTER_RESULTS_LABEL_TOTAL_ONE_PAGE" translate-values="{ resultCount: resultCount }" class="ng-scope">6 result(s)</span><!-- end ngIf: resultCount <= 20 -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="padding-top: 20px; padding-bottom: 30px;">
+                <div class="pull-right">
+                    <a class="btn btn-light" href="#/">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                        <span translate="SHARED_BUTTON_SEARCH_AGAIN" class="ng-scope">Search Again</span>
+                    </a>
+                    <!-- ngIf: !siteConfig.port_disable_public_register_download --><a class="btn btn-light ng-scope" href="/webs/portal/register/download/profile.php?keyword=Smith&amp;licenseType=all&amp;licenseStatus=all&amp;disciplined=false&amp;lang=en-us" target="_blank" ng-if="!siteConfig.port_disable_public_register_download">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <span translate="SHARED_BUTTON_DOWNLOAD_CSV" class="ng-scope">Download (.csv)</span>
+                    </a><!-- end ngIf: !siteConfig.port_disable_public_register_download -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- end ngIf: !isLoading -->
+</div><!-- end ngIf: !loading -->
+    </div>
+</main>
+
+<footer class="powered-by register" role="contentinfo" aria-label="Powered By">
+    <span translate="SHARED_LABEL_POWERED_BY" class="ng-scope">Powered By</span>
+    <a href="https://www.thentia.com" target="_blank" rel="noopener noreferrer">Thentia Cloud</a>
+</footer>
+
+
+<div class="k-list-container k-popup k-group k-reset" id="lang-dropdown-list" data-role="popup" style="position: absolute; height: auto; display: none;"><ul unselectable="on" class="k-list k-reset" tabindex="-1" role="listbox" aria-hidden="true" id="lang-dropdown_listbox" aria-live="off" style="overflow: auto; height: auto;"><li tabindex="-1" role="option" unselectable="on" class="k-item ng-scope k-state-selected k-state-focused" id="lang-dropdown_option_selected" aria-selected="true">English</li></ul></div></body></html>

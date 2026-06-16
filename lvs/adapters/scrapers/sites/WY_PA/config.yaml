@@ -1,0 +1,101 @@
+identity:
+  source_id: WY_PA
+  board_name: Wyoming Board of Medicine — Physician Assistant
+  state: WY
+  country: US
+  profession_codes: [PA]
+  # GLSuite portal. Results page uses a stacked label-value multi-record table format
+  # (each <tr> has <td>label</td><td>value</td>; new record starts on "licensee name" label).
+  # This non-standard format is not supported by the engine's table extractor.
+  base_url: "https://wybomv7prod.glsuite.us/GLSuiteWeb/Clients/WYBOM/Public/LicenseeSearchPA.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#ContentPlaceHolder1_txtLicNum"
+    - mode: last_name
+      input_selector: "#ContentPlaceHolder1_txtLastName"
+    - mode: first_name
+      input_selector: "#ContentPlaceHolder1_txtFirstName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ContentPlaceHolder1_txtLastName"
+    search_button:
+      selector: "#ContentPlaceHolder1_btnSubmit"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "#ContentPlaceHolder1_tblResults tr"
+    cell_selector: "td"
+    columns:
+      1: "full_name"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/WY_PA/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

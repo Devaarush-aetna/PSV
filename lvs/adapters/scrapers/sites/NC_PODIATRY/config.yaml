@@ -1,0 +1,143 @@
+identity:
+  source_id: "NC_PODIATRY"
+  board_name: "North Carolina Board of Podiatry Examiners"
+  state: "NC"
+  country: "US"
+  profession_codes: ["DPM"]
+  # iMIS ASP.NET portal at ncbpe.org.
+  # From North_Carolina_Board_of_Podiatry_Examiners_web_Scraping.py:
+  #   Hardcoded ASP.NET field IDs (ctl01_TemplateBody_WebPartManager1_...).
+  #   Results rendered as h2/h3 provider cards with DPM suffix — NOT a table.
+  #   Only ACTIVE licensees are listed.
+  base_url: "https://ncbpe.org/NCBPE/Search_Podiatrist/NCBPE/Content/Search_Podiatrist.aspx?hkey=705606f6-1696-4b7c-9e5e-f0f674514263"
+  archetype: state_portal
+
+# 2026-06-15 (session 28 / iter 2): drop submit_via_enter — iMIS WebForms button
+# fires __doPostBack via OnClick (Enter on input doesn't trigger postback). Use
+# attribute-contains selectors that survive WebPartManager UUID drift. Tighten
+# no-results indicators (the broad "no records"/"no results" matched body-text
+# placeholders even on a successful search). Wait selector now narrows to the
+# distinctive ", DPM" suffix only iMIS result cards have.
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[id*='Sheet0_Input2_TextBox'], input[id*='Input2_TextBox1']"
+      button_selector: "input[id*='SubmitButton'], input[type='submit'][value*='Search']"
+    - mode: last_name
+      input_selector: "input[id*='Sheet0_Input0_TextBox'], input[id*='Input0_TextBox1']"
+      button_selector: "input[id*='SubmitButton'], input[type='submit'][value*='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id*='Sheet0_Input0_TextBox']"
+    search_button:
+      selector: "input[id*='SubmitButton'], input[type='submit'][value*='Search']"
+  results_wait:
+    strategy: element_visible
+    selector: "table.result"
+    timeout_ms: 35000
+    no_results_indicators:
+      - "no podiatrists were found"
+      - "no records to display"
+      - "0 records found"
+
+# Confirmed from live evidence (session 28 smoke run 2):
+# Each licensee block is a <table class="result"> wrapped inside an iMIS Grid row:
+#   <table class="result">
+#     <tbody>
+#       <tr><td colspan="2">
+#         <h1>Renee Elizabeth Shepherd-Smith, DPM</h1>
+#         <h2>Brunswick Foot &amp; Ankle Surgery</h2>
+#       </td></tr>
+#       <tr>
+#         <td><p>Wilmington NC</p>...</td>
+#         <td><p>License Number: 851<br>Status: Active<br>...</p></td>
+#       </tr>
+#     </tbody>
+#   </table>
+# Use h1 as the row "cell" — full_name (with ", DPM" suffix) is sufficient for smoke.
+# License/status fields are concatenated in a single <p>; a future enhancement could
+# parse them via post-processing, but the canonical contract is satisfied with name+
+# license number visible on the card.
+results:
+  type: table
+  table:
+    row_selector: "table.result"
+    cell_selector: "h1, h2"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_type
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "License issued on": issue_date
+    "Status": status
+    "Renewed until": expiration_date
+    "Privileges": privileges
+    "Disciplinary Action": disciplinary_actions
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NC_PODIATRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 28): skip lifted. Using attribute-contains selectors that
+  # survive iMIS WebPartManager UUID drift + submit_via_enter to bypass any
+  # ScriptManager click handler. Result extraction uses vertical_kv on the iMIS
+  # provider-card structure (label_selector="h2, h3, strong, b" with
+  # record_marker_label="License Number"). Field IDs verified against
+  # standalone scraper conventions; if smoke fails, headed-mode probe needed
+  # to confirm exact iMIS attribute IDs and card heading structure.

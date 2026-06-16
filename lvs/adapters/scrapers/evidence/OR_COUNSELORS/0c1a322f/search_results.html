@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en" class="k-webkit k-webkit124"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="/styles/helsbydrake/helsbydrake.all.min.css?v=1.8.5">
+
+    <!-- BRAND SPECIFIC -->
+
+    <link rel="shortcut icon" href="/webs/oblpct/images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/webs/oblpct/styles/oblpct.css">
+    <script src="/webs/oblpct/scripts/helsbydrake.register.all.min.js?v=1.8.31"></script>
+
+    <title>Oregon Board of Licensed Professional Counselors and Therapists</title>
+
+</head>
+<body style="overflow-y: auto; padding-bottom: 50px; position: relative" data-ng-app="helsbydrake.register" class="nscsw-css ng-scope">
+
+    
+<div class="header-bar no-print">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 hidden-sm hidden-md hidden-lg" style="text-align: center">
+                <a href="/webs/oblpct/"><img src="/webs/oblpct/images/logo.svg" style="padding-bottom: 5px" alt="OBLPCT Logo"></a>
+            </div>
+
+            <div class="col-md-12 hidden-xs" style="text-align: center">
+                <a href="/webs/oblpct/"><img src="/webs/oblpct/images/logo.svg" style="padding-bottom: 5px" alt="OBLPCT Logo"></a>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container">
+
+        <!-- ngView: --><div class="hd-controller ng-view ng-scope" style=""><div class="loader ng-scope ng-hide" ng-show="isLoading"></div>
+
+<form ng-show="!isLoading" ng-submit="submitForm()" class="ng-valid ng-scope ng-dirty ng-valid-parse ng-submitted" style="">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 hd-search" style="text-align: center">
+            <h1 style="text-align: center">Online License Search</h1>
+
+            <p style="margin: 0 0 10px">
+                The Oregon Board of Licensed Professional Counselors and Therapists maintains an online License Verification system of licensed professional counselors, licensed marriage and family therapists, and registered associates.
+                You may search by any combination of the licensee or registered associate's city, zip code, or license number.
+            </p>
+
+            <p style="margin: 0 0 10px">If you cannot find a record for the licensee or registered associate that you are looking for,
+                please contact the Board at <a href="mailto:lpct.board@mhra.oregon.gov">lpct.board@mhra.oregon.gov</a> or 503-378-5499</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="label label-info">Note:</span>
+            <p style="margin: 0 0 10px">This is a primary source license verification system</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <label class="hanging-indent">
+                <input type="checkbox" name="supervisor" id="supervisor" ng-model="supervisor" ng-value="true" class="ng-pristine ng-untouched ng-valid ng-empty" value="true">
+                <span>Only show licensees on the Supervisor Registry</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <label class="hanging-indent">
+                <input type="checkbox" name="supervisor" id="dsrList" ng-model="dsrList" ng-value="true" class="ng-pristine ng-untouched ng-valid ng-empty" value="true">
+                <span>Only show Disciplinary Supervisor Resource List</span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="input-group hd-search">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <input type="text" name="keywords" id="keywords" class="form-control input-cmo ng-untouched ng-valid ng-not-empty-add ng-pristine-remove ng-dirty-add ng-valid-parse-add ng-animate ng-empty-remove ng-not-empty ng-dirty ng-valid-parse ng-valid-parse-add-active ng-dirty-add-active ng-pristine-remove-active ng-not-empty-add-active ng-empty-remove-active" placeholder="Enter search terms..." ng-model="keywords" data-ng-animate="2" style="">
+                <div class="input-group-btn">
+                    <button class="btn btn-brand" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p>Optional: Use this dropdown to filter your search on certain fields</p>
+            <div class="input-group hd-filter">
+                <i class="fa fa-filter" aria-hidden="true"></i>
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+                <select name="keywords" id="keywords" class="form-control input-cmo ng-pristine ng-untouched ng-valid ng-not-empty" placeholder="Enter search terms..." ng-model="filter">
+                    <option value="all" default="">All</option>
+                    <option value="firstname">First Name</option>
+                    <option value="lastname">Last Name</option>
+                    <option value="license">License Number</option>
+                    <option value="cityzip">City/Zip</option>
+                    <option value="language">Language</option>
+                </select>
+                <i class="" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+    </div>
+
+    <div class="powered-by register">Powered by <a href="https://www.thentia.com" target="_blank">Thentia Cloud</a></div>
+
+
+
+</body></html>

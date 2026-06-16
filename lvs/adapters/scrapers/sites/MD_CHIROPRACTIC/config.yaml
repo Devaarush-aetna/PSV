@@ -1,0 +1,151 @@
+identity:
+  source_id: MD_CHIROPRACTIC
+  board_name: Maryland Board of Chiropractic Examiners
+  state: MD
+  country: US
+  profession_codes: [DC]
+  # ASP.NET WebForms portal at mdbnc.health.maryland.gov.
+  # Search by license number or last name → results table → "View Details" link per row → detail page.
+  # Pagination via a#MainContent_btnNext (disabled when aspNetDisabled class is present).
+  base_url: "https://mdbnc.health.maryland.gov/ChiroPortal/Verify"
+  archetype: classic_html_form
+
+search:
+  # Per-mode selectors: single search button shared by both modes, different text input IDs.
+  modes:
+    - mode: license_number
+      input_selector: "#MainContent_tbLookupLic"
+      button_selector: "#MainContent_btnLookup"
+    - mode: last_name
+      input_selector: "#MainContent_tbLookupName"
+      button_selector: "#MainContent_btnLookup"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#MainContent_tbLookupName"
+    search_button:
+      selector: "#MainContent_btnLookup"
+  results_wait:
+    # "View Details" links only appear when results are present.
+    strategy: element_visible
+    selector: "a:has-text('View Details')"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records found"
+      - "no match"
+      - "not found"
+      - "0 records"
+
+results:
+  type: table
+  table:
+    row_selector: "tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: full_name
+      2: status
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a:has-text('View Details')"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a#MainContent_btnNext"
+    disabled_class: "aspNetDisabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "#MainContent_lbName"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "#MainContent_lbLicNum"
+      - "#MainContent_lbStatus"
+  strategies:
+    - type: element_ids
+      id_map:
+        MainContent_lbName: "Name"
+        MainContent_lbLicNum: "License Number"
+        MainContent_lbStatus: "License Status"
+        MainContent_lbLicType: "License Type"
+        MainContent_lbOrgLicDate: "Issue Date"
+        MainContent_lbExpDate: "Expiration Date"
+        MainContent_lbDisAction: "Disciplinary Action"
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License Status": status
+    "License Type": license_type
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Disciplinary Action": address
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Non-renewed": expired
+    "Non Renewed": expired
+    "Cancelled": inactive
+    "Retired": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-08"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

@@ -7,6 +7,8 @@ identity:
   # Socrata JSON API — dataset qxh8-f4bd on data.wa.gov.
   # socrata_bulk_csv archetype uses Playwright browser page.goto() (not APIRequestContext)
   # so it works through corporate Zscaler SSL inspection that blocks bare TLS clients.
+  # API approach tested 2026-06-09: socrata_api + PROXY=proxy:9119 → HTTP 407
+  # (proxy requires credentials not available). Keep socrata_bulk_csv.
   base_url: "https://data.wa.gov/resource/qxh8-f4bd.json"
   archetype: socrata_bulk_csv
 
@@ -99,9 +101,9 @@ transport:
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
-  capture_html: false
-  capture_screenshot: false
-  capture_on: ["error"]
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
   storage: local
   local_path: "./evidence/{source_id}/{run_id}/"
 

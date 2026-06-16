@@ -1,0 +1,232 @@
+identity:
+  source_id: FL_MQA
+  board_name: Florida Department of Health — Medical Quality Assurance
+  state: FL
+  country: US
+  profession_codes: [MD, DO, DDS, DMD, RN, LPN, RPh, DC, OD, DPM, PA, PT, OT, SW, MFT, MHC, SLP, AUD, PSY]
+  # Single MQA portal covers ALL Florida health license boards.
+  # Board and Profession dropdowns are left at default "-- Any --" so searches span all boards.
+  # Detail page has 3 tabs (License Information, Secondary Locations, Discipline/Admin Action).
+  # Only the default License Information tab is extracted; Discipline tab not visited by default.
+  # NOTE: Proxy may be required on corporate network (Zscaler).
+  #   PROXY=proxy:9119 python run.py --config sites/FL_MQA/config.yaml ...
+  base_url: "https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      # Confirmed selector from live portal 2026-06-08
+      input_selector: "input[name='SearchDto.LicenseNumber']"
+    - mode: last_name
+      input_selector: "input[name='SearchDto.LastName']"
+    - mode: first_name
+      input_selector: "input[name='SearchDto.FirstName']"
+    - mode: first_and_last
+      # Fill last name as primary input; extra_inputs fills first name simultaneously.
+      # Query format: "FirstName LastName" (e.g. "Elizabeth Smith")
+      input_selector: "input[name='SearchDto.LastName']"
+      extra_inputs:
+        "input[name='SearchDto.FirstName']": "{first}"
+    - mode: business_name
+      input_selector: "input[name='SearchDto.BusinessName']"
+    - mode: city
+      input_selector: "input[name='SearchDto.City']"
+    - mode: zip_code
+      input_selector: "input[name='SearchDto.ZipCode']"
+    # Status-filtered variants: same text lookup but pre-sets LicenseStatus dropdown.
+    # LicenseStatus options: ALL (default) | ACT (practicing) | PREV (non-practicing)
+    - mode: last_name_active
+      input_selector: "input[name='SearchDto.LastName']"
+      extra_selects:
+        "select[name='SearchDto.LicenseStatus']": "ACT"
+    - mode: first_and_last_active
+      # Query format: "FirstName LastName" (e.g. "Elizabeth Smith")
+      input_selector: "input[name='SearchDto.LastName']"
+      extra_inputs:
+        "input[name='SearchDto.FirstName']": "{first}"
+      extra_selects:
+        "select[name='SearchDto.LicenseStatus']": "ACT"
+    # Available dropdown filters (usable via extra_selects on any mode):
+    # Board:         select[name='SearchDto.Board']          id='BoardDD'            — 37 boards (value = numeric)
+    # Profession:    select[name='SearchDto.Profession']     id='ProfessionDD'       — 237 professions (value = numeric)
+    # County:        select[name='SearchDto.County']         id='SearchDto_County'   — 68 FL counties (value = numeric)
+    # LicenseStatus: select[name='SearchDto.LicenseStatus']  id='SearchDto_LicenseStatus' — ALL | ACT | PREV
+  form:
+    # No search-by dropdown — mode determines which input field to fill.
+    # Board dropdown (select[id='BoardDD']) and Profession dropdown (select[id='ProfessionDD'])
+    # are left at default "-- Any --" so searches span all FL health boards.
+    # Profession dropdown has 237 pre-loaded options (not AJAX-driven).
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='SearchDto.LastName']"
+    search_button:
+      selector: "input[type='submit']"
+  results_wait:
+    # network_idle waits for the ASP.NET form POST + results render to complete.
+    # No no_results_indicators — the form page itself contains generic "no results" text
+    # in hidden divs, which would cause false negatives. Extractor returns [] if no rows found.
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr, table tr"
+    cell_selector: "td"
+    columns:
+      0: license_number
+      1: full_name
+      2: license_type
+      3: city
+      4: status
+    skip_first_row: true
+  has_detail_page: true
+  detail_trigger:
+    # License number in col 0 links to LicenseVerification?LicInd=...
+    # Use '?' to avoid matching LicenseVerificationPractitionerPrintFriendly?LicInd=...
+    type: link_in_cell
+    selector: "a[href*='LicenseVerification?LicInd'], a[href*='licenseVerification?LicInd'], a[href*='LicenseVerification?licInd'], a[href*='LicenseDetail']"
+  # When a search returns exactly one result the portal redirects directly to this URL pattern.
+  # The engine then extracts from that page instead of hunting for trigger links.
+  single_result_url_pattern: "LicenseVerification?LicInd"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:text-is('Next'), a:text-is('>'), a:text-is('>>'), a[aria-label='Next'], li.next > a, a:has-text('Next page')"
+    disabled_class: disabled
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 20000
+    fallback_selectors:
+      - "table tr td"
+      - "dl dt"
+      - "h1"
+      - "h2"
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: dt_dd
+    - type: label_sibling
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "License": license_number
+    "Name": full_name
+    "Provider Name": full_name
+    "Licensee Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "Middle Name": licensee_middle_name
+    "Suffix": licensee_suffix
+    "Profession": license_type
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Primary Status": status
+    "Issue Date": issue_date
+    "Original Issue Date": issue_date
+    "License Original Issue Date": issue_date
+    "Effective Date": effective_date
+    "Expiration Date": expiration_date
+    "License Expiration Date": expiration_date
+    "Expiry Date": expiration_date
+    "Exp Date": expiration_date
+    "Address": address
+    "Address of Record": address
+    "City": city
+    "State": state_code
+    "Zip": zip_code
+    "County": county
+    "Specialty": specialty
+    "Board Actions": disciplinary_actions
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Clear/Active": active
+    "Current": active
+    "current": active
+    "Valid": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Null and Void": inactive
+    "Null And Void": inactive
+    "Null And Void/": inactive
+    "Null and Void/": inactive
+    "Cancelled": inactive
+    "Closed": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Lapsed": expired
+    "Delinquent": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Surrendered": revoked
+    "Probation": probation
+    "probation": probation
+    "Administrative Hold": suspended
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 6000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-08"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: first_and_last
+  query: "Renata Mata"
+  first_name: "Renata"
+  last_name: "Mata"
+  expect:
+    min_records: 1
+    full_name_contains: "Mata"
+  skip: false
+  skip_reason: ""
+  # Note: site is slow (~180s typical); run with --board-timeout 240+ on corporate network

@@ -1,0 +1,136 @@
+identity:
+  source_id: "NC_DENTAL"
+  board_name: "North Carolina State Board of Dental Examiners"
+  state: "NC"
+  country: "US"
+  profession_codes: ["DDS","RDH"]
+  base_url: "https://portal.ncdentalboard.org/Verification/search.aspx"
+  archetype: classic_html_form
+
+# 2026-06-15 (session 28): smoke run 1 had submit_via_enter + element_visible
+# wait on "table tbody tr td" + 35s timeout + "0 records" no-results indicator —
+# resulted in timeout + false-positive no-results. Adjusted: drop submit_via_enter
+# (revert to button click — the original ENGINE issue was network_idle racing,
+# now solved by element_visible on a result-only selector) and remove the noisy
+# "0 records" indicator (was matching form-page placeholder text on timeout).
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#txtLicNum"
+      button_selector: "#btnSubmit"
+    - mode: last_name
+      input_selector: "#txtLast"
+      button_selector: "#btnSubmit"
+    - mode: first_name
+      input_selector: "#txtFirst"
+      button_selector: "#btnSubmit"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#txtLast"
+    search_button:
+      selector: "#btnSubmit"
+  results_wait:
+    # The actual result page has NO <table> at all — results render as Bootstrap
+    # dl-horizontal cards inside div.search-results. Wait for that container.
+    strategy: element_visible
+    selector: "div.search-results"
+    timeout_ms: 45000
+    no_results_indicators:
+      - "no licensees were found"
+      - "no matching licensees"
+      - "your search returned no results"
+
+# Confirmed from live evidence (session 28 smoke run 2):
+# <div class="search-results">
+#   <div class="row">
+#     <div class="col-sm-4">
+#       <dl class="dl-horizontal">
+#         <dt>Name:</dt>     <dd>Carol Elaine Barone-Smith</dd>
+#         <dt>Location:</dt> <dd>Broken Arrow, OK</dd>
+#         <dt>Board Action:</dt> <dd>No</dd>
+#       </dl>
+# Each div.row holds one licensee. License # not on search page (only in detail link).
+results:
+  type: table
+  table:
+    row_selector: "div.search-results div.row"
+    cell_selector: "dd"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: city
+      2: disciplinary_action
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+    "License Type": license_type
+    "First Name": first_name
+    "Last Name": last_name
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Deceased": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NC_DENTAL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 28): skip lifted. Switched to submit_via_enter (real HTML
+  # form submit triggers __doPostBack) + element_visible wait on tbody td (the
+  # search page has no tbody td — only the results page does). Columns corrected
+  # to license_number/full_name/status/city per manual probe in session 21.

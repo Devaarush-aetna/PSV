@@ -1,0 +1,592 @@
+<!DOCTYPE html><html class="wide wow-animation scrollTo desktop landscape rd-navbar-static-linked" lang="en"><head>
+    <!--  html header and css includes -->
+            <!-- Site Title-->
+    <title>Licensee Lookup / Self-Service License Verification</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="google-site-verification" content="qJYwhtFxOgrrx9-NKOjWPzpa5E7ztmaUaxkHz_xjids">
+    <meta name="keywords" content="Licensing NCPT NCPTA Revivals Renewals Continuing Competence Jurisprudence Physical Therapist Examiners Assistant Application">
+    <meta name="date" content="Dec 26">
+    <link rel="icon" href="https://www2.ncptboard.org/favicon.ico" type="image/x-icon">
+<script async="" src="//cse.google.com/adsense/search/async-ads.js"></script><script async="" src="https://cse.google.com/cse.js?cx=05ed53457ca962615"></script><!-- Stylesheets-->
+
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/bootstrap.css">
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/FontAwesome.css">
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/style.css">
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/contact.css">
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/custom.css">
+<link type="text/css" rel="stylesheet" href="https://www2.ncptboard.org/css/responsive.css">
+<style>
+    .ie-panel {
+        display: none;
+        background: #212121;
+        padding: 10px 0;
+        box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, .3);
+        clear: both;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    html.ie-10 .ie-panel,
+    html.lt-ie-10 .ie-panel {
+        display: block;
+    }
+</style>    <style>
+        @media print {
+
+            #verifyresults,
+            footer,
+            .rd-navbar-nav {
+                display: none;
+            }
+
+            /* on modal open bootstrap adds class "modal-open" to body, so you can handle that case and hide body */
+            body.modal-open {
+                visibility: hidden;
+            }
+
+            body .rd-navbar-brand,
+            body.modal-open .modal .modal-header,
+            body.modal-open .modal .modal-body {
+                visibility: visible;
+                display: block;
+                font-size: 16pt;
+                /* make visible modal body and header */
+            }
+        }
+    </style>
+<script src="https://www.google.com/cse/static/element/dc329f57de078f5d/cse_element__en.js?usqp=CAI%3D" type="text/javascript"></script><link type="text/css" href="https://www.google.com/cse/static/element/dc329f57de078f5d/default_v6+en.css" rel="stylesheet"><link type="text/css" href="https://www.google.com/cse/static/style/look/v6/default.css" rel="stylesheet"><style type="text/css">.gsc-control-cse{font-family:arial, sans-serif}.gsc-control-cse .gsc-table-result{font-family:arial, sans-serif}.gsc-refinementsGradient{background:linear-gradient(to left,rgba(255,255,255,1),rgba(255,255,255,0))}.gsc-control-cse{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-results-wrapper-overlay{background-color:#FFFFFF}input.gsc-input,.gsc-input-box,.gsc-input-box-hover,.gsc-input-box-focus{border-color:#30758E}.gsc-search-button-v2,.gsc-search-button-v2:hover,.gsc-search-button-v2:focus{border-color:#30758E;background-color:#51A097;background-image:none;filter:none}.gsc-search-button-v2 svg{fill:#FFFFFF}.gsc-tabHeader.gsc-tabhActive,.gsc-refinementHeader.gsc-refinementhActive{color:#30758E;border-color:#30758E;background-color:#FFFFFF}.gsc-tabHeader.gsc-tabhInactive,.gsc-refinementHeader.gsc-refinementhInactive{color:#4D5156;border-color:#4D5156;background-color:#FFFFFF}.gsc-webResult.gsc-result,.gsc-results .gsc-imageResult{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-webResult.gsc-result:hover{border-color:#FFFFFF;background-color:#FFFFFF}.gs-webResult.gs-result a.gs-title:link,.gs-webResult.gs-result a.gs-title:link b,.gs-imageResult a.gs-title:link,.gs-imageResult a.gs-title:link b{color:#1A0DAB}.gs-webResult.gs-result a.gs-title:visited,.gs-webResult.gs-result a.gs-title:visited b,.gs-imageResult a.gs-title:visited,.gs-imageResult a.gs-title:visited b{color:#1A0DAB}.gs-webResult.gs-result a.gs-title:hover,.gs-webResult.gs-result a.gs-title:hover b,.gs-imageResult a.gs-title:hover,.gs-imageResult a.gs-title:hover b{color:#1A0DAB}.gs-webResult.gs-result a.gs-title:active,.gs-webResult.gs-result a.gs-title:active b,.gs-imageResult a.gs-title:active,.gs-imageResult a.gs-title:active b{color:#1A0DAB}.gsc-cursor-page{color:#1A0DAB}a.gsc-trailing-more-results:link{color:#1A0DAB}.gs-webResult:not(.gs-no-results-result):not(.gs-error-result) .gs-snippet,.gs-fileFormatType{color:#4D5156}.gs-webResult div.gs-visibleUrl{color:#30758E}.gs-webResult div.gs-visibleUrl-short{color:#30758E}.gsc-cursor-box{border-color:#FFFFFF}.gsc-results .gsc-cursor-box .gsc-cursor-page{border-color:#4D5156;background-color:#FFFFFF;color:#4D5156}.gsc-results .gsc-cursor-box .gsc-cursor-current-page{border-color:#30758E;background-color:#FFFFFF;color:#30758E}.gsc-webResult.gsc-result.gsc-promotion{border-color:#FFFFFF;background-color:#F6F6F6}.gsc-completion-container{border-color:#30758E}.gsc-completion-title{color:#1A0DAB}.gsc-completion-snippet{color:#4D5156}.gs-promotion a.gs-title:link,.gs-promotion a.gs-title:link *,.gs-promotion .gs-snippet a:link{color:#1A0DAB}.gs-promotion a.gs-title:visited,.gs-promotion a.gs-title:visited *,.gs-promotion .gs-snippet a:visited{color:#1A0DAB}.gs-promotion a.gs-title:hover,.gs-promotion a.gs-title:hover *,.gs-promotion .gs-snippet a:hover{color:#1A0DAB}.gs-promotion a.gs-title:active,.gs-promotion a.gs-title:active *,.gs-promotion .gs-snippet a:active{color:#1A0DAB}.gs-promotion .gs-snippet,.gs-promotion .gs-title .gs-promotion-title-right,.gs-promotion .gs-title .gs-promotion-title-right *{color:#4D5156}.gs-promotion .gs-visibleUrl,.gs-promotion .gs-visibleUrl-short{color:#202124}.gcsc-find-more-on-google{color:#1A0DAB}.gcsc-find-more-on-google-magnifier{fill:#1A0DAB}</style><style type="text/css">.gscb_a{display:inline-block;font:27px/13px arial,sans-serif}.gsst_a .gscb_a{color:#a1b9ed;cursor:pointer}.gsst_a:hover .gscb_a,.gsst_a:focus .gscb_a{color:#36c}.gsst_a{display:inline-block}.gsst_a{cursor:pointer;padding:0 4px}.gsst_a:hover{text-decoration:none!important}.gsst_b{font-size:16px;padding:0 2px;position:relative;user-select:none;-webkit-user-select:none;white-space:nowrap}.gsst_e{vertical-align:middle;opacity:0.55;}.gsst_a:hover .gsst_e,.gsst_a:focus .gsst_e{opacity:0.72;}.gsst_a:active .gsst_e{opacity:1;}.gsst_f{background:white;text-align:left}.gsst_g{background-color:white;border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-webkit-box-shadow:0 2px 4px rgba(0,0,0,0.2);margin:-1px -3px;padding:0 6px}.gsst_h{background-color:white;height:1px;margin-bottom:-1px;position:relative;top:-1px}.gsib_a{width:100%;padding:4px 6px 0}.gsib_a,.gsib_b{vertical-align:top}.gssb_c{border:0;position:absolute;z-index:989}.gssb_e{border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-webkit-box-shadow:0 2px 4px rgba(0,0,0,0.2);cursor:default}.gssb_f{visibility:hidden;white-space:nowrap}.gssb_k{border:0;display:block;position:absolute;top:0;z-index:988}.gsdd_a{border:none!important}.gsq_a{padding:0}.gssb_a{padding:0 7px}.gssb_a,.gssb_a td{white-space:nowrap;overflow:hidden;line-height:22px}#gssb_b{font-size:11px;color:#36c;text-decoration:none}#gssb_b:hover{font-size:11px;color:#36c;text-decoration:underline}.gssb_g{text-align:center;padding:8px 0 7px;position:relative}.gssb_h{font-size:15px;height:28px;margin:0.2em;-webkit-appearance:button}.gssb_i{background:#eee}.gss_ifl{visibility:hidden;padding-left:5px}.gssb_i .gss_ifl{visibility:visible}a.gssb_j{font-size:13px;color:#36c;text-decoration:none;line-height:100%}a.gssb_j:hover{text-decoration:underline}.gssb_l{height:1px;background-color:#e5e5e5}.gssb_m{color:#000;background:#fff}.gssb_a{padding:8px 16px}.gsib_a{padding:4px 10px 4px 56px}.gscb_a{line-height:27px}.gssb_e{border:0}.gssb_l{margin:5px 0}input.gsc-input::-webkit-input-placeholder{font-size:14px}input.gsc-input:-moz-placeholder{font-size:14px}input.gsc-input::-moz-placeholder{font-size:14px}input.gsc-input:-ms-input-placeholder{font-size:14px}input.gsc-input:focus::-webkit-input-placeholder{color:transparent}input.gsc-input:focus:-moz-placeholder{color:transparent}input.gsc-input:focus::-moz-placeholder{color:transparent}input.gsc-input:focus:-ms-input-placeholder{color:transparent}.gssb_c .gsc-completion-container{position:static}.gssb_c{z-index:5000}.gsc-completion-container table{background:transparent;font-size:inherit;font-family:inherit}.gssb_c > tbody > tr,.gssb_c > tbody > tr > td,.gssb_d,.gssb_d > tbody > tr,.gssb_d > tbody > tr > td,.gssb_e,.gssb_e > tbody > tr,.gssb_e > tbody > tr > td{padding:0;margin:0;border:0}.gssb_a table,.gssb_a table tr,.gssb_a table tr td{padding:0;margin:0;border:0}.gssb_a,.gssb_a td{line-height:24px}</style></head>
+
+<body>
+    <!--  global includes under body that are common to all pages -->
+    <!-- Outdated browser message -->
+<!--<div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img
+            src="https://www2.ncptboard.org/images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820"
+            alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a>
+</div> -->
+
+    <!-- page section starts here -->
+    <div class="page text-center">
+
+        <!-- page header/menu header -->
+        <!-- Page Header-->
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="page-head header-panel-absolute" role="banner">
+    <!-- RD Navbar Transparent-->
+    <div class="rd-navbar-wrap" style="height: 191.969px;">
+                <nav class="rd-navbar rd-navbar-default rd-navbar-static rd-navbar--is-stuck" style="" data-md-device-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-stick-up-offset="210" data-xl-stick-up-offset="85" data-lg-auto-height="true" data-auto-height="false" data-md-layout="rd-navbar-static" data-lg-layout="rd-navbar-static" data-lg-stick-up="true" aria-label="Primary navigation">
+            <div class="rd-navbar-inner text-center">
+                <!-- RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                    <!-- RD Navbar Toggle-->
+                    <button class="rd-navbar-toggle" type="button" aria-label="Toggle main navigation" aria-expanded="false" data-rd-navbar-toggle=".rd-navbar, .rd-navbar-nav-wrap"><span></span></button>
+                    <h4 class="panel-title d-lg-none"><a href="https://www2.ncptboard.org/index.php">Home</a></h4>
+
+                    <!-- RD Navbar Right Side Toggle-->
+                    <button class="rd-navbar-top-panel-toggle d-lg-none" type="button" aria-label="Toggle top contact panel" aria-expanded="false" data-rd-navbar-toggle=".rd-navbar-top-panel"><span></span></button>
+
+                    <div class="rd-navbar-top-panel">
+                        <div class="rd-navbar-top-panel-left-part text-white">
+                            <span class="badge badge-danger">New</span> &nbsp; <a class="text-white" href="mailto:PTBoard@ncptboard.org"> <span class="fas fa-envelope text-middle" aria-hidden="true"></span>&nbsp;
+                                PTBoard@ncptboard.org</a> &nbsp;&nbsp;
+                            <a class="text-white" href="https://www2.ncptboard.org/app/ContactUs/DrivingDirections.php"><span class="fas fa-map text-middle" aria-hidden="true"></span>&nbsp;
+                                8300 Health Park, Suite 233, Raleigh, NC 27615 &nbsp;&nbsp;</a>
+
+                            <div class="nav-item dropdown">
+                                <button type="button" data-toggle="dropdown" class="nav-link text-white dropdown-toggle p-0 dropdown-toggle-button" aria-haspopup="true" aria-expanded="false" data-dropdown-a11y="true">
+                                    Contact Us &nbsp;
+                                </button>
+                                <ul class="dropdown-menu" style="min-width: 200px;">
+                                    <li><a class="nav-link" href="https://www2.ncptboard.org/app/ContactUs/ContactUs.php"><span class="fas fa-map-marked-alt text-primary text-middle" aria-hidden="true"></span>
+                                            &nbsp;Office</a></li>
+                                    <li><a class="nav-link" href="https://www2.ncptboard.org/app/ContactUs/StaffDirectory.php"><span class="fas fa-users	 text-primary text-middle" aria-hidden="true"></span> &nbsp;Staff
+                                            Directory</a>
+                                    </li>
+                                    <li><a class="nav-link" href="https://www2.ncptboard.org/app/ContactUs/DrivingDirections.php"><span class="fas fa-directions text-primary text-middle" aria-hidden="true"></span>
+                                            &nbsp;Driving
+                                            Directions</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rd-navbar-top-panel-right-part text-white">
+
+                            <!--RD Navbar shop-->
+                                                        <div class="nav-item dropdown text-white">
+
+                                                                    <a class="nav-link text-white pl-0" href="https://www2.ncptboard.org/app/OnlineServices/Secure/Login.php"><span class="fas fa-sign-in-alt text-white text-middle" aria-hidden="true"></span>
+                                        &nbsp; Login</a>
+                                                                <ul class="dropdown-menu">
+                                    <li><a href="https://www2.ncptboard.org/app/Person/Dashboard.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                            Dashboard</a>
+                                    </li>
+                                    <li><a href="https://www2.ncptboard.org/app/OnlineServices/Secure/Logout.php"><i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                            Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Navbar Brand-->
+                <div class="rd-navbar-brand mt-3">
+    <div class="container text-center">
+        <a class="d-inline-block" href="https://www2.ncptboard.org/index.php">
+            <div class="unit align-items-sm-center unit-md flex-lg-row">
+                <div class="unit-left"><img class="img-responsive d-inline-block" src="https://www2.ncptboard.org/images/Seal_small.png" alt="North Carolina Board of Physical Therapy Examiners seal">
+                </div>
+                <div class="unit-body text-left">
+                    <h2 class="boxtitle" style="font-size: 1.5rem;">North Carolina Board of Physical Therapy
+                        Examiners</h2>
+                    <p class=" subtitle mt-0 text-left font-accent"> Created in 1951 by the General Assembly to
+                        establish and maintain minimum standards <br>for the practice of physical therapy to protect the
+                        safety and welfare of the citizens of North Carolina.</p>
+                </div>
+            </div>
+
+        </a>
+    </div>
+
+</div>
+                                    <div class="rd-navbar-menu-wrap clearfix">
+    <div class="rd-navbar-nav-wrap">
+        <div class="rd-navbar-mobile-scroll">
+            <div class="rd-navbar-mobile-header-wrap">
+                <!--Navbar Brand Mobile-->
+                <div class="rd-navbar-mobile-brand"><a href="https://www2.ncptboard.org/index.php" aria-label="North Carolina Board of Physical Therapy Examiners home"><img width="136" height="138" src="https://www2.ncptboard.org/images/Seal_small.png" alt="North Carolina Board of Physical Therapy Examiners home"></a></div>
+            </div>
+                                                                        
+            <!-- RD Navbar Nav-->
+            <ul class="rd-navbar-nav">
+                                    <li class=""><a href="https://www2.ncptboard.org/index.php">Home</a></li>
+                                <li class="rd-navbar--has-megamenu rd-navbar-submenu"><a href="https://www2.ncptboard.org/app/LandingPages/BoardHome.php">The
+                        Board</a>
+                    <div class="rd-navbar-megamenu small">
+                        <div class="row section-relative">
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>General Information</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+
+                                        <li><a href="https://www2.ncptboard.org/app/AboutUs/Purpose.php">Purpose of
+                                                the
+                                                Board</a></li>
+                                        <li><a href="https://www2.ncptboard.org/app/AboutUs/History.php">History of
+                                                Board</a></li>
+                                        <li><a href="https://www2.ncptboard.org/app/BoardInformation/BoardMembers.php">Board
+                                                Members</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/ContactUs/StaffDirectory.php">Office
+                                                Staff
+                                                Directory</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>Board Resources</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+
+                                        <li><a href="https://www2.ncptboard.org/app/AboutUs/Calendar.php">Calendars</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/AboutUs/AboutUs.php#BoardMinutes">Board
+                                                Minutes</a>
+                                        </li>
+
+                                        <li><a href="https://www2.ncptboard.org/documents/financials/Annual_Report_Finanical_Audit _FY2025.pdf">Annual
+                                                Report and Financial Audit FY2025</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/LawAndBoardRules/LawAndBoardRules.php">NC
+                                                PT Law and Board Rules</a>
+                                        </li>
+
+                                        <li><a href="https://www2.ncptboard.org/app/LawAndBoardRules/LawAndBoardRules.php#CompactAmendment">PT
+                                                Compact
+                                                Law
+                                                and Board Rules</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>Additional Links</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+                                        <li><a href="https://www2.ncptboard.org/app/LandingPages/ScopeOfPracticeHome.php">Scope
+                                                Of Practice Q&amp;A</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/PositionStatements/PositionStatements.php">
+                                                Position Statements</a>
+                                        </li>
+
+                                        <li><a href="https://www2.ncptboard.org/app/Newsletters/Reports.php">
+                                                State of the Board Reports <br>(replacing APTA NC Reports)</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/Newsletters/Newsletters.php">
+                                                Newsletters</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                <span class="rd-navbar-submenu-toggle"></span></li>
+
+                <li class="active rd-navbar--has-megamenu rd-navbar-submenu"><a href="https://www2.ncptboard.org/app/LandingPages/ApplicationHome.php">Applications</a>
+                    <div class="rd-navbar-megamenu">
+                        <div class="row section-relative">
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>APPLYING FOR A LICENSE</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+
+                                        <li><a href="https://www2.ncptboard.org/app/LandingPages/ApplicationHome.php">New Applications
+                                            </a></li>
+                                        <li><a href="https://www2.ncptboard.org/app/OnlineServices/Secure/Compact/CompactWelcome.php">
+                                                Compact Privilege</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/Licensing/Revival/RevivalHome.php">License
+                                                Revival</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/Licensing/MilitaryInformation.php">Military
+                                                Applicants</a>
+                                        </li>
+                                        <li><a href="https://www2.ncptboard.org/app/ForeignTrained/ForeignTrained.php">NON-CAPTE/Foreign
+                                                Trained Applicants</a></li>
+                                                                                <li><a href=" https://www2.ncptboard.org/app/Licensing/ScheduleOfFees.php">Fees</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>APPLICATION INFORMATION</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+
+                                        <li>
+                                            <a href="https://www2.ncptboard.org/app/Licensing/ApplicationInstructions.php">Application
+                                                Instructions
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://www2.ncptboard.org/app/OnlineServices/ApplicationDocumentsHelp.php">Application
+                                                Documents
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://www2.ncptboard.org/app/OnlineServices/UploadsHelp.php">Uploads
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www2.ncptboard.org/app/Licensing/cbc.php">FBI Fingerprint
+                                                Criminal <br>Background Check
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="https://www2.ncptboard.org/app/OnlineServices/JurisprudenceHelp.php">Jurisprudence
+                                                Exercise
+                                            </a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+                            </ul>
+
+
+                            <ul class="col-lg-4">
+                                <li>
+                                    <h6>Resources</h6>
+                                    <ul class="list-unstyled offset-lg-top-20">
+                                        <li><a href="https://www2.ncptboard.org/app/Licensing/ApplicationFAQ.php">Applicant
+                                                FAQ</a></li>
+                                        <li><a target="_blank" rel="noopener noreferrer" href="https://www2.ncptboard.org/documents/boardrules/Article_18E.pdf">PT
+                                                Practice
+                                                Act<span class="sr-only"> (opens in new tab)</span></a>
+                                        </li>
+
+                                        <li><a href="
+                                            https://www2.ncptboard.org/app/LawAndBoardRules/LawAndBoardRules.php">Board
+                                                Rules</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <span class="rd-navbar-submenu-toggle"></span></li>
+
+                <li class="rd-navbar--has-dropdown rd-navbar-submenu"><a href="https://www2.ncptboard.org/app/ComplaintForm/ComplaintFormStart.php">Complaints &amp; Discipline</a>
+                    <ul class="rd-navbar-dropdown">
+                        <li><a href="https://www2.ncptboard.org/app/ComplaintForm/ComplaintFormStart.php">Filing
+                                a Complaint</a></li>
+                        <li><a href="https://www2.ncptboard.org/app/ConsumerProtection/DisciplinaryActions.php">Disciplinary
+                                Actions &amp; Payments</a></li>
+                    </ul>
+                <span class="rd-navbar-submenu-toggle"></span></li>
+                <li class="rd-navbar--has-dropdown rd-navbar-submenu"><a href="https://www2.ncptboard.org/app/ContinuingCompetence/ContinuingCompetenceHome.php">Continuing
+                        Competence</a>
+
+                    <ul class="rd-navbar-dropdown">
+                        <li><a href="https://www2.ncptboard.org/app/ContinuingCompetence/ContinuingCompetenceHome.php">Continuing
+                                Competence Reporting</a></li>
+                        <li><a href="https://www2.ncptboard.org/app/ContinuingCompetence/CCFAQ.php">Frequently Asked
+                                Questions</a>
+                        </li>
+                        <li> <a href="https://www2.ncptboard.org/app/OnlineServices/JurisprudenceHelp.php">Jurisprudence
+                                Exercise
+                            </a></li>
+                        <li> <a href="https://www2.ncptboard.org/app/OnlineServices/Secure/WebinarLibrary.php">Webinar Library </a></li>
+
+                    </ul>
+                <span class="rd-navbar-submenu-toggle"></span></li>
+
+                <li>
+                    <!--RD Navbar Search-->
+                    <div id="___gcse_0"><div class="gsc-control-cse gsc-control-cse-en"><div class="gsc-control-wrapper-cse" dir="ltr"><form class="gsc-search-box gsc-search-box-tools" accept-charset="utf-8"><table cellspacing="0" cellpadding="0" role="presentation" class="gsc-search-box"><tbody><tr><td class="gsc-input"><div class="gsc-input-box" id="gsc-iw-id1"><table cellspacing="0" cellpadding="0" role="presentation" id="gs_id50" class="gstl_50 gsc-input" style="width: 100%; padding: 0px;"><tbody><tr><td id="gs_tti50" class="gsib_a"><input autocomplete="off" type="text" size="10" class="gsc-input" name="search" title="search" aria-label="search" id="gsc-i-id1" dir="ltr" spellcheck="false" style="width: 100%; padding: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; margin: 0px; height: auto; outline: none;" placeholder="What are you looking for?"></td><td class="gsib_b"><div class="gsst_b" id="gs_st50" dir="ltr"><a class="gsst_a" href="javascript:void(0)" title="Clear search box" role="button" style=""><span class="gscb_a" id="gs_cb50" aria-hidden="true">×</span></a></div></td></tr></tbody></table></div></td><td class="gsc-search-button"><button class="gsc-search-button gsc-search-button-v2"><svg width="13" height="13" viewBox="0 0 13 13"><title>search</title><path d="m4.8495 7.8226c0.82666 0 1.5262-0.29146 2.0985-0.87438 0.57232-0.58292 0.86378-1.2877 0.87438-2.1144 0.010599-0.82666-0.28086-1.5262-0.87438-2.0985-0.59352-0.57232-1.293-0.86378-2.0985-0.87438-0.8055-0.010599-1.5103 0.28086-2.1144 0.87438-0.60414 0.59352-0.8956 1.293-0.87438 2.0985 0.021197 0.8055 0.31266 1.5103 0.87438 2.1144 0.56172 0.60414 1.2665 0.8956 2.1144 0.87438zm4.4695 0.2115 3.681 3.6819-1.259 1.284-3.6817-3.7 0.0019784-0.69479-0.090043-0.098846c-0.87973 0.76087-1.92 1.1413-3.1207 1.1413-1.3553 0-2.5025-0.46363-3.4417-1.3909s-1.4088-2.0686-1.4088-3.4239c0-1.3553 0.4696-2.4966 1.4088-3.4239 0.9392-0.92727 2.0864-1.3969 3.4417-1.4088 1.3553-0.011889 2.4906 0.45771 3.406 1.4088 0.9154 0.95107 1.379 2.0924 1.3909 3.4239 0 1.2126-0.38043 2.2588-1.1413 3.1385l0.098834 0.090049z"></path></svg></button></td><td class="gsc-clear-button"><div class="gsc-clear-button" title="clear results">&nbsp;</div></td></tr></tbody></table></form><div class="gsc-results-wrapper-overlay"><div class="gsc-results-close-btn" tabindex="0"></div><div class="gsc-positioningWrapper"><div class="gsc-tabsAreaInvisible"><div aria-label="refinement" role="tab" class="gsc-tabHeader gsc-inline-block gsc-tabhActive">Custom Search</div><span class="gs-spacer"> </span></div></div><div class="gsc-positioningWrapper"><div class="gsc-refinementsAreaInvisible"></div></div><div class="gsc-above-wrapper-area-invisible"><div class="gsc-above-wrapper-area-backfill-container"></div><table cellspacing="0" cellpadding="0" role="presentation" class="gsc-above-wrapper-area-container"><tbody><tr><td class="gsc-result-info-container"><div class="gsc-result-info-invisible"></div></td><td class="gsc-orderby-container"><div class="gsc-orderby-invisible"><div class="gsc-option-menu-container gsc-inline-block"><div class="gsc-orderby-label gsc-inline-block">Sort by</div><div class="gsc-selected-option-container gsc-inline-block"><div class="gsc-option-selector"></div></div><div class="gsc-option-menu-invisible"><div class="gsc-option-menu-item"><div class="gsc-option-checkbox gsc-inline-block gsc-option-checkbox-checked"></div><div class="gsc-option gsc-inline-block">Relevance</div></div><div class="gsc-option-menu-item"><div class="gsc-option-checkbox gsc-inline-block"></div><div class="gsc-option gsc-inline-block">Date</div></div></div></div></div></td></tr></tbody></table></div><div class="gsc-adBlockInvisible"></div><div class="gsc-wrapper"><div class="gsc-adBlockInvisible"></div><div class="gsc-resultsbox-invisible"><div class="gsc-resultsRoot gsc-tabData gsc-tabdActive"><div><div class="gsc-expansionArea"></div></div></div></div></div></div><div class="gsc-modal-background-image" tabindex="0"></div></div></div></div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+                            </div>
+        </nav>
+    </div>
+</header>
+<main id="main-content" tabindex="-1">
+        <!--  page content -->
+           <!-- Classic Breadcrumbs-->
+   <section class="section breadcrumb-classic context-dark pattern4">
+       <div class="container">
+           <section class="text-center d-lg-none mt-2">
+               <!--Navbar Brand Mobile-->
+               <div class="rd-navbar-mobile-brand"><a href="https://www2.ncptboard.org/index.php" aria-label="North Carolina Board of Physical Therapy Examiners home"><img width="80" height="80" src="https://www2.ncptboard.org/images/Seal_small.png" alt="North Carolina Board of Physical Therapy Examiners home"></a></div>
+           </section>
+
+           <h1 class="mt-2">Licensee Lookup / Self-Service License Verification</h1>
+           <nav class="offset-top-10" aria-label="Breadcrumb">
+               <ol class="list-inline list-inline-lg list-inline-dashed p">
+                                          <li>
+                                                          <a href="https://www2.ncptboard.org/index.php">Home </a>
+                           
+                       </li>
+                                          <li>
+                                                          <a href="https://www2.ncptboard.org/app/LandingPages/ApplicationHome.php">Applications </a>
+                           
+                       </li>
+                                          <li>
+                                                          <span aria-current="page">Licensee Lookup / Self-Service Licensee Lookup</span>
+                           
+                       </li>
+                                  </ol>
+           </nav>
+       </div>
+   </section>
+   <section class="mt-3 text-left">
+       <div class="container">
+           <h6 class="text-center">Monday, June 15, 2026</h6>
+           <hr class="divider bg-madison">
+       </div>
+</section>
+
+<section class="section mt-5 bg-default">
+    <div class="container">
+
+
+        <div class="mt-3 w50">
+            <p class="alert alert-warning">
+                If unable to find a licensee, also check
+                <a target="_blank" href="https://purchase.ptcompact.org/Verify" rel="noopener noreferrer">PT Compact Commission
+                    Verification Page<span class="sr-only"> (opens in new tab)</span></a> to see if the PT or PTA holds a compact privilege in North Carolina.
+            </p>
+        </div>
+        <br>
+
+        <div class="w50 contentbox text-left">
+            <p>Key to License Letter Designations preceding the license number:<br>
+
+                Physical Therapist (PT) = P<br>
+                Physical Therapist Assistant (PTA) = A<br>
+                Compact Privilege Holder = CP; Last Digit "T" = PT; "A" = PTA<br>
+                Temporary Military Permit = T<br>
+                Military Privilege = M<br>
+                Temporary Privilege = O</p>
+
+        </div>
+        <br>
+        <div class="w50">
+            <form id="VerifyTherapistForm" class="form2 text-left lookup-section" data-form-output="form-output-global" data-form-type="contact" method="post">
+                <div class="form-wrap mb-3">
+                    <label class="form-label form-label-outside rd-input-label" for="LicenseNumber">License Number</label>
+                    <input class="form-input form-validation-inside" id="LicenseNumber" type="text" aria-describedby="licenseNumberHelp" name="LicenseNumber">
+                    <small id="licenseNumberHelp" class="form-text text-muted">
+                        <p>Enter a 'P' for Physical Therapist or an 'A' for a Physical Therapist Assistant
+                            before the
+                            license number, e.g. P1234 or A1234</p>
+                    </small>
+                </div>
+                <div class="form-wrap mb-3">
+                    <label class="form-label form-label-outside rd-input-label" for="FirstName">First Name</label>
+                    <input class="form-input form-validation-inside" id="FirstName" type="text" name="FirstName">
+                </div>
+                <div class="form-wrap mb-3">
+                    <label class="form-label form-label-outside rd-input-label" for="LastName">Last Name</label>
+                    <input class="form-input form-validation-inside" id="LastName" type="text" name="LastName">
+                </div>
+                <div class="mt-3 text-center">
+                    <button class="btn button-primary d-sm-inline-block text-middle" id="submitButton" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+</section>
+
+<section class="section bg-default">
+    <div class="container">
+        <div id="message" class="text-center text-success mb-3">Gathering data, please wait...</div>
+
+        <div id="verifyresults"></div>
+    </div>
+
+    <div id="printThis">
+        <div class="modal fade shadow-lg" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="ModalTitle" aria-hidden="true">
+    <div id="popupDetails" class="modal-dialog modal-dialog-centered" role="document">
+        <div id="modalContent" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalTitle">NC Licensee/Privilege Lookup Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalMessage" class="text-center text-success"></div>
+
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="p-2 btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>    </div>
+</section>
+
+<section>
+    <div class="w50">
+        <br>
+
+        <div class="text-center m-3">
+    <strong>Questions?</strong>&nbsp; Email <a href="mailto:PTBoard@ncptboard.org">PTBoard@ncptboard.org.</a> <br>
+
+    <strong> Website Feedback?</strong>&nbsp; Email <a href="mailto:NCPT_IT@ncptboard.org">NCPT_IT@ncptboard.org.</a>
+</div>        <br>
+    </div>
+</section>
+        <!--  page footer -->
+        </main>
+<footer class="page-footer bg-catskill p-3" role="contentinfo">
+     <div class="container footer-text">
+          <nav aria-label="Footer links">
+               <ul class="mt-3 d-flex flex-wrap flex-md-nowrap justify-content-center text-center w-100">
+
+                    <li class="w-100 w-md-auto mb-2 mb-md-0 px-1">
+                         <a class="btn button-default btn-xs text-underline w-100 w-md-auto" href="https://www2.ncptboard.org/app/ContactUs/ContactUs.php">
+                              Contact Us
+                         </a>
+                    </li>
+
+                    <li class="w-100 w-md-auto mb-2 mb-md-0 px-1">
+                         <a class="btn button-default btn-xs text-underline w-100 w-md-auto" href="https://www2.ncptboard.org/app/AboutUs/Privacy.php">Privacy
+                              Statement and Disclaimer</a>
+                    </li>
+
+                    <li class="w-100 w-md-auto mb-2 mb-md-0 px-1">
+                         <a class="btn button-default btn-xs text-underline w-100 w-md-auto" href="https://www2.ncptboard.org/BoardMembers.html">Board
+                              Member
+                              Login</a>
+                    </li>
+
+               </ul>
+          </nav>
+
+          <p class="mt-3 text-center text-dark"><span>Copyright ©&nbsp;</span><span class="copyright-year">2026</span><span>,&nbsp;</span><span>North Carolina Board of Physical
+                    Therapy Examiners </span><span>.&nbsp;</span></p>
+     </div>
+</footer>
+
+<div id="cookie-consent" class="cookie-consent is-visible" role="region" aria-live="polite" aria-labelledby="cookie-consent-title" aria-hidden="false">
+     <div class="cookie-consent__body">
+          <div class="cookie-consent__copy">
+               <h2 id="cookie-consent-title" class="cookie-consent__title">Cookie notice</h2>
+               <p class="cookie-consent__text mb-0">
+                    This website uses a variety of cookies, which you consent to if you continue to use this site. You
+                    can read our <a target="_blank" rel="noopener noreferrer" class="text-white text-underline" href="https://www2.ncptboard.org/app/AboutUs/Cookie.php">Cookie
+                         Policy<span class="sr-only"> (opens in new tab)</span></a> for details
+                    about how these
+                    cookies are used, and to grant or withdraw
+                    your consent for certain types of cookies. Email <a class="text-white text-underline" href="mailto:NCPT_IT@ncptboard.org">NCPT_IT@ncptboard.org</a> with questions.
+               </p>
+          </div>
+          <div class="cookie-consent__actions">
+               <button id="cookie-consent-accept" type="button" class="btn btn-primary btn-sm">
+                    Accept cookies
+               </button>
+          </div>
+     </div>
+</div>    </div>
+    <!-- page ends here -->
+
+    <!--  global js includes -->
+    <!-- Java script-->
+<script type="text/javascript" src="https://www2.ncptboard.org/js/core.min.js"></script>
+<script type="text/javascript" src="https://www2.ncptboard.org/js/script.js"></script>
+<script type="text/javascript" src="https://www2.ncptboard.org/js/contact.js"></script>
+<script type="text/javascript" src="https://www2.ncptboard.org/js/site.js"></script>
+
+    <!-- Can Include page specific scripts here -->
+    <script "text="" javascript"="">
+        $(document).ready(function() {
+
+            $('#VerifyTherapistForm').submit(function(e) {
+                var dataToSend = $(this).serialize();
+                MakeAjaxPostCall("ajax/VerifyTherapistSearchAjax.php", dataToSend, "#verifyresults", "#message");
+
+                var scrollDiv = document.getElementById("verifyresults").offsetTop;
+                window.scrollTo({
+                    top: scrollDiv,
+                    behavior: 'smooth'
+                });
+
+                return false;
+            });
+        });
+
+        function ShowLicenseeDetails(licenseId) {
+            MakeAjaxPostCall("ajax/VerifyTherapistDetailsAjax.php", {
+                LicenseId: licenseId
+            }, ".modal-body", "#modalMessage");
+        }
+
+        function ShowCovidPrivilegeDetails(privilegeId) {
+            MakeAjaxPostCall("ajax/VerifyTherapistDetailsAjax.php", {
+                CovidPrivilegeId: privilegeId
+            }, ".modal-body", "#modalMessage");
+        }
+    </script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0c15f5ffd4af21e',t:'MTc4MTUyNDM4Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; visibility: hidden;"></iframe>
+
+<a href="#" id="ui-to-top" class="ui-to-top icon-circle icon-darker-filled fas fa-sm fa-chevron-up active" aria-label="Back to top" title="Back to top"><span class="sr-only">Back to top</span></a><table cellspacing="0" cellpadding="0" role="presentation" class="gstl_50 gssb_c" style="width: 206px; display: none; top: 200px; left: 944px; position: absolute;"><tbody><tr><td class="gssb_f"></td><td class="gssb_e" style="width: 100%;"></td></tr></tbody></table></body></html>

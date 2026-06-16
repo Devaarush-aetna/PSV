@@ -1,0 +1,126 @@
+identity:
+  source_id: "MD_ACUPUNCTURE"
+  board_name: "Maryland Board of Acupuncture"
+  state: "MD"
+  country: "US"
+  profession_codes: ["LAc"]
+  # Standalone scraper (Maryland_Accupuncture.py) does a plain HTTP GET on the
+  # active-licensee CSV: https://health.maryland.gov/bacc/Documents/acupactive.csv
+  # Engine equivalent is csv_bulk + new download_strategy: direct_url which fetches
+  # the URL via a headless Chromium fetch() (transparent through corporate SSL
+  # inspection that breaks Playwright APIRequestContext).
+  base_url: "https://health.maryland.gov/bacc/Documents/acupactive.csv"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: direct_url
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8"
+  # CSV columns from the standalone scraper:
+  # RegNum | LName | FName | StatusCode | OrigLicDate | ExpDate
+  search_columns:
+    license_number: "RegNum"
+    last_name: "LName"
+    first_name: "FName"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "RegNum": license_number
+    "LName": last_name
+    "FName": first_name
+    "StatusCode": status
+    "OrigLicDate": issue_date
+    "ExpDate": expiration_date
+
+output:
+  status_map:
+    "A": active
+    "Active": active
+    "active": active
+    "I": inactive
+    "Inactive": inactive
+    "E": expired
+    "Expired": expired
+    "expired": expired
+    "S": suspended
+    "Suspended": suspended
+    "R": revoked
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/MD_ACUPUNCTURE/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-16 (session 29): newly added board — config built from
+  # Maryland_Accupuncture.py (direct CSV GET on /bacc/Documents/acupactive.csv).
+  # Uses new engine download_strategy: direct_url. If smoke fails, the URL may
+  # be access-controlled or the file name may have rolled to a new naming
+  # convention (the standalone scraper hits acupactive.csv only).

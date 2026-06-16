@@ -1,0 +1,108 @@
+identity:
+  source_id: "OK_DENTAL"
+  board_name: "Oklahoma State Board of Dentistry"
+  state: "OK"
+  country: "US"
+  profession_codes: ["DDS", "RDH", "Dental Assistant", "Dental Lab"]
+  base_url: "https://oklahoma.gov/dentistry/license-verification/verify-a-dentist.html"
+  archetype: datatables_jsapi
+
+# DataTables JS API across 7 sub-pages (Dentist/Hygienist/Assistant/Anesthesia Permit/
+# Dental Lab/Residents/Faculty). Columns on every sub-page are:
+#   0=Last, 1=First, 2=Type, 3=Lic#, 4=Issued, 5=Spec Lic#, 6=Specialty Type,
+#   7=Specialty License Issued, 8=Expiration, 9=Orders.
+datatables:
+  table_selector: "table.dataTable"
+  column_index:
+    last_name: 0
+    first_name: 1
+    license_number: 3
+  settle_ms: 1500
+  sub_page_urls:
+    - "https://oklahoma.gov/dentistry/license-verification/verify-a-dentist.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-a-rdh.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-a-da.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-anesthesia-permit.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-dental-lab-permit.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-residents-permit.html"
+    - "https://oklahoma.gov/dentistry/license-verification/verify-faculty-permit.html"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  results_wait:
+    strategy: element_visible
+    selector: "table.dataTable tbody tr"
+    timeout_ms: 15000
+
+results:
+  type: table
+  table:
+    row_selector: "table.dataTable tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: last_name
+      1: first_name
+      2: license_type
+      3: license_number
+      4: issue_date
+      8: expiration_date
+  has_detail_page: false
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1440, height: 900}
+  timeout_ms: 90000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/OK_DENTAL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

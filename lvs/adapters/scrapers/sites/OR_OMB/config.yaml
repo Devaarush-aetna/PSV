@@ -1,0 +1,125 @@
+identity:
+  source_id: OR_OMB
+  board_name: Oregon Medical Board
+  state: OR
+  country: US
+  profession_codes: [MD, DO, PA, ACUP, POD]
+  # Next.js/React SPA at omb.oregon.gov/search.
+  # Confirmed selectors from oregon_all_providers_web_scraping.py (omb_search):
+  #   Last Name:    input[name*='lastName'] / input[id*='lastName']
+  #   License No:   input[name*='licenseNumber'] / input[id*='licenseNumber']
+  #   Name match:   select[name*='nameMatch'] → select_option("Contains") for name search
+  #   Search btn:   button:has-text('Search')
+  # Results: card-like links; each card has EntityID href + card text (Name, License#, Status).
+  # Row extractor targets table rows (table tbody tr) if rendered; otherwise uses card text.
+  # Detail: navigate to EntityID URL; body text contains "key: value" pairs.
+  base_url: "https://omb.oregon.gov/search"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name*='licenseNumber'], input[id*='licenseNumber'], input[placeholder*='icense']"
+      button_selector: "button:has-text('Search'), input[value='Search'], input[type='submit']"
+    - mode: last_name
+      input_selector: "input[name*='lastName'], input[id*='lastName'], input[placeholder*='ast Name']"
+      button_selector: "button:has-text('Search'), input[value='Search'], input[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name*='lastName'], input[placeholder*='ast Name']"
+    search_button:
+      selector: "button:has-text('Search')"
+      fallback_selectors:
+        - "input[value='Search']"
+        - "input[type='submit']"
+  results_wait:
+    # OMB uses AngularJS ng-repeat; wait for alx-list-item cards to appear.
+    # "No results were found." is ALWAYS in DOM (Angular template, hidden by ng-hide) — do NOT use as indicator.
+    strategy: element_visible
+    selector: "div.alx-list-item"
+    timeout_ms: 20000
+    # OMB Angular template ALWAYS contains "no results" text (inside ng-hide div) — must NOT use text indicators.
+    # Wait 20s for div.alx-list-item; if it doesn't appear, return 0 records via timeout path.
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    # AngularJS ng-repeat cards; h4 = "Last, First Middle" name; label text nodes contain lic# and status
+    row_selector: "div.alx-list-item"
+    cell_selector: "h4"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 2000
+  strategies:
+    - type: two_column_table
+    - type: label_sibling
+  field_map:
+    "Provider Name": full_name
+    "License Number": license_number
+    "Status": status
+    "License Type": license_type
+    "Expiration Date": expiration_date
+    "Issue Date": issue_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

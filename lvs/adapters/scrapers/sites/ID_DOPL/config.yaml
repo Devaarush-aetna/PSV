@@ -1,0 +1,155 @@
+identity:
+  source_id: ID_DOPL
+  board_name: Idaho Division of Occupational and Professional Licenses
+  state: ID
+  country: US
+  profession_codes: [MD, DO, RN, LPN, DC, OD, PT, PTA, OT, OTA, PA, PHARM, SW, LPC, AUD, SLP, PSYCH, DIET]
+  # Angular SPA at edopl.idaho.gov/OnlineServices. Navigation flow:
+  #   1. Navigate to base_url (home, no #hash) — shows login + public search tiles
+  #   2. pre_search_click clicks "Search for Individual Licenses" tile → Angular router → #2
+  #   3. Form renders: "Search by License" (License Number field) + "Search by Name" (Name field)
+  #   4. fill() doesn't update Angular FormControl — use use_keyboard_type to fire real key events
+  #   5. Click "Search" button (id=Dc-d) → Angular router navigates to #3 with results
+  #   6. Results appear in a table where data cells have class "TDS" (takes ~12s for #3 to render)
+  # Input IDs (Dc-d, Dd-r, Dd-11) are Angular-generated; may vary between deployments.
+  base_url: "https://edopl.idaho.gov/OnlineServices/_/"
+  archetype: thentia_cloud
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#Dd-r"
+      button_selector: "button#Dc-d, button:has-text('Search')"
+    - mode: last_name
+      input_selector: "#Dd-11"
+      button_selector: "button#Dc-d, button:has-text('Search')"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#Dd-11"
+    search_button:
+      selector: "button#Dc-d, button:has-text('Search')"
+    use_keyboard_type: true  # Angular reactive form requires real key events; fill() is ignored
+  pre_search_click: "a:has-text('Search for Individual Licenses')"
+  results_wait:
+    # Angular router navigates from #2 (form) to #3 (results) after Search — takes ~12s to render
+    strategy: element_visible
+    selector: "td.TDS"
+    timeout_ms: 35000
+    no_results_indicators:
+      - "No matching Individual Licenses"
+      - "No licenses found"
+      - "0 results found"
+
+results:
+  type: table
+  table:
+    # Result rows contain cells with class "TDS"; form dropdown rows do not
+    row_selector: "tr:has(td.TDS)"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: license_type
+      2: full_name
+      # 3: empty (city/business name placeholder — not mapped)
+      4: status
+      5: expiration_date
+      # 6: compact_member (boolean "No"/"Yes" — not mapped)
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "button[aria-label='Next page'], .mat-paginator-navigation-next, [aria-label='next page']"
+    disabled_class: "mat-button-disabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "table, dl, [class*='detail']"
+    timeout_ms: 15000
+  strategies:
+    - type: dt_dd
+    - type: two_column_table
+    - type: th_td_table
+    - type: label_sibling
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "Name": full_name
+    "Full Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Issue Date": issue_date
+    "Original Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Exp Date": expiration_date
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Lapsed": expired
+    "lapsed": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Canceled": revoked
+    "Not Granted": inactive
+    "Pending": inactive
+  date_formats:
+    - "%d-%b-%Y"
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 45000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

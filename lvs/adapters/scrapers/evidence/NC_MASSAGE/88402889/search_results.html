@@ -1,0 +1,374 @@
+<html><head>
+<title>NC Massage Therapist Listings</title>
+
+<link rel="stylesheet" type="text/css" href="ncmassx_add.css">
+<link rel="stylesheet" type="text/css" href="ncmassx_edit.css">
+<link rel="stylesheet" type="text/css" href="./css/container.css">
+<link rel="stylesheet" type="text/css" href="ncmassx.css">
+
+
+<!-- The code section below is extracted from [dbQwikSiteInstallPath\Data\Includes\YUI-JSLoader.txt] file -->   
+<!-- This file is included in all generated pages, right after JS basic initialization -->   
+<!-- If you need more of the Yahoo UI libraries for your own custom use, you may add libraries here. -->   
+<!-- This file is included in generated code BEFORE the 'ClientIncludes' Custom Code insertion point. -->
+<!-- So you may chose to add other libraries via the 'ClientIncludes' Custom Code insertion point. -->
+
+<!-- Load the YUI Loader scripts needed by dbQwikSite -->   
+<script type="text/javascript" src="./js/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/dom-min.js"></script>
+<script type="text/javascript" src="./js/event-min.js"></script>
+
+
+<script type="text/javascript">
+
+  // Invoke dbQwikSite Page OnLoad controller as soon as the page is ready 
+  // This should always happen first, any user custom-code should run after
+  YAHOO.util.Event.onDOMReady( function() { qsPageOnLoadController(); } );  
+
+</script>
+
+<!-- END OF STD-Loader.txt -->
+
+<!-- The code section below is extracted from [dbQwikSiteInstallPath\Data\Includes\STD-Loader.txt] file -->   
+<!-- This file is included in all generated pages, right after Javascript basic initialization -->   
+
+<!-- You may write JS File Includes, CSS includes or inline JavaScript code as needed. -->   
+<!-- This file is included in generated code BEFORE the 'ClientIncludes' Custom Code insertion point. -->
+
+<!-- Add all your customization below -->
+
+	<link rel="stylesheet" type="text/css" href="./css/ContentLayout.css">
+
+	<!--[if IE]> <style type="text/css"> #qs_listmenu_div { display:inline; zoom: 1; } </style> <![endif]-->
+	<!--[if !IE]><!--> <style type="text/css"> #qs_listmenu_div { display:inline-block; } </style> <!--[endif]---->
+
+<!-- END OF STD-Loader.txt -->
+
+
+<script type="text/javascript">
+
+// Declares all constants and arrays
+// for all page items used on the page
+
+// Declare Field Indexes for all page items
+var qsPageItemsCount = 9
+var _Last_Name                                = 0;
+var _First_Name                               = 1;
+var _City                                     = 2;
+var _State                                    = 3;
+var _License                                  = 4;
+var _Expiration_Date                          = 5;
+var ___License_Detail__                       = 6;
+var _Actions_on_file                          = 7;
+var _Actions                                  = 8;
+
+// Declare Fields Prompts
+var fieldPrompts = [];
+fieldPrompts[_Last_Name] = "Last Name";
+fieldPrompts[_First_Name] = "First Name";
+fieldPrompts[_City] = "City";
+fieldPrompts[_State] = "State";
+fieldPrompts[_License] = "License";
+fieldPrompts[_Expiration_Date] = "Expiration Date";
+fieldPrompts[___License_Detail__] = "  License Detail  ";
+fieldPrompts[_Actions_on_file] = "Actions on file";
+fieldPrompts[_Actions] = "Actions";
+
+// Declare Fields Technical Names
+var fieldTechNames = [];
+fieldTechNames[_Last_Name] = "Last_Name";
+fieldTechNames[_First_Name] = "First_Name";
+fieldTechNames[_City] = "City";
+fieldTechNames[_State] = "State";
+fieldTechNames[_License] = "License";
+fieldTechNames[_Expiration_Date] = "Expiration_Date";
+fieldTechNames[___License_Detail__] = "__License_Detail__";
+fieldTechNames[_Actions_on_file] = "Actions_on_file";
+fieldTechNames[_Actions] = "Actions";
+
+// This function dynamically assigns element 'ID' attributes to all relevant elements
+function qsAssignElementIDs() {
+
+  // STEP 1: Assign an ID to all field PROMPTS (TD captions)
+  // Scan all table TD tags for those that match field prompts
+  var TDs = document.getElementsByTagName("td");
+  for (var i=0; i < TDs.length; i++) {
+    var element = TDs[i];
+    // Check if the TD found is one of the Page Items header
+    // This can only be an approximation as some TDs other than the actual field prompts
+    // may contain the same caption. In that case all TDs found will carry the same ID.
+    if (element.className.substr(0, 6) == "ThRows" || element.className.substr(0, 5) == "TrOdd") {
+      for (var f=0; f < qsPageItemsCount; f++) {
+        if (element.innerHTML == fieldPrompts[f]) {
+            element.id = fieldTechNames[f] + "_caption_cell";
+          element.innerHTML = "<div id='" + fieldTechNames[f] + "_caption_div'>" + element.innerHTML + "</div>";
+        }
+      }
+    }
+  }
+
+  // STEP 2: Assign an ID to all Input controls on the form
+}
+
+// This function defines object names for all page items used on the page.
+// You can refer to these objects in your JavaScript code and avoid getElementById().
+// Entry Fields (when present) are accessible via their technical names.
+// The prompts of Entry Fields (when present) are accessible using SomeItemName_Prompt object names.
+// 
+function qsPageItemsAbstraction() {
+}
+
+</script>
+
+
+
+<script type="text/javascript">
+
+// This function dynamically assigns custom events
+// to page item controls on this page
+function qsAssignPageItemEvents() {
+}
+
+</script>
+
+
+
+
+<!-- >> START OF "NC Massage Therapist Listings -> Client Includes" [clientincludes] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]-->
+<!-- << END OF "NC Massage Therapist Listings -> Client Includes" [clientincludes] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]-->
+
+
+
+
+<script>
+
+function usrEvent__NC_Massage_Therapist_Listings__onload() {
+  // >> START OF "NC Massage Therapist Listings -> On Load" [onload] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+  // << END OF "NC Massage Therapist Listings -> On Load" [onload] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+}
+
+
+
+function usrEvent__NC_Massage_Therapist_Listings__onunload() {
+  // >> START OF "NC Massage Therapist Listings -> On Unload" [onunload] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+  // << END OF "NC Massage Therapist Listings -> On Unload" [onunload] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+}
+
+
+
+function usrEvent__NC_Massage_Therapist_Listings__onresize() {
+  // >> START OF "NC Massage Therapist Listings -> On Resize" [onresize] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+  // << END OF "NC Massage Therapist Listings -> On Resize" [onresize] [PAGEEVENT] [START] [JS] [601680D3-ACD6-4961-A6B2-1BFCF77534C9]
+}
+
+
+
+// This function controls the OnUnload event dispatching
+function qsPageOnUnloadController() {   
+}
+
+
+
+// This function controls the OnResize event dispatching
+function qsPageOnResizeController() {   
+   var lastResult = false                              
+   return true;                                        
+}                                                      
+
+
+
+// This function controls the OnLoad events dispatching
+function qsPageOnLoadController() {   
+   var lastResult = false                              
+
+   // Invoke the technical field names abstraction initialization
+   qsPageItemsAbstraction();
+
+
+   // Invoke the Element IDs assignment function
+   qsAssignElementIDs();
+
+   // Invoke the Page Items custom events assignments
+   qsAssignPageItemEvents();
+   // Assign Event Handlers for page-level events
+   YAHOO.util.Event.addListener(window, "beforeunload", qsPageOnUnloadController);
+   YAHOO.util.Event.addListener(window, "resize", qsPageOnResizeController);
+   // Set focus on first enterable page item available
+
+   return true;                                        
+}                                                      
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+ <style type="text/css">
+ 	#qsInlinePanelHolder {visibility:hidden; }
+ 	#qsInlinePanel .hd { height: 16px;}
+ 	#qsInlinePanel .bd { overflow:auto;}
+ 	#qsInlinePanel .ft { height: 0px;}
+ </style>
+<meta name="description" content="NC Massage Therapist Listings">
+<meta name="keywords" content="NC Massage Therapist Listings">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+
+</head>
+
+<body>
+
+<script language="JavaScript">
+function cell_over(cell, classname) {
+    if (document.all || document.getElementById) {
+        cell.classBackup = cell.className;
+        cell.className   = classname;
+    }
+}
+function cell_out(cell)
+{
+    if (document.all || document.getElementById) {
+        cell.className   = cell.classBackup;
+    }
+}
+</script>
+
+
+<center>
+<center>
+      <center>
+        <center>
+          <center>
+            <center>
+              <hr><font size="5"><img alt="" hspace="0" src="./images/TitelwithnoSealctr.gif" align="baseline" border="0"></font>
+              <hr>
+            </center><br>
+          </center>
+        </center>
+      </center>
+    </center>
+
+
+
+<table id="QS_Content_Layout_1_Table">
+  <tbody><tr id="QS_Content_Layout_1_TopRow">
+    <td id="QS_Content_Layout_1_NorthWest">
+            <div id="QS_Content_Layout_1_NorthWestDiv">
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_North">
+            <div id="QS_Content_Layout_1_NorthDiv">
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_NorthEast">
+            <div id="QS_Content_Layout_1_NorthEastDiv">
+
+        </div>
+    </td>
+  </tr>
+  <tr id="QS_Content_Layout_1_MiddleRow">
+    <td id="QS_Content_Layout_1_West">
+            <div id="QS_Content_Layout_1_WestDiv">
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_Center">
+            <div id="QS_Content_Layout_1_CenterDiv">
+Found 236 record(s)<br><a href="ncmassx.asp?clearsession=1">Show All</a> | <a href="ncmassx_search.asp?search_fd0=Smith">Search</a> | <a href="ncmassx.asp?Page=1&amp;search_fd0=Smith">First Page</a> | Previous | <a href="ncmassx.asp?Page=2&amp;search_fd0=Smith">Next</a> | <a href="ncmassx.asp?Page=24&amp;search_fd0=Smith">Last Page</a> | <a href="#bottom">Bottom</a><br><br>
+   <div id="qsInlinePanelHolder" class="yui-skin-sam">
+     <div id="qsInlinePanel">
+ 	    <div class="hd"></div>
+	      <div class="bd">
+           <table><tbody><tr><td><span id="inlineForm"></span></td></tr></tbody></table>
+	      </div>
+     </div>
+   </div>
+
+<table id="masterDataTable" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+
+<tbody><tr>
+
+<td id="Last_Name_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><a href="ncmassx.asp?SortField=ncmassx%2E%60last%60&amp;SortBy=ASC&amp;search_fd0=Smith"><img src="images/sort_asc1.gif" title="Sort Ascending" border="0"></a>
+&nbsp;<span id="Last_Name_caption_div">Last Name</span>&nbsp;
+<a href="ncmassx.asp?SortField=ncmassx%2E%60last%60&amp;SortBy=DESC&amp;search_fd0=Smith"><img src="images/sort_desc1.gif" title="Sort Descending" border="0"></a></td>
+<td id="First_Name_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="First_Name_caption_div">First Name</span></td>
+
+<td id="City_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><a href="ncmassx.asp?SortField=ncmassx%2E%60city%60&amp;SortBy=ASC&amp;search_fd0=Smith"><img src="images/sort_asc1.gif" title="Sort Ascending" border="0"></a>
+&nbsp;<span id="City_caption_div">City</span>&nbsp;
+<a href="ncmassx.asp?SortField=ncmassx%2E%60city%60&amp;SortBy=DESC&amp;search_fd0=Smith"><img src="images/sort_desc1.gif" title="Sort Descending" border="0"></a></td>
+<td id="State_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="State_caption_div">State</span></td>
+
+<td id="License_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><a href="ncmassx.asp?SortField=ncmassx%2E%60license%60&amp;SortBy=ASC&amp;search_fd0=Smith"><img src="images/sort_asc1.gif" title="Sort Ascending" border="0"></a>
+&nbsp;<span id="License_caption_div">License</span>&nbsp;
+<a href="ncmassx.asp?SortField=ncmassx%2E%60license%60&amp;SortBy=DESC&amp;search_fd0=Smith"><img src="images/sort_desc1.gif" title="Sort Descending" border="0"></a></td>
+<td id="Expiration_Date_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="Expiration_Date_caption_div">Expiration Date</span></td>
+<td id="__License_Detail___caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="__License_Detail___caption_div">  License Detail  </span></td>
+<td id="Actions_on_file_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="Actions_on_file_caption_div">Actions on file</span></td>
+<td id="Actions_caption_cell" class="ThRows Ncmassx_1_TableTitle" nowrap=""><span id="Actions_caption_div">Actions</span></td>
+
+</tr>
+<tr class="TrOdd Ncmassx_1_OddDataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_0">Arrington-Smith               </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_0">Ellen                    </span></td><td align="Default"><span id="Ncmassx_1_City_value_0">Sylva                              </span></td><td align="Default"><span id="Ncmassx_1_State_value_0">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_0">04016     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_0">12/31/2006</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_0"><a href="./ncmassx_more.asp?search_fd0=Arrington%2DSmith+++++++++++++++&amp;search_fd1=Ellen++++++++++++++++++++&amp;search_fd2=04016+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Not+Licensed++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Sylva++++++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_0">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_0"><a href="./sanction_details_details.asp?search_fd0=04016+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrRows Ncmassx_1_DataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_1">Bowers-Smith                  </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_1">Sophia                   </span></td><td align="Default"><span id="Ncmassx_1_City_value_1">Lenoir                             </span></td><td align="Default"><span id="Ncmassx_1_State_value_1">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_1">05858     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_1">12/31/2019</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_1"><a href="./ncmassx_more.asp?search_fd0=Bowers%2DSmith++++++++++++++++++&amp;search_fd1=Sophia+++++++++++++++++++&amp;search_fd2=05858+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Not+Licensed++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Lenoir+++++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_1">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_1"><a href="./sanction_details_details.asp?search_fd0=05858+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrOdd Ncmassx_1_OddDataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_2">Cole-Smith                    </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_2">Teresa                   </span></td><td align="Default"><span id="Ncmassx_1_City_value_2">Whittier                           </span></td><td align="Default"><span id="Ncmassx_1_State_value_2">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_2">17506     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_2">12/31/2025</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_2"><a href="./ncmassx_more.asp?search_fd0=Cole%2DSmith++++++++++++++++++++&amp;search_fd1=Teresa+++++++++++++++++++&amp;search_fd2=17506+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Not+Licensed++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Whittier+++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_2">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_2"><a href="./sanction_details_details.asp?search_fd0=17506+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrRows Ncmassx_1_DataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_3">Courtenay-Smith               </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_3">Catherine                </span></td><td align="Default"><span id="Ncmassx_1_City_value_3">Asheville                          </span></td><td align="Default"><span id="Ncmassx_1_State_value_3">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_3">10426     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_3">12/31/2011</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_3"><a href="./ncmassx_more.asp?search_fd0=Courtenay%2DSmith+++++++++++++++&amp;search_fd1=Catherine++++++++++++++++&amp;search_fd2=10426+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Not+Licensed++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Asheville++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_3">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_3"><a href="./sanction_details_details.asp?search_fd0=10426+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrOdd Ncmassx_1_OddDataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_4">Crawford-Smith                </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_4">Katherine                </span></td><td align="Default"><span id="Ncmassx_1_City_value_4">Franklin                           </span></td><td align="Default"><span id="Ncmassx_1_State_value_4">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_4">15787     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_4">12/31/2027</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_4"><a href="./ncmassx_more.asp?search_fd0=Crawford%2DSmith++++++++++++++++&amp;search_fd1=Katherine++++++++++++++++&amp;search_fd2=15787+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Active++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Franklin+++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_4">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_4"><a href="./sanction_details_details.asp?search_fd0=15787+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrHover" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_5">Friday-Smith                  </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_5">Debra                    </span></td><td align="Default"><span id="Ncmassx_1_City_value_5">Gastonia                           </span></td><td align="Default"><span id="Ncmassx_1_State_value_5">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_5">18729     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_5">12/31/2027</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_5"><a href="./ncmassx_more.asp?search_fd0=Friday%2DSmith++++++++++++++++++&amp;search_fd1=Debra++++++++++++++++++++&amp;search_fd2=18729+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Active++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Gastonia+++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_5">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_5"><a href="./sanction_details_details.asp?search_fd0=18729+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrOdd Ncmassx_1_OddDataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_6">Goldsmith                     </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_6">Angela                   </span></td><td align="Default"><span id="Ncmassx_1_City_value_6">Burlington                         </span></td><td align="Default"><span id="Ncmassx_1_State_value_6">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_6">23172     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_6">12/31/2027</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_6"><a href="./ncmassx_more.asp?search_fd0=Goldsmith+++++++++++++++++++++&amp;search_fd1=Angela+++++++++++++++++++&amp;search_fd2=23172+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Active++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Burlington+++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_6">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_6"><a href="./sanction_details_details.asp?search_fd0=23172+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrRows Ncmassx_1_DataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_7">Goldsmith                     </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_7">Cory                     </span></td><td align="Default"><span id="Ncmassx_1_City_value_7">Raleigh                            </span></td><td align="Default"><span id="Ncmassx_1_State_value_7">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_7">22037     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_7">12/31/2027</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_7"><a href="./ncmassx_more.asp?search_fd0=Goldsmith+++++++++++++++++++++&amp;search_fd1=Cory+++++++++++++++++++++&amp;search_fd2=22037+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Active++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Raleigh++++++++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_7">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_7"><a href="./sanction_details_details.asp?search_fd0=22037+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrOdd Ncmassx_1_OddDataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_8">Goldsmith                     </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_8">Jason Matthew            </span></td><td align="Default"><span id="Ncmassx_1_City_value_8">Jacksonville                       </span></td><td align="Default"><span id="Ncmassx_1_State_value_8">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_8">07441     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_8">06/07/1112</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_8"><a href="./ncmassx_more.asp?search_fd0=Goldsmith+++++++++++++++++++++&amp;search_fd1=Jason+Matthew++++++++++++&amp;search_fd2=07441+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=License+expired+%2D+Actions+on+file+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Jacksonville+++++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_8">Yes </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_8"><a href="./sanction_details_details.asp?search_fd0=07441+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr><tr class="TrRows Ncmassx_1_DataText" onmouseover="cell_over(this, 'TrHover')" onmouseout="cell_out(this)"><td align="Default"><span id="Ncmassx_1_Last_Name_value_9">Goldsmith                     </span></td><td align="Default"><span id="Ncmassx_1_First_Name_value_9">Tonie Diane              </span></td><td align="Default"><span id="Ncmassx_1_City_value_9">Elizabeth City                     </span></td><td align="Default"><span id="Ncmassx_1_State_value_9">NC                  </span></td><td align="Left"><span id="Ncmassx_1_License_value_9">07902     </span></td><td align="Center"><span id="Ncmassx_1_Expiration_Date_value_9">12/31/2011</span></td><td align="Center"><span id="Ncmassx_1___License_Detail___value_9"><a href="./ncmassx_more.asp?search_fd0=Goldsmith+++++++++++++++++++++&amp;search_fd1=Tonie+Diane++++++++++++++&amp;search_fd2=07902+++++&amp;search_fd3=LMBT++++++&amp;search_fd7=Not+Licensed++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;search_fd8=Elizabeth+City+++++++++++++++++++++&amp;search_fd9=NC++++++++++++++++++"><img src="./images/Viewshort.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td><td align="Center"><span id="Ncmassx_1_Actions_on_file_value_9">No  </span></td><td align="Center"><span id="Ncmassx_1_Actions_value_9"><a href="./sanction_details_details.asp?search_fd0=07902+++++"><img src="./images/detailmt.gif" border="0" onerror="this.onerror=null;this.src='./images/qs_nopicture.gif';"></a></span></td></tr>
+</tbody></table>
+
+<br>
+<a href="ncmassx.asp?clearsession=1">Show All</a> | <a href="ncmassx_search.asp?search_fd0=Smith">Search</a> | <a href="ncmassx.asp?Page=1&amp;search_fd0=Smith">First Page</a> | Previous | <a href="ncmassx.asp?Page=2&amp;search_fd0=Smith">Next</a> | <a href="ncmassx.asp?Page=24&amp;search_fd0=Smith">Last Page</a> | <a href="#top">Top</a><br><br>
+<a name="bottom"></a>
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_East">
+            <div id="QS_Content_Layout_1_EastDiv">
+
+        </div>
+    </td>
+  </tr>
+  <tr id="QS_Content_Layout_1_BottomRow">
+    <td id="QS_Content_Layout_1_SouthWest">
+            <div id="QS_Content_Layout_1_SouthWestDiv">
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_South">
+            <div id="QS_Content_Layout_1_SouthDiv">
+
+        </div>
+    </td>
+    <td id="QS_Content_Layout_1_SouthEast">
+            <div id="QS_Content_Layout_1_SouthEastDiv">
+
+        </div>
+    </td>
+  </tr>
+</tbody></table>
+
+
+
+  
+    <title></title>
+  
+  
+    <center><font size="2" face="Verdana">&nbsp;</font></center>
+    <center><font size="2" face="Verdana">&nbsp;</font></center>
+    <center><font size="2" face="Verdana">For additional information about an individual therapist, click on the "View" button under the "More Detail" column.&nbsp; This allows you to print a single License Verification page for the selected individual.</font></center>
+    <center><font size="2" face="Verdana">&nbsp;</font></center>
+    <center>
+      <center><font size="2" face="Verdana">For information&nbsp;related to current or past disciplinary actions, click on the "Details" button under the&nbsp;"Actions" column next to the selected therapist.&nbsp; </font></center>
+    </center>
+  
+
+
+
+
+
+
+</center></body></html>

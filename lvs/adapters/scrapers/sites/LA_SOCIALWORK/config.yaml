@@ -1,0 +1,110 @@
+identity:
+  source_id: LA_SOCIALWORK
+  board_name: Louisiana State Board of Social Work Examiners
+  state: LA
+  country: US
+  profession_codes: [LCSW, LMSW, LBSW]
+  # ColdFusion index.cfm portal at labswe.org.
+  # From Louisiana_SocialWorkExaminers_SocialWorkers_Scraper.py:
+  #   GET search params: firstName, lastName, licenseNum
+  #   Form inputs: input[name="lastName"], input[name="firstName"], input[name="licenseNum"]
+  #   Results: <li class="row"> cards; name in <h3>, fields in <span> key:value pairs.
+  # NOTE: Engine extracts name only (h3 within li.row). License/status in span key-value pairs
+  #       require cfm_li_row engine enhancement for full extraction.
+  base_url: "https://www.labswe.org/licensee-search"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='licenseNum']"
+    - mode: last_name
+      input_selector: "input[name='lastName']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='lastName']"
+    search_button:
+      selector: "a#search_button"
+  results_wait:
+    strategy: element_visible
+    selector: "li.row"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no match"
+
+results:
+  type: table
+  table:
+    row_selector: "li.row"
+    cell_selector: "h3"
+    skip_first_row: false
+    columns:
+      0: "full_name"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/LA_SOCIALWORK/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

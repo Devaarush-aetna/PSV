@@ -1,0 +1,118 @@
+identity:
+  source_id: "AZ_PT"
+  board_name: "Arizona Board of Physical Therapy"
+  state: "AZ"
+  country: "US"
+  profession_codes: ["PT"]
+  # Thentia portalus subdomain: azbpt.portalus.thentiacloud.net/webs/portal/register/
+  # NOTE: The .portalus.thentiacloud.net domain is currently DNS-blocked by the corporate
+  # McAfee Web Gateway / Zscaler (returns 403 Forbidden via proxy). Sister boards
+  # (OK_OPTOMETRY, OK_OSTEO, WV_PT) hit the same block. Once the host is allowlisted, this
+  # config should work as a keyword-only Thentia search (template like OR_NATUROPATH).
+  base_url: "https://azbpt.portalus.thentiacloud.net/webs/portal/register/#"
+  archetype: thentia_cloud
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#keywords"
+      fallback_selectors:
+        - "input[name='keywords']"
+        - "input[placeholder*='search']"
+    search_button:
+      selector: "button.btn-brand"
+      fallback_selectors:
+        - "[aria-label='Search']"
+        - "button[type='submit']"
+        - "a.btn-single"
+  submit_via_enter: true
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "showing results 1-0 of 0"
+      - "no records found"
+      - "no results were found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: license_number
+      1: first_name
+      2: last_name
+      3: city
+      4: license_type
+      5: status
+      6: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/AZ_PT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

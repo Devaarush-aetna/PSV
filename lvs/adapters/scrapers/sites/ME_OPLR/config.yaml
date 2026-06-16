@@ -1,0 +1,141 @@
+identity:
+  source_id: "ME_OPLR"
+  board_name: "Maine Office of Professional and Occupational Regulation (ALMS)"
+  state: "ME"
+  country: "US"
+  profession_codes: ["MD", "DO", "DC", "RN", "DDS", "RDH", "PT", "OT", "Pharmacy", "Multi-Profession"]
+  # ALMS Online portal at pfr.maine.gov.
+  # From Maine_All_Webscrapper/scraper.py + config.py:
+  #   BASE_URL = https://www.pfr.maine.gov/ALMSOnline/ALMSQuery/SearchIndividual.aspx
+  #   Element IDs: scDepartment, scAgency, scRegulator (REQUIRED), scLastName, scFirstName, scLicenseNo, btnSearch.
+  #   Regulator examples: "CHIROPRACTIC", "MEDICINE", "DENTISTRY", "PHARMACY".
+  #   Sample license formats: CR861, CR2324, CR2727 (chiropractic).
+  base_url: "https://www.pfr.maine.gov/ALMSOnline/ALMSQuery/SearchIndividual.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#scLicenseNo"
+      button_selector: "#btnSearch"
+      dropdown_value: "ALL"
+    - mode: last_name
+      input_selector: "#scLastName"
+      button_selector: "#btnSearch"
+      dropdown_value: "ALL"
+    - mode: first_name
+      input_selector: "#scFirstName"
+      button_selector: "#btnSearch"
+      dropdown_value: "ALL"
+  form:
+    # ALMS has 3 cascading dropdowns (scDepartment/scAgency/scRegulator) but scRegulator
+    # has "ALL" as an option that searches across all 56 regulators — bypasses cascade.
+    search_by_dropdown:
+      strategy: select
+      selector: "#scRegulator"
+    search_input:
+      selector: "#scLastName"
+    search_button:
+      selector: "#btnSearch"
+  results_wait:
+    strategy: network_idle
+    selector: "table tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records found"
+      - "no matching records"
+      - "no results"
+
+results:
+  type: table
+  table:
+    row_selector: "table#gvLicensees > tbody > tr"
+    cell_selector: "td"
+    columns:
+      0: full_name
+      1: license_number
+      2: city
+      3: license_type
+      4: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "table"
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: label_sibling
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License #": license_number
+    "License Type": license_type
+    "Status": status
+    "License Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Regulator": board_name
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/ME_OPLR/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

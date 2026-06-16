@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import asyncio
-import os
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -15,6 +14,7 @@ from playwright.async_api import (
 )
 
 from .models import TransportConfig
+from .proxy import get_proxy_config  # remove this import (and the call below) to disable proxy
 
 
 _REAL_UA = (
@@ -41,15 +41,10 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
     """
     headless = headless_override if headless_override is not None else config.headless
 
-    proxy_cfg = None
-    if config.proxy.enabled:
-        server = os.environ.get("LVS_PROXY_SERVER", "")
-        if server:
-            proxy_cfg = {
-                "server": server,
-                "username": os.environ.get("LVS_PROXY_USER", ""),
-                "password": os.environ.get("LVS_PROXY_PASS", ""),
-            }
+    # Proxy is applied whenever PROXY (or LVS_PROXY_SERVER) env vars are set.
+    # To disable: unset those variables.  To remove entirely: delete engine/proxy.py
+    # and replace this call with `proxy_cfg = None`.
+    proxy_cfg = get_proxy_config()
 
     # Use a real browser UA unless config explicitly overrides it
     user_agent = config.user_agent

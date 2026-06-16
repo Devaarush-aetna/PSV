@@ -1,0 +1,139 @@
+identity:
+  source_id: MO_PHARMACY
+  board_name: Missouri Board of Pharmacy
+  state: MO
+  country: US
+  profession_codes: [RPh, PharmD, PharmTech]
+  # Missouri Division of Professional Registration — Salesforce LWC portal.
+  # Downloads a ZIP for the "Pharmacy" board; ZIP contains a tab-delimited TXT
+  # with all licensee records (pharmacists, pharmacy technicians).
+  # Download mechanism: select "Pharmacy" from LWC combobox → Submit → Download.
+  # Requires the mopro_zip csv_bulk strategy (not yet in engine; use missouri_all_txt.py standalone).
+  base_url: "https://mopro.mo.gov/license/s/license-downloads"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: mopro_zip
+  board_label: "Pharmacy"
+  cache_days: 7
+  cache_dir: "./csvs/mo_pharmacy"
+  encoding: "latin-1"
+  file_format: txt
+  separator: "\t"
+  search_columns:
+    license_number: "LIC_NUM"
+    last_name: "PRC_LAST"
+    first_name: "PRC_FIRST"
+    full_name: "PRC_LAST"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+    - mode: first_and_last
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 500
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LIC_NUM": license_number
+    "PRC_FIRST": licensee_first_name
+    "PRC_LAST": licensee_last_name
+    "PRC_MIDDLE": licensee_middle_name
+    "SUFFIX": licensee_suffix
+    "LST_DESC": status
+    "LIC_STATUS": status
+    "EXP_DATE": expiration_date
+    "LIC_EXP": expiration_date
+    "ORIG_ISSUE": issue_date
+    "ISSUE_DATE": issue_date
+    "CLAS_DESC": license_type
+    "CTYPE_DESC": license_type
+    "BA_ADDRESS": address
+    "BA_CITY": city
+    "BA_STATE": state_code
+    "BA_ZIP": zip_code
+    "LD_DESC": disciplinary_actions
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "Lapsed": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Cancelled": inactive
+    "Non-renewed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 120000
+  navigation_timeout_ms: 90000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [5000, 10000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  skip: true
+  skip_reason: "mopro_zip_strategy_required — Salesforce LWC portal download not yet supported by csv_extractor; use missouri_all_txt.py standalone script"
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

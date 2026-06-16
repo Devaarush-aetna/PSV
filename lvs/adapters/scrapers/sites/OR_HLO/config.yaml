@@ -1,0 +1,154 @@
+identity:
+  source_id: OR_HLO
+  board_name: Oregon Health Licensing Office
+  state: OR
+  country: US
+  profession_codes: [AT, DIET, HAIR, NAIL, ABA, HEAR, RT, EMS, CW]
+  # ASP.NET WebForms portal at elite.hlo.state.or.us — covers 20+ professions.
+  # Confirmed selectors from oregon_all_providers_web_scraping.py (hlo_search):
+  #   Last Name:    input[id='CPH1_txtsrcApplicantLastName']
+  #   License No:   input[id='CPH1_txtsrcLicNo'] (numeric only — strip non-digits)
+  #   Board select: select[id='CPH1_drpsrcBoard'] (optional, leave blank for all)
+  #   Search btn:   input[id='CPH1_btnSearch'] (type=submit)
+  # Results table — tr columns (skip header rows by check on texts[1]/texts[2] keywords):
+  #   [0]=icon(empty) [1]=Licensee Name (LAST, FIRST M) [2]=License No. [3]=Status
+  #   [4]=Active Through (expiration) [5]=City,State,Zip [6]=License Type
+  # skip_first_row: true covers the HTML table header row.
+  # Pagination: "a:has-text('Next')" or "input[value='Next']" (up to 240 shown / 20 pages).
+  base_url: "https://elite.hlo.state.or.us/OHLOPublicR/LPRBrowser.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      # Field IDs confirmed from live evidence: CPH1_txtsrcLicenseNo (NOT txtsrcLicNo)
+      input_selector: "input[id='CPH1_txtsrcLicenseNo'], input[name*='txtsrcLicenseNo']"
+      # Search button value is "Start Search" — NOT "Search"; do NOT use id*=CPH1[type='submit']
+      # which matches CPH1_btnReset (Reset Search) and CPH1_btnExitSearch
+      button_selector: "input[value='Start Search'], input[name*='btnGoFind']"
+    - mode: last_name
+      input_selector: "input[id='CPH1_txtsrcApplicantLastName'], input[name*='txtsrcApplicantLastName']"
+      button_selector: "input[value='Start Search'], input[name*='btnGoFind']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id='CPH1_txtsrcApplicantLastName']"
+    search_button:
+      selector: "input[value='Start Search']"
+      fallback_selectors:
+        - "input[name*='btnGoFind']"
+        - "input[type='submit'][value*='Search']"
+  # 2026-06-15 (session 29 iter 2): live probe with actual search confirmed
+  # results render in a NEW table id=CPH1_myDataGrid (class=Grid) that doesn't
+  # exist on the form-only page. Wait for that selector to appear.
+  results_wait:
+    strategy: element_visible
+    selector: "#CPH1_myDataGrid tr"
+    timeout_ms: 35000
+    no_results_indicators:
+      - "no records found"
+      - "no matching records"
+      - "no licensees found"
+
+results:
+  type: table
+  table:
+    # 2026-06-15 (session 29 iter 2): results table id=CPH1_myDataGrid (class=Grid).
+    # First tr is the header (Licensee Name | License No. | Status | Active Through |
+    # City, State, Zip | License Type | Board). Live-probe column layout:
+    # [0]=empty/icon, [1]=Licensee Name, [2]=License No., [3]=Status, [4]=Active
+    # Through, [5]=City State Zip, [6]=License Type, [7]=Board.
+    table_selector: "#CPH1_myDataGrid"
+    table_index: 0
+    row_selector: "tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      1: full_name
+      2: license_number
+      3: status
+      4: expiration_date
+      5: address
+      6: license_type
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:has-text('Next'), input[value='Next'], input[value=' Next ']"
+    disabled_class: "disabled"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+  field_map:
+    "Licensee Name": full_name
+    "License No": license_number
+    "License No.": license_number
+    "Status": status
+    "Active Through": expiration_date
+    "License Type": license_type
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 29): skip lifted. Re-probed elite.hlo.state.or.us/
+  # OHLOPublicR/LPRBrowser.aspx — returns 200 OK and shows the OHLOPublicR Public
+  # Record Search ASP.NET form with __VIEWSTATE / __EVENTVALIDATION (33 default rows).
+  # Prior 404 was on a stale legacy URL (/OLLicenseeSearch/) that the config no
+  # longer references.

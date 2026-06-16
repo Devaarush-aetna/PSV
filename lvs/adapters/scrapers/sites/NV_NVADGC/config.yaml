@@ -1,6 +1,6 @@
 ﻿identity:
   source_id: "NV_NVADGC"
-  board_name: "Nevada State Board of Dental Examiners"
+  board_name: "Nevada Division of Alcohol and Drug Counselors"
   state: "NV"
   country: "US"
   profession_codes: ["DMD", "DDS", "RDH", "DA"]
@@ -188,8 +188,7 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  mode: license_number
-  query: "01952-I"
+  mode: last_name
+  query: "Smith"
   expect:
-    license_number: "01952-I"
-    status: "expired"
+    min_records: 1

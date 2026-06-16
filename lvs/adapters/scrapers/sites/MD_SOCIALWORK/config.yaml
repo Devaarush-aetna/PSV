@@ -1,0 +1,154 @@
+identity:
+  source_id: MD_SOCIALWORK
+  board_name: Maryland Board of Social Work Examiners
+  state: MD
+  country: US
+  profession_codes: [LCSW, LGSW, LMSW, LSWA]
+  # ASP.NET WebForms portal at mdbnc.health.maryland.gov/bsweVerification/ — same structure as MD_AUDIOLOGY.
+  # License search: #bodyContentPlaceHolder_licenseNoSearch + search2 button.
+  # Name search:    #bodyContentPlaceHolder_lastNameSearch  + search1 button.
+  # Results grid (name/lic): verificationNameGridView / verificationLicGridView
+  #   Columns: [0]=LastName [1]=FirstName [2]=LicType [3]=Status [4]=LicenseNum [5]=ViewDetails
+  #   (license_num is at index 4, NOT 2 — confirmed from Maryland_SocialWorker.py)
+  # Detail: #bodyContentPlaceHolder_DetailsView1 two_column_table (td/td, label in col[0], value in col[1]).
+  # Fields: Full Name, License Level, License Number, Status, Original License Date, Expiration Date.
+  base_url: "https://mdbnc.health.maryland.gov/bsweVerification/Default.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#bodyContentPlaceHolder_licenseNoSearch"
+      button_selector: "#bodyContentPlaceHolder_search2"
+    - mode: last_name
+      input_selector: "#bodyContentPlaceHolder_lastNameSearch"
+      button_selector: "#bodyContentPlaceHolder_search1"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#bodyContentPlaceHolder_lastNameSearch"
+    search_button:
+      selector: "#bodyContentPlaceHolder_search1"
+  results_wait:
+    strategy: element_visible
+    selector: "a:has-text('View Details')"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records found"
+      - "no match"
+      - "not found"
+      - "0 records"
+
+results:
+  type: table
+  table:
+    table_selector: "#bodyContentPlaceHolder_verificationNameGridView"
+    table_index: 0
+    row_selector: "tbody tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: last_name
+      1: first_name
+      4: license_number
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a:has-text('View Details')"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a#MainContent_btnNext"
+    disabled_class: "aspNetDisabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "#bodyContentPlaceHolder_DetailsView1"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "table#bodyContentPlaceHolder_DetailsView1"
+  strategies:
+    - type: two_column_table
+  field_map:
+    "Full Name": full_name
+    "full name": full_name
+    "License Level": license_type
+    "license level": license_type
+    "License Number": license_number
+    "license number": license_number
+    "Status": status
+    "status": status
+    "Original License Date": issue_date
+    "original license date": issue_date
+    "Expiration Date": expiration_date
+    "expiration date": expiration_date
+    "Independent Practice": independent_practice
+    "Disciplinary Action": disciplinary_action
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Non-renewed": expired
+    "Non Renewed": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "Retired": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Goldstein"
+  expect:
+    min_records: 1
+    full_name_contains: "Goldstein"

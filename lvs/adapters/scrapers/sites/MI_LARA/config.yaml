@@ -1,0 +1,186 @@
+identity:
+  source_id: MI_LARA
+  board_name: Michigan Department of Licensing and Regulatory Affairs (LARA)
+  state: MI
+  country: US
+  profession_codes: [MD, DO, RN, LPN, APRN, DDS, DMD, RPh, PharmD, PT, PTA, OT, OTA, PA, DC, OD, SW, LPC, MFT, SLP, AUD, Psych]
+  # Accela Citizen Access — MILARA licensee lookup (PropertyLookUp.aspx?isLicensee=Y).
+  # Covers all Michigan professional license types: healthcare, trades, real estate, etc.
+  # Supports: license number, first+last name, first name, last name searches.
+  # Results appear in a standard Accela grid (table#gdvRefLicenseeList or table.ACA_Grid).
+  # Detail page: LicenseeDetail.aspx — Accela standard tabs with multi-strategy extraction.
+  # NOTE: Accela injects zero-width Unicode characters (U+200B, U+200C, U+200D) into displayed
+  # text as anti-scraping measures. Post-processor strip_zero_width_chars handles this.
+  base_url: "https://aca-prod.accela.com/MILARA/GeneralProperty/PropertyLookUp.aspx?isLicensee=Y&TabName=Home"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[id*='txtLicNumber'], input[id*='txtLicenseNumber'], input[id*='LicNumber']"
+    - mode: last_name
+      input_selector: "input[id*='txtLastName'], input[id*='LastName']"
+    - mode: first_name
+      input_selector: "input[id*='txtFirstName'], input[id*='FirstName']"
+    - mode: first_and_last
+      input_selector: "input[id*='txtFirstName'], input[id*='FirstName']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id*='txtLastName'], input[id*='LastName']"
+      fallback_selectors:
+        - "input[id*='txtLicNumber']"
+        - "input[id*='txtFirstName']"
+    search_button:
+      selector: "a[id*='btnNewSearch']"
+      fallback_selectors:
+        - "a[id*='btnSearch'], input[id*='btnSearch']"
+        - "a[id*='SearchLicenseeBtn'], input[id*='SearchLicenseeBtn']"
+        - "input[type='submit'][value*='Search'], input[type='button'][value*='Search']"
+        - "a[id*='lnkSearch'], span[id*='btnSearch']"
+  results_wait:
+    strategy: element_visible
+    selector: "tr[class*='ACA_TabRow_Odd'], tr[class*='ACA_TabRow_Even']"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "No records found"
+      - "no records found"
+      - "0 records"
+      - "No result"
+      - "Your search returned no results"
+
+results:
+  type: table
+  table:
+    row_selector: "tr[class*='ACA_TabRow_Odd'], tr[class*='ACA_TabRow_Even']"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: license_type
+      1: license_number
+      2: first_name
+      3: middle_name
+      4: last_name
+      5: organization_name
+      6: dba_name
+      7: status
+      8: expiration_date
+  has_detail_page: false
+  detail_trigger:
+    type: link_in_cell
+    selector: "a[id*='lnkLicenseRefNumber']"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a[id*='lnkNext'], input[id*='btnNext'], a[title='Next page'], a[href*='__doPostBack'][id*='Next']"
+    disabled_class: "disabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    timeout_ms: 20000
+    fallback_selectors:
+      - "div.ACA_Table_IE_Width"
+      - "table.ACA_Grid"
+      - "span[id*='lblValue']"
+      - "div[id*='divAccela']"
+  strategies:
+    - type: label_sibling
+    - type: dt_dd
+    - type: two_column_table
+    - type: four_column_table
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Licensee": full_name
+    "Business Name": full_name
+    "First Name": licensee_first_name
+    "Last Name": licensee_last_name
+    "Middle Name": licensee_middle_name
+    "Issue Date": issue_date
+    "Original Issue Date": issue_date
+    "Effective Date": effective_date
+    "Expiration Date": expiration_date
+    "Exp Date": expiration_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Zip": zip_code
+    "County": county
+    "Disciplinary Action": disciplinary_actions
+    "Board Actions": disciplinary_actions
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Clear": active
+    "Current": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "inactive": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "expired": expired
+    "Lapsed": expired
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+    "Cancelled": inactive
+    "Surrendered": revoked
+    "Probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1440
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [2000, 4000, 8000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

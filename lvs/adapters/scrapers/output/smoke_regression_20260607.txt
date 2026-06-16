@@ -1,0 +1,243 @@
+2026-06-07 20:11:28,410 [INFO] run — [AR_PODIATRY] run_id=9bbed889  query=license_number/247
+2026-06-07 20:11:28,413 [INFO] engine.pdf_extractor — Using cached PDF: ./pdfs\Podiatry_LicenseVerification_20260522.pdf
+2026-06-07 20:11:28,751 [INFO] engine.pdf_extractor — Detected PDF format: PROF
+2026-06-07 20:11:28,969 [INFO] engine.pdf_extractor — Extracted 104 records from PDF (format: PROF)
+2026-06-07 20:11:28,969 [INFO] run — [AR_PODIATRY] PDF search returned 1 record(s)
+2026-06-07 20:11:28,980 [INFO] run — [CO_DORA] run_id=bfc64dc7  query=license_number/9944947
+2026-06-07 20:11:28,980 [INFO] run — [CO_DORA] Socrata-browser run_id=bfc64dc7  query=license_number/9944947
+2026-06-07 20:11:28,981 [INFO] run — [CO_DORA] Fetching: https://data.colorado.gov/resource/7s5z-vewr.json?%24where=upper%28licensenumber%29+like+upper%28%27%259944947%25%27%29&%24limit=500
+2026-06-07 20:11:31,499 [INFO] run — [CO_DORA] Socrata returned 1 record(s)
+2026-06-07 20:11:31,509 [INFO] run — [DE_LICENSING] run_id=557daa25  query=last_name/Smith
+2026-06-07 20:11:31,509 [INFO] run — [DE_LICENSING] Socrata-browser run_id=557daa25  query=last_name/Smith
+2026-06-07 20:11:31,509 [INFO] run — [DE_LICENSING] Fetching: https://data.delaware.gov/resource/pjnv-eaih.json?%24where=upper%28last_name%29+like+upper%28%27%25Smith%25%27%29&%24limit=500
+2026-06-07 20:11:34,366 [INFO] run — [DE_LICENSING] Socrata returned 500 record(s)
+2026-06-07 20:11:34,404 [INFO] run — [KS_BSRB] run_id=95e5a674  query=license_number/LSCSW 4719
+2026-06-07 20:11:35,890 [INFO] engine.navigator — [KS_BSRB] Navigating to https://licensing.ks.gov/Verification_BSRB/Search.aspx
+2026-06-07 20:11:40,857 [INFO] engine.navigator — Filled search input 'input#t_web_lookup__license_no' with 'LSCSW 4719'
+2026-06-07 20:11:41,099 [INFO] engine.navigator — Clicked search button 'input#sch_button'
+2026-06-07 20:11:47,221 [INFO] run — [KS_DENTAL] run_id=46402e91  query=license_number/13578
+2026-06-07 20:11:48,630 [INFO] engine.navigator — [KS_DENTAL] Navigating to https://www.kansas.gov/dental-verification/start.do
+2026-06-07 20:11:53,752 [INFO] engine.navigator — Filled search input 'input[name='licNum']' with '13578'
+2026-06-07 20:11:54,036 [INFO] engine.navigator — Clicked search button 'input[type='submit'], button[type='submit']'
+2026-06-07 20:11:55,209 [INFO] run — [KS_GLSUITE] run_id=027bebf4  query=license_number/2720
+2026-06-07 20:11:56,531 [INFO] engine.navigator — [KS_GLSUITE] Navigating to https://ksdadsv7prod.glsuite.us/glsuiteweb/Clients/ksdads/public/verification/LicVerification.aspx
+2026-06-07 20:12:00,935 [INFO] engine.navigator — Filled search input 'input#waCredentialNumber' with '2720'
+2026-06-07 20:12:02,430 [INFO] engine.navigator — Clicked search button 'input#btnSubmit'
+2026-06-07 20:12:16,002 [INFO] run — [KS_KSBHADA] run_id=07949916  query=last_name/Burroughs
+2026-06-07 20:12:17,361 [INFO] engine.navigator — [KS_KSBHADA] Navigating to https://www.kansas.gov/ssrv-ksbhada/search.html
+2026-06-07 20:12:22,107 [INFO] engine.navigator — Filled search input 'input[id*='ast'], input[name*='ast']' with 'Burroughs'
+2026-06-07 20:12:22,335 [INFO] engine.navigator — Clicked search button 'button[type='submit'], input[type='submit'], input[value='Search']'
+2026-06-07 20:12:35,433 [INFO] run — [KS_OPTOMETRY] run_id=e30913b8  query=last_name/Smith
+2026-06-07 20:12:36,711 [INFO] engine.navigator — [KS_OPTOMETRY] Navigating to https://www.kansas.gov/ssrv-optometry/search/search.html
+2026-06-07 20:12:41,799 [INFO] engine.navigator — Filled search input 'input[name='lastName']' with 'Smith'
+2026-06-07 20:12:42,188 [INFO] engine.navigator — Clicked search button 'input[name='search']'
+2026-06-07 20:13:22,915 [INFO] run — [KS_PHARMACY] run_id=41a9aafb  query=last_name/Baker
+2026-06-07 20:13:24,153 [INFO] engine.navigator — [KS_PHARMACY] Navigating to https://ksbop.elicensesoftware.com/portal.aspx
+2026-06-07 20:13:28,306 [INFO] engine.navigator — Filled search input 'input#txtName' with 'Baker'
+2026-06-07 20:13:28,638 [INFO] engine.navigator — Clicked search button 'input#btnSearch'
+2026-06-07 20:25:23,245 [INFO] run — [KY_AP] run_id=077cd618  query=last_name/Smith
+2026-06-07 20:25:24,836 [INFO] engine.navigator — [KY_AP] Navigating to https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=26
+2026-06-07 20:25:29,902 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:25:30,283 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:25:32,070 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:25:34,429 [INFO] run — [KY_GC] run_id=46b4b997  query=last_name/Smith
+2026-06-07 20:25:35,797 [INFO] engine.navigator — [KY_GC] Navigating to https://web1.ky.gov/GenSearch/LicenseSearch.aspx?AGY=27
+2026-06-07 20:25:40,369 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:25:40,792 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:25:42,589 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:25:44,883 [INFO] run — [KY_MEDBOARD] run_id=050249d8  query=last_name/Smith
+2026-06-07 20:25:46,352 [INFO] engine.navigator — [KY_MEDBOARD] Navigating to https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=5
+2026-06-07 20:25:51,146 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:25:52,277 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:25:55,254 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:26:23,640 [INFO] run — [KY_MULTIBOARD] run_id=28c76973  query=last_name/Smith
+2026-06-07 20:26:24,994 [INFO] engine.navigator — [KY_MULTIBOARD] Navigating to https://oop.ky.gov/lic_search.aspx
+2026-06-07 20:26:29,770 [INFO] engine.navigator — Filled search input '#ContentPlaceHolder2_TLname' with 'Smith'
+2026-06-07 20:26:31,396 [INFO] engine.navigator — Clicked search button '#ContentPlaceHolder2_BSrch'
+2026-06-07 20:32:10,913 [INFO] run — [KY_OD] run_id=d1e03a3e  query=last_name/Smith
+2026-06-07 20:32:12,115 [INFO] engine.navigator — [KY_OD] Navigating to https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=8
+2026-06-07 20:32:16,462 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:32:17,043 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:32:18,837 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:32:21,948 [INFO] run — [KY_PA] run_id=72d13c0c  query=last_name/Smith
+2026-06-07 20:32:23,217 [INFO] engine.navigator — [KY_PA] Navigating to https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=20
+2026-06-07 20:32:27,758 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:32:28,245 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:32:30,124 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:32:34,582 [INFO] run — [KY_SA] run_id=2ed1faa0  query=last_name/Smith
+2026-06-07 20:32:35,868 [INFO] engine.navigator — [KY_SA] Navigating to https://web1.ky.gov/GenSearch/LicenseSearch.aspx?AGY=23
+2026-06-07 20:32:40,285 [INFO] engine.navigator — Filled search input '#usLicenseSearch_txtField1' with 'Smith'
+2026-06-07 20:32:40,717 [INFO] engine.navigator — Clicked search button '#usLicenseSearch_btnSearch'
+2026-06-07 20:32:42,518 [INFO] engine.navigator — post_search_click: clicked '#usLicenseList_rdbtGrid'
+2026-06-07 20:32:44,906 [INFO] run — [MA_HEALTH] run_id=46dad9f3  query=last_name/Smith
+2026-06-07 20:32:46,180 [INFO] engine.navigator — [MA_HEALTH] Navigating to https://checkahealthlicense.mass.gov/search
+2026-06-07 20:32:53,260 [INFO] engine.navigator — Filled search input '#licensee-last-name-input' with 'Smith'
+2026-06-07 20:32:53,312 [INFO] engine.navigator — Clicked search button 'button.search-button'
+2026-06-07 20:32:57,251 [INFO] engine.extractor — AG Grid headers: ['License Number', 'License Type', 'License Status', 'First Name', 'Middle Name', 'Last Name', 'Suffix', 'Organization Name', 'Address', 'Issue Date', 'Last Issue/Renewal Date', 'Expiration Date']
+2026-06-07 20:33:17,201 [INFO] engine.extractor — AG Grid extracted 100 records
+2026-06-07 20:33:17,357 [INFO] run — [MD_PHYSICIANS] run_id=44e95dbf  query=license_number/D0091066
+2026-06-07 20:33:18,571 [INFO] engine.navigator — [MD_PHYSICIANS] Navigating to https://www.mbp.state.md.us/bpqapp/
+2026-06-07 20:33:22,631 [INFO] engine.navigator — Filled search input '#txtLicense' with 'D0091066'
+2026-06-07 20:33:22,749 [INFO] engine.navigator — Clicked search button '#btnLICENSE'
+2026-06-07 20:33:36,878 [INFO] run — [NV_BOP] run_id=4f4ca27c  query=last_name/Highsmith
+2026-06-07 20:33:38,132 [INFO] engine.navigator — [NV_BOP] Navigating to https://nbop.securerims.com/DirectoryofPsychologists.php
+2026-06-07 20:33:44,219 [INFO] engine.navigator — Filled search input '#lastname' with 'Highsmith'
+2026-06-07 20:33:44,552 [INFO] engine.navigator — Clicked search button 'input.searchButton'
+2026-06-07 20:33:46,433 [WARNING] run — navigate_back failed after idx=0 (collected 1 record(s)): Page.go_back: net::ERR_CACHE_MISS
+Call log:
+  - waiting for navigation until "load"
+
+2026-06-07 20:33:46,743 [INFO] run — [NV_CHIRO] run_id=7ab67818  query=license_number/B02060
+2026-06-07 20:33:48,086 [INFO] engine.navigator — [NV_CHIRO] Navigating to https://nvcpbn.portalus.thentiacloud.net/webs/portal/register/#/
+2026-06-07 20:33:57,772 [INFO] engine.navigator — Filled search input 'input[id='keywords']' with 'B02060'
+2026-06-07 20:33:57,827 [INFO] engine.navigator — Clicked search button 'button.btn-brand'
+2026-06-07 20:34:03,015 [INFO] run — Button idx=1 not visible, ending page iteration
+2026-06-07 20:34:03,188 [INFO] run — [NV_DENTAL] run_id=f1c81aa6  query=license_number/LL-251-11
+2026-06-07 20:34:04,538 [INFO] engine.navigator — [NV_DENTAL] Navigating to https://online.nvdental.org/#/VerifyLicense
+2026-06-07 20:34:14,086 [INFO] engine.navigator — Filled search input 'input[name='LicenseNumber']' with 'LL-251-11'
+2026-06-07 20:34:14,141 [INFO] engine.navigator — Clicked search button 'input[type='submit'][value='Search']'
+2026-06-07 20:34:16,385 [INFO] run — breadcrumb_click: clicked 'a[ng-click*='isDetailsVisible=false'], a.Link'
+2026-06-07 20:34:16,956 [INFO] engine.pagination — Clicked page 2
+2026-06-07 20:34:20,250 [INFO] run — breadcrumb_click: clicked 'a[ng-click*='isDetailsVisible=false'], a.Link'
+2026-06-07 20:34:20,801 [INFO] engine.pagination — Clicked page 3
+2026-06-07 20:34:24,099 [INFO] run — breadcrumb_click: clicked 'a[ng-click*='isDetailsVisible=false'], a.Link'
+2026-06-07 20:34:24,653 [INFO] engine.pagination — Clicked page 4
+2026-06-07 20:34:27,900 [INFO] run — breadcrumb_click: clicked 'a[ng-click*='isDetailsVisible=false'], a.Link'
+2026-06-07 20:34:28,450 [INFO] engine.pagination — Clicked page 5
+2026-06-07 20:34:31,816 [INFO] run — breadcrumb_click: clicked 'a[ng-click*='isDetailsVisible=false'], a.Link'
+2026-06-07 20:34:32,519 [INFO] run — [NV_MASSAGE] run_id=3ad8bf31  query=last_name/Smith
+2026-06-07 20:34:33,734 [INFO] engine.navigator — [NV_MASSAGE] Navigating to https://online.nvmassagebd.com/ui/search.aspx
+2026-06-07 20:34:39,179 [INFO] engine.navigator — Filled search input 'input[id$='txtLastName']' with 'Smith'
+2026-06-07 20:34:39,221 [INFO] engine.navigator — Clicked search button 'input[id$='btnSearch']'
+2026-06-07 20:34:40,543 [INFO] run — [NV_MEDBOARD] run_id=b06590a2  query=license_number/17371
+2026-06-07 20:34:41,914 [INFO] engine.navigator — [NV_MEDBOARD] Navigating to https://nsbme.us.thentiacloud.net/webs/nsbme/register/#
+2026-06-07 20:34:48,585 [INFO] engine.navigator — Clicked custom dropdown item 'License Number'
+2026-06-07 20:34:50,521 [INFO] engine.navigator — Filled search input 'input[placeholder*='search text']' with '17371'
+2026-06-07 20:34:50,567 [INFO] engine.navigator — Clicked search button 'button.btn-brand'
+2026-06-07 20:34:56,020 [INFO] run — Button idx=1 not visible, ending page iteration
+2026-06-07 20:34:56,213 [INFO] run — [NV_NVADGC] run_id=701f0149  query=license_number/01952-I
+2026-06-07 20:34:57,577 [INFO] engine.navigator — [NV_NVADGC] Navigating to https://nvadgc.us.thentiacloud.net/webs/nvadgc/register/
+2026-06-07 20:35:04,731 [INFO] engine.navigator — Filled search input 'input[id='keywords']' with '01952-I'
+2026-06-07 20:35:04,786 [INFO] engine.navigator — Clicked search button 'button.btn-brand'
+2026-06-07 20:35:22,284 [INFO] run — Button idx=1 not visible, ending page iteration
+2026-06-07 20:35:22,433 [INFO] run — [NV_OPTOMETRY] run_id=ff39ab84  query=last_name/Smith
+2026-06-07 20:35:22,434 [INFO] engine.pdf_extractor — Using cached PDF: ./pdfs\Verification-20260601.pdf
+
+Smoke-testing 32 board config(s)  [concurrency=1, headed=False]
+
+Consider using the pymupdf_layout package for a greatly improved page layout analysis.
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+2026-06-07 20:35:22,879 [INFO] engine.pdf_extractor — Detected PDF format: PROF
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+MuPDF error: format error: No common ancestor in structure tree
+
+2026-06-07 20:35:26,031 [INFO] engine.pdf_extractor — Extracted 550 records from PDF (format: PROF)
+2026-06-07 20:35:26,034 [INFO] run — [NV_OPTOMETRY] PDF search returned 2 record(s)
+2026-06-07 20:35:26,050 [INFO] run — [NV_OSTEO] run_id=a267a74a  query=last_name/Hatch
+2026-06-07 20:35:27,268 [INFO] engine.navigator — [NV_OSTEO] Navigating to https://nsbom.portalus.thentiacloud.net/webs/portal/register/#/
+2026-06-07 20:35:37,151 [INFO] engine.navigator — Filled search input 'input[id='keywords']' with 'Hatch'
+2026-06-07 20:35:37,213 [INFO] engine.navigator — Clicked search button 'button.btn-brand'
+2026-06-07 20:35:38,978 [INFO] run — [NV_PT] run_id=0d78b4be  query=license_number/3485
+2026-06-07 20:35:40,275 [INFO] engine.navigator — [NV_PT] Navigating to https://nptb.portalus.thentiacloud.net/webs/portal/register/#/
+2026-06-07 20:35:49,358 [INFO] engine.navigator — Filled search input 'input[id='keywords']' with '3485'
+2026-06-07 20:35:49,424 [INFO] engine.navigator — Clicked search button 'button.btn-brand'
+2026-06-07 20:35:54,709 [INFO] run — Button idx=1 not visible, ending page iteration
+2026-06-07 20:35:54,870 [INFO] run — [NV_SPEECH] run_id=c7dbbe63  query=last_name/Smith
+2026-06-07 20:35:56,396 [INFO] engine.navigator — [NV_SPEECH] Navigating to https://www.nvspeechhearing.org/verify/
+2026-06-07 20:36:01,659 [INFO] engine.navigator — Filled search input 'input[name='inputLastName']' with 'Smith'
+2026-06-07 20:36:04,491 [INFO] engine.navigator — Clicked search button 'button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']'
+2026-06-07 20:36:24,515 [WARNING] engine.navigator — Timed out waiting for results (url_change)
+2026-06-07 20:36:25,514 [INFO] run — [NY_APPEARANCE] run_id=6de50b36  query=last_name/Smith
+2026-06-07 20:36:25,514 [INFO] run — [NY_APPEARANCE] Socrata-browser run_id=6de50b36  query=last_name/Smith
+2026-06-07 20:36:25,514 [INFO] run — [NY_APPEARANCE] Fetching: https://data.ny.gov/resource/ucu3-8265.json?%24where=upper%28license_holder_name%29+like+upper%28%27%25Smith%25%27%29&%24limit=500
+2026-06-07 20:36:27,580 [INFO] run — [NY_APPEARANCE] Socrata returned 500 record(s)
+2026-06-07 20:36:27,610 [INFO] run — [WA_HEALTH] run_id=4aa63f0c  query=license_number/RN.RN.61663091
+2026-06-07 20:36:27,610 [INFO] run — [WA_HEALTH] Socrata-browser run_id=4aa63f0c  query=license_number/RN.RN.61663091
+2026-06-07 20:36:27,610 [INFO] run — [WA_HEALTH] Fetching: https://data.wa.gov/resource/qxh8-f4bd.json?credentialnumber=RN.RN.61663091&%24limit=500
+2026-06-07 20:36:29,449 [INFO] run — [WA_HEALTH] Socrata returned 1 record(s)
+2026-06-07 20:36:29,460 [INFO] run — [WI_DSPS] run_id=e6594f8a  query=last_name/Smith
+2026-06-07 20:36:30,666 [INFO] engine.navigator — [WI_DSPS] Navigating to https://license.wi.gov/s/license-lookup
+2026-06-07 20:36:37,166 [WARNING] engine.navigator — select strategy failed (trying custom dropdown): Locator.select_option: Error: Element is not a <select> element
+Call log:
+  - waiting for locator("button[aria-haspopup='listbox'][aria-label*='Search By'], [role='combobox'][aria-label*='Search By']").first
+    - locator resolved to <button type="button" data-value="" name="searchBy" role="combobox" lwc-4kb6kaqheak="" part="input-button" aria-required="true" aria-expanded="false" aria-disabled="false" aria-label="Search By" id="combobox-button-10" aria-haspopup="listbox" aria-controls="dropdown-element-10" class="slds-combobox__input slds-input_faux fix-slds-input_faux">…</button>
+  - attempting select option action
+    - waiting for element to be visible and enabled
+
+2026-06-07 20:36:38,646 [INFO] engine.navigator — Clicked custom dropdown item 'Individual Name'
+2026-06-07 20:36:40,582 [INFO] engine.navigator — Filled search input 'lightning-input input, input[placeholder*='Last Name'], input[placeholder*='Credential']' with 'Smith'
+2026-06-07 20:36:40,632 [INFO] engine.navigator — Clicked search button 'lightning-button button:has-text('Search'), button:has-text('Search')'
+Board                  Mode           Query                    Status   Detail
+--------------------------------------------------------------------------------------------------------------------------------
+AR_PODIATRY            license_number 247                      PASS     [247] Jason Smith - unknown (0.6s)
+CO_DORA                license_number 9944947                  PASS     [9944947] Kevin Smith - active (2.5s)
+DE_LICENSING           last_name      Smith                    PASS     [MC-0015126] MARY SMITH - expired (+499 more) (2.9s)
+KS_BSRB                license_number LSCSW 4719               PASS     [LSCSW 4719] MeLinda R. Smith - Moore - active (12.8s)
+KS_DENTAL              license_number 13578                    PASS     [13578] Abbigail Smith - active (8.0s)
+KS_GLSUITE             license_number 2720                     PASS     [2720] BAUMGARTNER, CHRISTINA ANN - inactive (+4 more) (20.8s)
+KS_KSBHADA             last_name      Burroughs                PASS     [18-00238] Jo Ellen R. Burroughs - active (+4 more) (19.4s)
+KS_OPTOMETRY           last_name      Smith                    PASS     [0965-2] Dennis Smith - revoked (+15 more) (47.5s)
+KS_PHARMACY            last_name      Baker                    PASS     [1-126156] Abdalla Abu Baker - active (+129 more) (720.3s)
+KY_AP                  last_name      Smith                    PASS     [L.Ac.] Michael Smith - unknown (+1 more) (11.2s)
+KY_GC                  last_name      Smith                    PASS     [G.C.] Taylor Smith - unknown (10.4s)
+KY_MEDBOARD            last_name      Smith                    PASS     [2944 Breckenridge Ln] Aaron Mathew Smith - unknown (+308 more) (38.7s)
+KY_MULTIBOARD          last_name      Smith                    PASS     [9799] A Louise M Smith - unknown (+1938 more) (347.3s)
+KY_OD                  last_name      Smith                    PASS     [] APRIL SMITH - unknown (+19 more) (11.0s)
+KY_PA                  last_name      Smith                    PASS     [P.A.-C] Amy Smith - unknown (+27 more) (12.6s)
+KY_SA                  last_name      Smith                    PASS     [KCSA] Melissa Smith - unknown (+2 more) (10.3s)
+LA_MASSAGETHERAPY      license_number TBD                      SKIP     pdf_url_required: labmt.org PDFs dated 5-15-2026 return HTTP 404 — board may not have published current roster yet; update pdf_bulk.pdfs[].url when new files appear
+MA_HEALTH              last_name      Smith                    PASS     [LDN1023] Lisa Smith Gossels - active (+99 more) (32.4s)
+MD_PHYSICIANS          license_number D0091066                 PASS     [D0091066] Dr. Eli Morgan Zeserson - active (19.5s)
+NV_BOP                 last_name      Highsmith                PASS     [PY0706] Highsmith, Jennifer - active (9.9s)
+NV_CHIRO               license_number B02060                   PASS     [B02060] FRANCISCO CRUZ - active (16.4s)
+NV_DENTAL              license_number LL-251-11                PASS     [LL-251-11] Highsmith, John Marshall , DDS - expired (+4 more) (29.3s)
+NV_MASSAGE             last_name      Smith                    PASS     [NVMT.045] VICKIE L. SMITH - active (+9 more) (8.0s)
+NV_MEDBOARD            license_number 17371                    PASS     [17371] Eli Joseph AZZI - inactive (15.7s)
+NV_NVADGC              license_number 01952-I                  PASS     [01952-I] Ashley Johnson - expired (26.2s)
+NV_OPTOMETRY           last_name      Smith                    PASS     [] Jonathan Smith - active (+1 more) (3.6s)
+NV_OSTEO               last_name      Hatch                    PASS     [DO3689] Preston Hatch - active (+2 more) (12.9s)
+NV_PT                  license_number 3485                     PASS     [3485] Sarah Distad - active (15.9s)
+NV_SPEECH              last_name      Smith                    PASS     [A-3328 Dispensing] Bari  L  Goldsmith - expired (+20 more) (30.6s)
+NY_APPEARANCE          last_name      Smith                    PASS     [AEC-17-07088] Smith Nicolette Marie - unknown (+499 more) (2.1s)
+WA_HEALTH              license_number RN.RN.61663091           PASS     [RN.RN.61663091] Madeline Smith - active (1.8s)
+WI_DSPS                last_name      Smith                    PASS     [10045 - 142] Chalon Lashae Smith - active (+9 more) (13.4s)
+--------------------------------------------------------------------------------------------------------------------------------
+
+Summary: 31 PASS  0 FAIL  1 SKIP  0 MISSING
+

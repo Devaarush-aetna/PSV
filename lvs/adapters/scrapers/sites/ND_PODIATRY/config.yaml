@@ -1,0 +1,120 @@
+identity:
+  source_id: ND_PODIATRY
+  board_name: North Dakota Board of Podiatric Medicine
+  state: ND
+  country: US
+  profession_codes: [DPM]
+  # AJAX DataTables portal at ndpodiatryboard.org/podiatrists/.
+  # From northdacota_podiatrist_web.py:
+  #   Page never navigates — table updates in place via AJAX after submit.
+  #   Search: select dropdown (first <select>) picks field type ("License #", "Last Name", etc.),
+  #           then fill text input, click Search button.
+  #   submit button: input[type='submit'] or input[value='Search']
+  #   Results: standard <table> with headers: License # · First Name · MI · Last Name · Address
+  base_url: "https://www.ndpodiatryboard.org/podiatrists/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#participant_search_term"
+      dropdown_value: "License #"
+    - mode: last_name
+      input_selector: "#participant_search_term"
+      dropdown_value: "Last Name"
+  form:
+    search_by_dropdown:
+      strategy: select
+      selector: "select#pdb-search_field-2"
+      mode_values:
+        license_number: "License #"
+        last_name: "Last Name"
+    search_input:
+      selector: "#participant_search_term"
+    search_button:
+      selector: "input[type='submit'], input[value='Search'], button[type='submit']"
+  results_wait:
+    strategy: delay
+    timeout_ms: 5000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "No records found"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    # Columns: License # · First Name · MI · Last Name · Address (from script comments)
+    columns:
+      0: "license_number"
+      1: "first_name"
+      3: "last_name"
+      4: "city"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/ND_PODIATRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Anderson"
+  expect:
+    min_records: 1
+    full_name_contains: "Anderson"

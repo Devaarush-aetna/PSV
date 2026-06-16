@@ -1,0 +1,153 @@
+identity:
+  source_id: VA_DHP
+  board_name: Virginia Department of Health Professions — License Lookup
+  state: VA
+  country: US
+  # 157 occupation types — healthcare-relevant subset listed here:
+  profession_codes: [MD, DO, RN, LPN, APRN, DDS, DMD, PharmD, PT, OT, PA, SW, LCSW, LPC, MFT, MT, OD, SLP, AUD, DC, PSYCH, DPM, NA, AT, RRT, ACUP, RD, LMFT]
+  base_url: "https://dhp.virginiainteractive.org/Lookup/Index"
+  archetype: classic_html_form
+
+search:
+  # Three separate forms on the page — each form has its own submit button.
+  # Use form:has(#field) selector to target the button within the correct form.
+  # SSN+LastName form (form 2) is not supported — requires SSN which is PII.
+  modes:
+    - mode: license_number
+      input_selector: "#LicenseNo"
+      button_selector: "form:has(#LicenseNo) input[value='Search']"
+    - mode: last_name
+      input_selector: "#LName"
+      button_selector: "form:has(#LName) input[value='Search']"
+    - mode: first_name
+      input_selector: "#FName"
+      button_selector: "form:has(#FName) input[value='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#LicenseNo"
+    search_button:
+      selector: "form:has(#LicenseNo) input[value='Search']"
+  results_wait:
+    # network_idle works for both license_number (URL changes to /Lookup/Result)
+    # and last_name (URL stays at /Lookup/Index). Element_visible would time out
+    # when "too many records" is returned (no table rendered).
+    strategy: network_idle
+    timeout_ms: 30000
+    selector: "table tbody tr td:first-child a"
+    no_results_indicators:
+      - "returned too many records"
+      - "returned 0 records"
+      - "no records found"
+
+results:
+  type: table
+  has_detail_page: true
+  detail_trigger:
+    # The "Name" cell in each result row is an <a> link to /Lookup/Detail/{id}.
+    # Occupation-header rows (td[colspan=4]) do not have first-child <a> — skipped.
+    type: link_in_cell
+    selector: "table tbody tr td:first-child a"
+  table:
+    row_selector: "table tbody tr"
+    columns:
+      0: full_name
+      1: address
+      2: expiration_date
+      3: raw_additional_info
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 20000
+  # Detail page /Lookup/Detail/{id}: each row has <th> label + <td> value.
+  # Table 0 on page = layout table (skipped — 1 cell per row).
+  # Table 1 = license data (9 rows: License Number, Occupation, Specialization, etc.).
+  strategies:
+    - type: th_td_table
+  field_map:
+    "License Number": license_number
+    "Occupation": license_type
+    "Specialization": raw_specialization
+    "Name": full_name
+    "Address": address
+    "Initial License Date": issue_date
+    "Expire Date": expiration_date
+    "License Status": status
+  back_navigation:
+    # POST-form result at /Lookup/Result — browser_back may produce ERR_CACHE_MISS
+    # like NV_BOP. Engine handles back-nav failure gracefully and returns
+    # already-collected records (acceptable for license_number / narrow searches).
+    strategy: browser_back
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Current": active
+    "Expired": expired
+    "EXPIRED": expired
+    "expired": expired
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "inactive": inactive
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+    "revoked": revoked
+    "Surrendered": revoked
+    "Not Renewed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%dT%H:%M:%S.%f"
+    - "%Y-%m-%dT%H:%M:%S"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [2000, 4000, 8000]
+    retry_on: ["timeout", "network_error"]
+  # Requires PROXY=proxy:9119 — dhp.virginiainteractive.org is blocked by Zscaler
+  # on the corporate network without proxy bypass.
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-09"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "0024166737"
+  expect:
+    license_number: "0024166737"
+    full_name_contains: "Smith"
+    min_records: 1

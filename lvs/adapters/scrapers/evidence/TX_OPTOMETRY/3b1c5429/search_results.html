@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Texas Optometry Board License Search Results</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-language" content="en">
+<link rel="shortcut icon" href="inc/img/favicon.ico">
+
+<link rel="stylesheet" type="text/css" media="screen" href="inc/css/jquery-ui-1.8.17.custom.css">
+<link rel="stylesheet" type="text/css" media="screen" href="inc/css/global.css">
+<link rel="stylesheet" type="text/css" media="print" href="inc/css/print.css">
+<link rel="stylesheet" type="text/css" media="screen" href="inc/css/ui.jqgrid.css">
+<script type="text/javascript" src="inc/js/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="inc/js/i18n/grid.locale-en.js"></script>
+<script type="text/javascript" src="inc/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript">
+$(function(){ 
+	var passsearch;
+	passsearch = window.location.search.substring(1);
+  $("#list").jqGrid({
+    url:'inc/xml/xml-dts.php?'+passsearch,
+    datatype: 'xml',
+    mtype: 'GET',
+    colNames:['License Number','License Status','Full Name (Last, First Middle)','City, State'],
+    colModel :[
+      {name:'lic_nbr', index:'lic_nbr', width:150, sortable:true,formatter:'showlink',formatoptions:{baseLinkUrl:'dts-zoom.php'}},
+	  {name:'lic_sta_desc', index:'lic_sta_desc', width:100, sortable:true},
+	  {name:'fullname', index:'fullname', width:240, sortable:true},
+	  {name:'citystate', index:'citystate', width:180, sortable:true}
+    ],
+    userdata: "userdata",
+    pager: '#pager',
+    rowNum:20,
+	rowList:[20,50,100],
+    sortname: 'fullname',
+    sortorder: 'asc',
+    viewrecords: true,
+    pgbuttons:true,
+	height: "100%",
+    caption: 'Texas Optometry Board License'
+  });
+   jQuery('#list').jqGrid('navGrid','#pager',{"edit":false,"add":false,"del":false,"search":false,"refresh":true,"view":false,"excel":false,"pdf":false,"csv":true,"columns":false}); 
+
+   jQuery('#list').jqGrid('navButtonAdd','#pager',{id:'pager_csv',caption:'',title:'Export Search Results To CSV',onClickButton : function(e) {
+
+    try {
+        jQuery("#list").jqGrid('excelExport',{tag:'csv', url:'inc/xml/xml-dts.php?'+passsearch});
+    } catch (e) {
+        window.location= 'inc/xml/xml-dts.php?'+passsearch;
+    }
+
+    },buttonicon:'ui-icon-document'});	
+
+});
+</script>
+</head>
+<body class="ui-widget">
+<!-- header code here -->
+<div class="boxpad boxspan">
+<a href="index.php" title="Home"><img src="/images/Banner with Seal.png" style="max-width: 100%;"></a>
+<h2 class="ui-widget-header">Texas Optometry Board License Search Results</h2>
+<div class="breadcrumbs"><a href="index.php">Return to all search options</a> 
+<p>Click on license number for details.</p>
+<!--
+&gt; <a href="dts-base.php">New Search</a>
+-->
+
+</div>
+<div id="gridSummary">
+		<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" id="gbox_list" dir="ltr" style="width: 670px;"><div class="ui-widget-overlay jqgrid-overlay" id="lui_list"></div><div class="loading ui-state-default ui-state-active" id="load_list" style="display: none;">Loading...</div><div class="ui-jqgrid-view" id="gview_list" style="width: 670px;"><div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix"><a role="link" href="javascript:void(0)" class="ui-jqgrid-titlebar-close HeaderButton" style="right: 0px;"><span class="ui-icon ui-icon-circle-triangle-n"></span></a><span class="ui-jqgrid-title">Texas Optometry Board License</span></div><div class="ui-state-default ui-jqgrid-hdiv" style="width: 670px;"><div class="ui-jqgrid-hbox"><table class="ui-jqgrid-htable" style="width:670px" role="grid" aria-labelledby="gbox_list" cellspacing="0" cellpadding="0" border="0"><thead><tr class="ui-jqgrid-labels" role="rowheader"><th id="list_lic_nbr" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_list_lic_nbr" class="ui-jqgrid-sortable">License Number<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="list_lic_sta_desc" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 100px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_list_lic_sta_desc" class="ui-jqgrid-sortable">License Status<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="list_fullname" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 240px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_list_fullname" class="ui-jqgrid-sortable">Full Name (Last, First Middle)<span class="s-ico" style=""><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="list_citystate" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 180px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_list_citystate" class="ui-jqgrid-sortable">City, State<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th></tr></thead></table></div></div><div class="ui-jqgrid-bdiv" style="height: 100%; width: 670px;"><div style="position:relative;"><div></div><table id="list" tabindex="1" cellspacing="0" cellpadding="0" border="0" role="grid" aria-multiselectable="false" aria-labelledby="gbox_list" class="ui-jqgrid-btable" style="width: 670px;"><tbody><tr class="jqgfirstrow" role="row" style="height:auto"><td role="gridcell" style="height:0px;width:150px;"></td><td role="gridcell" style="height:0px;width:100px;"></td><td role="gridcell" style="height:0px;width:240px;"></td><td role="gridcell" style="height:0px;width:180px;"></td></tr><tr id="1" tabindex="-1" role="row" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="" aria-describedby="list_lic_nbr">&nbsp;</td><td role="gridcell" style="" title="" aria-describedby="list_lic_sta_desc">&nbsp;</td><td role="gridcell" style="" title="Sorry, no results based on your search." aria-describedby="list_fullname">Sorry, no results based on your search.</td><td role="gridcell" style="" title="" aria-describedby="list_citystate">&nbsp;</td></tr></tbody></table></div></div></div><div class="ui-jqgrid-resize-mark" id="rs_mlist">&nbsp;</div><div id="pager" class="ui-state-default ui-jqgrid-pager ui-corner-bottom" dir="ltr" style="width: 670px;"><div id="pg_pager" class="ui-pager-control" role="group"><table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" style="width:100%;table-layout:fixed;height:100%;" role="row"><tbody><tr><td id="pager_left" align="left"><table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table navtable" style="float:left;table-layout:auto;"><tbody><tr><td class="ui-pg-button ui-corner-all" title="Reload Grid" id="refresh_list"><div class="ui-pg-div"><span class="ui-icon ui-icon-refresh"></span></div></td><td class="ui-pg-button ui-corner-all" id="pager_csv" title="Export Search Results To CSV"><div class="ui-pg-div"><span class="ui-icon ui-icon-document"></span></div></td></tr></tbody></table></td><td id="pager_center" align="center" style="white-space: pre; width: 283px;"><table cellspacing="0" cellpadding="0" border="0" style="table-layout:auto;" class="ui-pg-table"><tbody><tr><td id="first_pager" class="ui-pg-button ui-corner-all ui-state-disabled"><span class="ui-icon ui-icon-seek-first"></span></td><td id="prev_pager" class="ui-pg-button ui-corner-all ui-state-disabled"><span class="ui-icon ui-icon-seek-prev"></span></td><td class="ui-pg-button ui-state-disabled" style="width:4px;"><span class="ui-separator"></span></td><td dir="ltr">Page <input class="ui-pg-input" type="text" size="2" maxlength="7" value="0" role="textbox"> of <span id="sp_1_pager">0</span></td><td class="ui-pg-button ui-state-disabled" style="width:4px;"><span class="ui-separator"></span></td><td id="next_pager" class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-seek-next"></span></td><td id="last_pager" class="ui-pg-button ui-corner-all"><span class="ui-icon ui-icon-seek-end"></span></td><td dir="ltr"><select class="ui-pg-selbox" role="listbox"><option role="option" value="20" selected="selected">20</option><option role="option" value="50">50</option><option role="option" value="100">100</option></select></td></tr></tbody></table></td><td id="pager_right" align="right"><div dir="ltr" style="text-align:right" class="ui-paging-info">View 1 - 1 of 0</div></td></tr></tbody></table></div></div></div>
+		
+		</div>
+</div>
+
+<!-- footer code here -->
+<!-- <div class="ts-footer">-->
+<br>
+<!-- <a href="http://www.tob.texas.gov"><img align="middle" src="/images/headerlogo.jpg"</img></a><br>-->
+<div class="boxpad boxspan">
+
+Copyright © 2022 <a href="https://tob.texas.gov"> Texas Optometry Board</a>. All rights reserved.
+</div>
+
+
+<div class="ui-widget ui-widget-content ui-corner-all ui-jqdialog" id="alertmod" dir="ltr" tabindex="-1" role="dialog" aria-labelledby="alerthd" aria-hidden="true" style="width: 200px; height: auto; z-index: 950; overflow: hidden; top: 425px; left: 540px;"><div class="ui-jqdialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" id="alerthd" style="cursor: move;"><span class="ui-jqdialog-title" style="float: left;">Warning</span><a href="javascript:void(0)" class="ui-jqdialog-titlebar-close ui-corner-all" style="right: 0.3em;"><span class="ui-icon ui-icon-closethick"></span></a></div><div class="ui-jqdialog-content ui-widget-content" id="alertcnt"><div>Please, select row</div><span tabindex="0"><span tabindex="-1" id="jqg_alrt"></span></span></div><div class="jqResize ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se ui-icon-grip-diagonal-se"></div></div></body></html>

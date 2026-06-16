@@ -1,0 +1,297 @@
+2026-06-11 22:38:16,973 [INFO] run — [IN_PLA] run_id=96f9b4db  query=last_name/Smith
+2026-06-11 22:38:16,980 [INFO] run — [NV_DIETITIAN] run_id=e46caa76  query=last_name/Smith
+2026-06-11 22:38:16,982 [INFO] run — [NV_DIETITIAN] CSV bulk run_id=e46caa76  query=last_name/Smith
+2026-06-11 22:38:16,983 [INFO] engine.csv_extractor — [NV_DIETITIAN] Downloading CSV (strategy=aithent_portal_xls) ...
+2026-06-11 22:38:23,713 [INFO] engine.navigator — [IN_PLA] Navigating to https://mylicense.in.gov/EVerification/Search.aspx
+2026-06-11 22:38:23,808 [INFO] engine.csv_extractor — aithent_portal_xls: navigating to https://nvdpbh.aithent.com/Protected/LIC/LicenseeSearch.aspx?Program=HHF&PubliSearch=Y&returnURL=~/Login.aspx?TI=0#noback
+2026-06-11 22:38:24,951 [INFO] engine.csv_extractor — aithent_portal_xls: selected business unit 'Dietitians and Music Therapist'
+2026-06-11 22:38:25,659 [INFO] engine.csv_extractor — aithent_portal_xls: clicking Generate Excel to export full BU roster
+2026-06-11 22:38:28,269 [INFO] engine.navigator — Filled search input 'input[name='t_web_lookup__last_name']' with 'Smith'
+2026-06-11 22:38:28,874 [INFO] engine.navigator — Clicked search button 'input[value='Search'], input[type='submit']'
+2026-06-11 22:38:30,019 [INFO] run — [TX_MEDBOARD] run_id=02060504  query=last_name/Smith
+2026-06-11 22:38:34,917 [INFO] engine.navigator — [TX_MEDBOARD] Navigating to https://profile.tmb.state.tx.us/Search.aspx
+2026-06-11 22:38:49,813 [INFO] engine.navigator — pre_search_click: clicked 'input[id*='btnAccept']'
+2026-06-11 22:38:52,977 [INFO] engine.navigator — Filled search input '#BodyContent_tbLastName' with 'Smith'
+2026-06-11 22:38:59,462 [INFO] engine.navigator — Clicked search button '#BodyContent_btnSearch'
+2026-06-11 22:39:00,311 [INFO] run — [TX_TDLR] run_id=a4c692fb  query=last_name/Smith
+2026-06-11 22:39:05,334 [INFO] engine.navigator — [TX_TDLR] Navigating to https://www.tdlr.texas.gov/LicenseSearch/
+2026-06-11 22:39:10,199 [INFO] engine.navigator — Filled search input 'input[name='pht_oth_name']' with 'Smith'
+2026-06-11 22:39:10,767 [INFO] engine.navigator — Clicked search button 'input[name='B1']'
+2026-06-11 22:39:14,185 [INFO] openai._base_client — Retrying request to /chat/completions in 0.469081 seconds
+2026-06-11 22:39:14,657 [INFO] openai._base_client — Retrying request to /chat/completions in 0.883107 seconds
+2026-06-11 22:39:15,541 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:18,040 [INFO] openai._base_client — Retrying request to /chat/completions in 0.400559 seconds
+2026-06-11 22:39:18,443 [INFO] openai._base_client — Retrying request to /chat/completions in 0.886884 seconds
+2026-06-11 22:39:19,333 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:21,558 [INFO] openai._base_client — Retrying request to /chat/completions in 0.412338 seconds
+2026-06-11 22:39:21,972 [INFO] openai._base_client — Retrying request to /chat/completions in 0.920465 seconds
+2026-06-11 22:39:22,895 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:25,251 [INFO] openai._base_client — Retrying request to /chat/completions in 0.413609 seconds
+2026-06-11 22:39:25,666 [INFO] openai._base_client — Retrying request to /chat/completions in 0.820762 seconds
+2026-06-11 22:39:26,489 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:28,685 [INFO] openai._base_client — Retrying request to /chat/completions in 0.477071 seconds
+2026-06-11 22:39:29,164 [INFO] openai._base_client — Retrying request to /chat/completions in 0.989283 seconds
+2026-06-11 22:39:30,156 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:32,443 [INFO] openai._base_client — Retrying request to /chat/completions in 0.449469 seconds
+2026-06-11 22:39:32,895 [INFO] openai._base_client — Retrying request to /chat/completions in 0.955664 seconds
+2026-06-11 22:39:33,852 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:36,066 [INFO] openai._base_client — Retrying request to /chat/completions in 0.435754 seconds
+2026-06-11 22:39:36,503 [INFO] openai._base_client — Retrying request to /chat/completions in 0.810700 seconds
+2026-06-11 22:39:37,315 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:39,943 [INFO] openai._base_client — Retrying request to /chat/completions in 0.495755 seconds
+2026-06-11 22:39:40,441 [INFO] openai._base_client — Retrying request to /chat/completions in 0.803038 seconds
+2026-06-11 22:39:41,246 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:43,493 [INFO] openai._base_client — Retrying request to /chat/completions in 0.427952 seconds
+2026-06-11 22:39:43,923 [INFO] openai._base_client — Retrying request to /chat/completions in 0.797343 seconds
+2026-06-11 22:39:44,722 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:47,035 [INFO] openai._base_client — Retrying request to /chat/completions in 0.499826 seconds
+2026-06-11 22:39:47,536 [INFO] openai._base_client — Retrying request to /chat/completions in 0.996581 seconds
+2026-06-11 22:39:48,535 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:50,788 [INFO] openai._base_client — Retrying request to /chat/completions in 0.435698 seconds
+2026-06-11 22:39:51,226 [INFO] openai._base_client — Retrying request to /chat/completions in 0.765953 seconds
+2026-06-11 22:39:51,994 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:54,327 [INFO] openai._base_client — Retrying request to /chat/completions in 0.384348 seconds
+2026-06-11 22:39:54,713 [INFO] openai._base_client — Retrying request to /chat/completions in 0.848767 seconds
+2026-06-11 22:39:55,564 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:39:57,975 [INFO] openai._base_client — Retrying request to /chat/completions in 0.397241 seconds
+2026-06-11 22:39:58,374 [INFO] openai._base_client — Retrying request to /chat/completions in 0.865289 seconds
+2026-06-11 22:39:59,241 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:01,459 [INFO] openai._base_client — Retrying request to /chat/completions in 0.453521 seconds
+2026-06-11 22:40:01,921 [INFO] openai._base_client — Retrying request to /chat/completions in 0.757921 seconds
+2026-06-11 22:40:02,685 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:04,997 [INFO] openai._base_client — Retrying request to /chat/completions in 0.447860 seconds
+2026-06-11 22:40:05,447 [INFO] openai._base_client — Retrying request to /chat/completions in 0.837926 seconds
+2026-06-11 22:40:06,287 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:08,504 [INFO] openai._base_client — Retrying request to /chat/completions in 0.466387 seconds
+2026-06-11 22:40:08,972 [INFO] openai._base_client — Retrying request to /chat/completions in 0.946690 seconds
+2026-06-11 22:40:09,920 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:12,141 [INFO] openai._base_client — Retrying request to /chat/completions in 0.416221 seconds
+2026-06-11 22:40:12,559 [INFO] openai._base_client — Retrying request to /chat/completions in 0.933051 seconds
+2026-06-11 22:40:13,494 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:16,021 [INFO] openai._base_client — Retrying request to /chat/completions in 0.476422 seconds
+2026-06-11 22:40:16,499 [INFO] openai._base_client — Retrying request to /chat/completions in 0.869301 seconds
+2026-06-11 22:40:17,376 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:19,657 [INFO] openai._base_client — Retrying request to /chat/completions in 0.422803 seconds
+2026-06-11 22:40:20,081 [INFO] openai._base_client — Retrying request to /chat/completions in 0.911134 seconds
+2026-06-11 22:40:20,995 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:23,738 [INFO] openai._base_client — Retrying request to /chat/completions in 0.381076 seconds
+2026-06-11 22:40:24,122 [INFO] openai._base_client — Retrying request to /chat/completions in 0.935846 seconds
+2026-06-11 22:40:25,060 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:25,078 [INFO] engine.csv_extractor — aithent_portal_xls: downloaded C:\Users\n661685\AppData\Local\Temp\playwright-artifacts-0oHbBm\2cad18f4-e368-42f0-a880-7c7899c41440 bytes
+2026-06-11 22:40:25,212 [ERROR] run — [NV_DIETITIAN] CSV load failed: `Import xlrd` failed. Install xlrd >= 2.0.1 for xls Excel support Use pip or conda to install the xlrd package.
+2026-06-11 22:40:25,221 [INFO] run — [WA_HEALTH] run_id=36ba8e57  query=license_number/RN.RN.61663091
+2026-06-11 22:40:25,222 [INFO] run — [WA_HEALTH] Socrata-browser run_id=36ba8e57  query=license_number/RN.RN.61663091
+2026-06-11 22:40:25,222 [INFO] run — [WA_HEALTH] Fetching: https://data.wa.gov/resource/qxh8-f4bd.json?credentialnumber=RN.RN.61663091&%24limit=500
+2026-06-11 22:40:27,600 [INFO] openai._base_client — Retrying request to /chat/completions in 0.437232 seconds
+2026-06-11 22:40:28,039 [INFO] openai._base_client — Retrying request to /chat/completions in 0.832278 seconds
+2026-06-11 22:40:28,873 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:30,719 [INFO] run — [WA_HEALTH] Socrata returned 1 record(s)
+2026-06-11 22:40:30,727 [INFO] run — [WY_DENTAL] run_id=0da41202  query=last_name/Smith
+2026-06-11 22:40:30,727 [INFO] run — [WY_DENTAL] CSV bulk run_id=0da41202  query=last_name/Smith
+2026-06-11 22:40:30,729 [INFO] engine.csv_extractor — [WY_DENTAL] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:40:31,193 [INFO] openai._base_client — Retrying request to /chat/completions in 0.455586 seconds
+2026-06-11 22:40:31,650 [INFO] openai._base_client — Retrying request to /chat/completions in 0.969142 seconds
+2026-06-11 22:40:32,627 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:34,874 [INFO] openai._base_client — Retrying request to /chat/completions in 0.401299 seconds
+2026-06-11 22:40:35,278 [INFO] openai._base_client — Retrying request to /chat/completions in 0.954152 seconds
+2026-06-11 22:40:36,234 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:36,947 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://dental.wyo.gov/public/lookup
+2026-06-11 22:40:38,202 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/1iDPZFg71o-Gq23DNKOjCqNz10l5GncGqIzURDZkt-ko/export?format=csv
+2026-06-11 22:40:38,203 [ERROR] run — [WY_DENTAL] CSV load failed: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-11 22:40:38,211 [INFO] run — [WY_OPTOMETRY] run_id=049734da  query=last_name/Smith
+2026-06-11 22:40:38,211 [INFO] run — [WY_OPTOMETRY] CSV bulk run_id=049734da  query=last_name/Smith
+2026-06-11 22:40:38,212 [INFO] engine.csv_extractor — [WY_OPTOMETRY] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:40:38,697 [INFO] openai._base_client — Retrying request to /chat/completions in 0.494906 seconds
+2026-06-11 22:40:39,194 [INFO] openai._base_client — Retrying request to /chat/completions in 0.802631 seconds
+2026-06-11 22:40:39,999 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:42,314 [INFO] openai._base_client — Retrying request to /chat/completions in 0.405700 seconds
+2026-06-11 22:40:42,722 [INFO] openai._base_client — Retrying request to /chat/completions in 0.889281 seconds
+2026-06-11 22:40:43,613 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:44,194 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://optometry.wyo.gov/public/lookup
+2026-06-11 22:40:44,985 [INFO] engine.pagination — Clicked next page button
+2026-06-11 22:40:45,308 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/15Ib3ZXto8A0zJwBRFkRldvrGIPhOOzaXKeYT9LQikoY/export?format=csv
+2026-06-11 22:40:45,308 [ERROR] run — [WY_OPTOMETRY] CSV load failed: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-11 22:40:45,317 [INFO] run — [WY_PT] run_id=91be43ba  query=last_name/Smith
+2026-06-11 22:40:45,317 [INFO] run — [WY_PT] CSV bulk run_id=91be43ba  query=last_name/Smith
+2026-06-11 22:40:45,318 [INFO] engine.csv_extractor — [WY_PT] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:40:48,212 [INFO] openai._base_client — Retrying request to /chat/completions in 0.402261 seconds
+2026-06-11 22:40:48,616 [INFO] openai._base_client — Retrying request to /chat/completions in 0.991749 seconds
+2026-06-11 22:40:49,611 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:50,337 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://physicaltherapy.wyo.gov/public/lookup
+2026-06-11 22:40:51,979 [INFO] openai._base_client — Retrying request to /chat/completions in 0.397930 seconds
+2026-06-11 22:40:52,378 [INFO] openai._base_client — Retrying request to /chat/completions in 0.778601 seconds
+2026-06-11 22:40:53,159 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:53,280 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/11TtCKGCjp4xUaJYx2P9PX502KV8ncrD-/export?format=csv
+2026-06-11 22:40:53,280 [ERROR] run — [WY_PT] CSV load failed: AsyncClient.__init__() got an unexpected keyword argument 'proxies'
+2026-06-11 22:40:55,370 [INFO] openai._base_client — Retrying request to /chat/completions in 0.479252 seconds
+2026-06-11 22:40:55,851 [INFO] openai._base_client — Retrying request to /chat/completions in 0.758849 seconds
+2026-06-11 22:40:56,623 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:40:58,856 [INFO] openai._base_client — Retrying request to /chat/completions in 0.468906 seconds
+2026-06-11 22:40:59,327 [INFO] openai._base_client — Retrying request to /chat/completions in 0.962808 seconds
+2026-06-11 22:41:00,291 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:02,675 [INFO] openai._base_client — Retrying request to /chat/completions in 0.385349 seconds
+2026-06-11 22:41:03,062 [INFO] openai._base_client — Retrying request to /chat/completions in 0.772492 seconds
+2026-06-11 22:41:03,836 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:06,332 [INFO] openai._base_client — Retrying request to /chat/completions in 0.473425 seconds
+2026-06-11 22:41:06,807 [INFO] openai._base_client — Retrying request to /chat/completions in 0.900163 seconds
+2026-06-11 22:41:07,709 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:09,956 [INFO] openai._base_client — Retrying request to /chat/completions in 0.396186 seconds
+2026-06-11 22:41:10,354 [INFO] openai._base_client — Retrying request to /chat/completions in 0.751128 seconds
+2026-06-11 22:41:11,106 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:13,614 [INFO] openai._base_client — Retrying request to /chat/completions in 0.432329 seconds
+2026-06-11 22:41:14,048 [INFO] openai._base_client — Retrying request to /chat/completions in 0.796512 seconds
+2026-06-11 22:41:14,846 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:17,096 [INFO] openai._base_client — Retrying request to /chat/completions in 0.401933 seconds
+2026-06-11 22:41:17,500 [INFO] openai._base_client — Retrying request to /chat/completions in 0.791370 seconds
+2026-06-11 22:41:18,294 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:20,561 [INFO] openai._base_client — Retrying request to /chat/completions in 0.423394 seconds
+2026-06-11 22:41:20,986 [INFO] openai._base_client — Retrying request to /chat/completions in 0.946923 seconds
+2026-06-11 22:41:21,935 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:24,193 [INFO] openai._base_client — Retrying request to /chat/completions in 0.470363 seconds
+2026-06-11 22:41:24,664 [INFO] openai._base_client — Retrying request to /chat/completions in 0.760705 seconds
+2026-06-11 22:41:25,427 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:27,655 [INFO] openai._base_client — Retrying request to /chat/completions in 0.463358 seconds
+2026-06-11 22:41:28,120 [INFO] openai._base_client — Retrying request to /chat/completions in 0.927354 seconds
+2026-06-11 22:41:29,048 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:31,263 [INFO] openai._base_client — Retrying request to /chat/completions in 0.379658 seconds
+2026-06-11 22:41:31,644 [INFO] openai._base_client — Retrying request to /chat/completions in 0.755530 seconds
+2026-06-11 22:41:32,408 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:34,749 [INFO] openai._base_client — Retrying request to /chat/completions in 0.458843 seconds
+2026-06-11 22:41:35,210 [INFO] openai._base_client — Retrying request to /chat/completions in 0.941588 seconds
+2026-06-11 22:41:36,153 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:38,611 [INFO] openai._base_client — Retrying request to /chat/completions in 0.441443 seconds
+2026-06-11 22:41:39,054 [INFO] openai._base_client — Retrying request to /chat/completions in 0.765804 seconds
+2026-06-11 22:41:39,821 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:42,054 [INFO] openai._base_client — Retrying request to /chat/completions in 0.400937 seconds
+2026-06-11 22:41:42,457 [INFO] openai._base_client — Retrying request to /chat/completions in 0.989649 seconds
+2026-06-11 22:41:43,449 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:45,844 [INFO] openai._base_client — Retrying request to /chat/completions in 0.435846 seconds
+2026-06-11 22:41:46,282 [INFO] openai._base_client — Retrying request to /chat/completions in 0.887906 seconds
+2026-06-11 22:41:47,172 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:49,381 [INFO] openai._base_client — Retrying request to /chat/completions in 0.401415 seconds
+2026-06-11 22:41:49,783 [INFO] openai._base_client — Retrying request to /chat/completions in 0.874318 seconds
+2026-06-11 22:41:50,659 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:52,882 [INFO] openai._base_client — Retrying request to /chat/completions in 0.406578 seconds
+2026-06-11 22:41:53,290 [INFO] openai._base_client — Retrying request to /chat/completions in 0.992684 seconds
+2026-06-11 22:41:54,285 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:56,482 [INFO] openai._base_client — Retrying request to /chat/completions in 0.444519 seconds
+2026-06-11 22:41:56,928 [INFO] openai._base_client — Retrying request to /chat/completions in 0.822680 seconds
+2026-06-11 22:41:57,752 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:41:59,985 [INFO] openai._base_client — Retrying request to /chat/completions in 0.430721 seconds
+2026-06-11 22:42:00,417 [INFO] openai._base_client — Retrying request to /chat/completions in 0.860934 seconds
+2026-06-11 22:42:01,280 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:03,580 [INFO] openai._base_client — Retrying request to /chat/completions in 0.406501 seconds
+2026-06-11 22:42:03,988 [INFO] openai._base_client — Retrying request to /chat/completions in 0.758543 seconds
+2026-06-11 22:42:04,749 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:06,963 [INFO] openai._base_client — Retrying request to /chat/completions in 0.393138 seconds
+2026-06-11 22:42:07,358 [INFO] openai._base_client — Retrying request to /chat/completions in 0.989243 seconds
+2026-06-11 22:42:08,349 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:10,826 [INFO] openai._base_client — Retrying request to /chat/completions in 0.496775 seconds
+2026-06-11 22:42:11,324 [INFO] openai._base_client — Retrying request to /chat/completions in 0.842263 seconds
+2026-06-11 22:42:12,168 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:14,394 [INFO] openai._base_client — Retrying request to /chat/completions in 0.488023 seconds
+2026-06-11 22:42:14,884 [INFO] openai._base_client — Retrying request to /chat/completions in 0.813020 seconds
+2026-06-11 22:42:15,698 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:16,980 [INFO] engine.pagination — Clicked next page button
+2026-06-11 22:42:20,321 [INFO] openai._base_client — Retrying request to /chat/completions in 0.420319 seconds
+2026-06-11 22:42:20,743 [INFO] openai._base_client — Retrying request to /chat/completions in 0.815620 seconds
+2026-06-11 22:42:21,560 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:23,982 [INFO] openai._base_client — Retrying request to /chat/completions in 0.436248 seconds
+2026-06-11 22:42:24,421 [INFO] openai._base_client — Retrying request to /chat/completions in 0.897207 seconds
+2026-06-11 22:42:25,321 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:27,544 [INFO] openai._base_client — Retrying request to /chat/completions in 0.445755 seconds
+2026-06-11 22:42:27,991 [INFO] openai._base_client — Retrying request to /chat/completions in 0.777046 seconds
+2026-06-11 22:42:28,770 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:31,026 [INFO] openai._base_client — Retrying request to /chat/completions in 0.413481 seconds
+2026-06-11 22:42:31,441 [INFO] openai._base_client — Retrying request to /chat/completions in 0.810325 seconds
+2026-06-11 22:42:32,252 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:34,483 [INFO] openai._base_client — Retrying request to /chat/completions in 0.451931 seconds
+2026-06-11 22:42:34,943 [INFO] openai._base_client — Retrying request to /chat/completions in 0.955219 seconds
+2026-06-11 22:42:35,900 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:38,116 [INFO] openai._base_client — Retrying request to /chat/completions in 0.414081 seconds
+2026-06-11 22:42:38,532 [INFO] openai._base_client — Retrying request to /chat/completions in 0.910862 seconds
+2026-06-11 22:42:39,445 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:42,092 [INFO] openai._base_client — Retrying request to /chat/completions in 0.496504 seconds
+2026-06-11 22:42:42,593 [INFO] openai._base_client — Retrying request to /chat/completions in 0.914048 seconds
+2026-06-11 22:42:43,509 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:45,820 [INFO] openai._base_client — Retrying request to /chat/completions in 0.417674 seconds
+2026-06-11 22:42:46,239 [INFO] openai._base_client — Retrying request to /chat/completions in 0.880903 seconds
+2026-06-11 22:42:47,123 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:49,358 [INFO] openai._base_client — Retrying request to /chat/completions in 0.379387 seconds
+2026-06-11 22:42:49,739 [INFO] openai._base_client — Retrying request to /chat/completions in 0.808471 seconds
+2026-06-11 22:42:50,549 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:52,980 [INFO] openai._base_client — Retrying request to /chat/completions in 0.490290 seconds
+2026-06-11 22:42:53,472 [INFO] openai._base_client — Retrying request to /chat/completions in 0.951484 seconds
+2026-06-11 22:42:54,425 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:42:56,610 [INFO] openai._base_client — Retrying request to /chat/completions in 0.409841 seconds
+2026-06-11 22:42:57,022 [INFO] openai._base_client — Retrying request to /chat/completions in 0.827564 seconds
+2026-06-11 22:42:57,851 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:00,243 [INFO] openai._base_client — Retrying request to /chat/completions in 0.458975 seconds
+2026-06-11 22:43:00,705 [INFO] openai._base_client — Retrying request to /chat/completions in 0.762048 seconds
+2026-06-11 22:43:01,470 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:03,787 [INFO] openai._base_client — Retrying request to /chat/completions in 0.488087 seconds
+2026-06-11 22:43:04,277 [INFO] openai._base_client — Retrying request to /chat/completions in 0.781841 seconds
+2026-06-11 22:43:05,067 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:07,512 [INFO] openai._base_client — Retrying request to /chat/completions in 0.375987 seconds
+2026-06-11 22:43:07,889 [INFO] openai._base_client — Retrying request to /chat/completions in 0.999059 seconds
+2026-06-11 22:43:08,891 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:11,110 [INFO] openai._base_client — Retrying request to /chat/completions in 0.439965 seconds
+2026-06-11 22:43:11,552 [INFO] openai._base_client — Retrying request to /chat/completions in 0.757140 seconds
+2026-06-11 22:43:12,310 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:14,540 [INFO] openai._base_client — Retrying request to /chat/completions in 0.463122 seconds
+2026-06-11 22:43:15,005 [INFO] openai._base_client — Retrying request to /chat/completions in 0.821539 seconds
+2026-06-11 22:43:15,828 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:18,173 [INFO] openai._base_client — Retrying request to /chat/completions in 0.489622 seconds
+2026-06-11 22:43:18,665 [INFO] openai._base_client — Retrying request to /chat/completions in 0.927406 seconds
+2026-06-11 22:43:19,594 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:21,845 [INFO] openai._base_client — Retrying request to /chat/completions in 0.403199 seconds
+2026-06-11 22:43:22,250 [INFO] openai._base_client — Retrying request to /chat/completions in 0.761416 seconds
+2026-06-11 22:43:23,019 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:25,510 [INFO] openai._base_client — Retrying request to /chat/completions in 0.456386 seconds
+2026-06-11 22:43:25,970 [INFO] openai._base_client — Retrying request to /chat/completions in 0.792332 seconds
+2026-06-11 22:43:26,764 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:29,257 [INFO] openai._base_client — Retrying request to /chat/completions in 0.452309 seconds
+2026-06-11 22:43:29,716 [INFO] openai._base_client — Retrying request to /chat/completions in 0.961671 seconds
+2026-06-11 22:43:30,680 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:33,161 [INFO] openai._base_client — Retrying request to /chat/completions in 0.376631 seconds
+2026-06-11 22:43:33,542 [INFO] openai._base_client — Retrying request to /chat/completions in 0.808349 seconds
+2026-06-11 22:43:34,370 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:36,969 [INFO] openai._base_client — Retrying request to /chat/completions in 0.409602 seconds
+2026-06-11 22:43:37,381 [INFO] openai._base_client — Retrying request to /chat/completions in 0.768967 seconds
+2026-06-11 22:43:38,171 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:40,514 [INFO] openai._base_client — Retrying request to /chat/completions in 0.389453 seconds
+2026-06-11 22:43:40,905 [INFO] openai._base_client — Retrying request to /chat/completions in 0.896565 seconds
+2026-06-11 22:43:41,805 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:44,318 [INFO] openai._base_client — Retrying request to /chat/completions in 0.395168 seconds
+2026-06-11 22:43:44,720 [INFO] openai._base_client — Retrying request to /chat/completions in 0.995656 seconds
+2026-06-11 22:43:45,741 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:48,149 [INFO] openai._base_client — Retrying request to /chat/completions in 0.495202 seconds
+2026-06-11 22:43:48,646 [INFO] openai._base_client — Retrying request to /chat/completions in 0.968282 seconds
+2026-06-11 22:43:49,621 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:51,000 [INFO] engine.pagination — Clicked next page button
+2026-06-11 22:43:54,423 [INFO] openai._base_client — Retrying request to /chat/completions in 0.497655 seconds
+2026-06-11 22:43:54,922 [INFO] openai._base_client — Retrying request to /chat/completions in 0.956041 seconds
+2026-06-11 22:43:55,880 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+2026-06-11 22:43:58,103 [INFO] openai._base_client — Retrying request to /chat/completions in 0.472360 seconds
+2026-06-11 22:43:58,577 [INFO] openai._base_client — Retrying request to /chat/completions in 0.928323 seconds
+2026-06-11 22:43:59,507 [ERROR] engine.ai_fallback — [TX_TDLR] AI fallback failed: Connection error.
+
+Smoke-testing 8 board config(s)  [concurrency=2, headed=False]
+
+Board                  Mode           Query                    Status   Detail
+--------------------------------------------------------------------------------------------------------------------------------
+IN_PLA                 last_name      Smith                    FAIL     no records returned (13.0s)
+NV_DIETITIAN           last_name      Smith                    FAIL     no records returned (128.2s)
+TX_MEDBOARD            last_name      Smith                    FAIL     no records returned (30.3s)
+TX_TDLR                last_name      Smith                    FAIL     board_timeout: hung for >300s — check site or increase --board-timeout (300.1s)
+WA_HEALTH              license_number RN.RN.61663091           PASS     [RN.RN.61663091] Madeline Smith - active (5.5s)
+WY_DENTAL              last_name      Smith                    FAIL     no records returned (7.5s)
+WY_OPTOMETRY           last_name      Smith                    FAIL     no records returned (7.1s)
+WY_PT                  last_name      Smith                    FAIL     no records returned (8.0s)
+--------------------------------------------------------------------------------------------------------------------------------
+
+Summary: 1 PASS  7 FAIL  0 SKIP  0 MISSING
+
+  [FAIL] 7 board(s) FAILED.
+         Fix before merging any engine changes.
+

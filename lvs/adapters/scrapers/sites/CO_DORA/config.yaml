@@ -1,0 +1,128 @@
+identity:
+  source_id: CO_DORA
+  board_name: Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+  state: CO
+  country: US
+  profession_codes: [MD, DO, RN, LPN, DDS, DMD, PharmD, PT, OT, PA, SW, LCSW, LPC, MFT]
+  # Socrata JSON API — dataset 7s5z-vewr on data.colorado.gov.
+  # socrata_bulk_csv archetype uses Playwright browser page.goto() (not APIRequestContext)
+  # so it works through corporate Zscaler SSL inspection.
+  base_url: "https://data.colorado.gov/resource/7s5z-vewr.json"
+  archetype: socrata_bulk_csv
+
+search:
+  # input_selector = Socrata field name (lowercase, no spaces) used in SoQL WHERE clause.
+  modes:
+    - mode: license_number
+      input_selector: "licensenumber"
+    - mode: last_name
+      input_selector: "lastname"
+    - mode: first_name
+      input_selector: "firstname"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+
+results:
+  type: table
+  has_detail_page: false
+
+# Socrata JSON field names → canonical engine field names.
+# Colorado DORA uses lowercase-no-underscore camelCase field names.
+detail:
+  field_map:
+    "licensenumber": license_number
+    "lastname": last_name
+    "firstname": first_name
+    "middlename": middle_name
+    "licensetype": license_type
+    "licensestatusdescription": status
+    "licensefirstissuedate": issue_date
+    "licenselastreneweddate": last_renewal_date
+    "licenseexpirationdate": expiration_date
+    "city": city
+    "state": state_code
+    "mailzipcode": zip_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Active - With Conditions": active
+    "Active - Provisional": active
+    "Active - Restricted": active
+    "Active - Telehealth ONLY": active
+    "Active - Refresher Course Only": active
+    "Expired": expired
+    "expired": expired
+    "Beyond 6 Years Expired": expired
+    "Inactive": inactive
+    "inactive": inactive
+    "Retired": inactive
+    "Transferred to Compact Physician": inactive
+    "Grad to Higher Level": inactive
+    "Need Master Hire - Cannot Practice": inactive
+    "Cancelled": revoked
+    "cancelled": revoked
+    "Revoked": revoked
+    "revoked": revoked
+    "Surrendered": revoked
+    "Voluntary Surrender": revoked
+    "Suspended": suspended
+    "suspended": suspended
+    "Summary Suspension": suspended
+    "Suspended Due to Child Support": suspended
+  date_formats:
+    - "%Y-%m-%dT%H:%M:%S.%f"
+    - "%Y-%m-%dT%H:%M:%S"
+    - "%Y-%m-%d"
+    - "%m/%d/%Y"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-07"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "9944947"
+  expect:
+    license_number: "9944947"
+    status: "active"
+    full_name_contains: "Smith"

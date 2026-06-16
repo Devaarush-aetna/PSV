@@ -1,0 +1,134 @@
+identity:
+  source_id: LA_PT
+  board_name: Louisiana Physical Therapy Board
+  state: LA
+  country: US
+  profession_codes: [PT, PTA]
+  # WordPress site at laptboard.org; search form is inside a Bootstrap collapse panel.
+  # pre_search_click: must click the "Search" collapse trigger first to expand the form inputs.
+  # Form inputs (confirmed from Louisiana_PhysicalTherapy_PhysicalTherapist_Scraper.py):
+  #   input[name*="license"] / input[placeholder*="License"] = license number
+  #   input[name*="first"]   / input[placeholder*="First"]   = first name
+  #   input[name*="last"]    / input[placeholder*="Last"]    = last name
+  # Submit: button.btn.btn-lg:has-text("Refine Results") — NOT type=submit
+  # Results: div.licensee cards; each card has h3 (name) + dt/dd pairs:
+  #   License #, Type, Status, Issue Date, Expiration Date, Clinic Address, Clinic Phone
+  # Cell selector "h3, dd" returns [h3, dd1, dd2, dd3, dd4, dd5, dd6] in DOM order.
+  base_url: "https://www.laptboard.org/licensee-search"
+  archetype: classic_html_form
+
+search:
+  pre_search_click: "button.clps-trigger"
+  # submit_via_enter: the Refine Results button needs JS keystroke events (type() not fill()) to
+  # become clickable. Pressing Enter on the filled input submits the form without that JS dependency.
+  submit_via_enter: true
+  modes:
+    - mode: license_number
+      # Exact field IDs confirmed from live DOM: name="licenseNum", id="lic-search-lic-num"
+      input_selector: "#lic-search-lic-num, input[name='licenseNum']"
+    - mode: last_name
+      input_selector: "#lic-search-Lastname, input[name='lastName']"
+    - mode: first_name
+      input_selector: "#lic-search-firstname, input[name='firstName']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lic-search-lic-num"
+    search_button:
+      selector: "#lic-search [type='submit']"
+  results_wait:
+    # After form submit, wait for page to settle via networkidle.
+    # element_visible(div.licensee) is unreliable — default page already shows placeholder cards.
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "0 licensee(s) meet"
+      - "no licensees meet"
+
+results:
+  type: table
+  table:
+    row_selector: "div.licensee"
+    cell_selector: "h3, dd"
+    skip_first_row: false
+    # DOM order confirmed from live evidence: h3 | Type dd | License# dd | Status dd | Issue | Exp | Address
+    columns:
+      0: full_name
+      1: license_type
+      2: license_number
+      3: status
+      4: issue_date
+      5: expiration_date
+      6: address
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "License #": license_number
+    "Type": license_type
+    "Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Clinic Address": address
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

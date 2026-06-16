@@ -1,0 +1,117 @@
+identity:
+  source_id: SD_OPT
+  board_name: South Dakota Board of Optometry
+  state: SD
+  country: US
+  profession_codes: [OD]
+  # CSV bulk download from optometry.appssd.sd.gov/Licensees.
+  # The /Licensees page shows a live table + a "Download" link to /Downloads/DownloadVerificationList.
+  # CSV columns confirmed 2026-06-10: LastName, FirstName, LicenseNumber, Issued, Expiration,
+  #   Status, Discipline, Type, Address, CityStateZip, Phone, AdvancedProcedures, TotalPageCount
+  # 251 optometrists in the download. Date format: "4/1/2007 12:00:00 AM"
+  base_url: "https://optometry.appssd.sd.gov/Licensees"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: link_text
+  link_text: "Download"
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8"
+  search_columns:
+    license_number: "LicenseNumber"
+    last_name: "LastName"
+    first_name: "FirstName"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: network_idle
+    selector: ""
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LastName": last_name
+    "FirstName": first_name
+    "LicenseNumber": license_number
+    "Issued": issue_date
+    "Expiration": expiration_date
+    "Status": status
+    "Type": license_type
+    "Address": address
+    "CityStateZip": address
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y %I:%M:%S %p"
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Anderson"
+  expect:
+    min_records: 1

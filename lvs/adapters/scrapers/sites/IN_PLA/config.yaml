@@ -1,0 +1,134 @@
+identity:
+  source_id: IN_PLA
+  board_name: Indiana Professional Licensing Agency
+  state: IN
+  country: US
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, MFT, DENT]
+  # Single portal covering all Indiana professions at mylicense.in.gov/EVerification/Search.aspx.
+  # Search form with multiple dropdowns (Profession, License Type, Status, State) + text inputs
+  # (License Number, First Name, Last Name, City, County, Zipcode).
+  # Results: GridView table with columns: Name(link) | License# | Profession | Type | Status | Address
+  # Detail: Opens Details.aspx?result=UUID in a new page (popup context.new_page()).
+  #         Detail sections: DEMOGRAPHIC | ADDRESS | LICENSE | LITIGATION | RELATED LICENSES
+  # LIMITATION: The engine's detail-page mechanism navigates in-page (click link → same page).
+  #             Indiana's detail pages open as popup windows (new browser context page).
+  #             The engine does NOT support popup-window detail navigation.
+  # ACTION NEEDED: either add popup_window detail support to the engine or skip detail extraction.
+  base_url: "https://mylicense.in.gov/EVerification/Search.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='t_web_lookup__license_no']"
+      button_selector: "input[value='Search'], input[type='submit']"
+    - mode: last_name
+      input_selector: "input[name='t_web_lookup__last_name']"
+      button_selector: "input[value='Search'], input[type='submit']"
+    - mode: first_name
+      input_selector: "input[name='t_web_lookup__first_name']"
+      button_selector: "input[value='Search'], input[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='t_web_lookup__last_name']"
+    search_button:
+      selector: "input[value='Search'], input[type='submit']"
+  results_wait:
+    strategy: network_idle
+    selector: "table tr a[href*='Details.aspx']"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records"
+      - "0 records"
+      - "no results"
+
+results:
+  type: table
+  table:
+    row_selector: "table#datagrid_results > tbody > tr"
+    # Direct-child td only — the Name cell contains a nested <table> whose tds would otherwise
+    # be matched by descendant 'td', shifting all column indices.
+    cell_selector: "xpath=./td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: license_number
+      2: profession_code
+      3: license_type
+      4: status
+      5: address
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:has-text('2')"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "Name": full_name
+    "Lic #": license_number
+    "Status": status
+    "Profession": license_type
+    "Type": license_type
+    "Issued": issue_date
+    "Expiration": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Expired Non-Renewable": expired
+    "Revoked": revoked
+    "Suspended": suspended
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  # NOTE: Indiana mylicense.in.gov throws a generic ASP.NET error on broad
+  # last-name searches (e.g. "Smith") — too many rows time out the GridView.
+  # Use a specific license_number for a deterministic single-row result.
+  mode: license_number
+  query: "07001362A"
+  expect:
+    min_records: 1
+    license_number: "07001362A"
+    full_name_contains: "Huntsman"

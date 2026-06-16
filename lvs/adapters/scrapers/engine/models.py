@@ -5,7 +5,7 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
@@ -65,7 +65,37 @@ class LicenseRecord(BaseModel):
 
 class SearchQuery(BaseModel):
     mode: str
-    query: str
+    query: str = ""
+    # Structured fields — when set, they take precedence over `query` token splitting.
+    license_number: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    # Orthogonal filter modifiers — applied alongside the chosen combo mode.
+    license_type: Optional[str] = None    # sub-category of license (Active, Permanent, ...)
+    provider_type: Optional[str] = None   # kind of provider (MD, DO, RN, LPN, PA, NP, ...)
+
+    @model_validator(mode="after")
+    def _auto_join_query(self) -> "SearchQuery":
+        # If `query` is empty but explicit fields are set, build a sensible joined string
+        # so legacy code reading `query.query` still gets a usable value. license_type
+        # and provider_type are filter modifiers, not search terms — excluded from join.
+        if not self.query:
+            parts = [v for v in (self.license_number, self.first_name, self.last_name) if v]
+            if parts:
+                # Use object.__setattr__ to avoid re-triggering validation
+                object.__setattr__(self, "query", " ".join(parts))
+        return self
+
+
+# Canonical combination mode names. The engine synthesises these at runtime by
+# merging the constituent single-field modes (license_number / first_name / last_name)
+# from the same config — no per-board YAML needed when the single-field modes exist.
+COMBO_MODES = frozenset({
+    "first_and_last",
+    "license_and_first",
+    "license_and_last",
+    "license_first_last",
+})
 
 
 # ---------------------------------------------------------------------------
@@ -95,7 +125,19 @@ class SiteIdentity(BaseModel):
     country: str = "US"
     profession_codes: list[str] = Field(default_factory=list)
     base_url: str
-    archetype: Literal["thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal", "socrata_api", "socrata_bulk_csv"]
+    archetype: Literal[
+        "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
+        "socrata_api", "socrata_bulk_csv", "pdf_bulk", "csv_bulk", "certemy",
+        "json_api", "datatables_jsapi", "filemaker_webdirect",
+    ]
+    # Optional explicit capability list — overrides auto-derivation in check_board_capability.
+    # Use when the auto-derivation is wrong (e.g. dropdown-switched single-field boards).
+    capabilities: Optional[list[str]] = None
+    # Optional CSS selectors for orthogonal filter dropdowns. When set and the corresponding
+    # SearchQuery field is populated, the engine sets the dropdown via the extra_selects
+    # pattern (label-first, value-fallback) alongside the primary input fill.
+    license_type_selector: Optional[str] = None
+    provider_type_selector: Optional[str] = None
 
 
 class SearchMode(BaseModel):
@@ -103,6 +145,13 @@ class SearchMode(BaseModel):
     dropdown_value: Optional[str] = None
     input_selector: Optional[str] = None   # per-mode override for the search text input
     button_selector: Optional[str] = None  # per-mode override for the search submit button
+    # Additional text inputs to fill alongside the primary one (e.g. first name + last name).
+    # Key = CSS selector, value = template: {q} = full query, {first} = tokens before last
+    # space, {last} = last space-separated token.
+    extra_inputs: dict[str, str] = Field(default_factory=dict)
+    # Additional <select> dropdowns to set alongside the primary input.
+    # Key = CSS selector, value = option label or value to select (exact text).
+    extra_selects: dict[str, str] = Field(default_factory=dict)
 
 
 class ElementSelector(BaseModel):
@@ -116,22 +165,40 @@ class SearchByDropdown(BaseModel):
 
 
 class ResultsWait(BaseModel):
-    strategy: Literal["element_visible", "url_change", "network_idle", "delay"] = "element_visible"
+    strategy: Literal["element_visible", "url_change", "network_idle", "delay", "ajax_row_count"] = "element_visible"
     selector: Optional[str] = None
     timeout_ms: int = 20000
     no_results_indicators: list[str] = Field(default_factory=list)
+    # ajax_row_count: poll `selector` until row count > min_rows or timeout. Stabilises
+    # the count across `stable_ticks` consecutive ticks before returning.
+    min_rows: int = 1
+    stable_ticks: int = 2
+    poll_interval_ms: int = 400
 
 
 class SearchForm(BaseModel):
     search_by_dropdown: SearchByDropdown = Field(default_factory=SearchByDropdown)
     search_input: ElementSelector = Field(default_factory=lambda: ElementSelector(selector="input[type='text']"))
     search_button: ElementSelector = Field(default_factory=lambda: ElementSelector(selector="button[type='submit']"))
+    # Angular reactive forms don't pick up Playwright fill() — use keyboard.type() to fire real key events
+    use_keyboard_type: bool = False
 
 
 class SearchConfig(BaseModel):
     modes: list[SearchMode]
     form: SearchForm = Field(default_factory=SearchForm)
     results_wait: ResultsWait = Field(default_factory=ResultsWait)
+    pre_search_click: Optional[str] = None   # selector to click before filling (e.g. expand collapse form)
+    post_search_click: Optional[str] = None  # selector to click after results load (e.g. grid toggle)
+    # Like post_search_click but clicks EVERY visible match — used for accordion-grouped
+    # results where each profession panel must be expanded to load its rows (e.g. LA_DIETETICS,
+    # LA_SPEECH ColdFusion accordions).
+    post_search_click_all: Optional[str] = None
+    submit_via_enter: bool = False           # press Enter after fill instead of clicking submit button
+    # If set, the engine navigates directly to this URL (with {q} URL-encoded and {offset}=0)
+    # instead of filling the form. Used for boards with hash-route search (e.g. Thentia Cloud).
+    # Skips set_search_by + fill_search_input + click_search_button.
+    direct_search_url: Optional[str] = None
 
 
 class DetailTrigger(BaseModel):
@@ -150,6 +217,27 @@ class ResultsTableConfig(BaseModel):
     row_selector: str = "table tbody tr"
     cell_selector: str = "td"
     columns: dict[int, str] = Field(default_factory=dict)
+    skip_first_row: bool = False  # skip header row when table has no <thead>
+    table_selector: Optional[str] = None  # if set, select this element then use row_selector within it
+    table_index: Optional[int] = None     # use .nth(table_index) of table_selector matches
+    iframe_selector: Optional[str] = None # if set, look for the table inside this iframe
+    # When the form button uses _doPostBack into an iframe, the engine drops into
+    # this iframe BEFORE filling/submitting (so the postback target stays valid).
+    fill_inside_iframe: bool = False
+    # vertical_kv extractor: rows are <strong>Label:</strong>Value blocks separated by a
+    # known recurring marker label (e.g. "Name"). Set to use vertical_kv extraction.
+    vertical_kv: Optional["VerticalKvConfig"] = None
+
+
+class VerticalKvConfig(BaseModel):
+    """Layout where each record is rendered as a vertical list of label:value pairs
+    (no <table>). Records start at each occurrence of `record_marker_label` and end
+    at the next marker (or document end)."""
+    container_selector: str = "body"      # CSS selector for the area to scan
+    label_selector: str = "strong, b, label, .label, dt"   # selectors for label nodes
+    record_marker_label: str = "Name"     # the label whose presence marks a new record
+    field_map: dict[str, str] = Field(default_factory=dict)  # raw label → canonical field
+    max_records: int = 200
 
 
 class SelectListConfig(BaseModel):
@@ -169,6 +257,10 @@ class ResultsConfig(BaseModel):
     ag_grid_columns: list[str] = Field(default_factory=list)
     has_detail_page: bool = True
     detail_trigger: Optional[DetailTrigger] = None
+    # If set, and the URL after search submission contains this substring, the portal
+    # has auto-redirected to the detail page (single-result shortcut). Extract directly
+    # from that page instead of hunting for trigger links (which would find wrong links).
+    single_result_url_pattern: Optional[str] = None
     select_list: Optional[SelectListConfig] = None
     pagination: PaginationConfig = Field(default_factory=PaginationConfig)
 
@@ -243,7 +335,7 @@ class EvidenceConfig(BaseModel):
     capture_screenshot: bool = True
     capture_on: list[str] = Field(default_factory=lambda: ["search_results", "detail_page", "error"])
     storage: Literal["local", "gcs"] = "local"
-    local_path: str = "./evidence/{source_id}/{run_id}/"
+    local_path: str = "./evidence/{month}/{source_id}/{run_id}/"
 
 
 class ComplianceConfig(BaseModel):
@@ -252,6 +344,49 @@ class ComplianceConfig(BaseModel):
     requires_captcha: bool = False
     requires_login: bool = False
     robots_txt_compliant: bool = True
+
+
+class PdfEntry(BaseModel):
+    url: str
+    format: str = "default"       # "prof", "estab", or custom label
+    license_prefix: Optional[str] = None  # route to this PDF when license_number starts with this prefix
+
+
+class CsvBulkConfig(BaseModel):
+    download_strategy: Literal[
+        "link_text", "link_text_xlsx", "direct_url", "post_form",
+        "multi_step_checkbox", "google_sheet_link", "aithent_portal_xls",
+        "nvbop_angular_xlsx", "onedrive_excel", "ohio_data_portal_csv",
+        "mopro_zip",  # Missouri MOPRO Salesforce LWC portal ZIP download (pending engine implementation)
+    ] = "link_text"
+    link_text: Optional[str] = None        # for link_text: visible anchor text to find
+    link_selector: Optional[str] = None   # for google_sheet_link: CSS/text selector for the Google Sheets link
+    link_selector_nth: int = 0            # for google_sheet_link: 0-based index when multiple links match
+    header_row: int = 0                   # row index of the CSV header (0-based); use 3 for Wyoming Google Sheets
+    xlsx_header_row: int = 0              # row index of the XLSX header (0-based) for link_text_xlsx; the converted CSV always has header at row 0 so csv read uses header_row above
+    checkbox_section: Optional[str] = None        # for multi_step_checkbox: section header text to click
+    practitioner_types: list[str] = Field(default_factory=list)  # for multi_step_checkbox: types to download
+    business_unit: Optional[str] = None   # for aithent_portal_xls: Business Unit dropdown text to match
+    license_type_filter: Optional[str] = None  # for nvbop_angular_xlsx: license type to select before export
+    download_timeout_ms: int = 120000     # max ms to wait for file download (google_sheet_link, xls/xlsx strategies)
+    cache_days: int = 7
+    cache_dir: str = "./csvs"
+    encoding: str = "utf-8-sig"
+    # Maps search mode → CSV column name to search against.
+    # Scalar str = single-column search (existing behavior).
+    # list[str] = multi-column AND-filter (combo modes like first_and_last).
+    # e.g. {"license_number": "LicenseNum", "last_name": "Owners",
+    #       "first_and_last": ["FirstName", "LastName"]}
+    search_columns: dict[str, "str | list[str]"] = Field(default_factory=dict)
+    # Optional CSV columns to AND-filter on when SearchQuery has license_type/provider_type set.
+    license_type_column: Optional[str] = None
+    provider_type_column: Optional[str] = None
+
+
+class PdfBulkConfig(BaseModel):
+    pdfs: list[PdfEntry] = Field(default_factory=list)
+    cache_days: int = 7
+    cache_dir: str = "./pdfs"
 
 
 class SmokeTestExpect(BaseModel):
@@ -263,10 +398,94 @@ class SmokeTestExpect(BaseModel):
 
 class SmokeTestConfig(BaseModel):
     mode: str
-    query: str
+    query: str = ""
+    # Optional structured fields — when set, smoke runner builds a SearchQuery
+    # with these instead of (or in addition to) the legacy `query` string.
+    license_number: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    license_type: Optional[str] = None
+    provider_type: Optional[str] = None
     expect: SmokeTestExpect = Field(default_factory=SmokeTestExpect)
     skip: bool = False
     skip_reason: str = ""
+
+
+class JsonApiInterceptForm(BaseModel):
+    """For json_api.mode='intercept' — selectors used to drive the form so the SPA
+    fires its own XHR; the engine then captures the matching response."""
+    # Per-mode input fill: each entry is {selector: value-template-with-{q}}.
+    fills: dict[str, dict[str, str]] = Field(default_factory=dict)
+    # Per-mode click selectors run after fills (e.g. radio buttons).
+    pre_clicks: dict[str, list[str]] = Field(default_factory=dict)
+    # Submit button selector. If None or empty, submit_via_enter is implied.
+    submit_selector: Optional[str] = None
+    submit_via_enter: bool = True
+
+
+class JsonApiConfig(BaseModel):
+    """For archetype: json_api. Two modes:
+
+    - mode='direct' (default): POST a JSON body to endpoint_url and parse the response.
+      Works only when the endpoint is reachable without portal auth/CORS.
+    - mode='intercept': drive the public form (via intercept_form) so the SPA fires
+      its own XHR; the engine intercepts the matching response and parses records_path.
+      Use this when corporate proxy or CORS blocks direct API calls.
+    """
+    mode: Literal["direct", "intercept"] = "direct"
+    endpoint_url: str
+    method: Literal["GET", "POST"] = "POST"
+    bodies: dict[str, dict] = Field(default_factory=dict)
+    params: dict[str, dict] = Field(default_factory=dict)
+    headers: dict[str, str] = Field(default_factory=dict)
+    records_path: str = ""
+    timeout_ms: int = 30000
+    intercept_form: Optional[JsonApiInterceptForm] = None
+    # Substring matched against response URLs in intercept mode (default = endpoint_url).
+    intercept_url_pattern: Optional[str] = None
+
+
+class DataTablesConfig(BaseModel):
+    """For archetype: datatables_jsapi. Drives the DataTables JS API to set the
+    column-search filter (or global filter) then read rows from the rendered table."""
+    # Per-mode column index for column-search; -1 means use the global filter (`search(q).draw()`).
+    # Scalar int = single-column. list[int] = multi-column drive (combo modes); the engine
+    # applies each column's search in order [license_number, first_name, last_name].
+    column_index: dict[str, "int | list[int]"] = Field(default_factory=dict)
+    table_selector: str = "table.dataTable"
+    # When the site has multiple license-type pages (e.g. oklahoma.gov/dentistry),
+    # iterate each URL and merge rows.
+    sub_page_urls: list[str] = Field(default_factory=list)
+    settle_ms: int = 1500   # additional settle after .draw() before reading rows
+
+
+class FileMakerConfig(BaseModel):
+    """For archetype: filemaker_webdirect (Vaadin 8). Fields are div.fm-textarea readonly
+    containers — must .click() then keyboard.type() (fill() is incompatible)."""
+    boot_wait_ms: int = 30000     # Vaadin needs 10-60s for initial widget render
+    # Per-mode container selector ordering (1st input box = license_number, 2nd = last_name, …)
+    # Scalar int = single-field. list[int] = multi-field drive (combo modes); engine fills
+    # each container in order [license_number, first_name, last_name].
+    field_index: dict[str, "int | list[int]"] = Field(default_factory=dict)
+    container_selector: str = ".fm-textarea"
+    submit_selector: str = "button.fm-widget:has-text('Search')"
+    row_selector: str = "tr.v-grid-row-has-data"
+    cell_value_selector: str = "td.v-grid-cell div.text"
+
+
+class MultiIterationConfig(BaseModel):
+    """For boards where one search-result page only covers a slice of the providers
+    (e.g. AZ Speech/Hearing — must iterate over 7 provider type codes). The engine
+    re-runs the form once per item, merging rows.
+
+    Each iteration sets `field_selector` to `value` before filling/submitting.
+    """
+    field_selector: str               # CSS selector for the field to set
+    field_kind: Literal["select", "input", "url_replace"] = "select"
+    values: list[str] = Field(default_factory=list)
+    # url_replace only: a {value} placeholder is substituted into base_url per iteration.
+    url_template: Optional[str] = None
+    stop_after_first_hit: bool = False  # when True, stop iterating once any row matches
 
 
 class SiteConfig(BaseModel):
@@ -279,3 +498,9 @@ class SiteConfig(BaseModel):
     evidence: EvidenceConfig = Field(default_factory=EvidenceConfig)
     compliance: ComplianceConfig = Field(default_factory=ComplianceConfig)
     smoke_test: Optional[SmokeTestConfig] = None
+    pdf_bulk: Optional[PdfBulkConfig] = None
+    csv_bulk: Optional[CsvBulkConfig] = None
+    json_api: Optional[JsonApiConfig] = None
+    datatables: Optional[DataTablesConfig] = None
+    filemaker: Optional[FileMakerConfig] = None
+    multi_iteration: Optional[MultiIterationConfig] = None

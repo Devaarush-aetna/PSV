@@ -1,0 +1,157 @@
+identity:
+  source_id: WI_DSPS
+  board_name: Wisconsin Department of Safety and Professional Services
+  state: WI
+  country: US
+  profession_codes: [MD, DO, RN, LPN, PT, OT, DC, PA, DDS, RPh, DPM, SLP, AUD, MT, SW, LPC, MFT, PSY, OD]
+  base_url: "https://license.wi.gov/s/license-lookup"
+  archetype: ag_grid_spa
+
+# Salesforce Experience Cloud SPA (LWC components, shadow DOM).
+# Search modes: Credential/License Number, Individual Name (last/first), License Type.
+# Results in a standard HTML table with td[data-label] cells (despite SPA framework).
+# Detail pages at https://license.wi.gov/s/credential-detail/<id>.
+#
+# NOTE: The scraper (wisconsin_dsps_scraper_v1.py) uses msedge browser and Salesforce LWC
+# combobox interactions (get_by_role) that differ from standard engine form-fill.
+# The engine will attempt standard ag_grid_spa dispatch; AI fallback activates if extraction
+# yields fewer than 3 fields. Set AZURE_OPENAI_API_KEY for AI fallback support.
+search:
+  modes:
+    - mode: license_number
+      dropdown_value: "Credential/License Number"
+    - mode: last_name
+      dropdown_value: "Individual Name"
+    - mode: name
+      dropdown_value: "Individual Name"
+  form:
+    search_by_dropdown:
+      strategy: select
+      selector: "button[aria-haspopup='listbox'][aria-label*='Search By'], [role='combobox'][aria-label*='Search By']"
+    search_input:
+      selector: "lightning-input input, input[placeholder*='Last Name'], input[placeholder*='Credential']"
+      fallback_selectors:
+        - "input[type='text']:visible"
+    search_button:
+      selector: "lightning-button button:has-text('Search'), button:has-text('Search')"
+  results_wait:
+    strategy: element_visible
+    selector: "td[data-label], tbody tr td"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records to display"
+      - "no results"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    # Salesforce renders results as a standard HTML table (not AG Grid div rows).
+    # First column is <th data-label="Credential/License Number"> (link); rest are <td data-label>.
+    row_selector: "tr.slds-hint-parent"
+    cell_selector: "td[data-label], th[data-label]"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: license_type
+      2: license_subtype
+      3: full_name
+      4: dba
+      5: city
+      6: state_code
+      7: zip_code
+      8: issue_date
+      9: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 2000
+  strategies:
+    - type: label_sibling
+    - type: dt_dd
+    - type: two_column_table
+    - type: field_label_value
+  field_map:
+    "Credential/License #": license_number
+    "Credential/License Number": license_number
+    "Profession": license_type
+    "Credential/License Type": license_type
+    "Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "City": city
+    "State": state_code
+    "Zip Code": zip_code
+    "Granted": issue_date
+    "License Status": status
+    "Status": status
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "DBA": address
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Lapsed": expired
+    "lapsed": expired
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

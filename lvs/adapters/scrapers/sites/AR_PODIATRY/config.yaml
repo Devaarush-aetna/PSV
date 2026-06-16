@@ -1,0 +1,125 @@
+identity:
+  source_id: AR_PODIATRY
+  board_name: Arkansas State Board of Podiatric Medicine
+  state: AR
+  country: US
+  profession_codes: [DPM]
+  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/podiatric-medicine-board/"
+  archetype: pdf_bulk
+
+# PDF roster — published at healthy.arkansas.gov.
+# URL pattern: https://healthy.arkansas.gov/wp-content/uploads/Podiatry_LicenseVerification_YYYYMMDD.pdf
+# UPDATE pdf_bulk.pdfs[0].url when the board publishes a new PDF (check the board page).
+# The Python scraper (arkansas_podiatry_pdf.py) can auto-discover the latest URL from the board page.
+pdf_bulk:
+  pdfs:
+    - url: "https://healthy.arkansas.gov/wp-content/uploads/BoPM_LicenseVerification_20260612.pdf"
+      format: default
+  cache_days: 7
+  cache_dir: "./pdfs"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "Lic No": license_number
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "Expiration": expiration_date
+    "Expiration Date": expiration_date
+    "Expiry Date": expiration_date
+    "Valid Thru": expiration_date
+    "Issued": issue_date
+    "Issue Date": issue_date
+    "City": city
+    "State": state_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "247"
+  expect:
+    license_number: "247"
+    full_name_contains: "Smith"
+    min_records: 1

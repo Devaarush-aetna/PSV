@@ -1,0 +1,38 @@
+[
+  {
+    "source_id": "NV_OPTOMETRY",
+    "license_number": "",
+    "licensee_first_name": "Jonathan",
+    "licensee_last_name": "Smith",
+    "licensee_full_name": "Jonathan Smith",
+    "licensee_middle_name": null,
+    "licensee_suffix": null,
+    "license_type": "OPAC",
+    "profession_code": "OD",
+    "status": "active",
+    "effective_date": null,
+    "expiration_date": "2028-02-29",
+    "issue_date": "1990-09-04",
+    "last_renewal_date": null,
+    "address": "NONE",
+    "city": null,
+    "state_code": null,
+    "zip_code": null,
+    "disciplinary_actions": [],
+    "source_url": "",
+    "scraped_at": "2026-06-12T16:53:26.477496",
+    "evidence_html_path": null,
+    "evidence_screenshot_path": null,
+    "raw_fields": {
+      "last_name": "Smith",
+      "first_name": "Jonathan",
+      "NV License .": "267",
+      "issue_date": "9/4/1990",
+      "license_type": "OPAC",
+      "status": "ACTIVE",
+      "address": "NONE",
+      "expiration_date": "2/29/2028"
+    },
+    "used_ai": false
+  }
+]

@@ -1,0 +1,123 @@
+identity:
+  source_id: MS_CHIRO
+  board_name: Mississippi Board of Chiropractic Examiners
+  state: MS
+  country: US
+  profession_codes: [DC]
+  # Classic ASP page at msbce.ms.gov. Single form field for last name search.
+  # Results appear in a table with bgcolor="#FFFFFF" after form POST.
+  # First row of tbody is a header row (DC Name, Work Address, Phone, etc.) — skip it.
+  # Columns: 0=name, 1=work_address, 2=phone, 3=license_number,
+  #          4=license_issued, 5=discipline, 6=license_expires, 7=status, 8=graduate_of
+  base_url: "https://www.msbce.ms.gov/secure/licenseverification.asp"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input[name='lName']"
+      button_selector: "input[type='image'][alt='Submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='lName']"
+    search_button:
+      selector: "input[type='image'][alt='Submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table[bgcolor='#FFFFFF']"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records"
+      - "no matching"
+      - "0 results"
+      - "no results found"
+
+results:
+  type: table
+  table:
+    row_selector: "table[bgcolor='#FFFFFF'] tbody tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: address
+      3: license_number
+      4: issue_date
+      6: expiration_date
+      7: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Non-renewed": expired
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

@@ -124,6 +124,8 @@ transport:
     max_attempts: 3
     backoff_ms: [1000, 2000, 4000]
     retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: true
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
@@ -144,3 +146,5 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "BAKER"
+  skip: true
+  skip_reason: "login_required: ksbop.elicensesoftware.com landing page is now a STAFF-ONLY username/password login (verified 2026-06-15). Was PASS in session 10 but the public license-search endpoint has been removed. Unblock: confirm with KS Board of Pharmacy whether a public lookup URL exists, OR shift to alternate KS pharmacy data source (e.g. NABP)."

@@ -1,0 +1,124 @@
+identity:
+  source_id: ND_DENTISTRY
+  board_name: North Dakota State Board of Dental Examiners
+  state: ND
+  country: US
+  profession_codes: [DDS, DMD, RDH]
+  # Classic HTML form at nddentalboard.org/verify/.
+  # From northdacota_DMD_DDS_web.py: form has "Last Name", "First Name", "License Number" labels.
+  # Input selectors: script uses get_by_label() — use input[name*='last']/input[name*='license'] as fallback.
+  # Results: table with headers containing 'License' or 'Name'; wait for "table tr".
+  # All data in results table: Name · License # · Expiration · Status · Discipline · Location · License Type
+  base_url: "https://www.nddentalboard.org/verify/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name*='license'], input[id*='license'], input[placeholder*='license' i], input[placeholder*='License' i]"
+    - mode: last_name
+      input_selector: "input[name*='last'], input[id*='last'], input[placeholder*='last' i], input[placeholder*='Last' i]"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name*='last'], input[id*='last']"
+    search_button:
+      selector: "input[type='submit'], button[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table tr"
+    timeout_ms: 15000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no match"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    # Column order from script: Name · License # · Expiration · Status · Discipline · Location · License Type
+    columns:
+      0: "full_name"
+      1: "license_number"
+      2: "expiration_date"
+      3: "status"
+      5: "city"
+      6: "license_type"
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a[rel='next'], a:has-text('Next'), a:has-text('>')"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Current": active
+    "current": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/ND_DENTISTRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

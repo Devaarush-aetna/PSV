@@ -69,6 +69,18 @@ def _record_to_dict(rec) -> dict:
     return dict(rec)
 
 
+_NAME_KEYS = ("licensee_full_name", "licensee_last_name", "licensee_first_name", "license_number")
+
+
+def _first_nonempty(records: list) -> dict:
+    """Return the first record dict that has at least one non-blank name/license field."""
+    for rec in records:
+        d = _record_to_dict(rec)
+        if any(str(d.get(k) or "").strip() for k in _NAME_KEYS):
+            return d
+    return _record_to_dict(records[0])  # fallback
+
+
 def check_result(records: list, config: SiteConfig) -> tuple[str, str]:
     """Return (status, detail_string) given a list of LicenseRecord objects."""
     st = config.smoke_test
@@ -80,7 +92,8 @@ def check_result(records: list, config: SiteConfig) -> tuple[str, str]:
     if len(records) < expect.min_records:
         return FAIL, f"got {len(records)} record(s), expected >= {expect.min_records}"
 
-    d = _record_to_dict(records[0])
+    # Skip blank/spacer rows that some boards insert; find first row with real data.
+    d = _first_nonempty(records)
 
     if expect.license_number:
         actual = str(d.get("license_number") or "")
@@ -104,14 +117,13 @@ def check_result(records: list, config: SiteConfig) -> tuple[str, str]:
             return FAIL, f"full_name '{full}' does not contain '{expect.full_name_contains}'"
 
     # Summary detail for the PASS line
-    rec = records[0]
-    lic = getattr(rec, "license_number", None) or d.get("license_number", "?")
+    lic = d.get("license_number", "?") or "?"
     name = (
-        getattr(rec, "licensee_full_name", None)
-        or f"{getattr(rec, 'licensee_first_name', '') or ''} {getattr(rec, 'licensee_last_name', '') or ''}".strip()
+        str(d.get("licensee_full_name") or "")
+        or f"{d.get('licensee_first_name') or ''} {d.get('licensee_last_name') or ''}".strip()
         or "?"
     )
-    status_val = getattr(rec, "status", None)
+    status_val = d.get("status")
     status_str = status_val.value if hasattr(status_val, "value") else str(status_val or "?")
     detail = f"[{lic}] {name} - {status_str}"
     if len(records) > 1:
@@ -127,6 +139,8 @@ async def run_one(
     config_path: Path,
     headed: bool,
     semaphore: asyncio.Semaphore,
+    per_board_timeout: int = 180,
+    force_skip: bool = False,
 ) -> tuple[str, str, str, str, str, str]:
     """
     Returns (source_id, mode, query, status, detail, elapsed).
@@ -150,15 +164,30 @@ async def run_one(
             return source_id, "-", "-", MISSING, "no smoke_test block — add one", "0s"
 
         st = config.smoke_test
-        if st.skip:
+        if st.skip and not force_skip:
             return source_id, st.mode, st.query, SKIP, st.skip_reason, "0s"
 
-        query = SearchQuery(mode=st.mode, query=st.query)
+        query = SearchQuery(
+            mode=st.mode,
+            query=st.query or "",
+            license_number=st.license_number,
+            first_name=st.first_name,
+            last_name=st.last_name,
+            license_type=st.license_type,
+            provider_type=st.provider_type,
+        )
         t0 = time.time()
         try:
-            records = await verify_license(config, query, headless_override=not headed)
+            records = await asyncio.wait_for(
+                verify_license(config, query, headless_override=not headed),
+                timeout=per_board_timeout,
+            )
             elapsed = f"{time.time() - t0:.1f}s"
             status, detail = check_result(records, config)
+        except asyncio.TimeoutError:
+            elapsed = f"{time.time() - t0:.1f}s"
+            status = FAIL
+            detail = f"board_timeout: hung for >{per_board_timeout}s — check site or increase --board-timeout"
         except Exception as e:
             elapsed = f"{time.time() - t0:.1f}s"
             status = FAIL
@@ -191,6 +220,14 @@ async def _main() -> int:
     parser.add_argument(
         "--dry-run", action="store_true",
         help="Print what would be tested without running anything",
+    )
+    parser.add_argument(
+        "--board-timeout", type=int, default=180, metavar="SECONDS",
+        help="Per-board wall-clock timeout in seconds (default: 180). Board is marked FAIL if it exceeds this.",
+    )
+    parser.add_argument(
+        "--force-skip", action="store_true",
+        help="Attempt to run boards marked skip:true (useful for checking if a blocked site has recovered).",
     )
     args = parser.parse_args()
 
@@ -228,7 +265,10 @@ async def _main() -> int:
           f"[concurrency={args.concurrency}, headed={args.headed}]\n")
 
     semaphore = asyncio.Semaphore(args.concurrency)
-    tasks = [run_one(p, args.headed, semaphore) for p in config_paths]
+    tasks = [
+        run_one(p, args.headed, semaphore, per_board_timeout=args.board_timeout, force_skip=args.force_skip)
+        for p in config_paths
+    ]
     results = await asyncio.gather(*tasks)
 
     # ---------------------------------------------------------------------------
@@ -242,13 +282,22 @@ async def _main() -> int:
     print(header)
     print(sep)
 
+    def _safe(s):
+        # Windows console (cp1252) chokes on Unicode chars sometimes returned by
+        # boards (smart quotes, arrows, em-dashes). ASCII-encode with replacement
+        # so a single odd character doesn't crash the whole summary print.
+        try:
+            return str(s).encode("ascii", "replace").decode("ascii")
+        except Exception:
+            return repr(s)
+
     passes = fails = skips = missing = 0
     for source_id, mode, query, status, detail, elapsed in results:
         label = {"PASS": "PASS", "FAIL": "FAIL", "SKIP": "SKIP", "MISSING": "MISSING"}[status]
         time_str = f" ({elapsed})" if status in (PASS, FAIL) else ""
         print(
-            f"{source_id:<{col_w[0]}} {mode:<{col_w[1]}} {query:<{col_w[2]}} "
-            f"{label:<{col_w[3]}} {detail}{time_str}"
+            f"{_safe(source_id):<{col_w[0]}} {_safe(mode):<{col_w[1]}} {_safe(query):<{col_w[2]}} "
+            f"{label:<{col_w[3]}} {_safe(detail)}{time_str}"
         )
         if status == PASS:
             passes += 1

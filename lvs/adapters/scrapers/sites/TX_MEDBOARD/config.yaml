@@ -1,0 +1,135 @@
+identity:
+  source_id: TX_MEDBOARD
+  board_name: Texas Medical Board
+  state: TX
+  country: US
+  profession_codes: [MD, DO, PA, APRN]
+  # URL extracted from mimecast-protected link (?domain=profile.tmb.state.tx.us).
+  # Site shows a terms-of-use page before the search form on first visit;
+  # requires conditional click on input[id*='btnAccept'] not supported by engine.
+  base_url: "https://profile.tmb.state.tx.us/Search.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "#BodyContent_tbLastName"
+    - mode: license_number
+      input_selector: "#BodyContent_tbLicense"
+    - mode: first_name
+      input_selector: "#BodyContent_tbFirstName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#BodyContent_tbLastName"
+    search_button:
+      selector: "#BodyContent_btnSearch"
+  pre_search_click: "input[id*='btnAccept']"   # accept terms-of-use page shown on fresh session
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "not found"
+      - "your search returned 0"
+      - "0 results found"
+
+results:
+  type: table
+  table:
+    row_selector: "#BodyContent_gvSearchResults tr"
+    cell_selector: "td"
+    # Columns: 0=Name (link), 1=License#, 2=Type, 3=Address, 4=City, 5=BoardActions
+    # Detail links are javascript:__doPostBack (no href URL); all needed fields are in main table.
+    columns:
+      0: "full_name"
+      1: "license_number"
+      2: "license_type"
+      4: "city"
+      5: "disciplinary_action"
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:has-text('Next')"
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: label_sibling
+    - type: dt_dd
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Expiration Date": expiration_date
+    "Issue Date": issue_date
+    "City": city
+    "State": state_code
+    "County": county
+    "Board Actions": disciplinary_action
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Cancelled": inactive
+    "Cancelled for Non-Renewal": inactive
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/TX_MEDBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

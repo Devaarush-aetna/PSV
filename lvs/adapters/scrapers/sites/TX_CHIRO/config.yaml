@@ -1,0 +1,104 @@
+identity:
+  source_id: "TX_CHIRO"
+  board_name: "Texas State Board of Chiropractic Examiners"
+  state: "TX"
+  country: "US"
+  profession_codes: ["DC"]
+  base_url: "https://db.tbce.texas.gov/fmi/webd/TBCE_LicenseVerification?homeurl=https://tbce.texas.gov"
+  archetype: filemaker_webdirect
+
+# FileMaker WebDirect (Vaadin 8) — fields are .fm-textarea readonly divs.
+# Vaadin needs ~30s to fully boot. The form has 3 fields (License #, Last Name,
+# First Name). Result rows: tr.v-grid-row-has-data > td.v-grid-cell > div.text.
+filemaker:
+  boot_wait_ms: 35000
+  container_selector: ".fm-textarea"
+  submit_selector: "button.fm-widget:has-text('Search')"
+  row_selector: "tr.v-grid-row-has-data"
+  # Each row is a single <td> containing many div.text leaves (one per column).
+  cell_value_selector: "div.text"
+  field_index:
+    license_number: 0
+    last_name: 1
+    first_name: 2
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  results_wait:
+    strategy: element_visible
+    selector: "tr.v-grid-row-has-data"
+    timeout_ms: 60000
+
+results:
+  type: table
+  table:
+    row_selector: "tr.v-grid-row-has-data"
+    cell_selector: "div.text"
+    columns:
+      0: license_number
+      1: first_name
+      2: middle_name
+      3: last_name
+      4: city
+      5: state_code
+      6: status
+      8: issue_date
+      9: expiration_date
+  has_detail_page: false
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1440, height: 900}
+  timeout_ms: 120000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 3000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [5000, 10000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/TX_CHIRO/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

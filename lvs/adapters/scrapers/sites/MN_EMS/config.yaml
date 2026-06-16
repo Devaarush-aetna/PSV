@@ -1,0 +1,129 @@
+identity:
+  source_id: MN_EMS
+  board_name: Minnesota Emergency Medical Services Regulatory Board
+  state: MN
+  country: US
+  profession_codes: [EMT, AEMT, PARAMEDIC]
+  # Angular SPA at emslm.mn.gov. Results rendered as Angular div rows (not a standard HTML table).
+  # Detail via hash-based routing (#/lookup/user/detail/{uuid}).
+  # Engine classic_html_form table extractor and URL-change detail nav cannot handle this site.
+  base_url: "https://emslm.mn.gov/lms/public/portal#/lookup/user"
+  archetype: classic_html_form
+
+# 2026-06-15 (session 29): the public Personnel Lookup is at
+# /lms/public/portal#/lookup/user. Live probe confirmed the search submit button
+# is input#submit[value='Search'] (NOT input[type='submit'] alone, which matches
+# header save buttons).
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#primary_license_number"
+      button_selector: "input#submit[value='Search']"
+    - mode: last_name
+      input_selector: "#last_name"
+      button_selector: "input#submit[value='Search']"
+    - mode: first_name
+      input_selector: "#first_name"
+      button_selector: "input#submit[value='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#last_name"
+    search_button:
+      selector: "input#submit[value='Search']"
+      fallback_selectors:
+        - "input[type='submit'][value='Search']"
+  results_wait:
+    strategy: element_visible
+    selector: "div.tbl-row-group .tbl-cell"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no items to display"
+
+# 2026-06-15 (session 29 iter 2): results are Angular ng-repeat divs, not <table>.
+# Row container is div.tbl-row-group[ng-repeat="user in users..."]; each row has
+# .tbl-cell children. First cell contains the licensee name as an <a>; subsequent
+# cells hold license_number, level, status, cert_date, expiration.
+results:
+  type: table
+  table:
+    row_selector: "div.tbl-row-group"
+    cell_selector: ".tbl-cell"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: issue_date
+      5: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/MN_EMS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 29): skip lifted. Live probe shows public Personnel Lookup
+  # at hash route #/lookup/user with inputs #primary_license_number / #first_name /
+  # #last_name and submit button input#submit[value='Search']. Session 28's "login
+  # portal landing" was actually the eLicense portal nav — the lookup itself is
+  # unauthenticated.

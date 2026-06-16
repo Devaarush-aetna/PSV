@@ -1,0 +1,108 @@
+identity:
+  source_id: "TX_DENTAL"
+  board_name: "Texas State Board of Dental Examiners"
+  state: "TX"
+  country: "US"
+  profession_codes: ["DDS", "RDH", "Dental Assistant", "Dental Lab"]
+  base_url: "https://ls.tsbde.texas.gov/"
+  archetype: datatables_jsapi
+
+# DataTables 2.x at ls.tsbde.texas.gov — default tab is Dentists.
+# Column layout (Dentists tab):
+#   0=License Number, 1=License Status, 2=Disciplinary Actions, 3=Remedial Plans,
+#   4=First Name, 5=Middle Name/Initial, 6=Last Name, 7=City, State.
+# Server-side processing fuzzy-matches across columns; use global search (-1)
+# which is the only mode that gives consistent first-record-contains-query results.
+datatables:
+  table_selector: "#myTable"
+  column_index:
+    license_number: -1
+    first_name: -1
+    last_name: -1
+  settle_ms: 2500
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  results_wait:
+    strategy: element_visible
+    selector: "#myTable tbody tr"
+    timeout_ms: 20000
+
+results:
+  type: table
+  table:
+    table_selector: "#myTable"
+    row_selector: "#myTable tbody tr"
+    cell_selector: "td"
+    columns:
+      0: license_number
+      1: status
+      4: first_name
+      5: middle_name
+      6: last_name
+      7: city
+  has_detail_page: false
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Active/Probate": active
+    "Cancelled": inactive
+    "Charity": active
+    "Deceased": inactive
+    "ENF Suspension": suspended
+    "Expired": expired
+    "Expired - NSF": expired
+    "Retired": inactive
+    "Revoked": revoked
+    "Vol Surrender": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1440, height: 900}
+  timeout_ms: 90000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/TX_DENTAL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

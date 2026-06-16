@@ -1,0 +1,148 @@
+identity:
+  source_id: "LA_MEDBOARD"
+  board_name: "Louisiana State Board of Medical Examiners"
+  state: "LA"
+  country: "US"
+  profession_codes: ["MD", "DO", "PA", "OT", "OTA", "RT", "POD", "Midwifery"]
+  # Angular SPA at online.lasbme.org/#/verifylicense.
+  # From Louisiana_MedicalExamiers_Scraper.py:
+  #   Inputs: [name="licenseNumber"], [name="firstName"], [name="lastName"].
+  #   Optional: [name="PractitionerType"], [name="speciality"], [name="licenseStatus"].
+  #   Search: input[type="submit"][title="Search"].
+  #   Detail buttons: input[value="Detail"][type="button"] — expand div.detail-container in-place.
+  base_url: "https://online.lasbme.org/#/verifylicense"
+  archetype: ag_grid_spa
+
+# 2026-06-15 (session 29 iter 2): live probe shows the actual Search button is
+# input[type='submit'][value='Search'].btn.btn-success (NO title attribute, contrary
+# to standalone scraper's documented selector). Updated selectors to match.
+search:
+  modes:
+    - mode: license_number
+      input_selector: 'input[name="licenseNumber"]'
+      button_selector: 'input[type="submit"][value="Search"], input.btn-success[type="submit"]'
+    - mode: last_name
+      input_selector: 'input[name="lastName"]'
+      button_selector: 'input[type="submit"][value="Search"], input.btn-success[type="submit"]'
+    - mode: first_name
+      input_selector: 'input[name="firstName"]'
+      button_selector: 'input[type="submit"][value="Search"], input.btn-success[type="submit"]'
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: 'input[name="lastName"]'
+    search_button:
+      selector: 'input[type="submit"][value="Search"]'
+      fallback_selectors:
+        - 'input.btn-success[type="submit"]'
+        - 'button:has-text("Search")'
+  results_wait:
+    strategy: element_visible
+    selector: "div.detail-container, table tbody tr td, .list-group-item"
+    timeout_ms: 35000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "no match"
+      - "0 result"
+
+results:
+  type: table
+  table:
+    row_selector: "div.detail-container, table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "div.detail-container table.table"
+    timeout_ms: 10000
+  strategies:
+    - type: two_column_table
+    - type: header_mapped_table
+    - type: label_sibling
+  field_map:
+    "License Number": license_number
+    "License #": license_number
+    "Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Type": license_type
+    "Practitioner Type": license_type
+    "Status": status
+    "License Status": status
+    "Issue Date": issue_date
+    "Original Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Specialty": specialty
+    "Address": address
+    "City": city
+    "State": state_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/LA_MEDBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 29): skip lifted. Re-probed online.lasbme.org/#/verifylicense
+  # and confirmed it serves the public Verification form with inputs licenseNumber /
+  # firstName / lastName / PractitionerType / licenseStatus / speciality. Prior session
+  # 28's "login portal" finding was a misread of the LaMED nav menu vs. the actual SPA.

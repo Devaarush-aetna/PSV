@@ -1,0 +1,149 @@
+identity:
+  source_id: "OR_OPTOMETRY"
+  board_name: "Oregon Board of Optometry"
+  state: "OR"
+  country: "US"
+  profession_codes: ["OD"]
+  # OGovCore platform at orus-obo.ongovcore.com.
+  # From oregon_board_of_optometry_webscraping.py:
+  #   Single search input (input[type='search']).
+  #   Detail page has tabs: Board Actions, Places of Practice, License History.
+  base_url: "https://orus-obo.ongovcore.com/public/verify-professional-license"
+  archetype: state_portal
+
+# 2026-06-15 (session 29): OGovCore portal accepts a single free-text search box
+# (input[name='search_query'], type=text not search; placeholder "Enter name or
+# license number..."). Submit posts to /public/verify-professional-license/results
+# with ?search_query=<q>. There is no separate license_number vs last_name field;
+# we wire both modes to the same input.
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='search_query']"
+      button_selector: "button[type='submit']:has-text('Search'), button:has-text('Search')"
+    - mode: last_name
+      input_selector: "input[name='search_query']"
+      button_selector: "button[type='submit']:has-text('Search'), button:has-text('Search')"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='search_query']"
+      fallback_selectors:
+        - "input[placeholder*='ame or license']"
+        - "input[type='text']"
+    search_button:
+      selector: "button[type='submit']:has-text('Search')"
+      fallback_selectors:
+        - "button:has-text('Search')"
+        - "button[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr td, .licensee-card, .results-list li"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "no match"
+      - "0 results"
+      - "no licensees found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+      5: city
+      6: disciplinary_actions
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "td a[href]"
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:has-text('Next'), button:has-text('Next')"
+    disabled_class: "disabled"
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "h1, table, dl"
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: label_sibling
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "License Type": license_type
+    "Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Address": address
+    "City": city
+    "State": state_code
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/OR_OPTOMETRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-15 (session 29): skip lifted. The public verify URL
+  # /public/verify-professional-license is the correct base_url (200 OK with
+  # search_query input). Session 28's candidate ASP.NET URLs were dead, but the
+  # canonical OGovCore path was right in the config base_url all along.

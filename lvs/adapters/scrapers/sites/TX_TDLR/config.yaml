@@ -1,0 +1,139 @@
+identity:
+  source_id: TX_TDLR
+  board_name: Texas Department of Licensing and Regulation
+  state: TX
+  country: US
+  profession_codes: []
+  # URL extracted from mimecast-protected link (?domain=tdlr.texas.gov).
+  # Search by last name; site matches on last name only, first name applied post-fetch.
+  # Single result redirects directly to SearchResultDetail.asp.
+  base_url: "https://www.tdlr.texas.gov/LicenseSearch/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input[name='pht_oth_name']"
+    - mode: license_number
+      input_selector: "input[name='pht_lic']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='pht_oth_name']"
+    search_button:
+      selector: "input[name='B1']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "no licenses matching"
+      - "did not match any"
+
+results:
+  type: table
+  table:
+    row_selector: "tr:has(> td[width='90'])"
+    cell_selector: "td"
+    skip_first_row: false
+    # Cols: 0=license#(link), 1=exp_date, 2=name(LAST,FIRST), 3=city, 4=zip, 5=county, 6=phone
+    columns:
+      0: "license_number"
+      1: "expiration_date"
+      2: "full_name"
+      3: "city"
+      4: "zip_code"
+      5: "county"
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "a:has-text('Next')"
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 15000
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: label_sibling
+    - type: dt_dd
+  field_map:
+    "Name": full_name
+    "License #": license_number
+    "License Number": license_number
+    "Type": license_type
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Original License Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "City": city
+    "State": state_code
+    "County": county
+    "Zip": zip_code
+    "Disciplinary Action": disciplinary_action
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/TX_TDLR/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smithwick"
+  expect:
+    min_records: 1
+    full_name_contains: "SMITHWICK"

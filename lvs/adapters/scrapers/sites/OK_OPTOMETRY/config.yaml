@@ -1,0 +1,161 @@
+identity:
+  source_id: "OK_OPTOMETRY"
+  board_name: "Oklahoma Board of Examiners in Optometry"
+  state: "OK"
+  country: "US"
+  profession_codes: ["OD"]
+  # Thentia Cloud public register at obeo.portalus.thentiacloud.net.
+  # Confirmed from oklahoma_board_of_examiners_in_optometry.py:
+  #   Single keyword input (input#keywords) accepts last name OR license number.
+  #   View button opens div.profile h2; Back-to-results returns.
+  #   Pagination via [ng-click*='nextPageStart'].
+  base_url: "https://obeo.portalus.thentiacloud.net/webs/portal/register/#"
+  archetype: "thentia_cloud"
+
+search:
+  modes:
+    - mode: "license_number"
+      dropdown_value: "License Number"
+    - mode: "last_name"
+      dropdown_value: "Last Name"
+    - mode: "first_name"
+      dropdown_value: "First Name"
+  form:
+    search_by_dropdown:
+      strategy: "custom_dropdown"
+      selector: "select"
+    search_input:
+      selector: "input#keywords"
+      fallback_selectors:
+        - "input[placeholder*='search text']"
+        - "input[placeholder*='Search']"
+        - "input[type='text']"
+        - "input[type='search']"
+    search_button:
+      selector: "button.btn-brand"
+      fallback_selectors:
+        - "[aria-label='Search']"
+        - "button[type='submit']"
+        - "img[alt*='search']"
+  results_wait:
+    strategy: "element_visible"
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "showing results 1-0 of 0"
+      - "no records found"
+      - "no results were found"
+
+results:
+  type: "table"
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: "name"
+      1: "license_number"
+      2: "license_type"
+      3: "status"
+  has_detail_page: false
+  detail_trigger:
+    type: "view_button"
+    selector: "button:has-text('View'), a:has-text('View'), input[value='View']"
+  pagination:
+    enabled: true
+    strategy: "next_button"
+    next_selector: "[ng-click*='nextPageStart'], a[title='Next Page'], a.next, [aria-label='Next']"
+    disabled_class: "disabled"
+
+detail:
+  wait:
+    strategy: "url_change"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "div.profile"
+      - "div[class*='profile']"
+      - "div[class*='detail']"
+      - "dl"
+      - "dt"
+  strategies:
+    - type: "dt_dd"
+    - type: "label_sibling"
+    - type: "field_label_value"
+    - type: "two_column_table"
+  field_map:
+    "License Number": "license_number"
+    "License #": "license_number"
+    "First Name": "first_name"
+    "Last Name": "last_name"
+    "Name": "full_name"
+    "License Type": "license_type"
+    "License Status": "status"
+    "Status": "status"
+    "Issue Date": "issue_date"
+    "Original Date of Licensure": "issue_date"
+    "Expiration Date": "expiration_date"
+    "Expiry Date": "expiration_date"
+    "Address": "address"
+    "Street": "address"
+    "City": "city"
+    "State": "state_code"
+    "Zip Code": "zip_code"
+    "Business Phone": "phone"
+    "Employer": "employer"
+  back_navigation:
+    strategy: "browser_back"
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "active": "active"
+    "Active": "active"
+    "Current": "active"
+    "inactive": "inactive"
+    "expired": "expired"
+    "Expired": "expired"
+    "lapsed": "expired"
+    "suspended": "suspended"
+    "revoked": "revoked"
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: "chromium"
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: "local"
+  local_path: "./evidence/OK_OPTOMETRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1

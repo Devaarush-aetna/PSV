@@ -19,16 +19,23 @@ _AZURE_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY", "")
 _AZURE_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT", "")
 _OPENAI_CONFIGURED = bool(_AZURE_API_KEY) and bool(_AZURE_ENDPOINT)
 
+# Circuit breaker: after this many consecutive connection errors, disable AI for the session
+_MAX_CONSECUTIVE_ERRORS = 2
+_consecutive_errors = 0
+_circuit_open = False  # True = AI disabled for remainder of process
+
 try:
-    from openai import AzureOpenAI as _AzureOpenAI
-    _client = _AzureOpenAI(
+    from openai import AsyncAzureOpenAI as _AsyncAzureOpenAI
+    _client = _AsyncAzureOpenAI(
         api_key=_AZURE_API_KEY,
         azure_endpoint=_AZURE_ENDPOINT,
         api_version="2024-02-01",
+        max_retries=1,  # SDK-level retries; we catch errors ourselves
     ) if _OPENAI_CONFIGURED else None
     _OPENAI_AVAILABLE = _OPENAI_CONFIGURED
 except Exception:
     _OPENAI_AVAILABLE = False
+    _client = None
     log.warning("Azure OpenAI not available — AI fallback disabled")
 
 
@@ -51,14 +58,20 @@ async def extract_with_ai(
     db: Any | None = None,
 ) -> dict:
     """Call GPT-4 to extract license fields. Returns extracted dict with _used_ai=True."""
+    global _consecutive_errors, _circuit_open
+
     if not _OPENAI_AVAILABLE or _client is None:
         log.debug("[%s] AI fallback skipped — Azure OpenAI not configured", source_id)
+        return {"_used_ai": False}
+
+    if _circuit_open:
+        log.debug("[%s] AI fallback skipped — circuit breaker open (endpoint unreachable)", source_id)
         return {"_used_ai": False}
 
     prompt = _build_prompt(html, field_map)
 
     try:
-        response = _client.chat.completions.create(
+        response = await _client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "Extract structured license data from HTML. Return JSON only."},
@@ -67,6 +80,7 @@ async def extract_with_ai(
             temperature=0,
             max_tokens=1000,
         )
+        _consecutive_errors = 0  # reset on success
         content = response.choices[0].message.content or "{}"
         usage = response.usage
 
@@ -96,7 +110,14 @@ async def extract_with_ai(
         return extracted
 
     except Exception as e:
+        _consecutive_errors += 1
         log.error("[%s] AI fallback failed: %s", source_id, e)
+        if _consecutive_errors >= _MAX_CONSECUTIVE_ERRORS:
+            _circuit_open = True
+            log.warning(
+                "AI fallback circuit breaker OPEN after %d consecutive errors — "
+                "skipping AI for remainder of run", _consecutive_errors
+            )
         return {"_used_ai": False}
 
 

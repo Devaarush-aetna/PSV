@@ -1,0 +1,27 @@
+2026-06-11 23:00:44,071 [INFO] run — [WY_DENTAL] run_id=bda23261  query=last_name/Smith
+2026-06-11 23:00:44,073 [INFO] run — [WY_DENTAL] CSV bulk run_id=bda23261  query=last_name/Smith
+2026-06-11 23:00:44,077 [INFO] engine.csv_extractor — Using cached CSV: WY_DENTAL_20260611.csv
+2026-06-11 23:00:45,077 [INFO] run — [WY_DENTAL] CSV search returned 2 record(s)
+2026-06-11 23:00:45,084 [INFO] run — [WY_OPTOMETRY] run_id=f3f29f7a  query=last_name/Smith
+2026-06-11 23:00:45,084 [INFO] run — [WY_OPTOMETRY] CSV bulk run_id=f3f29f7a  query=last_name/Smith
+2026-06-11 23:00:45,085 [INFO] engine.csv_extractor — Using cached CSV: WY_OPTOMETRY_20260611.csv
+2026-06-11 23:00:45,097 [INFO] run — [WY_OPTOMETRY] CSV search returned 2 record(s)
+2026-06-11 23:00:45,105 [INFO] run — [WY_PT] run_id=ba3324ca  query=last_name/Smith
+2026-06-11 23:00:45,105 [INFO] run — [WY_PT] CSV bulk run_id=ba3324ca  query=last_name/Smith
+2026-06-11 23:00:45,106 [INFO] engine.csv_extractor — Using cached CSV: WY_PT_20260611.csv
+2026-06-11 23:00:45,136 [INFO] run — [WY_PT] CSV search returned 46 record(s)
+
+Smoke-testing 3 board config(s)  [concurrency=1, headed=False]
+
+Board                  Mode           Query                    Status   Detail
+--------------------------------------------------------------------------------------------------------------------------------
+WY_DENTAL              last_name      Smith                    PASS     [1665] David Smith - active (+1 more) (1.0s)
+WY_OPTOMETRY           last_name      Smith                    PASS     [188T] Douglas Smith - unknown (+1 more) (0.0s)
+WY_PT                  last_name      Smith                    FAIL     full_name '' does not contain 'Smith' (0.0s)
+--------------------------------------------------------------------------------------------------------------------------------
+
+Summary: 2 PASS  1 FAIL  0 SKIP  0 MISSING
+
+  [FAIL] 1 board(s) FAILED.
+         Fix before merging any engine changes.
+

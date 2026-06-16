@@ -1,0 +1,143 @@
+identity:
+  source_id: WV_CHIRO
+  board_name: West Virginia Board of Chiropractic
+  state: WV
+  country: US
+  profession_codes: [DC]
+  # 2026-06-15 (session 28): boc.wv.gov/roster.html no longer hosts a PDF — the
+  # roster is now an embedded Microsoft OneDrive Excel viewer
+  # (<iframe src='https://1drv.ms/x/c/...'>). Switched archetype from pdf_bulk to
+  # csv_bulk with a new download_strategy: onedrive_excel that:
+  #   1. Navigates to boc.wv.gov/roster.html
+  #   2. Locates the iframe pointing at 1drv.ms / onedrive.live.com
+  #   3. Resolves the 1drv.ms shortener to its onedrive.live.com canonical URL
+  #   4. Extracts resid + authkey query params and constructs
+  #      https://onedrive.live.com/download?resid=<...>&authkey=<...>
+  #   5. Downloads the XLSX, parses via pandas, returns CSV text
+  # Engine impl: lvs/adapters/scrapers/engine/csv_extractor.py:_download_onedrive_excel
+  base_url: "https://boc.wv.gov/roster.html"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: onedrive_excel
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  # XLSX columns mirror the previous PDF columns from the standalone scraper:
+  # Last Name | First Name | Middle Initial | Title | License # |
+  # Initial WV License Date | License Expiration Date | Disciplinary Action?
+  search_columns:
+    license_number: "License #"
+    last_name: "Last Name"
+    first_name: "First Name"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "Last Name": last_name
+    "last name": last_name
+    "First Name": first_name
+    "first name": first_name
+    "Middle": middle_name
+    "Middle Initial": middle_name
+    "Title": license_type
+    "title": license_type
+    "License #": license_number
+    "license #": license_number
+    "License Number": license_number
+    "Initial WV License Date": issue_date
+    "initial wv license date": issue_date
+    "License Expiration Date": expiration_date
+    "license expiration date": expiration_date
+    "Disciplinary Action?": disciplinary_action
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/WV_CHIRO/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "3842"
+  expect:
+    min_records: 1
+    full_name_contains: "Laura"
+  skip: true
+  # 2026-06-15 (session 28): the engine GAP is closed — added onedrive_excel
+  # csv_bulk strategy (engine/csv_extractor.py:_download_onedrive_excel) that
+  # tries the OneDrive Graph public-shares API + `?download=1` URL. Smoke
+  # confirmed the pipeline reaches the iframe, extracts the 1drv.ms URL,
+  # constructs the API URL — but the Graph endpoint returns HTTP 401 for this
+  # share. Reason: the file has been MIGRATED to SharePoint Online (URL contains
+  # migratedtospo=true), which requires an auth token even for "public" shares.
+  # Public unauthenticated download is no longer possible for this specific share.
+  skip_reason: "spo_migrated_share_requires_auth: boc.wv.gov/roster.html embeds a OneDrive iframe that has been migrated to SharePoint Online (?migratedtospo=true). Engine onedrive_excel strategy works in principle (added in session 28) but Graph shares API returns 401 for this specific share; 1drv.ms?download=1 hits CORS in fetch and SPO redirect in browser nav. Unblock paths: (a) request board to publish a static .xlsx/.csv URL, (b) UI-scrape the rendered Excel Online viewer (substantial engine work for the SPO viewer DOM), or (c) provide auth credentials for the SPO tenant."

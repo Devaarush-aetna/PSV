@@ -1,0 +1,144 @@
+identity:
+  source_id: MN_MEDPRACTICE
+  board_name: Minnesota Board of Medical Practice
+  state: MN
+  country: US
+  profession_codes: [MD, DO, PA, APRN]
+  # Angular SPA at bmp.hlb.state.mn.us. Results rendered in Angular components;
+  # detail via inline accordion expansion (click row to expand panel).
+  # Engine cannot handle Angular component rendering or accordion-based detail extraction.
+  base_url: "https://bmp.hlb.state.mn.us/#/onlineEntitySearch"
+  # 2026-06-15 (session 29 iter 2): switched from classic_html_form to ag_grid_spa
+  # to get the engine's longer SPA wait (networkidle 15s + 3s sleep) — the
+  # PrimeNG/Angular search form needs >5s to render its inputs after route load.
+  archetype: ag_grid_spa
+
+# 2026-06-15 (session 29): public Credential Search is at hash route
+# #/onlineEntitySearch. Inputs use IDs #lastName, #firstName, #LicenseNumber,
+# #LicenseType, #city, #zip. Submit button is button.p-button with text "Search"
+# (PrimeNG / PrimeFaces theming). Session 28's "login portal landing" misread the
+# Log In nav header — Credential Search is publicly accessible below it.
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input#lastName"
+      button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+    - mode: license_number
+      input_selector: "input#LicenseNumber"
+      button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+    - mode: first_name
+      input_selector: "input#firstName"
+      button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#lastName"
+    search_button:
+      selector: "button.p-button:not(.p-button-secondary)"
+      fallback_selectors:
+        - "button[type='submit']:has-text('Search')"
+        - "button:has-text('Search')"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr td, .p-datatable-tbody tr td, [class*=p-datatable] tr td"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no entries to show"
+
+# 2026-06-15 (session 29 iter 2): PrimeNG p-datatable. Column layout (verified
+# from evidence): td[0]=chevron expand, td[1]=Name, td[2]=Birth Year, td[3]=
+# License Types. Each cell text contains a hidden mobile label (p-column-title)
+# that may appear depending on CSS — but the value is always present. Use
+# tbody tr to skip header.
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      1: full_name
+      2: birth_year
+      3: license_type
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/MN_MEDPRACTICE/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  # 2026-06-15 (session 29 iter 2): RE-skipped after deeper investigation.
+  # Two compounding blockers:
+  #   1. ANGULAR REACTIVE FORM: Playwright's fill() and keyboard.type() update
+  #      the input.value but the underlying FormGroup doesn't see the change
+  #      (FormControl stays pristine/empty). Clicking Search submits with NO
+  #      filter, returning the unfiltered top-200 listing. Tested: fill+input
+  #      event dispatch, focus+keyboard.type per-char with delay, JS-driven
+  #      InputEvent dispatch — all fail to bind the value to the FormControl.
+  #   2. SHIELDSQUARE BOT PROTECTION on the backing API endpoint
+  #      (/api/licensure/onlineEntitySearch/search). Direct API calls from
+  #      browser context return a 404 captcha page from validate.perfdrive.com.
+  # Selector + archetype config preserved (ag_grid_spa, #lastName, .p-button)
+  # for future engine work that adds Angular FormControl-aware filling
+  # (e.g. zone.run + setValue, or a new search archetype that posts directly
+  # to the API with a pre-fetched anti-bot token).
+  skip_reason: "angular_reactive_form_plus_shieldsquare: bmp.hlb.state.mn.us is an Angular reactive-form SPA whose FormControl doesn't pick up Playwright fill/type values, AND the backing search API is gated by ShieldSquare/perfdrive captcha. Click Search currently returns unfiltered top-200. Engine fix would require Angular zone-aware FormControl.setValue() + anti-bot token negotiation."

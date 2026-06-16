@@ -1,0 +1,124 @@
+identity:
+  source_id: NV_PHARMACY
+  board_name: Nevada State Board of Pharmacy — Pharmacists
+  state: NV
+  country: US
+  profession_codes: [RPH, PHARM]
+  # Portal: online.nvbop.org — AngularJS SPA.
+  # Select Personal License Search radio, choose "Pharmacist" from ng-model dropdown,
+  # blank search, Export To Excel → downloads .xlsx.
+  # Strategy converts XLSX to CSV internally; cached as .csv in ./csvs.
+  base_url: "https://online.nvbop.org/#/verifylicense"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: nvbop_angular_xlsx
+  license_type_filter: "Pharmacist"
+  header_row: 0                  # converted CSV has headers at row 0
+  download_timeout_ms: 300000    # 5-minute timeout for large XLSX export
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  search_columns:
+    last_name: "Last Name"
+    first_name: "First Name"
+    license_number: "LicenseId"
+
+search:
+  modes:
+    - mode: last_name
+    - mode: first_name
+    - mode: license_number
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Last Name": last_name
+    "First Name": first_name
+    "LicenseId": license_number
+    "License Status": status
+    "License Expiration Date": expiration_date
+    "City": city
+    "State": state_code
+    "Discipline": disciplinary_action
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NV_PHARMACY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-11"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

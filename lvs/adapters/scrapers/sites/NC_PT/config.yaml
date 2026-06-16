@@ -1,0 +1,119 @@
+identity:
+  source_id: "NC_PT"
+  board_name: "North Carolina Board of Physical Therapy Examiners"
+  state: "NC"
+  country: "US"
+  profession_codes: ["PT", "PTA"]
+  base_url: "https://www2.ncptboard.org/app/OnlineServices/VerifyTherapist/VerifyTherapist.php"
+  archetype: classic_html_form
+
+# 2026-06-15 (session 29): NOT actually behind Cloudflare. Live probe shows public
+# Licensee Lookup form at /app/OnlineServices/VerifyTherapist/VerifyTherapist.php
+# with inputs LicenseNumber / FirstName / LastName (PascalCase). Prior session 28
+# saw a Cloudflare challenge, but corporate proxy now passes through.
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input[name='LastName']"
+      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+    - mode: first_name
+      input_selector: "input[name='FirstName']"
+      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+    - mode: license_number
+      input_selector: "input[name='LicenseNumber']"
+      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='LastName']"
+    search_button:
+      selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+      fallback_selectors:
+        - "input[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr td"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no records found"
+      - "no matching records"
+      - "no results found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: full_name
+      1: license_number
+      2: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+  date_formats:
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NC_PT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  # 2026-06-15 (session 29 iter 2): RE-skipped. First probe got the public form
+  # (PascalCase LicenseNumber/FirstName/LastName), but a smoke run plus a second
+  # probe both encountered the Cloudflare "Click to reveal" challenge. NC_PT
+  # appears to have an intermittent / rate-limited Cloudflare WAF that lets some
+  # requests through and challenges others. Engine cannot solve the JS challenge
+  # reliably. Selector config preserved (PascalCase) so the moment Cloudflare
+  # whitelists this exit path again, smoke can lift the skip with no rework.
+  # Unblock: cf-clearance cookie injection, residential UA, or board allowlist.
+  skip_reason: "cloudflare_intermittent: www2.ncptboard.org passes some traffic but challenges others with Cloudflare WAF (verified 2026-06-15 across 2 probes + 1 smoke run). Selectors are correct (PascalCase LastName/FirstName/LicenseNumber + input[type=submit]) — purely a WAF gating problem."

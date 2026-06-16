@@ -1,0 +1,132 @@
+identity:
+  source_id: IL_LICENSING
+  board_name: Illinois Department of Financial and Professional Regulation — Professional License Data
+  state: IL
+  country: US
+  # 63 IDFPR license types — healthcare-relevant subset listed here:
+  profession_codes: [MD, DO, RN, LPN, APRN, DDS, DMD, PharmD, PT, OT, PA, SW, LCSW, LPC, MFT, MT, OD, SLP, PSYCH, RD, ACUP, DPM, RRT, AT, DC]
+  # Socrata JSON API — dataset pzzh-kp68 on data.illinois.gov.
+  # socrata_bulk_csv archetype uses Playwright browser page.goto() (not APIRequestContext)
+  # so it works through corporate Zscaler SSL inspection that blocks bare TLS clients.
+  base_url: "https://data.illinois.gov/resource/pzzh-kp68.json"
+  archetype: socrata_bulk_csv
+
+search:
+  # input_selector = Socrata field name used in SoQL WHERE clause.
+  modes:
+    - mode: license_number
+      input_selector: "license_number"
+    - mode: last_name
+      input_selector: "last_name"
+    - mode: first_name
+      input_selector: "first_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+
+results:
+  type: table
+  has_detail_page: false
+
+# Socrata JSON field names → canonical engine field names.
+# Illinois IDFPR dataset uses lowercase_underscore field names.
+detail:
+  field_map:
+    "license_number": license_number
+    "license_type": license_type
+    "description": raw_description
+    "license_status": status
+    "first_name": first_name
+    "middle": middle_name
+    "last_name": last_name
+    "original_issue_date": issue_date
+    "effective_date": effective_date
+    "expiration_date": expiration_date
+    "city": city
+    "state": state_code
+    "zip": zip_code
+    "county": county
+    "business_name": raw_business_name
+    "businessdba": raw_business_dba
+    "ever_disciplined": raw_ever_disciplined
+    "case_number": raw_case_number
+    "action": raw_action
+    "discipline_start_date": raw_discipline_start
+    "discipline_end_date": raw_discipline_end
+    "discipline_reason": raw_discipline_reason
+
+output:
+  status_map:
+    "ACTIVE": active
+    "Active": active
+    "active": active
+    "INACTIVE": inactive
+    "Inactive": inactive
+    "inactive": inactive
+    "EXPIRED": expired
+    "Expired": expired
+    "expired": expired
+    "CANCELLED": revoked
+    "Cancelled": revoked
+    "cancelled": revoked
+    "REVOKED": revoked
+    "Revoked": revoked
+    "revoked": revoked
+    "SUSPENDED": suspended
+    "Suspended": suspended
+    "suspended": suspended
+    "NOT RENEWED": expired
+    "Not Renewed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%dT%H:%M:%S.%f"
+    - "%Y-%m-%dT%H:%M:%S"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-09"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "198000043"
+  expect:
+    license_number: "198000043"
+    status: "active"
+    full_name_contains: "Smith"

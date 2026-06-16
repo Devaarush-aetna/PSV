@@ -1,0 +1,118 @@
+identity:
+  source_id: "NY_CREDENTIALS"
+  board_name: "New York State Education Department - Office of the Professions (Multi-Profession)"
+  state: "NY"
+  country: "US"
+  profession_codes: ["MD", "DO", "RN", "DDS", "RPh", "PT", "OT", "Multi-Profession"]
+  # 2026-06-15: Was csv_bulk pointing at health.data.ny.gov (no canonical multi-profession
+  # Socrata dataset exists). Switched to NYSED's public verification-search page, which
+  # is the authoritative multi-profession lookup for ~50 NY professions.
+  base_url: "https://www.op.nysed.gov/verification-search"
+  archetype: classic_html_form
+
+# op.nysed.gov verification-search is a server-rendered form. Common NYSED field
+# conventions (selectors fanned out as ORs to absorb minor naming differences):
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='license_number'], input[name='LicenseNumber'], input#license_number, input#LicenseNumber, input[name*='license']"
+      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
+    - mode: last_name
+      input_selector: "input[name='last_name'], input[name='LastName'], input#last_name, input#LastName, input[name*='last']"
+      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
+    - mode: first_name
+      input_selector: "input[name='first_name'], input[name='FirstName'], input#first_name, input#FirstName, input[name*='first']"
+      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='last_name'], input[name='LastName']"
+    search_button:
+      selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr, table.views-table tbody tr, table.results tr"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "no matching"
+      - "0 records"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr, table.views-table tbody tr, table.results tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: profession
+      3: status
+      4: city
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Registered": active
+    "REGISTERED": active
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/NY_CREDENTIALS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  skip_reason: "wrong_url_no_public_search_form: op.nysed.gov/verification-search redirects to eservices.nysed.gov/professions/verification-search which is the Online Registration Renewal portal (login required), not a public verification form. The global site search (op.nysed.gov/search) returns 0 rows. Unblock: identify the correct public free-text license lookup URL for NYSED OP (a per-profession lookup at data.ny.gov Socrata may be the better approach)."

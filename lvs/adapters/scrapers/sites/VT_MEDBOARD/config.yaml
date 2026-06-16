@@ -1,0 +1,124 @@
+identity:
+  source_id: VT_MEDBOARD
+  board_name: Vermont Board of Medical Practice
+  state: VT
+  country: US
+  profession_codes: [MD, DO, PA]
+  # Vermont Office of Professional Regulation license search at search.medicallicensing.vermont.gov.
+  # Next.js SPA — single keyword input that accepts license numbers or names.
+  # Results displayed as "View" buttons (count = number of matching records).
+  # Per-record detail: click "View" → click inner "View" button → detail page with:
+  #   - SUMMARY section: Credential Number, License Type, Board, Status, Initial Credential Date, Expiration Date
+  #   - ADDRESS section: Credential Public Address
+  #   - RELATIONSHIPS section: table of related licenses
+  #   - DOCUMENTS section: table with PDF download links
+  # XPath selectors confirmed from live page (standalone script Vermont_Medical_Board_Scraper.py):
+  #   - Search input: //*[@id=":r3:"] (React-generated ID — may change on redeploy)
+  #   - Search button: //*[@id="__next"]/div/div[4]/.../form/div[2]/button
+  #   - Result "View" buttons: button:has-text('View')
+  # LIMITATION 1: React-generated IDs like ":r3:" are unstable across deploys.
+  # LIMITATION 2: XPath selectors for detail sections are hardcoded and fragile.
+  # LIMITATION 3: PDF download requires accept_downloads=True in browser context (not in engine default).
+  # LIMITATION 4: go_back() after detail = 2x page.go_back(); engine uses 1x back navigation.
+  # ACTION NEEDED: inspect current live DOM to get stable CSS selectors, then implement or skip.
+  base_url: "https://search.medicallicensing.vermont.gov/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[id*='r']"
+      button_selector: "button[type='submit']"
+    - mode: last_name
+      input_selector: "input[id*='r']"
+      button_selector: "button[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id*='r']"
+    search_button:
+      selector: "button[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "button:has-text('View')"
+    timeout_ms: 15000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "0 result"
+
+results:
+  type: table
+  table:
+    row_selector: "div[class*='MuiCard-root']"
+    cell_selector: "span[class*='MuiCardHeader-title']"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 2000
+  strategies: []
+  field_map:
+    "Credential Number": license_number
+    "License Type": license_type
+    "Status": status
+    "Initial Credential Date": issue_date
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

@@ -190,5 +190,3 @@ smoke_test:
     license_number: "B02060"
     status: "active"
     full_name_contains: "CRUZ"
-  skip: true
-  skip_reason: "network_blocked: portalus.thentiacloud.net unreachable on corporate network (Zscaler)"

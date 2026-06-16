@@ -1,0 +1,130 @@
+identity:
+  source_id: CT_ELICENSE
+  board_name: Connecticut eLicense — Healthcare Practitioners
+  state: CT
+  country: US
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, MFT]
+  # Connecticut elicense.ct.gov provides per-type CSV rosters via a multi-step flow:
+  #   1. Navigate to GenerateRoster.aspx
+  #   2. Click "Healthcare Practitioners" section
+  #   3. Check ONE practitioner-type checkbox (35 types: Acupuncturist, APRN, Audiologist, etc.)
+  #   4. Submit → DownloadRoster.aspx
+  #   5. Invoke OpenFileDownloadWindow(rosterIdnt, radioTable) via JS fetch
+  # This multi-step checkbox selection is NOT supported by the csv_bulk archetype
+  # (which only handles single-click "navigate → find link/form → download").
+  # ACTION NEEDED: either implement a multi-step csv_bulk strategy or build a dedicated archetype.
+  # The standalone script connecticut_all_csv.py fully implements this logic.
+  base_url: "https://elicense.ct.gov/Lookup/GenerateRoster.aspx"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: multi_step_checkbox
+  checkbox_section: "Healthcare Practitioners"
+  practitioner_types:
+    - "Physician/Surgeon - MD/DO"
+    - "Physical Therapist"
+    - "Advanced Practice Registered Nurse"
+    - "Chiropractor"
+    - "Dentist"
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  search_columns:
+    license_number: "LICENSE NO."
+    last_name: "LAST NAME"
+    first_name: "FIRST NAME"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: network_idle
+    selector: ""
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LICENSE NO.": license_number
+    "LICENSE NO": license_number
+    "FIRST NAME": first_name
+    "LAST NAME": last_name
+    "STATUS": status
+    "ISSUE DATE": issue_date
+    "EXPIRATION DATE": expiration_date
+    "ADDRESS1": address
+    "CITY": address
+    "STATE": address
+    "ZIP": address
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 120000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "82619"
+  expect:
+    min_records: 1
+    full_name_contains: "Ahmed"

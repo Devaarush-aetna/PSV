@@ -1,0 +1,152 @@
+identity:
+  source_id: KY_MULTIBOARD
+  board_name: Kentucky Multiple Licensing Boards (OOP)
+  state: KY
+  country: US
+  profession_codes: []
+  base_url: "https://oop.ky.gov/lic_search.aspx"
+  archetype: classic_html_form
+
+# oop.ky.gov ASP.NET WebForms portal covering multiple KY boards.
+# Results appear in the second table.tablestyle13 inside #ContentPlaceHolder2_LData.
+# The last data row often contains "Total Matches Found: X" — filtered by no-value check.
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#ContentPlaceHolder2_TLicno"
+    - mode: last_name
+      input_selector: "#ContentPlaceHolder2_TLname"
+    - mode: first_name
+      input_selector: "#ContentPlaceHolder2_TFname"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ContentPlaceHolder2_TLicno"
+    search_button:
+      selector: "#ContentPlaceHolder2_BSrch"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "0 record"
+      - "not found"
+      - "total matches found: 0"
+
+# The results container has two table.tablestyle13 elements; data is in the second (index 1).
+# table_selector + table_index selects the second tablestyle13 table via Playwright .nth(1).
+# skip_first_row skips the column-header row of that table.
+# The "Total Matches Found" footer row produces an empty rec (no mapped columns match)
+# and is silently dropped by extract_results_table.
+results:
+  type: table
+  table:
+    table_selector: "#ContentPlaceHolder2_LData table.tablestyle13"
+    table_index: 1
+    row_selector: "tr"
+    cell_selector: "td"
+    skip_first_row: true
+    # Verified column layout (2026-06-05):
+    # col0=Licensee Name  col1=Board Name  col2=License Type  col3=License Number  col4=Expiration
+    columns:
+      0: full_name
+      1: license_type
+      2: middle_name
+      3: license_number
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+    - type: dt_dd
+    - type: label_sibling
+  field_map:
+    "Name": full_name
+    "Full Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "License Type": license_type
+    "Type": license_type
+    "Profession": license_type
+    "Status": status
+    "License Status": status
+    "Expiration Date": expiration_date
+    "Expire Date": expiration_date
+    "Issue Date": issue_date
+    "City": city
+    "State": state_code
+    "Address": address
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "cancelled": inactive
+    "Probation": probation
+    "probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Kowalski"
+  expect:
+    min_records: 1
+    full_name_contains: "Kowalski"

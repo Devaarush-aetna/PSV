@@ -1,0 +1,133 @@
+identity:
+  source_id: "OH_PROVIDERS_BUSINESS"
+  board_name: "State of Ohio Licensure - Business"
+  state: "OH"
+  country: "US"
+  profession_codes: ["BIZ"]   # umbrella business-licensure roster across many professions
+  # Standalone scraper: Ohio_All_Providers(Buisness)_CSV.py
+  # Downloads a CSV from data.ohio.gov via the Export menu
+  # (#export-data button → CSV link in #export-contents). The standalone uses
+  # Edge channel + headless=False; we attempt the same flow in headless Chromium
+  # with --disable-blink-features=AutomationControlled.
+  base_url: "https://data.ohio.gov/wps/portal/gov/data/view/state-of-ohio-licensure-businesses"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: ohio_data_portal_csv
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8-sig"
+  download_timeout_ms: 300000
+  # Column names depend on the live export — adjust after first successful run.
+  # CSV columns (from live download 2026-06-16): BUSINESS_NAME, BOARD,
+  # LICENSE_NUMBER, TYPE, STATUS, SUB_STATUS, SUB_CATEGORY, BOARD_ACTION,
+  # PARCEL_STREET_ADDRESS, PARCEL_CITY, PARCEL_STATE, PARCEL_COUNTY,
+  # PARCEL_ZIP_CODE, PARCEL_COUNTRY, ISSUE_DATE, EFFECTIVE_DATE,
+  # EXPIRATION_DATE, QUERY_RUN_DATE.
+  search_columns:
+    license_number: "LICENSE_NUMBER"
+    last_name: "BUSINESS_NAME"
+    first_name: "BUSINESS_NAME"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "LICENSE_NUMBER": license_number
+    "BUSINESS_NAME": full_name
+    "BOARD": board
+    "TYPE": license_type
+    "STATUS": status
+    "SUB_STATUS": sub_status
+    "ISSUE_DATE": issue_date
+    "EFFECTIVE_DATE": effective_date
+    "EXPIRATION_DATE": expiration_date
+    "PARCEL_STREET_ADDRESS": address
+    "PARCEL_CITY": city
+    "PARCEL_STATE": state_code
+    "PARCEL_ZIP_CODE": zip_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 360000
+  navigation_timeout_ms: 300000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 8000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/OH_PROVIDERS_BUSINESS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-16 (session 29): newly added board — config built from
+  # Ohio_All_Providers(Buisness)_CSV.py. Uses new engine download_strategy:
+  # ohio_data_portal_csv. Standalone uses headed Edge; we attempt headless
+  # Chromium with AutomationControlled hint disabled. If smoke fails the
+  # likely cause is data.ohio.gov detecting headless or the export-menu DOM
+  # structure differing from #export-data / #export-contents > a — capture
+  # evidence/error.html and re-probe selectors.

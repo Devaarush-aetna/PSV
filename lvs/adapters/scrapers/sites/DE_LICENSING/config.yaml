@@ -7,7 +7,7 @@ identity:
   # Socrata JSON API endpoint — no browser navigation required.
   # The engine's socrata_api archetype makes a direct HTTP GET request.
   base_url: "https://data.delaware.gov/resource/pjnv-eaih.json"
-  archetype: socrata_api
+  archetype: socrata_bulk_csv
 
 search:
   # input_selector stores the Socrata API field name used in the SoQL WHERE clause.
@@ -107,9 +107,9 @@ transport:
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
-  capture_html: false
-  capture_screenshot: false
-  capture_on: ["error"]
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
   storage: local
   local_path: "./evidence/{source_id}/{run_id}/"
 
@@ -123,5 +123,3 @@ smoke_test:
   query: "Smith"
   expect:
     min_records: 1
-  skip: true
-  skip_reason: "proxy_required: DE_LICENSING uses socrata_api archetype which requires LVS_PROXY_SERVER or PROXY_NID/PROXY_PASSWORD env vars to reach data.delaware.gov"

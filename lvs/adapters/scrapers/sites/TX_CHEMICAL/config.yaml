@@ -1,0 +1,136 @@
+identity:
+  source_id: "TX_CHEMICAL"
+  board_name: "Texas HHS - Licensed Chemical Dependency Counselor Program"
+  state: "TX"
+  country: "US"
+  profession_codes: ["LCDC"]
+  # Standalone scraper (texas_chemical_csv.py) downloads two XLSX rosters from
+  # the Texas HHS portal page:
+  #   • LCDC roster (individual counselors) — Name column is "LAST, FIRST [MIDDLE]"
+  #   • CTI roster  (Clinical Training Institutes / facilities)
+  # This config covers ONLY the LCDC (individual) roster — CTI is org/facility
+  # data that doesn't fit the LicenseRecord per-individual contract. To add CTI,
+  # create a sibling source_id TX_CHEMICAL_CTI with the same base_url but
+  # link_text="Clinical Training Institute Roster".
+  #
+  # Engine: csv_bulk + new download_strategy: link_text_xlsx (added session 29).
+  # Click anchor by visible text → expect_download → pandas read_excel(header=1)
+  # to skip the generation-date row → return CSV text.
+  base_url: "https://www.hhs.texas.gov/business/licensing-credentialing-regulation/professional-licensing-certification-compliance/licensed-chemical-dependency-counselor-program"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: link_text_xlsx
+  link_text: "Licensed Chemical Dependency Counselor Roster"
+  xlsx_header_row: 1   # XLSX row 0 is a generation date; row 1 is the column header
+  header_row: 0        # the engine writes CSV with header at row 0 after the XLSX skip
+  cache_days: 7
+  cache_dir: "./csvs"
+  encoding: "utf-8"
+  download_timeout_ms: 180000
+  # Roster columns (per texas_chemical_csv.py): License_Type | Rank | Lic_Nbr |
+  # Name (LAST, FIRST MIDDLE) | Cnty_name | Expiration_Date | License_Status |
+  # Secondary_Status
+  search_columns:
+    license_number: "Lic_Nbr"
+    last_name: "Name"
+    first_name: "Name"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "Lic_Nbr": license_number
+    "Name": full_name
+    "License_Type": license_type
+    "Rank": rank
+    "Cnty_name": county
+    "Expiration_Date": expiration_date
+    "License_Status": status
+    "Secondary_Status": secondary_status
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 180000
+  navigation_timeout_ms: 120000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 8000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/TX_CHEMICAL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  # 2026-06-16 (session 29): newly added board — config built from
+  # texas_chemical_csv.py. Uses new engine download_strategy: link_text_xlsx
+  # which clicks the LCDC roster anchor and parses the resulting XLSX with
+  # header_row=1 to skip the generation-date row. CTI (org/facility) roster is
+  # excluded — license verification only meaningful for individual counselors.

@@ -1,0 +1,130 @@
+identity:
+  source_id: LA_DENTAL
+  board_name: Louisiana State Board of Dentistry
+  state: LA
+  country: US
+  profession_codes: [DMD, DDS, RDH]
+  # member-base.net portal — plain HTML form; returns results as a table.
+  # Row 0: title/spacer row; Row 1: header (th); Rows 2–n-3: data; last 3: footer/nav.
+  # Inputs confirmed from standalone script Louisiana_Dentistry_DMO_Scraper.py:
+  #   txtlicno = license number, txtfname = first name, txtlname = last name
+  #   search = submit button (input[type="submit"])
+  # Status codes: ACT = Active, INA = Inactive
+  base_url: "https://www.member-base.net/lsbdweb/licenseverification.htm"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='txtlicno']"
+      button_selector: "input[name='search'][type='submit']"
+    - mode: last_name
+      input_selector: "input[name='txtlname']"
+      button_selector: "input[name='search'][type='submit']"
+    - mode: first_name
+      input_selector: "input[name='txtfname']"
+      button_selector: "input[name='search'][type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='txtlicno']"
+    search_button:
+      selector: "input[name='search'][type='submit']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 15000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "not found"
+
+results:
+  type: table
+  table:
+    # Outer page is a layout table; use nested-table selector to reach the results table only.
+    row_selector: "table table tr"
+    cell_selector: "td"
+    skip_first_row: true
+    # Column order confirmed from live output: D/H code | License# | Last | First | Status | Disc | Issue | Exp
+    columns:
+      0: license_type
+      1: license_number
+      2: last_name
+      3: first_name
+      4: status
+      6: issue_date
+      7: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "License#": license_number
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "Dentist (D) Hygienist (H)": license_type
+    "Issue Date": issue_date
+    "Exp. Date": expiration_date
+
+output:
+  status_map:
+    "ACT": active
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "INA": inactive
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-10"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "3842"
+  expect:
+    min_records: 1
+    full_name_contains: "Smithwick"

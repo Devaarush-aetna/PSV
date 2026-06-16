@@ -24,6 +24,167 @@ except ImportError:
 
 EXCEL_PATH = Path(__file__).parent.parent.parent.parent / "Resources_Aetna_01Jun2026.xlsx"
 
+# Map auto-generated source_ids (from Excel board_name truncation) to the canonical
+# engine source_id used in sites/XX_BOARD/config.yaml.
+_SOURCE_ID_OVERRIDES: dict[str, str] = {
+    "VIRGINIA_VIRGINIA_DEPARTMENT_": "VA_DHP",
+}
+
+# Boards that have engine configs but are NOT in the Excel (e.g. from standalone scripts).
+# These are injected into the qualifying board list automatically.
+_EXTRA_BOARDS: list[dict] = [
+    {
+        "state": "Illinois",
+        "provider_name": "All Provider Types",
+        "board_name": "Illinois Department of Financial and Professional Regulation — Professional License Data",
+        "url": "https://data.illinois.gov/resource/pzzh-kp68.json",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping/ API",
+        "profession_type": "All Providers (63 IDFPR license types)",
+        "has_license_number": "Yes",
+        "notes": "Socrata dataset pzzh-kp68 on data.illinois.gov. Integrated from standalone illinois.py. "
+                 "No proxy required. socrata_bulk_csv archetype.",
+        "source_id": "IL_LICENSING",
+    },
+    # ── Mississippi boards (integrated from standalone scripts, session 31) ──────
+    {
+        "state": "Mississippi",
+        "provider_name": "Chiropractors",
+        "board_name": "Mississippi Board of Chiropractic Examiners",
+        "url": "https://www.msbce.ms.gov/secure/licenseverification.asp",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "DC",
+        "has_license_number": "No",
+        "notes": "Classic ASP form. last_name search only. Table results (bgcolor=#FFFFFF). "
+                 "classic_html_form archetype.",
+        "source_id": "MS_CHIRO",
+    },
+    {
+        "state": "Mississippi",
+        "provider_name": "Optometrists",
+        "board_name": "Mississippi State Board of Optometry",
+        "url": "https://www.ms.gov/msbo/license_renewal/home/licenseverification",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "OD",
+        "has_license_number": "Yes",
+        "notes": "DataTables client-side search. Full roster loaded at page load; jQuery DataTables "
+                 "global filter searches all rows. datatables_jsapi archetype.",
+        "source_id": "MS_OPTOMETRY",
+    },
+    {
+        "state": "Mississippi",
+        "provider_name": "Physical Therapists",
+        "board_name": "Mississippi Board of Physical Therapy",
+        "url": "https://www.msbpt.ms.gov/secure/licenseverification.asp",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "PT, PTA",
+        "has_license_number": "Yes",
+        "notes": "Classic ASP form. license_number or last_name search. Fieldset card results "
+                 "(fieldset.frameset2). classic_html_form archetype.",
+        "source_id": "MS_PT",
+    },
+    # ── Missouri boards (integrated from missouri_all_txt.py standalone, session 31) ─
+    {
+        "state": "Missouri",
+        "provider_name": "MD, DO, PA, RP, RCP",
+        "board_name": "Missouri State Board of Healing Arts",
+        "url": "https://mopro.mo.gov/license/s/license-downloads",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "MD, DO, PA, RP, RCP, EMT",
+        "has_license_number": "Yes",
+        "notes": "Salesforce LWC portal. ZIP download containing tab-delimited TXT roster. "
+                 "board_label: 'Healing Arts'. Requires mopro_zip csv_bulk strategy. "
+                 "csv_bulk archetype. Use missouri_all_txt.py standalone until engine supports mopro_zip.",
+        "source_id": "MO_HEALING_ARTS",
+    },
+    {
+        "state": "Missouri",
+        "provider_name": "RN, LPN, APRN",
+        "board_name": "Missouri State Board of Nursing",
+        "url": "https://mopro.mo.gov/license/s/license-downloads",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "RN, LPN, APRN",
+        "has_license_number": "Yes",
+        "notes": "Salesforce LWC portal. ZIP download containing tab-delimited TXT roster. "
+                 "board_label: 'Nursing'. Requires mopro_zip csv_bulk strategy. "
+                 "csv_bulk archetype. Use missouri_all_txt.py standalone until engine supports mopro_zip.",
+        "source_id": "MO_NURSING",
+    },
+    {
+        "state": "Missouri",
+        "provider_name": "DDS, DMD, RDH, DA",
+        "board_name": "Missouri Dental Board",
+        "url": "https://mopro.mo.gov/license/s/license-downloads",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "DDS, DMD, RDH, DA",
+        "has_license_number": "Yes",
+        "notes": "Salesforce LWC portal. ZIP download containing tab-delimited TXT roster. "
+                 "board_label: 'Dental'. Requires mopro_zip csv_bulk strategy. "
+                 "csv_bulk archetype. Use missouri_all_txt.py standalone until engine supports mopro_zip.",
+        "source_id": "MO_DENTAL",
+    },
+    {
+        "state": "Missouri",
+        "provider_name": "Optometrists",
+        "board_name": "Missouri State Board of Optometry",
+        "url": "https://mopro.mo.gov/license/s/license-downloads",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "OD",
+        "has_license_number": "Yes",
+        "notes": "Salesforce LWC portal. ZIP download containing tab-delimited TXT roster. "
+                 "board_label: 'Optometry'. Requires mopro_zip csv_bulk strategy. "
+                 "csv_bulk archetype. Use missouri_all_txt.py standalone until engine supports mopro_zip.",
+        "source_id": "MO_OPTOMETRY",
+    },
+    {
+        "state": "Missouri",
+        "provider_name": "RPh, PharmD, PharmTech",
+        "board_name": "Missouri Board of Pharmacy",
+        "url": "https://mopro.mo.gov/license/s/license-downloads",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "RPh, PharmD, PharmTech",
+        "has_license_number": "Yes",
+        "notes": "Salesforce LWC portal. ZIP download containing tab-delimited TXT roster. "
+                 "board_label: 'Pharmacy'. Requires mopro_zip csv_bulk strategy. "
+                 "csv_bulk archetype. Use missouri_all_txt.py standalone until engine supports mopro_zip.",
+        "source_id": "MO_PHARMACY",
+    },
+    # ── Michigan boards (integrated from MI_All_scraper_v1.py standalone, session 31) ─
+    {
+        "state": "Michigan",
+        "provider_name": "All License Types",
+        "board_name": "Michigan Department of Licensing and Regulatory Affairs (LARA)",
+        "url": "https://aca-prod.accela.com/MILARA/GeneralProperty/PropertyLookUp.aspx?isLicensee=Y&TabName=Home",
+        "captcha": "No",
+        "cost": "Free",
+        "ingestion_type": "Web scraping",
+        "profession_type": "MD, DO, RN, LPN, APRN, DDS, RPh, PT, OT, PA, DC, OD, SW, LPC, MFT, SLP, AUD, Psych (all LARA types)",
+        "has_license_number": "Yes",
+        "notes": "Accela Citizen Access portal (aca-prod.accela.com/MILARA). Licensee lookup via "
+                 "PropertyLookUp.aspx?isLicensee=Y. Results in gdvRefLicenseeList grid. "
+                 "Accela injects zero-width Unicode chars — stripped by post-processor. "
+                 "classic_html_form archetype. Requires PROXY=proxy:9119.",
+        "source_id": "MI_LARA",
+    },
+]
+
 _SKIP_INGESTION = {
     "manual", "csv download", "api",
     "direct pdf download (verification-20260515.pdf)",
@@ -74,6 +235,8 @@ def load_qualifying_boards(excel_path: str | Path = EXCEL_PATH, state_filter: st
         if state_filter and state.lower() != state_filter.lower():
             continue
 
+        auto_sid = f"{state.upper().replace(' ', '_')}_{board_name[:20].upper().replace(' ', '_').replace('/', '_')}"
+        source_id = _SOURCE_ID_OVERRIDES.get(auto_sid, auto_sid)
         boards.append({
             "state": state,
             "provider_name": provider,
@@ -85,8 +248,14 @@ def load_qualifying_boards(excel_path: str | Path = EXCEL_PATH, state_filter: st
             "profession_type": profession,
             "has_license_number": has_license_num,
             "notes": notes,
-            "source_id": f"{state.upper().replace(' ', '_')}_{board_name[:20].upper().replace(' ', '_').replace('/', '_')}",
+            "source_id": source_id,
         })
+
+    # Inject boards not in the Excel (e.g. from standalone scripts)
+    for extra in _EXTRA_BOARDS:
+        if state_filter and extra["state"].lower() != state_filter.lower():
+            continue
+        boards.append(extra)
 
     return boards
 

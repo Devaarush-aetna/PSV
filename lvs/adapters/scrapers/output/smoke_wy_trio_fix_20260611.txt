@@ -1,0 +1,33 @@
+2026-06-11 22:53:18,229 [INFO] run — [WY_DENTAL] run_id=e6e3167a  query=last_name/Smith
+2026-06-11 22:53:18,242 [INFO] run — [WY_DENTAL] CSV bulk run_id=e6e3167a  query=last_name/Smith
+2026-06-11 22:53:18,243 [INFO] engine.csv_extractor — [WY_DENTAL] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:53:22,641 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://dental.wyo.gov/public/lookup
+2026-06-11 22:53:23,921 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/1iDPZFg71o-Gq23DNKOjCqNz10l5GncGqIzURDZkt-ko/export?format=csv
+2026-06-11 22:53:31,253 [ERROR] run — [WY_DENTAL] CSV load failed: 
+2026-06-11 22:53:31,260 [INFO] run — [WY_OPTOMETRY] run_id=0edecc44  query=last_name/Smith
+2026-06-11 22:53:31,260 [INFO] run — [WY_OPTOMETRY] CSV bulk run_id=0edecc44  query=last_name/Smith
+2026-06-11 22:53:31,261 [INFO] engine.csv_extractor — [WY_OPTOMETRY] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:53:35,839 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://optometry.wyo.gov/public/lookup
+2026-06-11 22:53:36,933 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/15Ib3ZXto8A0zJwBRFkRldvrGIPhOOzaXKeYT9LQikoY/export?format=csv
+2026-06-11 22:53:41,740 [ERROR] run — [WY_OPTOMETRY] CSV load failed: 
+2026-06-11 22:53:41,748 [INFO] run — [WY_PT] run_id=64394a16  query=last_name/Smith
+2026-06-11 22:53:41,748 [INFO] run — [WY_PT] CSV bulk run_id=64394a16  query=last_name/Smith
+2026-06-11 22:53:41,749 [INFO] engine.csv_extractor — [WY_PT] Downloading CSV (strategy=google_sheet_link) ...
+2026-06-11 22:53:46,253 [INFO] engine.csv_extractor — google_sheet_link: navigating to https://physicaltherapy.wyo.gov/public/lookup
+2026-06-11 22:53:47,409 [INFO] engine.csv_extractor — google_sheet_link: downloading CSV via httpx from https://docs.google.com/spreadsheets/d/11TtCKGCjp4xUaJYx2P9PX502KV8ncrD-/export?format=csv
+2026-06-11 22:53:52,223 [ERROR] run — [WY_PT] CSV load failed: 
+
+Smoke-testing 3 board config(s)  [concurrency=1, headed=False]
+
+Board                  Mode           Query                    Status   Detail
+--------------------------------------------------------------------------------------------------------------------------------
+WY_DENTAL              last_name      Smith                    FAIL     no records returned (13.0s)
+WY_OPTOMETRY           last_name      Smith                    FAIL     no records returned (10.5s)
+WY_PT                  last_name      Smith                    FAIL     no records returned (10.5s)
+--------------------------------------------------------------------------------------------------------------------------------
+
+Summary: 0 PASS  3 FAIL  0 SKIP  0 MISSING
+
+  [FAIL] 3 board(s) FAILED.
+         Fix before merging any engine changes.
+

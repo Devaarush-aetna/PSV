@@ -1,0 +1,136 @@
+identity:
+  source_id: "OR_DENTAL"
+  board_name: "Oregon Board of Dentistry"
+  state: "OR"
+  country: "US"
+  profession_codes: ["DDS", "RDH"]
+  # Angular SPA at online.oregondentistry.org/#/verifylicense.
+  # From oregon_board_of_dentistry_webscraping.py:
+  #   Inputs by formcontrolname (lastname, firstname, licensenumber, casenumber, city).
+  #   Board enforces ONE field at a time.
+  #   Search: button:has-text('Search').
+  #   View Details navigates to a new Angular route.
+  base_url: "https://online.oregondentistry.org/#/verifylicense"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='LicenseNumber']"
+      button_selector: "input[type='submit'][value='Search']"
+    - mode: last_name
+      input_selector: "input[name='LastName']"
+      button_selector: "input[type='submit'][value='Search']"
+    - mode: first_name
+      input_selector: "input[name='FirstName']"
+      button_selector: "input[type='submit'][value='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='LastName']"
+    search_button:
+      selector: "input[type='submit'][value='Search']"
+  results_wait:
+    strategy: delay
+    selector: "table tbody tr"
+    timeout_ms: 8000
+    no_results_indicators:
+      - "no records found"
+      - "no matching records"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: specialty
+      2: city
+      3: public_health
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: element_visible
+    selector: "h1, h2, .provider-name, dl"
+    timeout_ms: 15000
+  strategies:
+    - type: dt_dd
+    - type: two_column_table
+    - type: label_sibling
+  field_map:
+    "License Number": license_number
+    "License #": license_number
+    "Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "License Type": license_type
+    "Status": status
+    "License Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "Address": address
+    "City": city
+    "State": state_code
+    "Specialty": specialty
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1080
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/OR_DENTAL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

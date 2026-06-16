@@ -1,0 +1,116 @@
+identity:
+  source_id: TX_OPTOMETRY
+  board_name: Texas Optometry Board
+  state: TX
+  country: US
+  profession_codes: [OD]
+  # NEW (2026-06-15): TOB returned to its own domain at tob.texas.gov/licensesearch/.
+  # Previous HPC datamart (vo.licensing.hpc.texas.gov/datamart/) had reCAPTCHA — bypassed
+  # by switching back to TOB's first-party PHP search.
+  base_url: "https://tob.texas.gov/licensesearch/index.php"
+  archetype: classic_html_form
+
+# tob.texas.gov PHP form (GET → dts-grid.php). Results rendered by jqGrid JS via
+# AJAX to inc/xml/xml-dts.php?{passsearch}. Confirmed field names 2026-06-16:
+#   last_nme, first_nme, lic_nbr — submit button is input#btnSubmit (no name attr).
+# Form method=GET; results page URL is dts-grid.php?last_nme=Smith etc.
+# jqGrid rows: tr.jqgrow  cells: td (4 cols: lic_nbr, lic_sta_desc, fullname, citystate).
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input#lic_nbr, input[name='lic_nbr']"
+      button_selector: "input#btnSubmit"
+    - mode: last_name
+      input_selector: "input#last_nme, input[name='last_nme']"
+      button_selector: "input#btnSubmit"
+    - mode: first_name
+      input_selector: "input#first_nme, input[name='first_nme']"
+      button_selector: "input#btnSubmit"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#last_nme"
+    search_button:
+      selector: "input#btnSubmit"
+  results_wait:
+    strategy: network_idle
+    selector: "tr.jqgrow td"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results based on your search"
+      - "sorry, no results"
+
+results:
+  type: table
+  table:
+    # jqGrid renders rows as tr.jqgrow with 4 td cells per row
+    row_selector: "tr.jqgrow"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: status
+      2: full_name
+      3: city
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/TX_OPTOMETRY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

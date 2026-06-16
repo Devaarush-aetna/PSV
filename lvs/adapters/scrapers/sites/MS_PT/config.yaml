@@ -1,0 +1,120 @@
+identity:
+  source_id: MS_PT
+  board_name: Mississippi Board of Physical Therapy
+  state: MS
+  country: US
+  profession_codes: [PT, PTA]
+  # Classic ASP page at msbpt.ms.gov. Supports license number or last name search.
+  # Results rendered as fieldset.frameset2 cards (one per licensee).
+  # Name element: .dryneedlingname inside each fieldset (first line is the full name).
+  # License type, status, license#, expiration date, issue date are text fields in the card.
+  # No Results: page body contains "No Results" text.
+  base_url: "https://www.msbpt.ms.gov/secure/licenseverification.asp"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='LICENSENO']"
+    - mode: last_name
+      input_selector: "input[name='LNAME']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='LNAME']"
+    search_button:
+      selector: "input[type='submit'][value='SEARCH']"
+  results_wait:
+    strategy: element_visible
+    selector: "fieldset.frameset2"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "No Results"
+      - "No results"
+      - "no records"
+      - "no matching"
+
+results:
+  type: table
+  table:
+    # Each fieldset.frameset2 is one licensee card; .dryneedlingname holds the full name.
+    row_selector: "fieldset.frameset2"
+    cell_selector: ".dryneedlingname"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Lapsed": expired
+    "Non-renewed": expired
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

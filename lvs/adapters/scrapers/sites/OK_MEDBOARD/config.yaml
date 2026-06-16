@@ -1,0 +1,140 @@
+identity:
+  source_id: "OK_MEDBOARD"
+  board_name: "Oklahoma Board of Medical Licensure and Supervision"
+  state: "OK"
+  country: "US"
+  profession_codes: ["MD", "PA", "OT", "PT", "POD", "RC", "AT", "LD"]
+  # Classic HTML form at okmedicalboard.org.
+  # From oklahoma_board_of_medical_licensure_supervision.py:
+  #   Inputs: #licensenbr, #lname, #fname.
+  #   Profession dropdown: select#lictype (required when searching by license number).
+  #   Submit: input[name='show_details'] ("Show Detailed list").
+  #   Results: one table.licensee-info per provider on the same page (no detail navigation).
+  base_url: "https://www.okmedicalboard.org/search"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#licensenbr"
+      button_selector: "input[name='show_details']"
+    - mode: last_name
+      input_selector: "#lname"
+      button_selector: "input[name='show_details']"
+    - mode: first_name
+      input_selector: "#fname"
+      button_selector: "input[name='show_details']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lname"
+    search_button:
+      selector: "input[name='show_details']"
+      fallback_selectors:
+        - "input[type='submit']"
+        - "button[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table.licensee-info"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no licensees found"
+      - "no records"
+      - "no results"
+      - "no match"
+
+results:
+  type: table
+  table:
+    row_selector: "table.licensee-info"
+    cell_selector: "tr"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+  field_map:
+    "License": license_number
+    "License Number": license_number
+    "License Type": license_type
+    "Status": status
+    "License Status": status
+    "Status Class": license_class
+    "Dated": issue_date
+    "Issue Date": issue_date
+    "Expires": expiration_date
+    "Expiration Date": expiration_date
+    "Practice Address": address
+    "Phone": phone
+    "Fax": fax
+    "County": county
+    "Specialty": specialty
+    "Medical School": medical_school
+    "Graduated": graduation_year
+    "Disciplinary Actions": disciplinary_actions
+    "Restricted to": restrictions
+
+output:
+  status_map:
+    "ACTIVE": active
+    "Active": active
+    "active": active
+    "INACTIVE": inactive
+    "Inactive": inactive
+    "EXPIRED": expired
+    "Expired": expired
+    "SUSPENDED": suspended
+    "REVOKED": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "./evidence/OK_MEDBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-15"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

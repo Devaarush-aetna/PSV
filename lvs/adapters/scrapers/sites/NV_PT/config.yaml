@@ -195,5 +195,3 @@ smoke_test:
     license_number: "3485"
     status: "active"
     full_name_contains: "Distad"
-  skip: true
-  skip_reason: "network_blocked: portalus.thentiacloud.net unreachable on corporate network (Zscaler)"
