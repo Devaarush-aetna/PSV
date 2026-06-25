@@ -1,0 +1,114 @@
+identity:
+  source_id: KS_NURSING
+  board_name: Kansas State Board of Nursing
+  state: KS
+  country: US
+  profession_codes: [RN, LPN, APRN, CRNA]
+  # Primary license lookup: https://portal.egov.ksbn.ks.gov/verification/
+  # Accessed via: ksbn.kansas.gov/license-status-verification/ → accept disclaimer
+  # NOTE: Portal requires Google reCAPTCHA — blocks automated/headless access.
+  # Manual verification: portal.egov.ksbn.ks.gov/verification/
+  # Alternative (secondary source): www.nursys.com/LQC/LQCTerms.aspx
+  base_url: "https://portal.egov.ksbn.ks.gov/verification/"
+  archetype: classic_html_form
+  skip: true
+  skip_reason: "KSBN primary portal requires reCAPTCHA (blocks headless Playwright)"
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input#t_web_lookup__license_no"
+    - mode: last_name
+      input_selector: "input#t_web_lookup__last_name"
+    - mode: first_name
+      input_selector: "input#t_web_lookup__first_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#t_web_lookup__license_no"
+    search_button:
+      selector: "input#sch_button"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+      - "0 result"
+      - "no matching"
+      - "please solve the captcha"
+      - "solve the captcha"
+      - "captcha"
+
+results:
+  type: table
+  table:
+    row_selector: "table tr"
+    cell_selector: "td"
+    columns:
+      0: "full_name"
+      1: "license_number"
+      2: "license_type"
+      3: "status"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Current": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/KS_NURSING/{run_id}/"
+
+compliance:
+  requires_captcha: true
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "SKIP"
+  expect:
+    min_records: 0

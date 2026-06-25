@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14304 STEARNS ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662217544",
+          "state": "KS"
+        },
+        {
+          "address_1": "3521 NE RALPH POWELL RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEES SUMMIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "640642337",
+          "state": "MO",
+          "telephone_number": "816-533-4398"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-03",
+        "credential": "APRN (AGNP-C)",
+        "enumeration_date": "2025-11-13",
+        "first_name": "BRIANNA",
+        "last_name": "FREDERICK",
+        "last_updated": "2026-03-03",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1763047805000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772577732000",
+      "number": "1619837689",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LA2200X",
+          "desc": "Nurse Practitioner, Adult Health",
+          "license": "2025049901",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "13144754042",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

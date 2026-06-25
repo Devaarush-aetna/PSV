@@ -1,0 +1,88 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5101 COLLEGE BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEAWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-875-2597",
+          "postal_code": "662111614",
+          "state": "KS",
+          "telephone_number": "913-721-3387"
+        },
+        {
+          "address_1": "4550 W 109TH ST STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-875-2597",
+          "postal_code": "662111354",
+          "state": "KS",
+          "telephone_number": "913-721-3387"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-14",
+        "credential": "APRN",
+        "enumeration_date": "2025-09-19",
+        "first_name": "ALLY",
+        "last_name": "MCGILL",
+        "last_updated": "2026-01-14",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1758315602000",
+      "endpoints": [
+        {
+          "address_1": "4550 W 109th St Ste 200",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Overland Park",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "Ally.McGill.1@12752direct.athenahealth.com",
+          "endpointDescription": "EHR Direct Address",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "662111354",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1768425987000",
+      "number": "1811869704",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "53-84776-012",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "2025041685",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

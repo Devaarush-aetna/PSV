@@ -9,6 +9,9 @@ identity:
   # so it works through corporate Zscaler SSL inspection.
   base_url: "https://data.colorado.gov/resource/7s5z-vewr.json"
   archetype: socrata_bulk_csv
+  # license_type_selector = SoQL column name for AND-filtering by license type
+  # licensetype values: "Doctor of Medicine (MD)", "Registered Nurse", etc.
+  license_type_selector: "licensetype"
 
 search:
   # input_selector = Socrata field name (lowercase, no spaces) used in SoQL WHERE clause.
@@ -111,7 +114,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/CO_DORA/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-07"

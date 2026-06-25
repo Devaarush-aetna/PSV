@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "231 W NOBLE AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VISALIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "559-635-7106",
+          "postal_code": "932772631",
+          "state": "CA",
+          "telephone_number": "559-635-7100"
+        },
+        {
+          "address_1": "1001 VAN DORSTEN AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CORCORAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "932122321",
+          "state": "CA",
+          "telephone_number": "559-992-2337"
+        }
+      ],
+      "basic": {
+        "credential": "FNP-C",
+        "enumeration_date": "2017-07-11",
+        "first_name": "MARK",
+        "last_name": "FLORENTINO",
+        "last_updated": "2017-07-11",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1499795304000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1499795304000",
+      "number": "1932621000",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "95006755",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

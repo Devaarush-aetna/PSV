@@ -1,0 +1,128 @@
+identity:
+  source_id: MS_PSYCH
+  board_name: Mississippi Board of Psychology
+  state: MS
+  country: US
+  profession_codes: [PSYCH]
+  # Classic ASP page at msbop.ms.gov. Single form for license number or last name.
+  # License number needs formatting: "34559" → "34 559" (2 digits + space + rest).
+  # Results: table.formtext tbody tr. Header row skipped (cells[1] has no link).
+  # Columns: 0=row#, 1=license_number (link), 2=full_name (link),
+  #          3=issue_date, 4=expiration_date, 5=phone, 6=address.
+  # Detail page navigates to separate URL (href on license link); not needed — grid has key fields.
+  base_url: "https://www.msbop.ms.gov/secure/licensesearch.asp"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#licnbr"
+    - mode: last_name
+      input_selector: "#lname"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lname"
+    search_button:
+      selector: "input[name='Submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table.formtext tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records"
+      - "no matching"
+      - "0 results"
+      - "No results"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table.formtext tbody tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      1: license_number
+      2: full_name
+      3: issue_date
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Non-renewed": expired
+    "Cancelled": inactive
+    "Lapsed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/MS_PSYCH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

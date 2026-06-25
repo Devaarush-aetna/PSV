@@ -15,7 +15,7 @@ csv_bulk:
   download_strategy: link_text
   link_text: "Professional License Download"
   cache_days: 30  # board publishes weekly; 30-day cache tolerates download failures on stale-by-1-day evictions
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   # CSV columns: LicenseNum, Owners, DBA, Program, ProfType, Status,
   #              DateIssued, DateEffective, DateExpired, ADDRESS1, ADDRESS2, CITY, STATE, ZIP
@@ -120,7 +120,7 @@ evidence:
   capture_screenshot: false
   capture_on: ["error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/AK_CBP/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-08"
@@ -131,6 +131,8 @@ compliance:
 smoke_test:
   mode: last_name
   query: "Smith"
+  skip: true
+  skip_reason: "datadome_captcha_corporate_ip: commerce.alaska.gov now serves DataDome CAPTCHA challenge to corporate network IPs (both proxy and direct). CSV download link unreachable until DataDome allowlists our IP or site changes protection. Confirmed 2026-06-18."
   expect:
     min_records: 1
     full_name_contains: "Smith"

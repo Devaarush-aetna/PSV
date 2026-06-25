@@ -16,7 +16,7 @@ csv_bulk:
   link_selector: "a[aria-label='List of Active Licenses']"
   header_row: 3
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "LICNO"
@@ -57,6 +57,7 @@ detail:
   strategies: []
   field_map:
     "LASTNAME": last_name
+    "FIRSTNAME": first_name
     "LICNO": license_number
     "ISSDATE": issue_date
     "EXPDATE": expiration_date
@@ -97,7 +98,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_DIETETICS/{run_id}/"
+  local_path: "Evidence/WY_DIETETICS/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

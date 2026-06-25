@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3901 RAINBOW BLVD",
+          "address_2": "MAILSTOP 2106",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "661608500",
+          "state": "KS",
+          "telephone_number": "913-588-9549"
+        },
+        {
+          "address_1": "15424 W 144TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660624858",
+          "state": "KS",
+          "telephone_number": "913-309-7234"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-14",
+        "credential": "RD, CSOWM, LD",
+        "enumeration_date": "2015-08-24",
+        "first_name": "NICOLETTE",
+        "last_name": "JONES",
+        "last_updated": "2025-08-14",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1440447639000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1755224152000",
+      "number": "1215304423",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "15424 W 144TH TER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660624858",
+          "state": "KS",
+          "telephone_number": "913-309-7234"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "1945",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

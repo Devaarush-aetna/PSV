@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14953 SW 18TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331855785",
+          "state": "FL",
+          "telephone_number": "305-834-2795"
+        },
+        {
+          "address_1": "855 E 10TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HIALEAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-562-3449",
+          "postal_code": "330104645",
+          "state": "FL",
+          "telephone_number": "305-392-1166"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-10-02",
+        "credential": "APRN",
+        "enumeration_date": "2024-06-20",
+        "first_name": "DORALKIS",
+        "last_name": "OSORIO SIMON",
+        "last_updated": "2024-10-02",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1718925603000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1727894659000",
+      "number": "1942044391",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "APRN11032745",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

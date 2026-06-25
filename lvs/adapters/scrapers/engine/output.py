@@ -1,4 +1,8 @@
-"""LicenseRecord serialization — JSON file output + SQLite upsert."""
+"""LicenseRecord serialization — JSON file output + SQLite upsert.
+
+Output JSON files land at:
+    PSV_DEV/Output/{source_id}/{run_id}.json
+"""
 from __future__ import annotations
 
 import json
@@ -17,6 +21,9 @@ from .post_processors import (
 )
 
 log = logging.getLogger(__name__)
+
+# PSV_DEV/ — engine/output.py → engine/ → scrapers/ → adapters/ → lvs/ → PSV_DEV/
+_PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
 
 def _json_default(obj):
@@ -95,12 +102,20 @@ def map_to_license_record(
     )
 
 
-async def write_output(records: list[LicenseRecord], output_path: str) -> None:
-    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+def resolve_output_path(source_id: str, run_id: str) -> Path:
+    """Return PSV_DEV/Output/{source_id}/{run_id}.json"""
+    return _PROJECT_ROOT / "Output" / source_id / f"{run_id}.json"
+
+
+async def write_output(records: list[LicenseRecord], source_id: str, run_id: str) -> str:
+    """Write records to PSV_DEV/Output/{source_id}/{run_id}.json. Returns path written."""
+    out_path = resolve_output_path(source_id, run_id)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     data = [r.model_dump() for r in records]
-    with open(output_path, "w", encoding="utf-8") as f:
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, default=_json_default)
-    log.info("Wrote %d records to %s", len(records), output_path)
+    log.info("Wrote %d records → %s", len(records), out_path)
+    return str(out_path)
 
 
 async def upsert_to_db(db: aiosqlite.Connection, records: list[LicenseRecord]) -> None:
@@ -117,9 +132,22 @@ async def upsert_to_db(db: aiosqlite.Connection, records: list[LicenseRecord]) -
                 evidence_html_path, evidence_screenshot_path, raw_fields, used_ai
             ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
             ON CONFLICT(source_id, license_number) DO UPDATE SET
+                licensee_first_name=excluded.licensee_first_name,
+                licensee_last_name=excluded.licensee_last_name,
+                licensee_full_name=excluded.licensee_full_name,
+                license_type=excluded.license_type,
                 status=excluded.status,
+                effective_date=excluded.effective_date,
                 expiration_date=excluded.expiration_date,
+                issue_date=excluded.issue_date,
+                address=excluded.address,
+                city=excluded.city,
+                state_code=excluded.state_code,
+                zip_code=excluded.zip_code,
+                disciplinary_actions=excluded.disciplinary_actions,
                 scraped_at=excluded.scraped_at,
+                evidence_html_path=excluded.evidence_html_path,
+                evidence_screenshot_path=excluded.evidence_screenshot_path,
                 raw_fields=excluded.raw_fields,
                 used_ai=excluded.used_ai""",
             (

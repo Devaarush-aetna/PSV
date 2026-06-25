@@ -1,0 +1,96 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6330 QUADRANGLE DR STE 500",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHAPEL HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "275178281",
+          "state": "NC",
+          "telephone_number": "888-849-7379"
+        },
+        {
+          "address_1": "828 LANE ALLEN RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "260-483-9081",
+          "postal_code": "405043658",
+          "state": "KY",
+          "telephone_number": "260-483-9196"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-28",
+        "credential": "PA-C",
+        "enumeration_date": "2025-01-27",
+        "first_name": "KAYLEE",
+        "last_name": "SPEARS",
+        "last_updated": "2026-01-28",
+        "middle_name": "J",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1737986403000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1769645852000",
+      "number": "1124830005",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "PA-C",
+          "first_name": "KAYLEE",
+          "last_name": "BAYS",
+          "middle_name": "J",
+          "prefix": "Ms.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "68 C MICHAEL DAVENPORT BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FRANKFORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "406014494",
+          "state": "KY",
+          "telephone_number": "260-483-9196"
+        },
+        {
+          "address_1": "1901 W HIGHWAY 90",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MONTICELLO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "426332460",
+          "state": "KY",
+          "telephone_number": "888-849-7379"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "TC111",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

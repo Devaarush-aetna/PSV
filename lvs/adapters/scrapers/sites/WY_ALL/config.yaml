@@ -1,0 +1,239 @@
+identity:
+  source_id: WY_ALL
+  board_name: Wyoming Combined Roster (all csv_bulk boards)
+  state: WY
+  country: US
+  profession_codes: []
+  # Merged read-only view of every WY csv_bulk board roster.
+  # Does NOT download from the web — merges already-cached CSVs from peer boards.
+  # Run each individual board (smoke_all.py --filter WY_*) to refresh their caches
+  # before querying WY_ALL.  Columns after merge: license_number, last_name, first_name,
+  # status, issue_date, expiration_date, _source_board.
+  base_url: ""
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: local_merge
+  cache_days: 7          # same TTL as peer boards; timestamp derived from max peer mtime so cache invalidates when any peer refreshes
+  cache_dir: "./PSV/CSVS"
+  encoding: "utf-8"
+  search_columns:
+    license_number: "license_number"
+    last_name: "last_name"
+    first_name: "first_name"
+
+  merge_sources:
+    - source_id: WY_MENTAL_HEALTH
+      header_row: 3       # raw Google Sheet export; engine auto-overrides to 0 after additional_link_selectors refresh
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "License Number"
+        last_name: "Last Name"
+        first_name: "First Name"
+        status: "License Status"
+        issue_date: "Issue Date"
+        expiration_date: "Expiration Date"
+
+    - source_id: WY_DIETETICS
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "LICNO"
+        last_name: "LASTNAME"
+        first_name: "FIRSTNAME"
+        status: "License Status"
+        issue_date: "ISSDATE"
+        expiration_date: "EXPDATE"
+
+    - source_id: WY_CHIRO
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "LicNo"
+        last_name: "LASTNAME"
+        first_name: "FIRSTNAME"
+        status: "License Status"
+        issue_date: "Issued"
+        expiration_date: "Expires"
+
+    - source_id: WY_OT
+      header_row: 4
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "License #"
+        last_name: "Name"          # OT roster has last name only in "Name" column
+        status: "Status"
+        issue_date: "Issued"
+        expiration_date: "Expires"
+
+    - source_id: WY_RESP
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "License no."
+        last_name: "Name"          # RESP roster has last name only
+        status: "Status"
+        issue_date: "Issue Date"
+        expiration_date: "Expiry Date"
+
+    - source_id: WY_SPEECH
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "Unnamed: 3"   # Speech CSV: license # column has no header
+        last_name: "Name"              # last name only
+        status: "Unnamed: 6"           # status column has no header
+        issue_date: "Issue Date"
+        expiration_date: "Expiration Date"
+
+    - source_id: WY_PT
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "LICENSE #"
+        last_name: "NAME "             # trailing space in PT roster header — preserve it
+        first_name: "Unnamed: 1"
+        status: "STATUS"
+        issue_date: "ISSUE DATE"
+        expiration_date: "EXPIRATION DATE"
+
+    - source_id: WY_OPTOMETRY
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "LicNo"
+        last_name: "LastName"
+        first_name: "FirstName"
+        status: "Stat"
+        issue_date: "IssDate"
+        expiration_date: "ExpDate"
+
+    - source_id: WY_DENTAL
+      header_row: 4
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "LICNO"
+        last_name: "LASTNAME"
+        first_name: "FIRSTNAME"
+        status: "License Status"
+        issue_date: "ISSDATE"
+        expiration_date: "EXPDATE"
+
+    - source_id: WY_PSYCH
+      header_row: 3
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "License no."
+        last_name: "Last Name"
+        first_name: "First Name"
+        status: "Status"
+        issue_date: "Date Issued"
+        expiration_date: "Expiry Date"
+
+    - source_id: WY_PODIATRY
+      header_row: 6
+      encoding: "utf-8-sig"
+      columns:
+        license_number: "License #"
+        last_name: "Licensee Name"    # Podiatry has full name in one column
+        status: "Status"
+        issue_date: "Issued"
+        expiration_date: "Expires"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "license_number": license_number
+    "last_name": last_name
+    "first_name": first_name
+    "status": status
+    "issue_date": issue_date
+    "expiration_date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "A": active
+    "Inactive": inactive
+    "inactive": inactive
+    "I": inactive
+    "Expired": expired
+    "expired": expired
+    "E": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 0
+    max_concurrent: 1
+  retry:
+    max_attempts: 1
+    backoff_ms: [0]
+    retry_on: []
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: []
+  storage: local
+  local_path: "Evidence/WY_ALL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-19"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "LPC-2526"
+  expect:
+    min_records: 1
+    license_number: "LPC-2526"
+  skip: true
+  skip_reason: "WY_ALL local_merge requires peer board caches to be populated first"

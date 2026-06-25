@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "936 BARCARMIL WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NAPLES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-310-2035",
+          "postal_code": "341100903",
+          "state": "FL",
+          "telephone_number": "239-265-3391"
+        },
+        {
+          "address_1": "936 BARCARMIL WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NAPLES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-310-2035",
+          "postal_code": "341100903",
+          "state": "FL",
+          "telephone_number": "239-265-3391"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-06",
+        "credential": "APRN",
+        "enumeration_date": "2025-08-08",
+        "first_name": "TABITA",
+        "last_name": "POP",
+        "last_updated": "2025-10-06",
+        "middle_name": "ANA",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1754659203000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759801119000",
+      "number": "1750266748",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "APRN11041422",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

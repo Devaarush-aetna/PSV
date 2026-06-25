@@ -36,6 +36,7 @@ search:
       - "no match"
       - "not found"
       - "0 records"
+      - "did not produce any results"
 
 results:
   type: table
@@ -134,7 +135,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/MD_PT/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

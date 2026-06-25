@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "13249 FALMOUTH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEAWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662091906",
+          "state": "KS",
+          "telephone_number": "913-963-2514"
+        },
+        {
+          "address_1": "12351 W 96TH TER STE 203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662154410",
+          "state": "KS",
+          "telephone_number": "913-963-2514"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-03",
+        "credential": "OTR/L",
+        "enumeration_date": "2013-05-21",
+        "first_name": "AMY",
+        "last_name": "FULLER",
+        "last_updated": "2026-02-03",
+        "middle_name": "THERESE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1369177111000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770157316000",
+      "number": "1578909123",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "AMY",
+          "last_name": "CHAPMAN",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": "2011017391",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

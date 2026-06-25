@@ -17,6 +17,10 @@ def parse_date(value: str | None, formats: list[str] | None = None) -> Optional[
     if not value:
         return None
     value = value.strip()
+    # Strip trailing time component — boards like KY return "2/28/2027 0:00:00"
+    # which standard date formats don't cover.
+    if " " in value and re.match(r".*\d{1,2}:\d{2}", value):
+        value = value.split(" ")[0]
     for fmt in (formats or _DEFAULT_DATE_FORMATS):
         try:
             return datetime.strptime(value, fmt).date()
@@ -67,9 +71,11 @@ def split_full_name(full_name: str) -> tuple[str, str]:
 def apply_field_map(raw: dict, field_map: dict[str, str]) -> dict:
     """Map raw scraped keys to canonical field names; keep originals as fallback."""
     result: dict = {}
-    normalized_map = {k.strip().lower(): v for k, v in field_map.items()}
+    # Normalize both sides: lowercase + strip trailing colon (many boards render
+    # labels as "Field Name:" in HTML, which would otherwise cause misses).
+    normalized_map = {k.strip().rstrip(":").strip().lower(): v for k, v in field_map.items()}
     for key, val in raw.items():
-        canonical = normalized_map.get(key.strip().lower())
+        canonical = normalized_map.get(key.strip().rstrip(":").strip().lower())
         if canonical:
             result[canonical] = val
         else:

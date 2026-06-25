@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10207 REEDS DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662073023",
+          "state": "KS",
+          "telephone_number": "913-237-2251"
+        },
+        {
+          "address_1": "4713 RAINBOW BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WESTWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662051832",
+          "state": "KS",
+          "telephone_number": "913-237-2251"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-27",
+        "credential": "DPT",
+        "enumeration_date": "2021-08-17",
+        "first_name": "CHANDLER",
+        "last_name": "STEPHENS",
+        "last_updated": "2026-03-27",
+        "middle_name": "LAUREN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1629210502000",
+      "endpoints": [
+        {
+          "address_1": "4713 Rainbow Blvd",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Westwood",
+          "contentOtherDescription": "Direct messaging",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "WebPT",
+          "endpointDescription": "Physical Therapy EMR",
+          "endpointType": "OTHERS",
+          "endpointTypeDescription": "Other URL",
+          "postal_code": "662051832",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774636556000",
+      "number": "1184390544",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-06879",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

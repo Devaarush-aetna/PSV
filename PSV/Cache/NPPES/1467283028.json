@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "625 E TWIGGS ST STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-228-0677",
+          "postal_code": "336023910",
+          "state": "FL",
+          "telephone_number": "813-228-7696"
+        },
+        {
+          "address_1": "625 E TWIGGS ST STE 103",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "336023910",
+          "state": "FL",
+          "telephone_number": "813-228-7696"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-11",
+        "credential": "APRN",
+        "enumeration_date": "2024-08-13",
+        "first_name": "SUMMER",
+        "last_name": "BISIGNANO",
+        "last_updated": "2025-08-11",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1723580705000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754923855000",
+      "number": "1467283028",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "APRN11034526",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

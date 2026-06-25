@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "200 KNUTH RD STE 248",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOYNTON BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334364637",
+          "state": "FL",
+          "telephone_number": "954-256-3993"
+        },
+        {
+          "address_1": "200 KNUTH RD STE 248",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BOYNTON BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334364637",
+          "state": "FL",
+          "telephone_number": "561-336-0639"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-14",
+        "credential": "DC",
+        "enumeration_date": "2023-08-15",
+        "first_name": "MELANIE",
+        "last_name": "PHILLIPS",
+        "last_updated": "2025-01-14",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1692125646000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1736887955000",
+      "number": "1043093982",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "CH14662",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

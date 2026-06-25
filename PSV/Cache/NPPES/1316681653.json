@@ -1,0 +1,118 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1600 LAKELAND HILLS BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-264-8519",
+          "postal_code": "338053065",
+          "state": "FL",
+          "telephone_number": "863-680-7000"
+        },
+        {
+          "address_1": "10489 N FLORIDA AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CITRUS SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-489-5786",
+          "postal_code": "344343268",
+          "state": "FL",
+          "telephone_number": "352-489-2486"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-05-07",
+        "credential": "DO",
+        "enumeration_date": "2022-04-22",
+        "first_name": "MICHAEL",
+        "last_name": "WU",
+        "last_updated": "2026-05-07",
+        "middle_name": "JIANXIAO",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1650649280000",
+      "endpoints": [
+        {
+          "address_1": "1430 Lakeland Hills Blvd",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "Watson Clinic LLP",
+          "city": "Lakeland",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "mwu28678@direct.watsonclinicad.com",
+          "endpointDescription": "Direct Messaging Address",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "338053202",
+          "state": "FL",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1778146636000",
+      "number": "1316681653",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1033 N PARKWAY FRONTAGE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-264-8519",
+          "postal_code": "338030401",
+          "state": "FL",
+          "telephone_number": "863-647-4047"
+        },
+        {
+          "address_1": "1600 LAKELAND HILLS BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-264-8519",
+          "postal_code": "338053065",
+          "state": "FL",
+          "telephone_number": "863-680-7271"
+        },
+        {
+          "address_1": "2300 E COUNTY ROAD 540A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-264-8519",
+          "postal_code": "338133825",
+          "state": "FL",
+          "telephone_number": "863-393-9472"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "OS21082",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

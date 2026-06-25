@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "501 LAKE MARIAM LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WINTER HAVEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "338844500",
+          "state": "FL",
+          "telephone_number": "863-258-4478"
+        },
+        {
+          "address_1": "6919 N DALE MABRY HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "336143972",
+          "state": "FL",
+          "telephone_number": "813-680-1405"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-24",
+        "enumeration_date": "2024-11-02",
+        "first_name": "ALEXANDRA",
+        "last_name": "OLIVA",
+        "last_updated": "2026-04-24",
+        "middle_name": "SAXON",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1730579104000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1777018160000",
+      "number": "1588487102",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "11036197",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

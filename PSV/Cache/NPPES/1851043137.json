@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "104 N 6TH ST STE 7",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ATCHISON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-674-5349",
+          "postal_code": "660022440",
+          "state": "KS",
+          "telephone_number": "913-674-0057"
+        },
+        {
+          "address_1": "104 N 6TH ST STE 7",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ATCHISON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-674-5349",
+          "postal_code": "660022440",
+          "state": "KS",
+          "telephone_number": "913-674-0057"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-01-19",
+        "credential": "LPC-T",
+        "enumeration_date": "2022-01-19",
+        "first_name": "MICHAEL",
+        "last_name": "MCGUIRE",
+        "last_updated": "2022-01-19",
+        "middle_name": "W",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1642605451000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1642605451000",
+      "number": "1851043137",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "03868",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

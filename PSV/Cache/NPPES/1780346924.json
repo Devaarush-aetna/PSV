@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3955 RIVERSIDE AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "322053312",
+          "state": "FL"
+        },
+        {
+          "address_1": "3955 RIVERSIDE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "322053312",
+          "state": "FL",
+          "telephone_number": "404-654-3083"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-23",
+        "enumeration_date": "2021-10-05",
+        "first_name": "KEVIN",
+        "last_name": "KINNEY",
+        "last_updated": "2026-03-23",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1633467839000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774281930000",
+      "number": "1780346924",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "12328",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "009965",
+          "primary": false,
+          "state": "GA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

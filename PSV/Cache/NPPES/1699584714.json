@@ -1,0 +1,69 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14811 SW 144TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331962304",
+          "state": "FL",
+          "telephone_number": "305-587-6745"
+        },
+        {
+          "address_1": "14811 SW 144TH TER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331962304",
+          "state": "FL",
+          "telephone_number": "305-587-6745"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-03",
+        "credential": "RDN",
+        "enumeration_date": "2025-01-03",
+        "first_name": "BROOKE",
+        "last_name": "ABBOTT",
+        "last_updated": "2025-01-03",
+        "middle_name": "MELODY",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1735917315000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1735917315000",
+      "number": "1699584714",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "DT91673",
+          "primary": false,
+          "state": "TX",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "ND13847",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

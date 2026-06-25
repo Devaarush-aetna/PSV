@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "151 SW 27TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-644-6407",
+          "postal_code": "331351428",
+          "state": "FL",
+          "telephone_number": "305-642-5366"
+        },
+        {
+          "address_1": "8600 NW 41ST ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DORAL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331666202",
+          "state": "FL",
+          "telephone_number": "305-642-5366"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-22",
+        "credential": "MD",
+        "enumeration_date": "2011-08-16",
+        "first_name": "ORESTES",
+        "last_name": "CANIZARES RENSOLI",
+        "last_updated": "2025-07-22",
+        "middle_name": "ENRIQUE",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1313553236000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753204624000",
+      "number": "1912287343",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "282N00000X",
+          "desc": "General Acute Care Hospital",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "ME120458",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

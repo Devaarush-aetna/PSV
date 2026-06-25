@@ -178,7 +178,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: "local"
-  local_path: "./evidence/NV_NVADGC/{run_id}/"
+  local_path: "Evidence/NV_NVADGC/{run_id}/"
 
 compliance:
   tos_review_date: "2026-05-15"

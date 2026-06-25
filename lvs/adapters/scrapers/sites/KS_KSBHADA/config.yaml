@@ -42,6 +42,7 @@ results:
       2: "license_number"
       3: "city"
       4: "status"
+  single_result_url_pattern: "details.html"
   has_detail_page: true
   detail_trigger:
     type: link_in_cell
@@ -73,6 +74,8 @@ detail:
     "License Expiration Date": expiration_date
     "Expiration Date": expiration_date
     "Expire Date": expiration_date
+    "License Cancellation Date": expiration_date
+    "Cancellation Date": expiration_date
     "Original License Date": issue_date
     "Issue Date": issue_date
     "Last Renewal Date": last_renewal_date
@@ -133,7 +136,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KS_KSBHADA/{run_id}/"
 
 compliance:
   requires_captcha: false

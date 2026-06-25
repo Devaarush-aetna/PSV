@@ -1,0 +1,108 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "117 E JEFFERSON ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GEORGETOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-224-4675",
+          "postal_code": "403241764",
+          "state": "KY",
+          "telephone_number": "859-224-2273"
+        },
+        {
+          "address_1": "109 WIND HAVEN DR STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NICHOLASVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-224-4675",
+          "postal_code": "403568010",
+          "state": "KY",
+          "telephone_number": "859-224-2273"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-04-16",
+        "credential": "LBA",
+        "enumeration_date": "2019-05-01",
+        "first_name": "JOHNATHAN",
+        "last_name": "ARTHUR",
+        "last_updated": "2024-04-16",
+        "middle_name": "DAVID",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1556718033000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1-24-71525",
+          "issuer": "BACB",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1713298436000",
+      "number": "1306400791",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "799 E BRANNON RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NICHOLASVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-224-4675",
+          "postal_code": "403566038",
+          "state": "KY",
+          "telephone_number": "859-224-2273"
+        },
+        {
+          "address_1": "3499 BLAZER PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-224-4675",
+          "postal_code": "405092798",
+          "state": "KY",
+          "telephone_number": "859-224-2273"
+        },
+        {
+          "address_1": "1013 CENTER DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RICHMOND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-224-4675",
+          "postal_code": "404753841",
+          "state": "KY",
+          "telephone_number": "859-224-2273"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "291009",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1098 FULTON ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHERRY HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "080023219",
+          "state": "NJ",
+          "telephone_number": "215-901-5492"
+        },
+        {
+          "address_1": "1098 FULTON ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHERRY HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "080023219",
+          "state": "NJ",
+          "telephone_number": "215-901-5492"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-09-15",
+        "credential": "LMSW",
+        "enumeration_date": "2021-09-15",
+        "first_name": "AMANDA",
+        "last_name": "FOX",
+        "last_updated": "2021-09-15",
+        "middle_name": "ELIZABETH",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1631734327000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1631734327000",
+      "number": "1629748256",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "6215 GREENBELT RD STE 107",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BERWYN HEIGHTS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207402355",
+          "state": "MD",
+          "telephone_number": "301-272-1558"
+        },
+        {
+          "address_1": "1004 LITTLESTOWN PIKE STE A1",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WESTMINSTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "211573042",
+          "state": "MD",
+          "telephone_number": "410-386-1180"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "27545",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

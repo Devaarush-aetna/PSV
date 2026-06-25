@@ -36,6 +36,7 @@ search:
       - "no match"
       - "not found"
       - "0 records"
+      - "did not produce any results"
 
 results:
   type: table
@@ -82,7 +83,7 @@ detail:
     "License Type": license_type
     "Issue Date": issue_date
     "Expiration Date": expiration_date
-    "Disciplinary Action": address
+    "Disciplinary Action": disciplinary_action
   back_navigation:
     strategy: browser_back
     wait_after_ms: 1500
@@ -135,7 +136,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/MD_CHIROPRACTIC/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-08"

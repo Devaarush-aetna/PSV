@@ -1,0 +1,130 @@
+identity:
+  source_id: MS_SWMFT
+  board_name: Mississippi Board of Examiners for Social Workers and Marriage and Family Therapists
+  state: MS
+  country: US
+  profession_codes: [LCSW, LMSW, LMFT, LPC]
+  # ASP.NET WebForms portal at swmft.webapps.ms.gov — same platform as MS_DHPL.
+  # Grid: #ctl00_Main_gvLicensees, rows have spans: lblName (col 1), lblLicenseNumber (col 2),
+  # lblLicenseType (col 3), lblLicenseStatus (col 4), lblLicenseSubStatus (col 5),
+  # lblOriginalIssueDate (col 6), lblExpirationDate (col 7). Col 0 = detail link (skip).
+  # Detail uses ASP.NET postback back to same page; not used — grid fields are sufficient.
+  # Pagination: #ctl00_Main_lnkNextPage.
+  base_url: "https://www.swmft.webapps.ms.gov/publicview/publicindsearch.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#ctl00_Main_txtLicenseNumber"
+    - mode: last_name
+      input_selector: "#ctl00_Main_txtName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ctl00_Main_txtName"
+    search_button:
+      selector: "#ctl00_Main_btnSearch"
+  results_wait:
+    strategy: element_visible
+    selector: "#ctl00_Main_gvLicensees tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "No matching records"
+      - "no records found"
+      - "0 results"
+      - "No records"
+
+results:
+  type: table
+  table:
+    row_selector: "#ctl00_Main_gvLicensees tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      1: full_name
+      2: license_number
+      3: license_type
+      4: status
+      6: issue_date
+      7: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_button_selector: "#ctl00_Main_lnkNextPage"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Non-renewed": expired
+    "Cancelled": inactive
+    "Lapsed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/MS_SWMFT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

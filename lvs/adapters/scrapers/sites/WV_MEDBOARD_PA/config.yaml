@@ -1,0 +1,127 @@
+identity:
+  source_id: WV_MEDBOARD_PA
+  board_name: West Virginia Board of Medicine — Physician Assistants
+  state: WV
+  country: US
+  profession_codes: [PA]
+  # wvbom.wv.gov/Rosters.asp — click "Roster of Physician Assistants" → XLSX download.
+  # XLSX has 3 sheets: Licenses | Temporary Licenses | Interstate Telehealth Reg.
+  # Each sheet: row 0 = section title, row 1 = column headers, rows 2+ = data.
+  # Engine reads first sheet ("Licenses") via link_text_xlsx with xlsx_header_row=1.
+  # Columns: First Name, Last Name, Middle Name, Suffix, License Number,
+  #          License Expiration Date.
+  # NOTE: PA practice requires both active credential AND activated practice notification
+  #       from the Board before a PA may practice in WV.
+  base_url: "https://wvbom.wv.gov/Rosters.asp"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: link_text_xlsx
+  link_text: "Roster of Physician Assistants"
+  xlsx_header_row: 1
+  header_row: 0
+  cache_days: 7
+  cache_dir: "./PSV/CSVS"
+  encoding: "utf-8"
+  download_timeout_ms: 180000
+  search_columns:
+    license_number: "License Number"
+    last_name: "Last Name"
+    first_name: "First Name"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "First Name": first_name
+    "Last Name": last_name
+    "Middle Name": middle_name
+    "Suffix": suffix
+    "License Number": license_number
+    "License Expiration Date": expiration_date
+    "Registration Number": license_number
+    "Registration Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 180000
+  navigation_timeout_ms: 120000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 8000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/WV_MEDBOARD_PA/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

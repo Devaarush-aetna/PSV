@@ -1,0 +1,128 @@
+identity:
+  source_id: "AZ_OT"
+  board_name: "Arizona State Board of Occupational Therapy Examiners"
+  state: "AZ"
+  country: "US"
+  profession_codes: ["OT", "OTA"]
+  # onGovCore React SPA — same platform as AZ_OPTOMETRY (azus-sboe) and AZ_DENTAL.
+  # Results URL: /public/verify-professional-license/results?search_query={query}
+  # Profile URL: /public/verify-professional-license/{license_number}?search_query=...&tab=licenses
+  # Single keyword search (name or license number, e.g. "OTH-010372").
+  # Requires proxy (PROXY=proxy:9119) — same restriction as other AZ onGovCore portals.
+  base_url: "https://azus-bote.ongovcore.com/public/verify-professional-license"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='search_query']"
+    - mode: last_name
+      input_selector: "input[name='search_query']"
+    - mode: first_name
+      input_selector: "input[name='search_query']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='search_query']"
+      fallback_selectors:
+        - "input[type='search']"
+        - "input[placeholder*='Search' i]"
+        - "input[type='text']"
+    search_button:
+      selector: "button[type='submit']"
+      fallback_selectors:
+        - "input[type='submit']"
+        - "[aria-label='Search']"
+  submit_via_enter: true
+  results_wait:
+    strategy: network_idle
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results found"
+      - "no matching"
+      - "0 professionals matching"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    # Columns confirmed from standalone AZBOTE scraper:
+    # 0=NAME (link), 1=LICENSE NUMBER, 2=LICENSE TYPE, 3=STATUS, 4=EXPIRATION DATE,
+    # 5=LOCATION, 6=BOARD ACTIONS
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+    "License Status": status
+    "License Type": license_type
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Closed": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/AZ_OT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

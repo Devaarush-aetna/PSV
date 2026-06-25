@@ -1,0 +1,107 @@
+identity:
+  source_id: HI_DIETITIANS
+  board_name: Hawaii Department of Health — Licensed Dietitians
+  state: HI
+  country: US
+  profession_codes: [LD, RD]
+  # TablePress 7 with DataTables 2.x at health.hawaii.gov.
+  # Full roster loads at page-time; client-side global search filters rows.
+  # Columns: 0=License Number (e.g. "2-LD"), 1=Name of Licensee, 2=Effective Date, 3=Expiration Date.
+  # Pagination via button.dt-paging-button.next; with global filter applied, only matches remain.
+  base_url: "https://health.hawaii.gov/ohca/state-licensing-section/hawaii-licensed-dietitians/"
+  archetype: datatables_jsapi
+
+datatables:
+  table_selector: "#tablepress-7"
+  # -1 = global filter (api.search(q).draw()); fits last-name and license-number lookups.
+  column_index:
+    last_name: -1
+    first_name: -1
+    license_number: -1
+  settle_ms: 1500
+
+search:
+  modes:
+    - mode: last_name
+    - mode: first_name
+    - mode: license_number
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#dt-search-0"
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: element_visible
+    selector: "#tablepress-7 tbody tr"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "No matching records found"
+      - "no matching records"
+
+results:
+  type: table
+  table:
+    row_selector: "#tablepress-7 tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: full_name
+      2: issue_date
+      3: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map: {}
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1440
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/HI_DIETITIANS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

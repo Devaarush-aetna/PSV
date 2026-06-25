@@ -1,0 +1,96 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2336 CRESTOVER LN STE 102",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WESLEY CHAPEL",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-788-7010",
+          "postal_code": "335446794",
+          "state": "FL",
+          "telephone_number": "813-563-9308"
+        },
+        {
+          "address_1": "2336 CRESTOVER LN STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WESLEY CHAPEL",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-788-7010",
+          "postal_code": "335446794",
+          "state": "FL",
+          "telephone_number": "813-788-3600"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-29",
+        "credential": "DPM",
+        "enumeration_date": "2022-03-21",
+        "first_name": "FIRAS",
+        "last_name": "KATMEH",
+        "last_updated": "2025-05-29",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1647917295000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1748549750000",
+      "number": "1669121224",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "655 W 8TH ST # C126",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-244-6742",
+          "postal_code": "322096511",
+          "state": "FL",
+          "telephone_number": "904-244-6505"
+        },
+        {
+          "address_1": "6326 FORT KING RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ZEPHYRHILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-788-7010",
+          "postal_code": "335422531",
+          "state": "FL",
+          "telephone_number": "813-563-9308"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213ES0103X",
+          "desc": "Podiatrist, Foot & Ankle Surgery",
+          "license": "PO4655",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

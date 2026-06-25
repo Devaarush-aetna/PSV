@@ -1,0 +1,123 @@
+identity:
+  source_id: NH_OPLC
+  board_name: New Hampshire Office of Professional Licensure and Certification
+  state: NH
+  country: US
+  profession_codes: [MD, DO, DC, RN, LPN, OD, PT, OT, DDS, AUD, SLP, PHARM, PA, PSYCH, SW]
+  # ASP.NET WebForms t_web_lookup pattern at forms.nh.gov.
+  # Same selector pattern as IN_PLA: t_web_lookup__last_name / __first_name / __license_no,
+  # submit via #sch_button. Results in #datagrid_results table.
+  # Row 0 is header (0 direct td); rows 1-N have 5 tds.
+  # Columns: full_name | profession | license_type | license_number | status
+  # NOTE: proxy.enabled: false — forms.nh.gov returns 403 via proxy:9119 (Akamai WAF).
+  base_url: "https://forms.nh.gov/licenseverification/Search.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input#t_web_lookup__last_name"
+      button_selector: "input#sch_button"
+    - mode: first_name
+      input_selector: "input#t_web_lookup__first_name"
+      button_selector: "input#sch_button"
+    - mode: license_number
+      input_selector: "input#t_web_lookup__license_no"
+      button_selector: "input#sch_button"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#t_web_lookup__last_name"
+    search_button:
+      selector: "input#sch_button"
+  results_wait:
+    strategy: ajax_row_count
+    selector: "#datagrid_results tr"
+    min_rows: 2
+    stable_ticks: 2
+    poll_interval_ms: 500
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records"
+      - "0 records"
+      - "no results"
+
+results:
+  type: table
+  table:
+    row_selector: "#datagrid_results tr"
+    cell_selector: "xpath=./td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: profession_code
+      2: license_type
+      3: license_number
+      4: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NH_OPLC/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

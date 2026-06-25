@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14821 HAYES ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662212267",
+          "state": "KS",
+          "telephone_number": "319-830-5337"
+        },
+        {
+          "address_1": "11408 W 135TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662219398",
+          "state": "KS",
+          "telephone_number": "913-681-9909"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-07-07",
+        "credential": "DPT",
+        "enumeration_date": "2020-07-07",
+        "first_name": "ZINKA",
+        "last_name": "DURIC",
+        "last_updated": "2020-07-07",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1594138545000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1594138545000",
+      "number": "1710505755",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-06470",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

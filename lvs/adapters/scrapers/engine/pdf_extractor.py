@@ -72,7 +72,9 @@ def download_pdf(url: str, cache_dir: str, cache_days: int) -> str:
     Returns path to local cached file.
     """
     Path(cache_dir).mkdir(parents=True, exist_ok=True)
-    raw_filename = url.split("/")[-1] or "document.pdf"
+    # Strip query string before extracting filename (e.g. roster.pdf?tim=123 → roster.pdf)
+    url_path = url.split("?")[0].split("#")[0]
+    raw_filename = url_path.split("/")[-1] or "document.pdf"
     if not raw_filename.lower().endswith(".pdf"):
         raw_filename = "document.pdf"
     stem = raw_filename[:-4]  # strip .pdf extension
@@ -129,6 +131,60 @@ def download_pdf(url: str, cache_dir: str, cache_days: int) -> str:
         f.write(content)
     log.info("PDF saved → %s (%.1f KB)", os.path.basename(filepath), len(content) / 1024)
     return filepath
+
+
+# ---------------------------------------------------------------------------
+# Page-link PDF URL discovery
+# ---------------------------------------------------------------------------
+
+def discover_pdf_url(base_url: str, link_selector: str = "a[href*='.pdf']", proxy_cfg=None) -> str:
+    """Navigate to base_url, find anchor matching link_selector, return absolute PDF URL.
+
+    Used by pdf_bulk download_strategy: page_link — boards that don't publish a
+    stable direct PDF URL but do show a PDF download link on a known landing page.
+    Retries once on timeout to handle intermittently slow board sites.
+    """
+    import asyncio as _asyncio
+    import concurrent.futures
+    from urllib.parse import urljoin
+
+    async def _find_url() -> str:
+        from playwright.async_api import async_playwright as _async_playwright
+        async with _async_playwright() as pw:
+            browser = await pw.chromium.launch(headless=True)
+            try:
+                ctx_kwargs = {}
+                if proxy_cfg:
+                    ctx_kwargs["proxy"] = proxy_cfg
+                ctx = await browser.new_context(ignore_https_errors=True, **ctx_kwargs)
+                page = await ctx.new_page()
+                last_exc = None
+                for attempt in range(2):
+                    try:
+                        await page.goto(base_url, wait_until="domcontentloaded", timeout=60000)
+                        link = await page.query_selector(link_selector)
+                        if not link:
+                            raise RuntimeError(f"No element matched '{link_selector}' on {base_url}")
+                        href = await link.get_attribute("href")
+                        if not href:
+                            raise RuntimeError(f"Matched element has no href on {base_url}")
+                        return urljoin(page.url, href)
+                    except RuntimeError:
+                        raise
+                    except Exception as exc:
+                        last_exc = exc
+                        if attempt == 0:
+                            log.warning("discover_pdf_url attempt 1 failed, retrying: %s", exc)
+                        continue
+                raise last_exc
+            finally:
+                await browser.close()
+
+    def _run():
+        return _asyncio.run(_find_url())
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(_run).result(timeout=150)
 
 
 # ---------------------------------------------------------------------------

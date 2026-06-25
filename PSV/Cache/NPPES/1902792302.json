@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "506 3RD ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TRIBUNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "678799684",
+          "state": "KS",
+          "telephone_number": "620-376-4221"
+        },
+        {
+          "address_1": "2004 MAGNOLIA LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MANHATTAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "665024832",
+          "state": "KS",
+          "telephone_number": "913-439-8261"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-13",
+        "credential": "PA-C",
+        "enumeration_date": "2025-06-13",
+        "first_name": "DAWSON",
+        "last_name": "GARDNER",
+        "last_updated": "2025-06-13",
+        "middle_name": "REILLY",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1749844503000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1749844503000",
+      "number": "1902792302",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

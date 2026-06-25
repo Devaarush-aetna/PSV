@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3161 N WEBB RD STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672268105",
+          "state": "KS"
+        },
+        {
+          "address_1": "3161 N WEBB RD STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672268105",
+          "state": "KS",
+          "telephone_number": "316-350-5455"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-15",
+        "credential": "PA",
+        "enumeration_date": "2024-12-10",
+        "first_name": "KACIE",
+        "last_name": "ENGEL",
+        "last_updated": "2025-10-15",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1733850002000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760554825000",
+      "number": "1154137560",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "2024043492",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "085.010734",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "15-02994",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

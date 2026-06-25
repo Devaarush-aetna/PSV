@@ -13,7 +13,7 @@ identity:
 csv_bulk:
   download_strategy: post_form
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   # CSV columns: LICENSE NUMBER, FIRST NAME, MIDDLE NAME, LAST NAME, SUFFIX,
   #              LICENSE TYPE, LICENSE SUBTYPE, LICENSE SUFFIX, LICENSE STATUS,
@@ -117,7 +117,7 @@ evidence:
   capture_screenshot: false
   capture_on: ["error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/AL_ALBME/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-08"

@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1902 S HWY 59",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PARSONS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "673574948",
+          "state": "KS"
+        },
+        {
+          "address_1": "1902 S HWY 59",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PARSONS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "673574948",
+          "state": "KS",
+          "telephone_number": "620-421-4881"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-19",
+        "credential": "NP",
+        "enumeration_date": "2025-09-19",
+        "first_name": "KOLBY",
+        "last_name": "CARTER",
+        "last_updated": "2025-09-19",
+        "middle_name": "MICHAEL",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1758336902000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758336902000",
+      "number": "1023980950",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "53-84784-012",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

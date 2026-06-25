@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3535 N WEBB RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672268127",
+          "state": "KS",
+          "telephone_number": "316-686-5300"
+        },
+        {
+          "address_1": "3535 N WEBB RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-651-2660",
+          "postal_code": "672268127",
+          "state": "KS",
+          "telephone_number": "316-686-5300"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-26",
+        "credential": "APRN",
+        "enumeration_date": "2025-08-20",
+        "first_name": "MATTHEW",
+        "last_name": "FOX",
+        "last_updated": "2025-09-26",
+        "middle_name": "MICHAEL",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1755730504000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758920449000",
+      "number": "1245117175",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "13153722052",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LG0600X",
+          "desc": "Nurse Practitioner, Gerontology",
+          "license": "53-84781-052",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

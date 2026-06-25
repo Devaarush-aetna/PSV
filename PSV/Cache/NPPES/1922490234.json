@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3808 BEDFORD DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NORTH BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207144046",
+          "state": "MD",
+          "telephone_number": "240-478-9823"
+        },
+        {
+          "address_1": "3808 BEDFORD DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207144046",
+          "state": "MD",
+          "telephone_number": "240-478-9823"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-21",
+        "credential": "LCPC",
+        "enumeration_date": "2015-02-23",
+        "first_name": "FELESHA",
+        "last_name": "JOHNSON",
+        "last_updated": "2026-02-21",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1424747098000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771705020000",
+      "number": "1922490234",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "LC7552",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

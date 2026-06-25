@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2279 NW 75TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MARGATE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330637936",
+          "state": "FL",
+          "telephone_number": "954-971-6184"
+        },
+        {
+          "address_1": "5333 N DIXIE HWY",
+          "address_2": "SUITE 106",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OAKLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333343414",
+          "state": "FL",
+          "telephone_number": "954-771-4747"
+        }
+      ],
+      "basic": {
+        "credential": "A.R.N.P.",
+        "enumeration_date": "2008-03-26",
+        "first_name": "JUSTINE",
+        "last_name": "KELDERHOUSE",
+        "last_updated": "2011-06-04",
+        "name_prefix": "Ms.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1206538407000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1307227585000",
+      "number": "1528230950",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0200X",
+          "desc": "Nurse Practitioner, Pediatrics",
+          "license": "ARNP 3059102",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

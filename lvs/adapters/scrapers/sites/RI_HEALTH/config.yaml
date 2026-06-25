@@ -1,0 +1,138 @@
+identity:
+  source_id: RI_HEALTH
+  board_name: Rhode Island Department of Health — Health Professions
+  state: RI
+  country: US
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, LADC, DENT, AT, DIET]
+  # elicensesoftware.com / myLicense.com portal at healthri.mylicense.com — same platform as IN_PLA and NH_OPLC.
+  # Inputs: #t_web_lookup__last_name, #t_web_lookup__first_name, #t_web_lookup__license_no + #sch_button.
+  # Profession dropdown: select#t_web_lookup__profession_name (leave as "All" for umbrella search).
+  # Results: #datagrid_results tr, row 0 = header (skip_first_row: true).
+  # Columns: 0=full_name, 1=license_number, 2=profession, 3=license_type, 4=status, 5=city, 6=state_code.
+  # No detail page needed — grid provides all key fields.
+  # No proxy required — healthri.mylicense.com is accessible on corporate network.
+  # ~41 records for Smith/All Professions. No pagination (elicensesoftware default 200-row cap).
+  base_url: "https://healthri.mylicense.com/Verification/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#t_web_lookup__license_no"
+    - mode: last_name
+      input_selector: "#t_web_lookup__last_name"
+    - mode: first_name
+      input_selector: "#t_web_lookup__first_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#t_web_lookup__last_name"
+    search_button:
+      selector: "#sch_button"
+  results_wait:
+    strategy: network_idle
+    selector: "#datagrid_results tr"
+    timeout_ms: 60000
+    no_results_indicators:
+      - "no records"
+      - "0 records"
+      - "no results"
+      - "no matching"
+
+results:
+  type: table
+  table:
+    row_selector: "#datagrid_results tr"
+    cell_selector: "xpath=./td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: license_number
+      2: profession
+      3: license_type
+      4: status
+      5: city
+      6: state_code
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Deceased": inactive
+    "deceased": inactive
+    "Retired": inactive
+    "retired": inactive
+    "Cancelled": inactive
+    "Lapsed": expired
+    "Non-Renewed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/RI_HEALTH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

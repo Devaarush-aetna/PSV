@@ -172,6 +172,7 @@ async def run_one(
             query=st.query or "",
             license_number=st.license_number,
             first_name=st.first_name,
+            middle_name=st.middle_name,
             last_name=st.last_name,
             license_type=st.license_type,
             provider_type=st.provider_type,

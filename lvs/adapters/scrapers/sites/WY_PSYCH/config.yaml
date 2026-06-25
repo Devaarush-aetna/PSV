@@ -16,7 +16,7 @@ csv_bulk:
   link_selector: "text=List of Active and Expired Licensees"
   header_row: 3
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "License no."
@@ -57,6 +57,7 @@ detail:
   strategies: []
   field_map:
     "Last Name": last_name
+    "First Name": first_name
     "License no.": license_number
     "Date Issued": issue_date
     "Expiry Date": expiration_date
@@ -99,7 +100,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_PSYCH/{run_id}/"
+  local_path: "Evidence/WY_PSYCH/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

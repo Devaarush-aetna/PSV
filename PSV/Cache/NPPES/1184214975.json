@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1975 E SUNRISE BLVD STE 801",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333041407",
+          "state": "FL",
+          "telephone_number": "954-380-2003"
+        },
+        {
+          "address_1": "609 NE 13TH AVE APT 103",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333042837",
+          "state": "FL",
+          "telephone_number": "954-380-2003"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-09-12",
+        "credential": "LAc",
+        "enumeration_date": "2021-01-25",
+        "first_name": "CARLOS",
+        "last_name": "ESCABI",
+        "last_updated": "2023-09-12",
+        "middle_name": "A",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1611614990000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1694542027000",
+      "number": "1184214975",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "AP-4160",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

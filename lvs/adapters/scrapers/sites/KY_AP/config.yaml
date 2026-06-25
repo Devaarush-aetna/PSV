@@ -38,13 +38,13 @@ results:
     row_selector: "#Form1 table tr"
     cell_selector: "td"
     skip_first_row: true
+    # Verified layout (2026-06-24): 0=FirstName 1=LastName 2=Suffix(title) 3=Address
+    # 4=City 5=State 6=Zip 7=CertificationNumber 8=YearCertified 9=Expiration 10=BoardAction
     columns:
       0: first_name
       1: last_name
-      2: license_number
-      3: license_type
-      4: status
-      5: expiration_date
+      7: license_number
+      9: expiration_date
   has_detail_page: false
   pagination:
     enabled: false
@@ -125,7 +125,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KY_AP/{run_id}/"
 
 compliance:
   requires_captcha: false

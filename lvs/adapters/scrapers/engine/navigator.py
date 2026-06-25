@@ -24,9 +24,16 @@ async def navigate_to_search(page: Page, config: SiteConfig) -> None:
     if config.identity.archetype in ("thentia_cloud", "ag_grid_spa"):
         try:
             await page.wait_for_load_state("networkidle", timeout=15000)
-        except Exception:
-            pass
+        except Exception as e:
+            log.debug("SPA networkidle timeout (non-fatal): %s", e)
         await asyncio.sleep(3)
+    elif config.identity.archetype == "pega_constellation":
+        # Pega Constellation: wait for networkidle then extra 5s for form rendering
+        try:
+            await page.wait_for_load_state("networkidle", timeout=20000)
+        except Exception as e:
+            log.debug("Pega networkidle timeout (non-fatal): %s", e)
+        await asyncio.sleep(5)
     else:
         await asyncio.sleep(2)
 
@@ -101,6 +108,23 @@ async def set_search_by(page: Page, config: SearchConfig, query: SearchQuery) ->
         except Exception as e:
             log.warning("custom_dropdown strategy failed: %s", e)
 
+    if strategy == "slds_combobox":
+        # Salesforce Lightning Design System (SLDS) combobox: click the trigger button
+        # to open the listbox, then click the matching [role="option"] item.
+        trigger_sel = form.search_by_dropdown.selector or "button.slds-combobox__input"
+        try:
+            await page.locator(trigger_sel).first.click()
+            await asyncio.sleep(0.5)
+            opt = page.locator(f"[role='option']:has-text('{dropdown_value}')")
+            if await opt.count() > 0:
+                await opt.first.click()
+                log.info("SLDS combobox: selected '%s'", dropdown_value)
+                await asyncio.sleep(0.3)
+                return True
+            await page.keyboard.press("Escape")
+        except Exception as e:
+            log.warning("slds_combobox strategy failed: %s", e)
+
     if strategy == "radio":
         try:
             radio = page.locator(f"input[type='radio'][value*='{dropdown_value}']")
@@ -127,6 +151,48 @@ async def fill_search_input(page: Page, config: SearchConfig, query: SearchQuery
     else:
         form = config.form
         selectors = [form.search_input.selector] + form.search_input.fallback_selectors
+
+    # Angular Ivy reactive-form: set FormControl value via __ngContext__ LView traversal.
+    # Needed when Playwright fill()/keyboard.type() don't update the Angular FormGroup.
+    if mode_cfg and mode_cfg.angular_formgroup_key:
+        fg_key = mode_cfg.angular_formgroup_key
+        result = await page.evaluate("""
+        ([sels, key, val]) => {
+            let el = null;
+            for (const s of sels) {
+                try { el = document.querySelector(s.trim()); } catch(e) {}
+                if (el) break;
+            }
+            if (!el) return {error: 'no element'};
+            const ctxKey = Object.keys(el).find(k => k.startsWith('__ngContext__'));
+            if (!ctxKey) return {error: 'no ngContext'};
+            const lview = el[ctxKey];
+            let formGroup = null;
+            for (let i = 0; i < lview.length; i++) {
+                const item = lview[i];
+                if (item && typeof item === 'object' &&
+                    '_hasOwnPendingAsyncValidator' in item &&
+                    '_onCollectionChange' in item &&
+                    typeof item.setValue === 'function') {
+                    formGroup = item;
+                    break;
+                }
+            }
+            if (!formGroup) return {error: 'no formgroup'};
+            if (!formGroup.controls) return {error: 'no controls'};
+            const ctrl = formGroup.controls[key];
+            if (!ctrl) return {error: 'no ctrl:' + key, available: Object.keys(formGroup.controls).join(',')};
+            ctrl.setValue(val);
+            ctrl.markAsDirty();
+            ctrl.markAsTouched();
+            formGroup.updateValueAndValidity({onlySelf: false, emitEvent: true});
+            return {ok: true, v: ctrl.value};
+        }
+        """, [selectors, fg_key, query.query])
+        if isinstance(result, dict) and result.get('ok'):
+            log.info("Angular FormGroup: controls.%s = %r", fg_key, query.query)
+            return True
+        log.warning("Angular FormGroup set failed (%s), falling back to DOM fill", result)
 
     for sel in selectors:
         try:
@@ -171,10 +237,18 @@ async def fill_search_input(page: Page, config: SearchConfig, query: SearchQuery
 def _resolve_template(template: str, query: SearchQuery) -> str:
     """Substitute the engine's template variables.
 
-    Supports: {q} = full query string, {first}/{last} = tokens before/after last space
-    (or explicit fields when populated), {license} = license_number, {type} = license_type,
-    {provider} = provider_type. Explicit SearchQuery fields take precedence over
-    `query.query` token splitting.
+    Supported tokens:
+      {q}          full query string (auto-joined)
+      {first}      first_name (or tokens before last space if no explicit field)
+      {middle}     middle_name (empty string when not set)
+      {last}       last_name (or last space-separated token)
+      {first_full} first_name + " " + middle_name concatenated (for boards that put
+                   first and middle into a single input field)
+      {license}    license_number
+      {type}       license_type
+      {provider}   provider_type
+
+    Explicit SearchQuery fields take precedence over `query.query` token splitting.
     """
     if query.first_name is not None or query.last_name is not None:
         first = query.first_name or ""
@@ -183,10 +257,14 @@ def _resolve_template(template: str, query: SearchQuery) -> str:
         parts = query.query.rsplit(" ", 1)
         first = parts[0] if len(parts) > 1 else ""
         last = parts[-1]
+    middle = query.middle_name or ""
+    first_full = (first + " " + middle).strip() if middle else first
     license_val = query.license_number if query.license_number is not None else query.query
     return (
         template.replace("{q}", query.query)
+        .replace("{first_full}", first_full)
         .replace("{first}", first)
+        .replace("{middle}", middle)
         .replace("{last}", last)
         .replace("{license}", license_val or "")
         .replace("{type}", query.license_type or "")
@@ -200,11 +278,17 @@ def synthesize_combo_mode(config: SiteConfig, query: SearchQuery) -> Optional[Se
     Returns None when:
       - the mode is not a combo mode
       - the config already declares an explicit mode entry for it (caller uses that one)
-      - one of the constituent base modes is missing from the config
+      - one of the required constituent base modes is missing from the config
 
-    Conventions for which constituent base mode supplies the primary input:
-      - license_and_*  →  license_number primary
-      - first_and_last  →  last_name primary (matches FL_MQA precedent)
+    Primary input conventions:
+      - license_*     →  license_number primary
+      - first_and_last / first_mid_last  →  last_name primary (matches FL_MQA precedent)
+
+    Middle name handling:
+      - *_mid_* modes treat middle_name as OPTIONAL. Synthesis succeeds even when there
+        is no `middle_name` base mode in the config. If a `middle_name` mode with an
+        input_selector IS declared, the engine wires up {middle} into that field.
+        When absent, middle is silently dropped (boards with no dedicated mid field).
     """
     if query.mode not in COMBO_MODES:
         return None
@@ -215,8 +299,10 @@ def synthesize_combo_mode(config: SiteConfig, query: SearchQuery) -> Optional[Se
     by_name = {m.mode: m for m in config.search.modes}
     needs_license = query.mode.startswith("license")
     needs_first = "first" in query.mode
+    needs_middle = "mid" in query.mode   # optional — synthesis doesn't fail without it
     needs_last = "last" in query.mode
 
+    # Required fields — synthesis fails if any required base mode is missing/has no selector.
     required: list[str] = []
     if needs_license:
         required.append("license_number")
@@ -235,10 +321,7 @@ def synthesize_combo_mode(config: SiteConfig, query: SearchQuery) -> Optional[Se
             return None
 
     # Pick the primary base mode.
-    if needs_license:
-        primary_name = "license_number"
-    else:
-        primary_name = "last_name"
+    primary_name = "license_number" if needs_license else "last_name"
     primary = by_name[primary_name]
 
     extra_inputs: dict[str, str] = dict(primary.extra_inputs or {})
@@ -248,6 +331,17 @@ def synthesize_combo_mode(config: SiteConfig, query: SearchQuery) -> Optional[Se
         secondary = by_name[name]
         var = {"first_name": "{first}", "last_name": "{last}", "license_number": "{license}"}[name]
         extra_inputs[secondary.input_selector] = var
+
+    # Optional: wire up middle_name field when the config declares it.
+    if needs_middle:
+        mid_mode = by_name.get("middle_name")
+        if mid_mode and mid_mode.input_selector:
+            extra_inputs[mid_mode.input_selector] = "{middle}"
+            log.info("[%s] Combo '%s': wired middle_name -> '%s'",
+                     config.identity.source_id, query.mode, mid_mode.input_selector)
+        else:
+            log.debug("[%s] Combo '%s': no middle_name mode in config — middle skipped",
+                      config.identity.source_id, query.mode)
 
     extra_selects: dict[str, str] = dict(primary.extra_selects or {})
 
@@ -272,8 +366,8 @@ def _primary_value_for_mode(mode_name: str, query: SearchQuery) -> Optional[str]
     """
     if mode_name.startswith("license"):
         return query.license_number
-    # first_and_last → last_name primary
-    if mode_name == "first_and_last":
+    # first_and_last / first_mid_last → last_name primary
+    if mode_name in ("first_and_last", "first_mid_last"):
         return query.last_name
     return None
 
@@ -326,9 +420,23 @@ def _auto_derive_capabilities(config: SiteConfig) -> set[str]:
     # Form-based archetypes: a mode is "capable" if it has a non-empty input_selector
     # OR a non-empty dropdown_value (radio/select-driven boards). Boards that share
     # one selector across all modes still count — the mode name controls what's typed.
+    has_shared_input = bool(
+        config.search.form
+        and config.search.form.search_input
+        and config.search.form.search_input.selector
+        and config.search.form.search_input.selector.strip()
+        and config.search.form.search_input.selector.strip() != "input[type='text']"
+    )
+    per_mode_anchored: set[str] = set()
     for m in config.search.modes:
         has_anchor = bool(m.input_selector) or bool(m.dropdown_value)
         if has_anchor:
+            caps.add(m.mode)
+            per_mode_anchored.add(m.mode)
+    # Boards with a shared form.search_input but no per-mode selectors/dropdowns
+    # (e.g. Thentia single-keyword boards) support all declared modes via that input.
+    if has_shared_input and not per_mode_anchored:
+        for m in config.search.modes:
             caps.add(m.mode)
 
     # csv_bulk: capability comes from search_columns keys.
@@ -357,6 +465,16 @@ def _auto_derive_capabilities(config: SiteConfig) -> set[str]:
         for k, v in (config.filemaker.field_index or {}).items():
             caps.add(k)
 
+    # certemy: single live-filter input serves all modes — derive directly from modes list.
+    if archetype == "certemy":
+        for m in config.search.modes:
+            caps.add(m.mode)
+
+    # pdf_bulk: in-memory PDF search supports all declared modes directly.
+    if archetype == "pdf_bulk":
+        for m in config.search.modes:
+            caps.add(m.mode)
+
     # Synthesize combo capabilities from the single-field set.
     if {"license_number", "last_name"} <= caps:
         caps.add("license_and_last")
@@ -364,13 +482,17 @@ def _auto_derive_capabilities(config: SiteConfig) -> set[str]:
         caps.add("license_and_first")
     if {"first_name", "last_name"} <= caps:
         caps.add("first_and_last")
+        # first_mid_last synthesizes the same way as first_and_last — middle is optional
+        # (silently dropped when the board config has no dedicated middle_name field).
+        caps.add("first_mid_last")
     if {"license_number", "first_name", "last_name"} <= caps:
         caps.add("license_first_last")
+        caps.add("license_first_mid_last")
 
     return caps
 
 
-async def fill_extra_inputs(page: Page, mode_cfg, query: SearchQuery) -> None:
+async def fill_extra_inputs(page: Page, mode_cfg, query: SearchQuery, partial_failures: list[str] | None = None) -> None:
     """Fill extra_inputs and extra_selects defined on the mode."""
     if not mode_cfg:
         return
@@ -385,6 +507,8 @@ async def fill_extra_inputs(page: Page, mode_cfg, query: SearchQuery) -> None:
             log.info("Filled extra input '%s' with '%s'", sel, value)
         except Exception as e:
             log.warning("Extra input fill failed for '%s': %s", sel, e)
+            if partial_failures is not None:
+                partial_failures.append(f"extra_input '{sel}' fill failed: {e}")
 
     for sel, option_template in (mode_cfg.extra_selects or {}).items():
         option = _resolve_template(option_template, query) if "{" in option_template else option_template
@@ -398,9 +522,11 @@ async def fill_extra_inputs(page: Page, mode_cfg, query: SearchQuery) -> None:
             log.info("Set extra select '%s' to '%s'", sel, option)
         except Exception as e:
             log.warning("Extra select set failed for '%s': %s", sel, e)
+            if partial_failures is not None:
+                partial_failures.append(f"extra_select '{sel}' set failed: {e}")
 
 
-async def apply_orthogonal_filters(page: Page, config: SiteConfig, query: SearchQuery) -> None:
+async def apply_orthogonal_filters(page: Page, config: SiteConfig, query: SearchQuery, partial_failures: list[str] | None = None) -> None:
     """Apply license_type and provider_type as side-filter dropdowns when both
     the SearchQuery field and the SiteIdentity selector are populated."""
     ident = config.identity
@@ -420,6 +546,8 @@ async def apply_orthogonal_filters(page: Page, config: SiteConfig, query: Search
             log.info("Applied %s filter '%s' via '%s'", label, value, sel)
         except Exception as e:
             log.warning("%s filter '%s' on '%s' failed: %s", label, value, sel, e)
+            if partial_failures is not None:
+                partial_failures.append(f"{label} filter '{value}' on '{sel}' failed: {e}")
 
 
 # ---------------------------------------------------------------------------
@@ -487,7 +615,7 @@ async def click_search_button(page: Page, config: SearchConfig, query: SearchQue
 # Results wait + no-results check
 # ---------------------------------------------------------------------------
 
-async def wait_for_results(page: Page, config: SearchConfig) -> bool:
+async def wait_for_results(page: Page, config: SearchConfig, partial_failures: list[str] | None = None) -> bool:
     """Wait for results to appear. Returns True if results found, False if no-results."""
     rw = config.results_wait
     timeout = rw.timeout_ms
@@ -526,10 +654,16 @@ async def wait_for_results(page: Page, config: SearchConfig) -> bool:
                     stable = 0
                 prev = n
                 await asyncio.sleep(poll)
+        elif rw.strategy == "delay":
+            await asyncio.sleep(rw.timeout_ms / 1000.0)
         else:
             await asyncio.sleep(2)
     except PlaywrightTimeout:
         log.warning("Timed out waiting for results (%s)", rw.strategy)
+        if partial_failures is not None:
+            partial_failures.append(
+                f"wait_for_results timed out (strategy={rw.strategy}, timeout={timeout}ms)"
+            )
 
     return not await is_no_results(page, config)
 
@@ -550,7 +684,7 @@ async def is_no_results(page: Page, config: SearchConfig) -> bool:
 # Full search flow
 # ---------------------------------------------------------------------------
 
-async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -> bool:
+async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, partial_failures: list[str] | None = None) -> bool:
     """Execute the complete form-fill + search click sequence."""
     # Hash-route shortcut: if direct_search_url is configured, navigate to it
     # with the query URL-encoded and skip form interaction entirely.
@@ -587,7 +721,7 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -
                 break
             prev_count = count
             await asyncio.sleep(0.8)
-        return await wait_for_results(page, config.search)
+        return await wait_for_results(page, config.search, partial_failures=partial_failures)
 
     if config.search.pre_search_click:
         try:
@@ -615,7 +749,7 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -
     # effective_query.query to the primary field value so the primary input
     # receives only its portion (e.g. last name, not "First Last").
     primary_value = _primary_value_for_mode(query.mode, query)
-    if primary_value is None and query.mode == "first_and_last":
+    if primary_value is None and query.mode in ("first_and_last", "first_mid_last"):
         # No explicit last_name field; derive from token split of the query string.
         parts = query.query.rsplit(" ", 1)
         if len(parts) > 1:
@@ -623,18 +757,70 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -
     if primary_value is not None:
         effective_query = query.model_copy(update={"query": primary_value})
 
-    await set_search_by(page, config.search, effective_query)
+    if not await set_search_by(page, config.search, effective_query):
+        if partial_failures is not None:
+            partial_failures.append(
+                f"set_search_by failed for mode '{effective_query.mode}' — results may be from wrong search mode"
+            )
     await asyncio.sleep(1.5)  # SPA re-renders after dropdown change
+    mode_cfg = next((m for m in config.search.modes if m.mode == query.mode), None)
+    # Per-mode pre_click: switch tabs or activate a panel BEFORE filling inputs so
+    # that mode-specific fields (e.g. inside a hidden Bootstrap tab) are visible/enabled.
+    if mode_cfg and mode_cfg.pre_click:
+        try:
+            await page.wait_for_selector(mode_cfg.pre_click, state="visible", timeout=5000)
+            await page.locator(mode_cfg.pre_click).first.click()
+            await asyncio.sleep(0.6)
+            log.info("mode pre_click: clicked '%s'", mode_cfg.pre_click)
+        except Exception as e:
+            log.warning("mode pre_click '%s' failed: %s", mode_cfg.pre_click, e)
     filled = await fill_search_input(page, config.search, effective_query)
     if not filled:
         raise RuntimeError(f"[{config.identity.source_id}] Could not fill search input for query '{query.query}'")
-    mode_cfg = next((m for m in config.search.modes if m.mode == query.mode), None)
+    # Pega Constellation: dispatch change+blur after typing to trigger server-side postValue
+    # XHR. Then wait for the search button to become ENABLED (disabled attr removed), which
+    # confirms the server-side LicenseLookupVal='true' response has arrived.
+    if config.identity.archetype == "pega_constellation":
+        mode_sel = next(
+            (m.input_selector for m in config.search.modes if m.mode == effective_query.mode),
+            config.search.form.search_input.selector if config.search.form else None,
+        )
+        if mode_sel:
+            try:
+                await page.evaluate(
+                    """(sel) => {
+                        var el = document.querySelector(sel);
+                        if (el) {
+                            el.dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
+                            el.dispatchEvent(new Event('blur', {bubbles: true}));
+                        }
+                    }""",
+                    mode_sel,
+                )
+            except Exception:
+                pass
+        # Wait 3s for the server-side postValue XHR chain to complete. The button enables
+        # client-side (via keyup expression) faster than the server commits the search value,
+        # so networkidle alone is not sufficient — a fixed delay is required.
+        await asyncio.sleep(3)
     # Use the original `query` (not effective_query) so {first}/{last}/{license}
     # substitutions in extra_inputs see the full structured fields.
-    await fill_extra_inputs(page, mode_cfg, query)
+    await fill_extra_inputs(page, mode_cfg, query, partial_failures=partial_failures)
     # Apply orthogonal license_type / provider_type filters from SiteIdentity.
-    await apply_orthogonal_filters(page, config, query)
-    if config.search.submit_via_enter:
+    await apply_orthogonal_filters(page, config, query, partial_failures=partial_failures)
+    if mode_cfg and mode_cfg.submit_js:
+        try:
+            # Use expect_navigation so Playwright tracks the form-submit redirect.
+            # Without this, wait_for_load_state("networkidle") fires on the *current*
+            # pre-navigation page before the POST redirect begins.
+            async with page.expect_navigation(timeout=30000, wait_until="domcontentloaded"):
+                await page.evaluate(mode_cfg.submit_js)
+            clicked = True
+            log.info("Submitted via JS: %s", mode_cfg.submit_js)
+        except Exception as e:
+            log.warning("submit_js failed: %s", e)
+            clicked = False
+    elif config.search.submit_via_enter:
         await page.keyboard.press("Enter")
         log.info("submit_via_enter: pressed Enter to submit form")
         clicked = True
@@ -642,7 +828,7 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -
         clicked = await click_search_button(page, config.search, query)
     if not clicked:
         raise RuntimeError(f"[{config.identity.source_id}] Could not click search button")
-    has_results = await wait_for_results(page, config.search)
+    has_results = await wait_for_results(page, config.search, partial_failures=partial_failures)
     # Post-search click: some boards show results in a list/card view first and
     # require clicking a toggle (e.g. grid radio button) to switch to table view.
     # 1s settle delay lets the ASP.NET UpdatePanel finish DOM mutation after networkidle.
@@ -657,6 +843,10 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery) -
             await asyncio.sleep(2.0)
         except Exception as e:
             log.warning("post_search_click '%s' failed: %s", config.search.post_search_click, e)
+            if partial_failures is not None:
+                partial_failures.append(
+                    f"post_search_click '{config.search.post_search_click}' failed: {e}"
+                )
     # Post-search expand-all: click every visible match. Used for accordion-grouped
     # results where each profession panel must be expanded to populate its rows.
     if has_results and config.search.post_search_click_all:

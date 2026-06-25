@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 17809",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-338-0951",
+          "postal_code": "322457809",
+          "state": "FL",
+          "telephone_number": "904-350-5544"
+        },
+        {
+          "address_1": "4617 BRENTWOOD AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-350-9944",
+          "postal_code": "322066168",
+          "state": "FL",
+          "telephone_number": "904-350-5544"
+        }
+      ],
+      "basic": {
+        "credential": "DC",
+        "enumeration_date": "2013-12-04",
+        "first_name": "KWAME",
+        "last_name": "JENKINS",
+        "last_updated": "2013-12-04",
+        "middle_name": "B",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1386167873000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1386167873000",
+      "number": "1689005407",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "CH11042",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

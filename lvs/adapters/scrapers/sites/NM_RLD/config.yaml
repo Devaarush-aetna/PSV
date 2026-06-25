@@ -1,0 +1,120 @@
+identity:
+  source_id: "NM_RLD"
+  board_name: "New Mexico Regulation and Licensing Department"
+  state: "NM"
+  country: "US"
+  profession_codes: ["DC", "OD", "OT", "PT", "DDS", "DMD", "AU", "SLP", "AC", "MT", "RDN", "DPM"]
+  # NM RLD multi-board license verification portal (Salesforce Experience Cloud/LWC).
+  # Landing page requires clicking "Search license" button (pre_search_click) first.
+  # Required *Profession SLDS combobox (button.slds-combobox__input) must be selected
+  # before searching. Engine handles via slds_combobox strategy + dropdown_value per mode.
+  # For production: iterate over all 27 professions (multi_iteration not yet in engine).
+  base_url: "https://nmrldlpi.my.site.com/bcd/s/public-search-license-division"
+  archetype: classic_html_form
+
+search:
+  pre_search_click: "button:has-text('Search license')"
+  modes:
+    - mode: license_number
+      input_selector: ".slds-form-element:has(label:text-is(\"License Number\")) input"
+      dropdown_value: "Chiropractic Board"
+    - mode: last_name
+      input_selector: ".slds-form-element:has(label:text-is(\"License Holder Name\")) input"
+      dropdown_value: "Chiropractic Board"
+    - mode: first_name
+      input_selector: ".slds-form-element:has(label:text-is(\"License Holder Name\")) input"
+      dropdown_value: "Chiropractic Board"
+  form:
+    search_by_dropdown:
+      strategy: slds_combobox
+      selector: "button.slds-combobox__input"
+    search_input:
+      selector: ".slds-form-element:has(label:text-is(\"License Holder Name\")) input"
+    search_button:
+      selector: "button.slds-button_brand:has-text(\"Search\")"
+      fallback_selectors:
+        - "button:has-text('Search')"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    # 0=License Holder Name, 1=License Type, 2=License Number, 3=License Status,
+    # 4=Temporary, 5=Issue Date, 6=Expiration Date, 7=Address, 8=County, 9=View
+    columns:
+      0: full_name
+      1: license_type
+      2: license_number
+      3: status
+      5: issue_date
+      6: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Expired - Non Renewable": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 45000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NM_RLD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-19"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

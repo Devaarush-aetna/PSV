@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1931 19TH PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VERO BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329603555",
+          "state": "FL",
+          "telephone_number": "321-387-9451"
+        },
+        {
+          "address_1": "1931 19TH PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VERO BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329603555",
+          "state": "FL",
+          "telephone_number": "321-387-9451"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-15",
+        "credential": "DO",
+        "enumeration_date": "2019-06-10",
+        "first_name": "ANDREA",
+        "last_name": "LOVING",
+        "last_updated": "2025-09-15",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1560173841000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757971215000",
+      "number": "1356900823",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "204D00000X",
+          "desc": "Neuromusculoskeletal Medicine & OMM",
+          "license": "OS21792",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -16,7 +16,7 @@ csv_bulk:
   header_row: 0                  # converted CSV has headers at row 0
   download_timeout_ms: 300000    # 5-minute timeout for large XLS export
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     last_name: "Name"              # roster stores names as "LAST, FIRST"
@@ -106,7 +106,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/NV_DIETITIAN/{run_id}/"
+  local_path: "Evidence/NV_DIETITIAN/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"

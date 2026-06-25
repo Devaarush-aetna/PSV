@@ -1,0 +1,109 @@
+identity:
+  source_id: "VT_OPR"
+  board_name: "Vermont Office of Professional Regulation"
+  state: "VT"
+  country: "US"
+  profession_codes: ["LPC", "SW", "PSYCH", "MFT", "AC", "DC", "OD", "PT", "OT", "RN", "RPh", "DENT"]
+  # Pega Constellation SPA at secure.professionals.vermont.gov.
+  # Search by license_number (format XXX.XXXXXXX) enables the DISPLAY RESULTS button via Pega
+  # postValue XHR (keyup handler on pLookupNumber). use_keyboard_type fires keyup events that
+  # trigger the server-side LicenseLookupVal='true' response, enabling the button (~3s XHR).
+  # VT_MEDBOARD (search.medicallicensing.vermont.gov) is a separate portal covering MD/DO only.
+  base_url: "https://secure.professionals.vermont.gov/prweb/PRServletCustom/app/NGLPGuestUser_/V9csDxL3sXkkjMC_FR2HrA*/!STANDARD?UserIdentifier=LicenseLookupGuestUser"
+  archetype: pega_constellation
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='$PpyDisplayHarness$pLookupNumber']"
+    - mode: last_name
+      input_selector: "input[name='$PpyDisplayHarness$pLastName']"
+    - mode: first_name
+      input_selector: "input[name='$PpyDisplayHarness$pFirstName']"
+  form:
+    use_keyboard_type: true
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='$PpyDisplayHarness$pLookupNumber']"
+    search_button:
+      selector: "button[name='LicenseLookupSearchButtons_pyDisplayHarness_1']"
+  results_wait:
+    strategy: delay
+    timeout_ms: 13000
+    no_results_indicators:
+      - "Displaying 0 results for "
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: license_number
+      1: license_type
+      2: status
+      3: first_name
+      4: last_name
+      5: issue_date
+      6: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 120000
+  navigation_timeout_ms: 90000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [5000, 10000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/VT_OPR/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-18"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "001.0001000"
+  expect:
+    min_records: 1
+    license_number_contains: "001.0001000"

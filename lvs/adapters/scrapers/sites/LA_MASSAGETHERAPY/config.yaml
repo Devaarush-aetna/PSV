@@ -12,23 +12,25 @@ identity:
 #   estab — establishment registrations
 #   prof  — individual massage therapist licenses
 #
-# URL pattern (date-stamped, update when board posts new files):
-#   https://www.labmt.org/wp-content/uploads/YYYY/MM/estab-active-list-MM-DD-YYYY.pdf
-#   https://www.labmt.org/wp-content/uploads/YYYY/MM/prof-active-MM-DD-YYYYb.pdf
-#   (the "b" suffix on the prof PDF is a board convention for corrected versions)
-#
-# Known published date: 5-15-2026 (May 15, 2026)
-# IMPORTANT: Update both URLs below when the board publishes a new roster.
+# URL discovery: PDFs are linked from labmt.org/search/ as anchors with text
+# "PROFESSIONAL LICENSE SEARCH" (prof) and "ESTABLISHMENT LICENSE SEARCH" (estab).
+# Board publishes new PDFs roughly weekly; URLs change with the file date.
+# Strategy `page_link` discovers fresh URLs at runtime so the config doesn't go stale.
+# Most recent verified URL pattern (2026-06-16):
+#   https://www.labmt.org/wp-content/uploads/YYYY/MM/Active-LMT-M-DD-YYYY.pdf
+#   https://www.labmt.org/wp-content/uploads/YYYY/MM/M-DD-YYYYEstablishments.pdf
 pdf_bulk:
+  download_strategy: page_link
+  base_url: "https://www.labmt.org/search/"
   pdfs:
-    - url: "https://www.labmt.org/wp-content/uploads/2026/05/estab-active-list-5-15-2026.pdf"
-      format: estab
-      license_prefix: "E"
-    - url: "https://www.labmt.org/wp-content/uploads/2026/05/prof-active-5-15-2026b.pdf"
+    - link_selector: "a:has-text('PROFESSIONAL LICENSE SEARCH')"
       format: prof
       license_prefix: "L"
+    - link_selector: "a:has-text('ESTABLISHMENT LICENSE SEARCH')"
+      format: estab
+      license_prefix: "E"
   cache_days: 7
-  cache_dir: "./pdfs"
+  cache_dir: "./PSV/PDFS/LA_MASSAGETHERAPY"
 
 search:
   modes:
@@ -110,7 +112,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/LA_MASSAGETHERAPY/{run_id}/"
 
 compliance:
   requires_captcha: false
@@ -123,5 +125,3 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
-  skip: true
-  skip_reason: "pdf_urls_stale_portal_login_required: labmt.org WordPress PDF uploads for May 2026 return 404 (verified 2026-06-16). The replacement public-search at labmt.org/search/ is a WordPress site-search (not license lookup). The new portal at online.labmt.org requires login. Unblock: obtain new static PDF URLs from LABMT or add a classic_html_form config if the board builds a public name-search."

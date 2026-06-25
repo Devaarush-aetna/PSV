@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3801 DR MARTIN LUTHER KING JR BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641302807",
+          "state": "MO",
+          "telephone_number": "816-923-5800"
+        },
+        {
+          "address_1": "3801 DR MARTIN LUTHER KING JR BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641302807",
+          "state": "MO",
+          "telephone_number": "816-923-5800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-19",
+        "credential": "PMHNP",
+        "enumeration_date": "2007-09-10",
+        "first_name": "ROBIN",
+        "last_name": "TUCKER",
+        "last_updated": "2025-06-19",
+        "middle_name": "DIANTHA",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1189435118000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750348879000",
+      "number": "1720273154",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "10950 SCHUETZ RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAINT LOUIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "631465704",
+          "state": "MO",
+          "telephone_number": "314-993-1000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "46101",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

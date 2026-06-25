@@ -12,6 +12,9 @@ identity:
   # Use last_name mode for reliable searching.
   base_url: "https://data.ny.gov/resource/ucu3-8265.json"
   archetype: socrata_bulk_csv
+  # license_type_selector = SoQL column name for AND-filtering by license type
+  # license_type values: "Appearance Enhancement", "Barber", "Cosmetologist", etc.
+  license_type_selector: "license_type"
 
 search:
   # input_selector = Socrata field name used in SoQL WHERE clause.
@@ -83,7 +86,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/NY_APPEARANCE/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-07"

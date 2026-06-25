@@ -1,0 +1,16 @@
+# PSV batch verification — project-level settings
+#
+# proxy.server is used automatically for any board whose config.yaml has:
+#   transport:
+#     proxy:
+#       enabled: true
+#
+# Credentials (username / password) are still read from environment variables:
+#   PROXY_NID / PROXY_PASSWORD   — preferred
+#   LVS_PROXY_USER / LVS_PROXY_PASS  — legacy
+#
+# To disable proxy for an entire run, set PROXY="" in your shell before running.
+# To force-disable proxy for a specific board, set proxy.enabled: false in its config.yaml.
+
+proxy:
+  server: "proxy:9119"

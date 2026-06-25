@@ -1,0 +1,148 @@
+identity:
+  source_id: "AZ_MEDBOARD"
+  board_name: "Arizona Medical Board"
+  state: "AZ"
+  country: "US"
+  profession_codes: ["MD", "PA"]
+  # GLSuite ASP.NET WebForms portal at azbomv7prod.glsuite.us.
+  # Two separate submit buttons: "Name Search" (for last/first name) and
+  # "License Number Search" (for license number). Mapped per mode via button_selector.
+  # Results redirect to /Public/Results.aspx; detail profile at /Public/Profile.aspx.
+  base_url: "https://azbomv7prod.glsuite.us/GLSuiteWeb/Clients/AZBOM/public/WebVerificationSearch.aspx?q=azmd"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[id*='LicNum'], input[id*='LicenseNumber'], input[name*='LicNum']"
+      button_selector: "input[type='submit'][value='License Number Search'], input[type='submit'][value*='License']"
+    - mode: last_name
+      input_selector: "input[id*='LastName'], input[name*='LastName']"
+      button_selector: "input[type='submit'][value='Name Search'], input[type='submit'][value*='Name Search']"
+    - mode: first_name
+      input_selector: "input[id*='FirstName'], input[name*='FirstName']"
+      button_selector: "input[type='submit'][value='Name Search'], input[type='submit'][value*='Name Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id*='LastName']"
+    search_button:
+      selector: "input[type='submit'][value='Name Search']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+      - "no match"
+
+results:
+  type: table
+  table:
+    row_selector: "#ContentPlaceHolder1_dtgResults tr, table tr"
+    cell_selector: "td"
+    skip_first_row: true
+    # Column layout verified against live AZBOM Results.aspx — smoke test may expose mismatches.
+    # Typical AZBOM layout: 0=Name/link, 1=LicenseType, 2=LicenseNumber, 3=Status, 4=Expiration
+    columns:
+      0: full_name
+      2: license_number
+      3: status
+      4: expiration_date
+      1: license_type
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "a[href*='Profile.aspx'], a[href*='profile'], a:has-text('Profile'), a:has-text('View')"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: url_change
+    timeout_ms: 15000
+  strategies:
+    - type: br_column_table
+    - type: two_column_table
+    - type: four_column_table
+    - type: dt_dd
+    - type: label_sibling
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License Type": license_type
+    "Status": status
+    "License Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "City": city
+    "State": state_code
+    "Disciplinary Action": disciplinary_action
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1000
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Current": active
+    "current": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+    "Retired": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "Evidence/AZ_MEDBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  skip: true
+  skip_reason: "network_timeout: azbomv7prod.glsuite.us times out (30s) via both direct and proxy=proxy:9119. GLSuite subdomain not routable from corporate network. Needs allowlist/VPN exception (confirmed 2026-06-17 via run.py + Playwright probe — connection never established, not a 407)."
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

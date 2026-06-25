@@ -41,10 +41,9 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
     """
     headless = headless_override if headless_override is not None else config.headless
 
-    # Proxy is applied whenever PROXY (or LVS_PROXY_SERVER) env vars are set.
-    # To disable: unset those variables.  To remove entirely: delete engine/proxy.py
-    # and replace this call with `proxy_cfg = None`.
-    proxy_cfg = get_proxy_config()
+    # Proxy is applied whenever PROXY (or LVS_PROXY_SERVER) env vars are set,
+    # unless the board's config sets transport.proxy.enabled: false (hard bypass).
+    proxy_cfg = None if config.proxy.enabled is False else get_proxy_config()
 
     # Use a real browser UA unless config explicitly overrides it
     user_agent = config.user_agent

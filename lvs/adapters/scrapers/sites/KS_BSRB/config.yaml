@@ -15,6 +15,10 @@ search:
       input_selector: "input#t_web_lookup__last_name"
     - mode: first_name
       input_selector: "input#t_web_lookup__first_name"
+    - mode: first_and_last
+      input_selector: "input#t_web_lookup__last_name"
+      extra_inputs:
+        "input#t_web_lookup__first_name": "{first}"
   form:
     search_by_dropdown:
       strategy: none
@@ -35,13 +39,48 @@ results:
   table:
     row_selector: "table tr"
     cell_selector: "td"
-    # Columns: Name | (blank) | License# | Profession | Lic Type | (blank) | Status
+    # Actual columns (direct TDs): Name | License# | Profession | LicenseType | Status | Address
+    # custom_js overrides the above index mapping; row_selector/cell_selector are fallback only.
+    custom_js: |
+      (() => {
+        const tbl = document.getElementById('datagrid_results');
+        if (!tbl) return [];
+        const tbody = tbl.querySelector('tbody') || tbl;
+        const rows = tbody.querySelectorAll(':scope > tr');
+        const results = [];
+        for (const row of rows) {
+          const tds = row.querySelectorAll(':scope > td');
+          if (tds.length < 4) continue;
+          const nameEl = tds[0].querySelector('a[href*="Details.aspx"]');
+          const fullName = nameEl
+            ? nameEl.textContent.trim()
+            : (tds[0].textContent || '').split('\n')[0].trim();
+          if (!fullName) continue;
+          const licNum = (tds[1].textContent || '').trim();
+          const profession = (tds[2].textContent || '').trim();
+          const licTypeEl = tds[3].querySelector('span[id*="license_type"]')
+                         || tds[3].querySelector('span');
+          const licType = licTypeEl
+            ? licTypeEl.textContent.trim()
+            : (tds[3].textContent || '').split('\n')[0].trim();
+          const status = tds[4] ? (tds[4].textContent || '').trim() : '';
+          results.push({
+            full_name: fullName,
+            license_number: licNum,
+            profession: profession,
+            license_type: licType,
+            status: status
+          });
+        }
+        return results;
+      })()
     columns:
       0: "full_name"
-      2: "license_number"
-      3: "profession"
-      4: "license_type"
-      6: "status"
+      1: "license_number"
+      2: "profession"
+      3: "license_type"
+      4: "status"
+  single_result_url_pattern: "Details.aspx"
   has_detail_page: true
   detail_trigger:
     type: link_in_cell
@@ -129,6 +168,8 @@ transport:
     max_attempts: 3
     backoff_ms: [1000, 2000, 4000]
     retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: true
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
@@ -136,7 +177,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KS_BSRB/{run_id}/"
 
 compliance:
   requires_captcha: false

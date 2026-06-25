@@ -277,7 +277,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: "local"
-  local_path: "./evidence/NV_OSTEO/{run_id}/"
+  local_path: "Evidence/NV_OSTEO/{run_id}/"
 
 # ─── H. Compliance ────────────────────────────────────────
 compliance:

@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "901 KENTUCKY ST STE 306",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAWRENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660442858",
+          "state": "KS",
+          "telephone_number": "913-349-2359"
+        },
+        {
+          "address_1": "901 KENTUCKY ST STE 306",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAWRENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660442858",
+          "state": "KS",
+          "telephone_number": "913-349-2359"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-02-06",
+        "credential": "LMSW",
+        "enumeration_date": "2025-02-06",
+        "first_name": "RONNI",
+        "last_name": "MEYER",
+        "last_updated": "2025-02-06",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1738860602000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1738860602000",
+      "number": "1194539445",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "13543",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

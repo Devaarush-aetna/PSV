@@ -1,0 +1,57 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10102 COUNTRY CLUB RD SE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CUMBERLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "215028339",
+          "state": "MD"
+        },
+        {
+          "address_1": "10102 COUNTRY CLUB RD SE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CUMBERLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "215028339",
+          "state": "MD",
+          "telephone_number": "301-777-2285"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2018-07-11",
+        "first_name": "ANDREW",
+        "last_name": "JOHNSON",
+        "last_updated": "2018-07-11",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1531318643000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1531318643000",
+      "number": "1053807271",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YA0400X",
+          "desc": "Counselor, Addiction (Substance Use Disorder)",
+          "license": "LGP8171",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

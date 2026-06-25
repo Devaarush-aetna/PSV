@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2606 CENTENNIAL PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-329-2903",
+          "postal_code": "323080572",
+          "state": "FL",
+          "telephone_number": "850-205-0189"
+        },
+        {
+          "address_1": "1407 M D LN STE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-205-0195",
+          "postal_code": "323085349",
+          "state": "FL",
+          "telephone_number": "850-877-0635"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-08",
+        "enumeration_date": "2024-04-01",
+        "first_name": "MEGAN",
+        "last_name": "PIETRODANGELO",
+        "last_updated": "2026-01-08",
+        "middle_name": "E",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1711965916000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767896834000",
+      "number": "1982455648",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2606 CENTENNIAL PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-329-2903",
+          "postal_code": "323080572",
+          "state": "FL",
+          "telephone_number": "850-205-0189"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "9246650",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "9246650",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

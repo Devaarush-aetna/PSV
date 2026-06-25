@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2788 SW 177TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIRAMAR",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330295142",
+          "state": "FL"
+        },
+        {
+          "address_1": "2788 SW 177TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIRAMAR",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330295142",
+          "state": "FL",
+          "telephone_number": "561-572-7606"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2019-01-10",
+        "first_name": "DARLYLA",
+        "last_name": "NAISSANCE",
+        "last_updated": "2019-01-10",
+        "middle_name": "ALTIDOR",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1547144060000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1547144060000",
+      "number": "1194298331",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "9386538",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

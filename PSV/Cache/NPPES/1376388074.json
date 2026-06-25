@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2800 W 77TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PRAIRIE VILLAGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662083909",
+          "state": "KS",
+          "telephone_number": "913-206-0853"
+        },
+        {
+          "address_1": "11250 TOMAHAWK CREEK PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEAWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662112668",
+          "state": "KS",
+          "telephone_number": "913-253-8980"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-11",
+        "credential": "OTR/L",
+        "enumeration_date": "2024-06-26",
+        "first_name": "ZAILEY",
+        "last_name": "WILKINSON",
+        "last_updated": "2025-11-11",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1719415804000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1762898306000",
+      "number": "1376388074",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

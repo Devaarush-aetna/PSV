@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12823 SOLOLA WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TRINITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "346557246",
+          "state": "FL",
+          "telephone_number": "727-215-2773"
+        },
+        {
+          "address_1": "21129 PLEASANT PLAINS PKWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAND O LAKES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "346376403",
+          "state": "FL",
+          "telephone_number": "727-215-2773"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-09",
+        "enumeration_date": "2024-07-11",
+        "first_name": "ERIN",
+        "last_name": "MOCKLER EATON",
+        "last_updated": "2025-06-13",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1720721103000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1749835888000",
+      "number": "1144067653",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-25-81727",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

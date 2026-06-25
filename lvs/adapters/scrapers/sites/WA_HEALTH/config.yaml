@@ -11,6 +11,9 @@ identity:
   # (proxy requires credentials not available). Keep socrata_bulk_csv.
   base_url: "https://data.wa.gov/resource/qxh8-f4bd.json"
   archetype: socrata_bulk_csv
+  # provider_type_selector = SoQL column name for AND-filtering by provider/credential type
+  # credentialtype values: "Registered Nurse", "Doctor of Medicine", "Physical Therapist", etc.
+  provider_type_selector: "credentialtype"
 
 search:
   # input_selector = Socrata field name (lowercase, no spaces) used in SoQL WHERE clause.
@@ -105,7 +108,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/WA_HEALTH/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-04"

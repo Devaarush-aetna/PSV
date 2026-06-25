@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11339 SW 167TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331572736",
+          "state": "FL",
+          "telephone_number": "786-774-2229"
+        },
+        {
+          "address_1": "11339 SW 167TH TER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331572736",
+          "state": "FL",
+          "telephone_number": "786-774-2229"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-01-09",
+        "credential": "APRN",
+        "enumeration_date": "2024-06-11",
+        "first_name": "DALILA",
+        "last_name": "DEL VALLE CALZADILLA",
+        "last_updated": "2024-06-11",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1718100004000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1718100004000",
+      "number": "1700628732",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "11030488",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

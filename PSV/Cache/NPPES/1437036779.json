@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1341 HUGHES FORD RD STE 104",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217013134",
+          "state": "MD",
+          "telephone_number": "301-450-8038"
+        },
+        {
+          "address_1": "1341 HUGHES FORD RD STE 104",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217013134",
+          "state": "MD",
+          "telephone_number": "301-450-8038"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-19",
+        "enumeration_date": "2025-08-19",
+        "first_name": "HAVEN",
+        "last_name": "LYNOTT",
+        "last_updated": "2025-08-19",
+        "middle_name": "ELIZABETH",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1755618904000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1755618904000",
+      "number": "1437036779",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "30538",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

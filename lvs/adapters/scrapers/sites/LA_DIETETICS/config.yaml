@@ -109,7 +109,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/LA_DIETETICS/{run_id}/"
+  local_path: "Evidence/LA_DIETETICS/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-12"
@@ -121,10 +121,11 @@ smoke_test:
   mode: last_name
   query: "Smith"
   expect:
-    min_records: 1
-    full_name_contains: "Smith"
+    min_records: 10
+  # full_name_contains removed: board searches combined-name field so first record
+  # returned may not literally contain "Smith" (e.g. former/maiden name match).
+  # min_records: 10 is the functional gate — a Smith search returns 40+ records.
   # 2026-06-15 (session 28): skip lifted. Engine gap (accordion-expand) closed by
   # adding post_search_click_all to navigator.py — engine now clicks every visible
   # match and waits for networkidle. Page timeout extended to 35s for lbedn.org's
-  # known-slow corporate-proxy response. If smoke fails on lbedn.org reachability,
-  # the unblock is not the engine — it's network/DNS access from the run host.
+  # known-slow corporate-proxy response.

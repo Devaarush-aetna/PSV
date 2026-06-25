@@ -1,0 +1,88 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1200 CORPORATE DR STE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOOVER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "352425424",
+          "state": "AL",
+          "telephone_number": "423-238-7217"
+        },
+        {
+          "address_1": "2490 WILLAMETTE ST STE 5",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EUGENE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "974057211",
+          "state": "OR",
+          "telephone_number": "541-844-1728"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-02",
+        "credential": "PT",
+        "enumeration_date": "2025-06-13",
+        "first_name": "BRIDGET",
+        "last_name": "BROWN",
+        "last_updated": "2025-12-02",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1749820202000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1764693339000",
+      "number": "1417843996",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "14802 SHAMROCK WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SMITHVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "640898381",
+          "state": "MO",
+          "telephone_number": "816-873-1100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "65940",
+          "primary": false,
+          "state": "OR",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-07916",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "2025034213",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

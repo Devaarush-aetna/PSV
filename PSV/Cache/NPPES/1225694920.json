@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1030 MULBERRY ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402171253",
+          "state": "KY",
+          "telephone_number": "615-894-5086"
+        },
+        {
+          "address_1": "4156 WESTPORT RD STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402072705",
+          "state": "KY",
+          "telephone_number": "502-509-2407"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-07",
+        "credential": "LAC",
+        "enumeration_date": "2019-05-17",
+        "first_name": "ALEXANDRA",
+        "last_name": "MACIAS",
+        "last_updated": "2025-05-07",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1558118629000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1746654802000",
+      "number": "1225694920",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "198001326",
+          "primary": true,
+          "state": "IL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

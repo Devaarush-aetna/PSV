@@ -1,0 +1,829 @@
+state,prov_type,prov_description,source_id,board_name,board_profession_codes,lic_prefix_in_psv,psv_row_count,routing_status
+AK,DT,Dietitian/Nutritionist,,,,(none):3,3,NOT_CONFIGURED
+AK,LC,Licensed Counselor,,,,(none):1,1,NOT_CONFIGURED
+AK,ND,Naturopathic Doctor,,,,(none):1,1,NOT_CONFIGURED
+AK,NP,Nurse Practitioner,,,,(none):5,5,NOT_CONFIGURED
+AK,NPB,Nurse Practitioner (Broadened),,,,(none):1,1,NOT_CONFIGURED
+AK,PAS,Physician Assistant,,,,(none):2,2,NOT_CONFIGURED
+AK,PH,Pharmacist,,,,"(none):1, MEDS:1",2,NOT_CONFIGURED
+AK,PN,Practical Nurse (LPN),,,,"S:1, (none):1",2,NOT_CONFIGURED
+AK,PT,Physical Therapist,,,,(none):1,1,NOT_CONFIGURED
+AK,SH,Speech-Language Pathologist,,,,(none):1,1,NOT_CONFIGURED
+AL,ABA,Applied Behavior Analyst,,,,(none):5,5,NOT_CONFIGURED
+AL,AU,Audiologist,AL_ABESPA,Alabama Board of Examiners for Speech-Language Pathology and Audiology,"SLP,AUD",(none):3,3,CONFIGURED
+AL,CP,Clinical Psychologist,,,,"(none):3, PSYPACT:1",4,NOT_CONFIGURED
+AL,DC,Doctor of Chiropractic,,,,(none):1,1,NOT_CONFIGURED
+AL,DP,Doctor of Podiatric Medicine,,,,(none):1,1,NOT_CONFIGURED
+AL,DT,Dietitian/Nutritionist,,,,(none):12,12,NOT_CONFIGURED
+AL,LC,Licensed Counselor,AL_MFT,Alabama Board of Examiners in Marriage and Family Therapy,"MFT,LMFT",L:1,1,CONFIGURED
+AL,LPC,Licensed Professional Counselor,AL_MFT,Alabama Board of Examiners in Marriage and Family Therapy,"MFT,LMFT",(none):1,1,CONFIGURED
+AL,NP,Nurse Practitioner,,,,(none):17,17,NOT_CONFIGURED
+AL,OT,Occupational Therapist,,,,(none):18,18,NOT_CONFIGURED
+AL,PAS,Physician Assistant,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission,"MD,DO,PA","PA:4, (none):1",5,CONFIGURED
+AL,PH,Pharmacist,,,,"(none):23, MD:12",35,NOT_CONFIGURED
+AL,PN,Practical Nurse (LPN),,,,(none):5,5,NOT_CONFIGURED
+AL,PT,Physical Therapist,,,,PTH:1,1,NOT_CONFIGURED
+AL,SW,Social Worker,,,,(none):8,8,NOT_CONFIGURED
+AR,ABA,Applied Behavior Analyst,,,,(none):16,16,NOT_CONFIGURED
+AR,CP,Clinical Psychologist,,,,"(none):2, PSYPACT:1",3,NOT_CONFIGURED
+AR,DAC,Drug & Alcohol Counselor,,,,(none):2,2,NOT_CONFIGURED
+AR,DC,Doctor of Chiropractic,,,,(none):49,49,NOT_CONFIGURED
+AR,DT,Dietitian/Nutritionist,,,,"(none):20, PLD:1",21,NOT_CONFIGURED
+AR,LC,Licensed Counselor,,,,"R:1, L:1",2,NOT_CONFIGURED
+AR,LPC,Licensed Professional Counselor,,,,"P:2, (none):1",3,NOT_CONFIGURED
+AR,NP,Nurse Practitioner,,,,"(none):45, R:44, A:24, S:1",114,NOT_CONFIGURED
+AR,NPB,Nurse Practitioner (Broadened),,,,"A:1, (none):1",2,NOT_CONFIGURED
+AR,OP,Optometrist (OP),,,,"(none):4, AR:1",5,NOT_CONFIGURED
+AR,OT,Occupational Therapist,,,,OTR:61,61,NOT_CONFIGURED
+AR,PAS,Physician Assistant,,,,PA:11,11,NOT_CONFIGURED
+AR,PH,Pharmacist,,,,"E:81, C:9, N:4, R:4",98,NOT_CONFIGURED
+AR,PN,Practical Nurse (LPN),,,,"R:8, (none):7, A:6, S:1",22,NOT_CONFIGURED
+AR,PT,Physical Therapist,,,,"PT:125, (none):18",143,NOT_CONFIGURED
+AR,RNA,Registered Nurse Anesthetist,,,,"C:2, R:1",3,NOT_CONFIGURED
+AR,SH,Speech-Language Pathologist,,,,"(none):2, SP:1",3,NOT_CONFIGURED
+AR,SW,Social Worker,,,,(none):32,32,NOT_CONFIGURED
+AZ,ABA,Applied Behavior Analyst,,,,"BEH:22, (none):3, BA:1, SLP:1",27,NOT_CONFIGURED
+AZ,AU,Audiologist,AZ_SPEECH_HEAR,"Arizona Department of Health Services - Licensing Services (Speech-Language Pathology, Audiology, Hearing Aid Dispensing)","SLP,AUD,HAD",DA:3,3,CONFIGURED
+AZ,CP,Clinical Psychologist,AZ_PSYCH,Arizona Board of Psychologist Examiners,PSY,"PSY:15, (none):7, PSYPACT:7, PS:1, LCSW:1",31,CONFIGURED
+AZ,DAC,Drug & Alcohol Counselor,,,,"LISAC:3, LIAC:1",4,NOT_CONFIGURED
+AZ,DC,Doctor of Chiropractic,AZ_CHIRO,Arizona State Board of Chiropractic Examiners,DC,(none):6,6,CONFIGURED
+AZ,DT,Dietitian/Nutritionist,,,,(none):33,33,NOT_CONFIGURED
+AZ,LC,Licensed Counselor,,,,"RN:3, (none):1",4,NOT_CONFIGURED
+AZ,LPC,Licensed Professional Counselor,,,,"LPC:36, (none):5, LAC:1, OTC:1",43,NOT_CONFIGURED
+AZ,MT,Massage Therapist,,,,"LMFT:4, LAMFT:1",5,NOT_CONFIGURED
+AZ,MW,Midwife,,,,(none):1,1,NOT_CONFIGURED
+AZ,NP,Nurse Practitioner,,,,"(none):150, RN:117, AP:64, TEMP:1, TELE:1, APRN:1",334,NOT_CONFIGURED
+AZ,NPB,Nurse Practitioner (Broadened),,,,"AP:2, RN:2, (none):2",6,NOT_CONFIGURED
+AZ,NUT,Nutritionist,,,,A:1,1,NOT_CONFIGURED
+AZ,OP,Optometrist (OP),AZ_OPTOMETRY,Arizona State Board of Optometry,OD,OPT:1,1,CONFIGURED
+AZ,OT,Occupational Therapist,AZ_OT,Arizona State Board of Occupational Therapy Examiners,"OT,OTA",(none):1,1,CONFIGURED
+AZ,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+AZ,PAS,Physician Assistant,AZ_MEDBOARD,Arizona Medical Board,"MD,PA",(none):24,24,CONFIGURED
+AZ,PH,Pharmacist,,,,(none):167,167,NOT_CONFIGURED
+AZ,PN,Practical Nurse (LPN),,,,"(none):34, RN:30, AP:12, APRN:1, TELE:1",78,NOT_CONFIGURED
+AZ,PT,Physical Therapist,AZ_PT,Arizona Board of Physical Therapy,PT,(none):1,1,CONFIGURED
+AZ,RN,Registered Nurse,,,,(none):1,1,NOT_CONFIGURED
+AZ,RNA,Registered Nurse Anesthetist,,,,(none):4,4,NOT_CONFIGURED
+AZ,SH,Speech-Language Pathologist,AZ_SPEECH_HEAR,"Arizona Department of Health Services - Licensing Services (Speech-Language Pathology, Audiology, Hearing Aid Dispensing)","SLP,AUD,HAD",SLP:2,2,CONFIGURED
+AZ,SW,Social Worker,,,,"LCSW:19, (none):5, LMSW:2, LISAC:1, LIAC:1",28,NOT_CONFIGURED
+CA,ABA,Applied Behavior Analyst,,,,"(none):160, NOLICENSE:4, A:1",165,NOT_CONFIGURED
+CA,AU,Audiologist,,,,"(none):6, AU:5",11,NOT_CONFIGURED
+CA,CP,Clinical Psychologist,,,,"(none):75, PSY:12, MFC:2",89,NOT_CONFIGURED
+CA,DC,Doctor of Chiropractic,,,,"(none):5, DC:1",6,NOT_CONFIGURED
+CA,DP,Doctor of Podiatric Medicine,,,,"(none):12, E:6",18,NOT_CONFIGURED
+CA,DT,Dietitian/Nutritionist,,,,"(none):76, L:33, DT:3, ABC:1",113,NOT_CONFIGURED
+CA,LC,Licensed Counselor,,,,"(none):11, RN:1, L:1",13,NOT_CONFIGURED
+CA,LPC,Licensed Professional Counselor,,,,"(none):9, APCC:2",11,NOT_CONFIGURED
+CA,MT,Massage Therapist,,,,"(none):145, LMFT:9",154,NOT_CONFIGURED
+CA,MW,Midwife,,,,"(none):10, NMW:1",11,NOT_CONFIGURED
+CA,NP,Nurse Practitioner,,,,"(none):279, NP:6, APRN:1",286,NOT_CONFIGURED
+CA,NPB,Nurse Practitioner (Broadened),,,,"(none):4, AG:1",5,NOT_CONFIGURED
+CA,NPS,Nurse Practitioner (Specialty),,,,(none):1,1,NOT_CONFIGURED
+CA,NSA,Nursing Specialist,,,,(none):1,1,NOT_CONFIGURED
+CA,OP,Optometrist (OP),,,,(none):1,1,NOT_CONFIGURED
+CA,OR,OR,,,,(none):1,1,NOT_CONFIGURED
+CA,OT,Occupational Therapist,,,,"(none):2, OT:1, L:1",4,NOT_CONFIGURED
+CA,PAB,Physician Assistant (Board),,,,"PA:3, (none):2",5,NOT_CONFIGURED
+CA,PAS,Physician Assistant,,,,"(none):51, PA:23",74,NOT_CONFIGURED
+CA,PH,Pharmacist,,,,"A:153, (none):57, C:52, G:32, P:1",295,NOT_CONFIGURED
+CA,PN,Practical Nurse (LPN),,,,"(none):54, NP:1",55,NOT_CONFIGURED
+CA,PT,Physical Therapist,,,,"(none):14, PT:2",16,NOT_CONFIGURED
+CA,RNA,Registered Nurse Anesthetist,,,,(none):7,7,NOT_CONFIGURED
+CA,SH,Speech-Language Pathologist,,,,(none):4,4,NOT_CONFIGURED
+CA,SW,Social Worker,,,,"(none):64, LCSW:2, LW:1, LCS:1",68,NOT_CONFIGURED
+CO,ABA,Applied Behavior Analyst,,,,"(none):62, BACB:1, BCBA:1, NO:1",65,NOT_CONFIGURED
+CO,AP,Acupuncturist,,,,ACU:7,7,NOT_CONFIGURED
+CO,AU,Audiologist,,,,"AUD:41, (none):6",47,NOT_CONFIGURED
+CO,CP,Clinical Psychologist,,,,"(none):9, PSY:4, PSYPACT:2, PSYC:1, LPC:1, PS:1",18,NOT_CONFIGURED
+CO,DP,Doctor of Podiatric Medicine,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT",POD:2,2,CONFIGURED
+CO,DT,Dietitian/Nutritionist,,,,"(none):454, L:18, DT:18, LD:8, NO:2, LDN:1, RN:1, DX:1, DN:1",504,NOT_CONFIGURED
+CO,LC,Licensed Counselor,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","L:2, RN:1",3,CONFIGURED
+CO,LPC,Licensed Professional Counselor,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","LPC:5, NO:1, ACD:1, (none):1",8,CONFIGURED
+CO,MT,Massage Therapist,,,,"(none):1, MFT:1, ACD:1",3,NOT_CONFIGURED
+CO,NP,Nurse Practitioner,,,,"APN:59, C:54, RN:49, (none):14, RXN:12, CO:1",189,NOT_CONFIGURED
+CO,NPB,Nurse Practitioner (Broadened),,,,"APN:2, RN:1",3,NOT_CONFIGURED
+CO,NUT,Nutritionist,,,,(none):4,4,NOT_CONFIGURED
+CO,PAB,Physician Assistant (Board),,,,PA:5,5,NOT_CONFIGURED
+CO,PAS,Physician Assistant,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","PA:229, (none):9",238,CONFIGURED
+CO,PH,Pharmacist,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","DR:12, (none):7, CDR:7, CDRH:2",28,CONFIGURED
+CO,PN,Practical Nurse (LPN),CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","C:5, APN:3, (none):3, RN:3, RXN:1",15,CONFIGURED
+CO,PT,Physical Therapist,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","CP:3, PTL:1, COS:1",5,CONFIGURED
+CO,RFA,Registered Family Advocate,,,,SA:1,1,NOT_CONFIGURED
+CO,RNA,Registered Nurse Anesthetist,,,,"C:1, (none):1, APN:1, SRA:1",4,NOT_CONFIGURED
+CO,SH,Speech-Language Pathologist,,,,"SLP:17, (none):1",18,NOT_CONFIGURED
+CO,SW,Social Worker,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses,"MD,DO,RN,LPN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT","CSW:53, (none):13, LSW:3, ACD:2, LCSW:1, ACC:1, SCW:1",74,CONFIGURED
+CT,ABA,Applied Behavior Analyst,,,,(none):40,40,NOT_CONFIGURED
+CT,AP,Acupuncturist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):6,6,CONFIGURED
+CT,AU,Audiologist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):7,7,CONFIGURED
+CT,CP,Clinical Psychologist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT","(none):26, PSYPACT:1",27,CONFIGURED
+CT,DAC,Drug & Alcohol Counselor,,,,(none):9,9,NOT_CONFIGURED
+CT,DC,Doctor of Chiropractic,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):28,28,CONFIGURED
+CT,DN,Dental/Nurse,,,,(none):1,1,NOT_CONFIGURED
+CT,DP,Doctor of Podiatric Medicine,,,,(none):6,6,NOT_CONFIGURED
+CT,DT,Dietitian/Nutritionist,,,,(none):115,115,NOT_CONFIGURED
+CT,GNC,Genetic Counselor,,,,(none):3,3,NOT_CONFIGURED
+CT,LC,Licensed Counselor,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT","(none):3, L:2, R:1",6,CONFIGURED
+CT,LPC,Licensed Professional Counselor,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT","(none):96, E:1",97,CONFIGURED
+CT,MT,Massage Therapist,,,,(none):47,47,NOT_CONFIGURED
+CT,MW,Midwife,,,,"(none):11, E:2",13,NOT_CONFIGURED
+CT,ND,Naturopathic Doctor,,,,(none):4,4,NOT_CONFIGURED
+CT,NP,Nurse Practitioner,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT","(none):221, E:9, R:1",231,CONFIGURED
+CT,NPB,Nurse Practitioner (Broadened),CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):10,10,CONFIGURED
+CT,NPS,Nurse Practitioner (Specialty),CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):3,3,CONFIGURED
+CT,NUT,Nutritionist,,,,(none):8,8,NOT_CONFIGURED
+CT,OP,Optometrist (OP),CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):1,1,CONFIGURED
+CT,OT,Occupational Therapist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):2,2,CONFIGURED
+CT,PAS,Physician Assistant,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):33,33,CONFIGURED
+CT,PH,Pharmacist,,,,(none):292,292,NOT_CONFIGURED
+CT,PN,Practical Nurse (LPN),CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT","(none):69, R:3, E:2",74,CONFIGURED
+CT,PT,Physical Therapist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):53,53,CONFIGURED
+CT,RNA,Registered Nurse Anesthetist,,,,(none):2,2,NOT_CONFIGURED
+CT,SH,Speech-Language Pathologist,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT",(none):33,33,CONFIGURED
+CT,ST,Speech Therapist,,,,(none):2,2,NOT_CONFIGURED
+CT,SW,Social Worker,,,,(none):224,224,NOT_CONFIGURED
+FL,ABA,Applied Behavior Analyst,,,,"(none):270, RBT:13, BCBA:6, BACB:4, MH:2, APRN:1, SS:1, RN:1, PTA:1, T:1, BT:1",301,NOT_CONFIGURED
+FL,AP,Acupuncturist,,,,"AP:51, (none):2",53,NOT_CONFIGURED
+FL,AU,Audiologist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY",AY:34,34,CONFIGURED
+FL,CP,Clinical Psychologist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","(none):9, SS:5, PSYPACT:4, PY:1, TPPY:1",20,CONFIGURED
+FL,DC,Doctor of Chiropractic,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","CH:380, (none):7",387,CONFIGURED
+FL,DP,Doctor of Podiatric Medicine,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","PO:234, P:4, (none):1",239,CONFIGURED
+FL,DT,Dietitian/Nutritionist,,,,"(none):34, ND:30, TPND:30, L:3, TPAN:1",98,NOT_CONFIGURED
+FL,GNC,Genetic Counselor,,,,"GC:3, TGC:1",4,NOT_CONFIGURED
+FL,LC,Licensed Counselor,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","RN:8, (none):3, L:1",12,CONFIGURED
+FL,LPC,Licensed Professional Counselor,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","TPMC:14, MH:4, CBHCMS:1, IMH:1, (none):1",21,CONFIGURED
+FL,MT,Massage Therapist,,,,"MT:1, TPMF:1",2,NOT_CONFIGURED
+FL,MW,Midwife,,,,"APRN:6, MW:4, RN:2, TPMW:1",13,NOT_CONFIGURED
+FL,NP,Nurse Practitioner,,,,"RN:255, APRN:233, TPAN:45, (none):20, ARNP:12, R:1, ARPN:1, MR:1, PA:1",569,NOT_CONFIGURED
+FL,NPB,Nurse Practitioner (Broadened),,,,"RN:10, APRN:8, AP:1, (none):1",20,NOT_CONFIGURED
+FL,OT,Occupational Therapist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY",OT:1,1,CONFIGURED
+FL,PAB,Physician Assistant (Board),,,,PA:13,13,NOT_CONFIGURED
+FL,PAS,Physician Assistant,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","PA:322, (none):13, PAT:2, TPPA:1",338,CONFIGURED
+FL,PE,PE,,,,SS:1,1,NOT_CONFIGURED
+FL,PH,Pharmacist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","ME:1284, OS:617, ACN:110, (none):18, TPME:11, TPOS:6, PA:1, FP:1, OD:1",2049,CONFIGURED
+FL,PN,Practical Nurse (LPN),FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","RN:55, APRN:52, TPAN:2, (none):2, ARNP:1",112,CONFIGURED
+FL,PT,Physical Therapist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","PT:219, (none):5, PTH:1, PTT:1",226,CONFIGURED
+FL,RNA,Registered Nurse Anesthetist,,,,"APRN:3, RN:2, ARNP:1, (none):1",7,NOT_CONFIGURED
+FL,SH,Speech-Language Pathologist,FL_MQA,Florida Department of Health — Medical Quality Assurance,"MD,DO,DDS,DMD,RN,LPN,RPh,DC,OD,DPM,PA,PT,OT,SW,MFT,MHC,SLP,AUD,PSY","SA:155, SI:8, SZ:6, TPSA:1",170,CONFIGURED
+FL,ST,Speech Therapist,,,,"SA:7, SZ:1",8,NOT_CONFIGURED
+FL,SW,Social Worker,,,,"TPSW:14, SW:12, CBHCMS:1, (none):1",28,NOT_CONFIGURED
+GA,ABA,Applied Behavior Analyst,,,,"(none):109, LBA:1",110,NOT_CONFIGURED
+GA,AP,Acupuncturist,,,,(none):6,6,NOT_CONFIGURED
+GA,AU,Audiologist,,,,AUD:1,1,NOT_CONFIGURED
+GA,CP,Clinical Psychologist,,,,"(none):12, PSY:3, PSYPACT:1, APIT:1, PS:1",18,NOT_CONFIGURED
+GA,DAC,Drug & Alcohol Counselor,,,,"(none):1, NO:1",2,NOT_CONFIGURED
+GA,DC,Doctor of Chiropractic,,,,CHIRO:1,1,NOT_CONFIGURED
+GA,DP,Doctor of Podiatric Medicine,,,,POD:1,1,NOT_CONFIGURED
+GA,DT,Dietitian/Nutritionist,,,,"LD:213, (none):11, D:1",225,NOT_CONFIGURED
+GA,GNC,Genetic Counselor,,,,(none):1,1,NOT_CONFIGURED
+GA,LC,Licensed Counselor,,,,"RN:14, L:10, LC:2",26,NOT_CONFIGURED
+GA,LPC,Licensed Professional Counselor,,,,LPC:4,4,NOT_CONFIGURED
+GA,MW,Midwife,,,,"RN:3, APRN:1",4,NOT_CONFIGURED
+GA,NP,Nurse Practitioner,,,,"RN:168, APRN:60, GAA:23, (none):3, APRNRN:1, G:1, GAANP:1, NP:1",258,NOT_CONFIGURED
+GA,NPB,Nurse Practitioner (Broadened),,,,"RN:3, NP:1",4,NOT_CONFIGURED
+GA,NSA,Nursing Specialist,,,,(none):2,2,NOT_CONFIGURED
+GA,NUT,Nutritionist,,,,"LD:3, RN:1",4,NOT_CONFIGURED
+GA,OP,Optometrist (OP),,,,OPT:2,2,NOT_CONFIGURED
+GA,OT,Occupational Therapist,,,,"OT:171, (none):2, GA:1",174,NOT_CONFIGURED
+GA,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+GA,PAS,Physician Assistant,,,,(none):16,16,NOT_CONFIGURED
+GA,PC,PC,,,,GO:1,1,NOT_CONFIGURED
+GA,PH,Pharmacist,,,,"(none):183, TM:1, FS:1, PSY:1",186,NOT_CONFIGURED
+GA,PN,Practical Nurse (LPN),,,,"RN:42, APRN:18, GAA:2, NP:1, GAANP:1",64,NOT_CONFIGURED
+GA,PT,Physical Therapist,,,,"PT:175, CP:4, (none):4",183,NOT_CONFIGURED
+GA,RNA,Registered Nurse Anesthetist,,,,"RN:5, APRN:4",9,NOT_CONFIGURED
+GA,SH,Speech-Language Pathologist,,,,SLP:4,4,NOT_CONFIGURED
+GA,SW,Social Worker,,,,"(none):2, CSW:1",3,NOT_CONFIGURED
+HI,ABA,Applied Behavior Analyst,,,,BA:1,1,NOT_CONFIGURED
+HI,DT,Dietitian/Nutritionist,HI_DIETITIANS,Hawaii Department of Health — Licensed Dietitians,"LD,RD",CDE:1,1,CONFIGURED
+HI,PAS,Physician Assistant,,,,AMD:2,2,NOT_CONFIGURED
+HI,PH,Pharmacist,,,,"MD:19, (none):3",22,NOT_CONFIGURED
+IA,ABA,Applied Behavior Analyst,,,,"(none):7, BA:2",9,NOT_CONFIGURED
+IA,AU,Audiologist,,,,(none):2,2,NOT_CONFIGURED
+IA,CP,Clinical Psychologist,,,,(none):1,1,NOT_CONFIGURED
+IA,DAC,Drug & Alcohol Counselor,,,,(none):1,1,NOT_CONFIGURED
+IA,DT,Dietitian/Nutritionist,,,,(none):9,9,NOT_CONFIGURED
+IA,LPC,Licensed Professional Counselor,,,,(none):1,1,NOT_CONFIGURED
+IA,MW,Midwife,,,,"B:1, (none):1",2,NOT_CONFIGURED
+IA,NP,Nurse Practitioner,,,,"A:44, (none):23, H:6, G:2, L:2, D:1, F:1, B:1",80,NOT_CONFIGURED
+IA,NPB,Nurse Practitioner (Broadened),,,,"A:1, (none):1, G:1",3,NOT_CONFIGURED
+IA,PAS,Physician Assistant,,,,(none):2,2,NOT_CONFIGURED
+IA,PH,Pharmacist,,,,"MD:56, DO:13, (none):2, D:1",72,NOT_CONFIGURED
+IA,PN,Practical Nurse (LPN),,,,"G:4, (none):2, A:1",7,NOT_CONFIGURED
+IA,PT,Physical Therapist,,,,(none):3,3,NOT_CONFIGURED
+IA,RNA,Registered Nurse Anesthetist,,,,"D:1, (none):1",2,NOT_CONFIGURED
+IA,SH,Speech-Language Pathologist,,,,(none):7,7,NOT_CONFIGURED
+IA,SW,Social Worker,,,,(none):2,2,NOT_CONFIGURED
+ID,ABA,Applied Behavior Analyst,,,,(none):4,4,NOT_CONFIGURED
+ID,AP,Acupuncturist,,,,ACU:2,2,NOT_CONFIGURED
+ID,AU,Audiologist,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",AUD:2,2,CONFIGURED
+ID,CP,Clinical Psychologist,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET","PSY:6, (none):4",10,CONFIGURED
+ID,DC,Doctor of Chiropractic,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",CHIA:10,10,CONFIGURED
+ID,DP,Doctor of Podiatric Medicine,,,,P:3,3,NOT_CONFIGURED
+ID,DT,Dietitian/Nutritionist,,,,D:1,1,NOT_CONFIGURED
+ID,LPC,Licensed Professional Counselor,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET","LPC:38, LCPC:28, (none):9",75,CONFIGURED
+ID,MT,Massage Therapist,,,,LMFT:3,3,NOT_CONFIGURED
+ID,MW,Midwife,,,,MID:1,1,NOT_CONFIGURED
+ID,NP,Nurse Practitioner,,,,"(none):84, NP:2, N:1, CS:1",88,NOT_CONFIGURED
+ID,OP,Optometrist (OP),ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",ODP:4,4,CONFIGURED
+ID,OT,Occupational Therapist,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",OT:1,1,CONFIGURED
+ID,PAS,Physician Assistant,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",(none):2,2,CONFIGURED
+ID,PH,Pharmacist,,,,"MC:6, M:5, PT:2, O:2, (none):1",16,NOT_CONFIGURED
+ID,PN,Practical Nurse (LPN),ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",(none):2,2,CONFIGURED
+ID,PT,Physical Therapist,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",PT:6,6,CONFIGURED
+ID,SH,Speech-Language Pathologist,ID_DOPL,Idaho Division of Occupational and Professional Licenses,"MD,DO,RN,LPN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,LPC,AUD,SLP,PSYCH,DIET",SLP:3,3,CONFIGURED
+ID,SW,Social Worker,,,,"LCSW:42, LMSW:18, (none):13, LCPC:1, LSW:1, MBTSWO:1",76,NOT_CONFIGURED
+IL,ABA,Applied Behavior Analyst,,,,(none):54,54,NOT_CONFIGURED
+IL,AU,Audiologist,,,,(none):2,2,NOT_CONFIGURED
+IL,CP,Clinical Psychologist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC","(none):11, PSYPACT:9, PS:1",21,CONFIGURED
+IL,DAC,Drug & Alcohol Counselor,,,,(none):1,1,NOT_CONFIGURED
+IL,DC,Doctor of Chiropractic,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):1,1,CONFIGURED
+IL,DP,Doctor of Podiatric Medicine,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):1,1,CONFIGURED
+IL,DT,Dietitian/Nutritionist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):22,22,CONFIGURED
+IL,LC,Licensed Counselor,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC","L:5, (none):1",6,CONFIGURED
+IL,LPC,Licensed Professional Counselor,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):36,36,CONFIGURED
+IL,MT,Massage Therapist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):2,2,CONFIGURED
+IL,NP,Nurse Practitioner,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):13,13,CONFIGURED
+IL,NSA,Nursing Specialist,,,,(none):3,3,NOT_CONFIGURED
+IL,OP,Optometrist (OP),IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):23,23,CONFIGURED
+IL,OT,Occupational Therapist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):31,31,CONFIGURED
+IL,PAB,Physician Assistant (Board),,,,(none):17,17,NOT_CONFIGURED
+IL,PAS,Physician Assistant,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC","(none):207, MG:1",208,CONFIGURED
+IL,PH,Pharmacist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC","(none):22, OS:2",24,CONFIGURED
+IL,PT,Physical Therapist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):1,1,CONFIGURED
+IL,SH,Speech-Language Pathologist,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):4,4,CONFIGURED
+IL,SW,Social Worker,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,PSYCH,RD,ACUP,DPM,RRT,AT,DC",(none):634,634,CONFIGURED
+IN,ABA,Applied Behavior Analyst,,,,"(none):75, RBT:3, BA:1",79,NOT_CONFIGURED
+IN,AU,Audiologist,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):7,7,CONFIGURED
+IN,CP,Clinical Psychologist,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT","(none):8, PSYPACT:2",10,CONFIGURED
+IN,DAC,Drug & Alcohol Counselor,,,,(none):13,13,NOT_CONFIGURED
+IN,DP,Doctor of Podiatric Medicine,,,,(none):1,1,NOT_CONFIGURED
+IN,DT,Dietitian/Nutritionist,,,,(none):21,21,NOT_CONFIGURED
+IN,LC,Licensed Counselor,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT","L:4, (none):2",6,CONFIGURED
+IN,LPC,Licensed Professional Counselor,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT","(none):337, TH:1",338,CONFIGURED
+IN,MT,Massage Therapist,,,,"(none):63, TH:1",64,NOT_CONFIGURED
+IN,NP,Nurse Practitioner,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT","(none):226, TH:2",228,CONFIGURED
+IN,NPB,Nurse Practitioner (Broadened),IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):1,1,CONFIGURED
+IN,OP,Optometrist (OP),IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):11,11,CONFIGURED
+IN,PAS,Physician Assistant,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):2,2,CONFIGURED
+IN,PH,Pharmacist,,,,"(none):289, TH:2, E:1, IN:1",293,NOT_CONFIGURED
+IN,PN,Practical Nurse (LPN),IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):7,7,CONFIGURED
+IN,PT,Physical Therapist,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):1,1,CONFIGURED
+IN,RNA,Registered Nurse Anesthetist,,,,"(none):2, APRN:1",3,NOT_CONFIGURED
+IN,SH,Speech-Language Pathologist,IN_PLA,Indiana Professional Licensing Agency,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,AUD,SLP,PHARM,PA,PSYCH,SW,MFT,DENT",(none):3,3,CONFIGURED
+IN,SW,Social Worker,,,,"(none):449, TH:3",452,NOT_CONFIGURED
+KS,ABA,Applied Behavior Analyst,,,,"LBA:10, (none):4",14,NOT_CONFIGURED
+KS,CP,Clinical Psychologist,,,,"(none):9, LCAC:1, LMLP:1, PSYPACT:1",12,NOT_CONFIGURED
+KS,DC,Doctor of Chiropractic,,,,(none):50,50,NOT_CONFIGURED
+KS,DN,Dental/Nurse,,,,(none):1,1,NOT_CONFIGURED
+KS,DP,Doctor of Podiatric Medicine,KS_PHARMACY,Kansas State Board of Pharmacy,"RPh,PharmD",(none):1,1,CONFIGURED
+KS,DT,Dietitian/Nutritionist,,,,(none):30,30,NOT_CONFIGURED
+KS,LC,Licensed Counselor,KS_BSRB,Kansas Behavioral Sciences Regulatory Board,"LSCSW,LMSW,LCP,LCPC,LMFT","(none):1, L:1",2,CONFIGURED
+KS,LPC,Licensed Professional Counselor,KS_BSRB,Kansas Behavioral Sciences Regulatory Board,"LSCSW,LMSW,LCP,LCPC,LMFT","LCPC:12, LPC:10, (none):6, LAC:1, LMAC:1, LCAC:1",31,CONFIGURED
+KS,MT,Massage Therapist,,,,"LCMFT:15, (none):5, LMFT:2, LCPC:1, LCAC:1",24,NOT_CONFIGURED
+KS,MW,Midwife,,,,(none):1,1,NOT_CONFIGURED
+KS,NP,Nurse Practitioner,,,,"(none):172, TMP:1",173,NOT_CONFIGURED
+KS,NPB,Nurse Practitioner (Broadened),,,,(none):3,3,NOT_CONFIGURED
+KS,OT,Occupational Therapist,,,,(none):55,55,NOT_CONFIGURED
+KS,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+KS,PAS,Physician Assistant,,,,(none):89,89,NOT_CONFIGURED
+KS,PH,Pharmacist,KS_PHARMACY,Kansas State Board of Pharmacy,"RPh,PharmD","(none):65, T:1",66,CONFIGURED
+KS,PN,Practical Nurse (LPN),,,,(none):24,24,NOT_CONFIGURED
+KS,PT,Physical Therapist,,,,(none):138,138,NOT_CONFIGURED
+KS,RNA,Registered Nurse Anesthetist,,,,(none):14,14,NOT_CONFIGURED
+KS,SH,Speech-Language Pathologist,,,,(none):1,1,NOT_CONFIGURED
+KS,SW,Social Worker,KS_BSRB,Kansas Behavioral Sciences Regulatory Board,"LSCSW,LMSW,LCP,LCPC,LMFT","LSCSW:28, LMSW:12, (none):12, LCPC:1",53,CONFIGURED
+MA,ABA,Applied Behavior Analyst,,,,"LABA:272, (none):43, BCBA:1",316,NOT_CONFIGURED
+MA,AP,Acupuncturist,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP",(none):12,12,CONFIGURED
+MA,AU,Audiologist,,,,"AUD:6, (none):1, PTL:1",8,NOT_CONFIGURED
+MA,CP,Clinical Psychologist,,,,"LMHC:9, (none):4",13,NOT_CONFIGURED
+MA,DAC,Drug & Alcohol Counselor,MA_BSAS,Massachusetts Bureau of Substance Addiction Services,LADC,"(none):6, LMHC:2",8,CONFIGURED
+MA,DC,Doctor of Chiropractic,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP","CHI:180, (none):7, CH:2, DC:2",191,CONFIGURED
+MA,DP,Doctor of Podiatric Medicine,,,,"PDF:27, (none):3",30,NOT_CONFIGURED
+MA,DT,Dietitian/Nutritionist,,,,"LDN:42, (none):15",57,NOT_CONFIGURED
+MA,GNC,Genetic Counselor,,,,LMHC:1,1,NOT_CONFIGURED
+MA,LC,Licensed Counselor,,,,"RN:12, L:6",18,NOT_CONFIGURED
+MA,LPC,Licensed Professional Counselor,,,,"LMHC:356, (none):45, LMFT:3, RN:2, CC:1, MA:1, LMCH:1, APRN:1",410,NOT_CONFIGURED
+MA,MT,Massage Therapist,,,,"LMFT:14, (none):3",17,NOT_CONFIGURED
+MA,MW,Midwife,,,,RN:11,11,NOT_CONFIGURED
+MA,NP,Nurse Practitioner,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP","RN:225, APRN:13, (none):13, MCS:6, MF:1, L:1",259,CONFIGURED
+MA,NPB,Nurse Practitioner (Broadened),MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP",RN:5,5,CONFIGURED
+MA,NUT,Nutritionist,,,,"LDN:5, (none):1",6,NOT_CONFIGURED
+MA,OP,Optometrist (OP),,,,"OPT:6, OD:1",7,NOT_CONFIGURED
+MA,OT,Occupational Therapist,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP","OTL:14, (none):5",19,CONFIGURED
+MA,PAS,Physician Assistant,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP",PA:4,4,CONFIGURED
+MA,PH,Pharmacist,,,,"(none):549, MCS:1, D:1",551,NOT_CONFIGURED
+MA,PN,Practical Nurse (LPN),MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP","RN:98, APRN:11, (none):3, MCS:2",114,CONFIGURED
+MA,PT,Physical Therapist,MA_HEALTH,Massachusetts Health License Verification,"RN,LPN,MD,DO,PT,OT,DC,PA,NP","PTL:93, (none):18",111,CONFIGURED
+MA,RN,Registered Nurse,,,,RN:3,3,NOT_CONFIGURED
+MA,RNA,Registered Nurse Anesthetist,,,,RN:2,2,NOT_CONFIGURED
+MA,SH,Speech-Language Pathologist,,,,"SLP:15, PSLP:2, (none):2, MASP:1, LABA:1",21,NOT_CONFIGURED
+MA,SW,Social Worker,,,,"LICSW:53, LCSW:21, (none):13, LMHC:4, LSWA:1",92,NOT_CONFIGURED
+MD,ABA,Applied Behavior Analyst,,,,"LBA:82, (none):2, A:1",85,NOT_CONFIGURED
+MD,AP,Acupuncturist,MD_ACUPUNCTURE,Maryland Board of Acupuncture,LAc,"U:17, R:1",18,CONFIGURED
+MD,ART,Art Therapist,,,,ATC:2,2,NOT_CONFIGURED
+MD,AU,Audiologist,MD_AUDIOLOGY,"Maryland Board of Audiologists, Hearing Aid Dispensers, and Speech-Language Pathologists","AUD,SLP",(none):2,2,CONFIGURED
+MD,CP,Clinical Psychologist,MD_PSYCH,Maryland Board of Examiners of Psychologists,PSYCH,"(none):74, A:3, PSYPACT:1",78,CONFIGURED
+MD,DAC,Drug & Alcohol Counselor,,,,"LCA:3, AC:1, LGA:1",5,NOT_CONFIGURED
+MD,DP,Doctor of Podiatric Medicine,,,,(none):49,49,NOT_CONFIGURED
+MD,DT,Dietitian/Nutritionist,MD_DIETETICS,Maryland Board of Dietetic Practice,"RD,LD","DX:14, (none):6, D:1",21,CONFIGURED
+MD,GNC,Genetic Counselor,,,,G:2,2,NOT_CONFIGURED
+MD,LC,Licensed Counselor,MD_COUNSELORS,Maryland Board of Professional Counselors and Therapists,"LCPC,LCMFT,LGPC","L:4, R:3",7,CONFIGURED
+MD,LPC,Licensed Professional Counselor,MD_COUNSELORS,Maryland Board of Professional Counselors and Therapists,"LCPC,LCMFT,LGPC","LC:184, LGP:13, LCA:3, (none):2, LPG:1, ATC:1",204,CONFIGURED
+MD,MT,Massage Therapist,MD_MASSAGE,Maryland State Board of Massage Therapy Examiners,MT,LCM:4,4,CONFIGURED
+MD,MW,Midwife,,,,R:1,1,NOT_CONFIGURED
+MD,ND,Naturopathic Doctor,,,,J:1,1,NOT_CONFIGURED
+MD,NP,Nurse Practitioner,,,,"R:43, AC:14, (none):1, A:1",59,NOT_CONFIGURED
+MD,NPB,Nurse Practitioner (Broadened),,,,R:2,2,NOT_CONFIGURED
+MD,NPS,Nurse Practitioner (Specialty),,,,(none):1,1,NOT_CONFIGURED
+MD,OT,Occupational Therapist,,,,(none):1,1,NOT_CONFIGURED
+MD,PAS,Physician Assistant,MD_PHYSICIANS,Maryland Board of Physicians,"MD,DO","C:3, PA:1, (none):1",5,CONFIGURED
+MD,PH,Pharmacist,,,,"D:28, H:3, CDRH:1, (none):1",33,NOT_CONFIGURED
+MD,PN,Practical Nurse (LPN),,,,"R:53, AC:13, (none):1",67,NOT_CONFIGURED
+MD,PT,Physical Therapist,MD_PT,Maryland Board of Physical Therapy Examiners,"PT,PTA","CP:5, (none):2",7,CONFIGURED
+MD,RNA,Registered Nurse Anesthetist,,,,R:4,4,NOT_CONFIGURED
+MD,SH,Speech-Language Pathologist,MD_AUDIOLOGY,"Maryland Board of Audiologists, Hearing Aid Dispensers, and Speech-Language Pathologists","AUD,SLP",(none):2,2,CONFIGURED
+MD,SW,Social Worker,MD_SOCIALWORK,Maryland Board of Social Work Examiners,"LCSW,LGSW,LMSW,LSWA","(none):106, LC:3",109,CONFIGURED
+ME,ABA,Applied Behavior Analyst,,,,(none):6,6,NOT_CONFIGURED
+ME,AU,Audiologist,,,,AP:12,12,NOT_CONFIGURED
+ME,CP,Clinical Psychologist,,,,"PS:39, (none):7, CC:1",47,NOT_CONFIGURED
+ME,DAC,Drug & Alcohol Counselor,,,,LC:2,2,NOT_CONFIGURED
+ME,DC,Doctor of Chiropractic,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS),"MD,DO,DC,RN,DDS,RDH,PT,OT,Pharmacy,Multi-Profession","CR:30, CRA:1",31,CONFIGURED
+ME,DT,Dietitian/Nutritionist,,,,DI:36,36,NOT_CONFIGURED
+ME,LC,Licensed Counselor,,,,L:1,1,NOT_CONFIGURED
+ME,LPC,Licensed Professional Counselor,,,,"CC:19, LC:1",20,NOT_CONFIGURED
+ME,MT,Massage Therapist,,,,MF:1,1,NOT_CONFIGURED
+ME,MW,Midwife,,,,"CNM:2, RN:1",3,NOT_CONFIGURED
+ME,NP,Nurse Practitioner,,,,"CNP:72, RN:40",112,NOT_CONFIGURED
+ME,NPB,Nurse Practitioner (Broadened),,,,"CNP:1, RN:1",2,NOT_CONFIGURED
+ME,NPS,Nurse Practitioner (Specialty),,,,PS:1,1,NOT_CONFIGURED
+ME,OP,Optometrist (OP),,,,OPT:15,15,NOT_CONFIGURED
+ME,OT,Occupational Therapist,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS),"MD,DO,DC,RN,DDS,RDH,PT,OT,Pharmacy,Multi-Profession","OT:86, (none):6",92,CONFIGURED
+ME,PAS,Physician Assistant,,,,"PA:17, CNM:1, RN:1",19,NOT_CONFIGURED
+ME,PH,Pharmacist,,,,"MD:129, DO:34, (none):1",164,NOT_CONFIGURED
+ME,PN,Practical Nurse (LPN),,,,"CNP:7, RN:6",13,NOT_CONFIGURED
+ME,PT,Physical Therapist,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS),"MD,DO,DC,RN,DDS,RDH,PT,OT,Pharmacy,Multi-Profession","PT:167, (none):11",178,CONFIGURED
+ME,RNA,Registered Nurse Anesthetist,,,,RNA:1,1,NOT_CONFIGURED
+ME,SH,Speech-Language Pathologist,,,,"SP:52, (none):3",55,NOT_CONFIGURED
+ME,SW,Social Worker,,,,LC:53,53,NOT_CONFIGURED
+MO,ABA,Applied Behavior Analyst,,,,(none):10,10,NOT_CONFIGURED
+MO,AU,Audiologist,,,,(none):1,1,NOT_CONFIGURED
+MO,CP,Clinical Psychologist,MO_PSYCHOLOGISTS,Missouri Committee of Psychologists,PSY,"(none):51, PSYPACT:10, R:3, PY:1",65,CONFIGURED
+MO,DC,Doctor of Chiropractic,MO_CHIROPRACTIC,Missouri Board of Chiropractic Examiners,DC,(none):3,3,CONFIGURED
+MO,DP,Doctor of Podiatric Medicine,MO_PHARMACY,Missouri Board of Pharmacy,"RPh,PharmD,PharmTech",(none):22,22,CONFIGURED
+MO,DT,Dietitian/Nutritionist,,,,(none):97,97,NOT_CONFIGURED
+MO,LC,Licensed Counselor,,,,L:1,1,NOT_CONFIGURED
+MO,LPC,Licensed Professional Counselor,,,,(none):4,4,NOT_CONFIGURED
+MO,MT,Massage Therapist,,,,(none):14,14,NOT_CONFIGURED
+MO,NP,Nurse Practitioner,MO_NURSING,Missouri State Board of Nursing,"RN,LPN,APRN",(none):68,68,CONFIGURED
+MO,OT,Occupational Therapist,,,,(none):3,3,NOT_CONFIGURED
+MO,PAS,Physician Assistant,MO_HEALING_ARTS,Missouri State Board of Healing Arts,"MD,DO,PA,RP,RCP,EMT",(none):27,27,CONFIGURED
+MO,PH,Pharmacist,MO_PHARMACY,Missouri Board of Pharmacy,"RPh,PharmD,PharmTech","(none):679, R:39, MO:2, MDR:1",721,CONFIGURED
+MO,PN,Practical Nurse (LPN),MO_NURSING,Missouri State Board of Nursing,"RN,LPN,APRN",(none):6,6,CONFIGURED
+MO,PT,Physical Therapist,,,,"(none):39, R:1",40,NOT_CONFIGURED
+MO,RNA,Registered Nurse Anesthetist,,,,(none):3,3,NOT_CONFIGURED
+MO,SH,Speech-Language Pathologist,,,,(none):1,1,NOT_CONFIGURED
+MO,SW,Social Worker,,,,"(none):26, LCSW:1",27,NOT_CONFIGURED
+MS,ABA,Applied Behavior Analyst,,,,(none):1,1,NOT_CONFIGURED
+MS,CP,Clinical Psychologist,MS_PSYCH,Mississippi Board of Psychology,PSYCH,"(none):4, PSYPACT:1",5,CONFIGURED
+MS,DC,Doctor of Chiropractic,MS_CHIRO,Mississippi Board of Chiropractic Examiners,DC,(none):1,1,CONFIGURED
+MS,DT,Dietitian/Nutritionist,MS_DHPL,Mississippi State Department of Health Professional Licensure,"SLP,AUD,OT,LMT,LPC,RD,LPN,RN","D:4, (none):1",5,CONFIGURED
+MS,NP,Nurse Practitioner,,,,"(none):18, RN:1",19,NOT_CONFIGURED
+MS,NPB,Nurse Practitioner (Broadened),,,,(none):1,1,NOT_CONFIGURED
+MS,OP,Optometrist (OP),MS_OPTOMETRY,Mississippi State Board of Optometry,OD,(none):4,4,CONFIGURED
+MS,OR,OR,,,,(none):1,1,NOT_CONFIGURED
+MS,OT,Occupational Therapist,MS_DHPL,Mississippi State Department of Health Professional Licensure,"SLP,AUD,OT,LMT,LPC,RD,LPN,RN","OT:27, (none):1",28,CONFIGURED
+MS,PAS,Physician Assistant,,,,PA:1,1,NOT_CONFIGURED
+MS,PH,Pharmacist,,,,(none):12,12,NOT_CONFIGURED
+MS,PN,Practical Nurse (LPN),MS_DHPL,Mississippi State Department of Health Professional Licensure,"SLP,AUD,OT,LMT,LPC,RD,LPN,RN",(none):1,1,CONFIGURED
+MS,SW,Social Worker,MS_SWMFT,Mississippi Board of Examiners for Social Workers and Marriage and Family Therapists,"LCSW,LMSW,LMFT,LPC","C:34, M:1",35,CONFIGURED
+MT,AU,Audiologist,,,,SLP:1,1,NOT_CONFIGURED
+MT,DAC,Drug & Alcohol Counselor,,,,BBH:1,1,NOT_CONFIGURED
+MT,LPC,Licensed Professional Counselor,,,,BBH:10,10,NOT_CONFIGURED
+MT,PH,Pharmacist,,,,MED:8,8,NOT_CONFIGURED
+MT,PN,Practical Nurse (LPN),,,,NUR:2,2,NOT_CONFIGURED
+MT,PT,Physical Therapist,,,,PTP:4,4,NOT_CONFIGURED
+MT,SW,Social Worker,,,,"(none):1, BBH:1",2,NOT_CONFIGURED
+NC,ABA,Applied Behavior Analyst,,,,"(none):98, A:2",100,NOT_CONFIGURED
+NC,AP,Acupuncturist,,,,(none):1,1,NOT_CONFIGURED
+NC,AU,Audiologist,NC_SLP_AUD,North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists,"SLP,AUD",(none):21,21,CONFIGURED
+NC,CP,Clinical Psychologist,NC_MENTAL_HEALTH,North Carolina Board of Licensed Clinical Mental Health Counselors,"LCMHC,LCMHCA","(none):11, PSYPACT:2",13,CONFIGURED
+NC,DAC,Drug & Alcohol Counselor,NC_DAC,North Carolina Substance Abuse Professional Practice Board,"LCAS,LCAS-A,CCS,CADC","LCAS:5, (none):2, A:1, P:1",9,CONFIGURED
+NC,DC,Doctor of Chiropractic,NC_CHIRO,North Carolina Board of Chiropractic Examiners,DC,(none):79,79,CONFIGURED
+NC,DT,Dietitian/Nutritionist,NC_DIETETICS,North Carolina Board of Dietetics/Nutrition,"RD,LDN","L:324, (none):9, NU:3",336,CONFIGURED
+NC,LC,Licensed Counselor,,,,"L:4, (none):3",7,NOT_CONFIGURED
+NC,LPC,Licensed Professional Counselor,,,,"(none):6, LCAS:3, A:3, P:1, C:1",14,NOT_CONFIGURED
+NC,MT,Massage Therapist,,,,(none):2,2,NOT_CONFIGURED
+NC,MW,Midwife,,,,(none):20,20,NOT_CONFIGURED
+NC,NP,Nurse Practitioner,,,,"(none):627, MT:1, APRN:1",629,NOT_CONFIGURED
+NC,NPB,Nurse Practitioner (Broadened),,,,(none):6,6,NOT_CONFIGURED
+NC,NUT,Nutritionist,,,,"L:7, NU:3",10,NOT_CONFIGURED
+NC,OP,Optometrist (OP),NC_OPTOMETRY,North Carolina State Board of Examiners in Optometry,OD,(none):7,7,CONFIGURED
+NC,OR,OR,,,,(none):2,2,NOT_CONFIGURED
+NC,OT,Occupational Therapist,NC_OT,North Carolina Board of Occupational Therapy,"OTR,COTA",(none):1,1,CONFIGURED
+NC,PAB,Physician Assistant (Board),,,,(none):11,11,NOT_CONFIGURED
+NC,PAS,Physician Assistant,,,,(none):213,213,NOT_CONFIGURED
+NC,PC,PC,,,,(none):2,2,NOT_CONFIGURED
+NC,PH,Pharmacist,,,,"(none):758, ME:1, NC:1",760,NOT_CONFIGURED
+NC,PM,PM,,,,(none):22,22,NOT_CONFIGURED
+NC,PN,Practical Nurse (LPN),,,,(none):100,100,NOT_CONFIGURED
+NC,PT,Physical Therapist,NC_PT,North Carolina Board of Physical Therapy Examiners,"PT,PTA","P:318, (none):12, CP:5, PT:2, A:2",339,CONFIGURED
+NC,RNA,Registered Nurse Anesthetist,,,,(none):4,4,NOT_CONFIGURED
+NC,SH,Speech-Language Pathologist,NC_SLP_AUD,North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists,"SLP,AUD","(none):117, P:1",118,CONFIGURED
+NC,ST,Speech Therapist,,,,(none):7,7,NOT_CONFIGURED
+NC,SW,Social Worker,,,,"C:107, P:66, (none):11, PO:3, LCAS:3, CO:1",191,NOT_CONFIGURED
+ND,ABA,Applied Behavior Analyst,ND_AP,North Dakota Board of Integrative Health Care (AP/ABA),"AP,ABA,MT,RBT",L:2,2,CONFIGURED
+ND,AP,Acupuncturist,,,,(none):1,1,NOT_CONFIGURED
+ND,CP,Clinical Psychologist,,,,(none):3,3,NOT_CONFIGURED
+ND,DP,Doctor of Podiatric Medicine,,,,(none):1,1,NOT_CONFIGURED
+ND,DT,Dietitian/Nutritionist,,,,(none):5,5,NOT_CONFIGURED
+ND,LPC,Licensed Professional Counselor,,,,(none):3,3,NOT_CONFIGURED
+ND,NP,Nurse Practitioner,,,,"R:36, (none):9",45,NOT_CONFIGURED
+ND,NPB,Nurse Practitioner (Broadened),,,,R:2,2,NOT_CONFIGURED
+ND,OP,Optometrist (OP),,,,(none):6,6,NOT_CONFIGURED
+ND,PAS,Physician Assistant,,,,"PAC:17, (none):1",18,NOT_CONFIGURED
+ND,PH,Pharmacist,,,,(none):33,33,NOT_CONFIGURED
+ND,PN,Practical Nurse (LPN),,,,"(none):3, R:1",4,NOT_CONFIGURED
+ND,PT,Physical Therapist,ND_PT,North Dakota Board of Physical Therapy,"PT,PTA",(none):16,16,CONFIGURED
+ND,SH,Speech-Language Pathologist,,,,(none):1,1,NOT_CONFIGURED
+ND,SW,Social Worker,,,,(none):31,31,NOT_CONFIGURED
+NE,ABA,Applied Behavior Analyst,,,,"(none):12, RBT:1",13,NOT_CONFIGURED
+NE,AU,Audiologist,,,,(none):1,1,NOT_CONFIGURED
+NE,CP,Clinical Psychologist,,,,(none):5,5,NOT_CONFIGURED
+NE,DP,Doctor of Podiatric Medicine,,,,(none):9,9,NOT_CONFIGURED
+NE,DT,Dietitian/Nutritionist,,,,(none):4,4,NOT_CONFIGURED
+NE,LC,Licensed Counselor,,,,L:1,1,NOT_CONFIGURED
+NE,LPC,Licensed Professional Counselor,,,,(none):2,2,NOT_CONFIGURED
+NE,NP,Nurse Practitioner,,,,(none):1,1,NOT_CONFIGURED
+NE,OT,Occupational Therapist,,,,(none):1,1,NOT_CONFIGURED
+NE,PAS,Physician Assistant,,,,(none):4,4,NOT_CONFIGURED
+NE,PH,Pharmacist,,,,(none):5,5,NOT_CONFIGURED
+NE,PT,Physical Therapist,,,,(none):2,2,NOT_CONFIGURED
+NE,RNA,Registered Nurse Anesthetist,,,,(none):1,1,NOT_CONFIGURED
+NH,ABA,Applied Behavior Analyst,,,,"(none):25, LABA:2, BCBA:1",28,NOT_CONFIGURED
+NH,CP,Clinical Psychologist,NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW","(none):8, PS:1, PSYPACT:1",10,CONFIGURED
+NH,DT,Dietitian/Nutritionist,,,,"(none):2, EL:1",3,NOT_CONFIGURED
+NH,LC,Licensed Counselor,,,,(none):1,1,NOT_CONFIGURED
+NH,LPC,Licensed Professional Counselor,,,,"(none):24, EL:1",25,NOT_CONFIGURED
+NH,ND,Naturopathic Doctor,,,,(none):1,1,NOT_CONFIGURED
+NH,NP,Nurse Practitioner,,,,"(none):99, CNP:1",100,NOT_CONFIGURED
+NH,NPB,Nurse Practitioner (Broadened),,,,(none):8,8,NOT_CONFIGURED
+NH,OT,Occupational Therapist,NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW",(none):22,22,CONFIGURED
+NH,PAS,Physician Assistant,NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW",(none):11,11,CONFIGURED
+NH,PH,Pharmacist,,,,"(none):19, LT:1, MD:1, FS:1",22,NOT_CONFIGURED
+NH,PN,Practical Nurse (LPN),NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW",(none):29,29,CONFIGURED
+NH,PT,Physical Therapist,NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW",(none):2,2,CONFIGURED
+NH,RNA,Registered Nurse Anesthetist,,,,(none):2,2,NOT_CONFIGURED
+NH,SH,Speech-Language Pathologist,NH_OPLC,New Hampshire Office of Professional Licensure and Certification,"MD,DO,DC,RN,LPN,OD,PT,OT,DDS,AUD,SLP,PHARM,PA,PSYCH,SW",(none):23,23,CONFIGURED
+NH,ST,Speech Therapist,,,,(none):2,2,NOT_CONFIGURED
+NH,SW,Social Worker,,,,"(none):14, EL:2",16,NOT_CONFIGURED
+NJ,ABA,Applied Behavior Analyst,,,,"(none):25, NO:4, BA:1",30,NOT_CONFIGURED
+NJ,AU,Audiologist,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):2,2,CONFIGURED
+NJ,CP,Clinical Psychologist,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH","(none):3, PSYPACT:2",5,CONFIGURED
+NJ,DT,Dietitian/Nutritionist,,,,"(none):35, NO:2",37,NOT_CONFIGURED
+NJ,LC,Licensed Counselor,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):1,1,CONFIGURED
+NJ,LPC,Licensed Professional Counselor,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):1,1,CONFIGURED
+NJ,NP,Nurse Practitioner,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):6,6,CONFIGURED
+NJ,NUT,Nutritionist,,,,(none):1,1,NOT_CONFIGURED
+NJ,OT,Occupational Therapist,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):3,3,CONFIGURED
+NJ,PAS,Physician Assistant,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH","(none):12, MA:1",13,CONFIGURED
+NJ,PH,Pharmacist,,,,(none):52,52,NOT_CONFIGURED
+NJ,PN,Practical Nurse (LPN),NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH",(none):8,8,CONFIGURED
+NJ,PT,Physical Therapist,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH","(none):488, PT:1, QA:1, CP:1",491,CONFIGURED
+NJ,RNA,Registered Nurse Anesthetist,,,,(none):2,2,NOT_CONFIGURED
+NJ,SH,Speech-Language Pathologist,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification,"MD,DO,RN,LPN,APRN,DC,OD,PT,PTA,OT,OTA,PA,PHARM,SW,MFT,LPC,AUD,SLP,PSYCH","(none):3, TL:1",4,CONFIGURED
+NJ,ST,Speech Therapist,,,,(none):1,1,NOT_CONFIGURED
+NJ,SW,Social Worker,,,,(none):3,3,NOT_CONFIGURED
+NM,ABA,Applied Behavior Analyst,,,,"(none):41, RBT:1",42,NOT_CONFIGURED
+NM,AU,Audiologist,,,,AUD:2,2,NOT_CONFIGURED
+NM,DAC,Drug & Alcohol Counselor,,,,CBT:1,1,NOT_CONFIGURED
+NM,DP,Doctor of Podiatric Medicine,,,,"POD:11, (none):1",12,NOT_CONFIGURED
+NM,DT,Dietitian/Nutritionist,NM_RLD,New Mexico Regulation and Licensing Department,"DC,OD,OT,PT,DDS,DMD,AU,SLP,AC,MT,RDN,DPM","LD:3, NDP:1, (none):1",5,CONFIGURED
+NM,LPC,Licensed Professional Counselor,,,,"CCMH:13, CTB:5, CMH:1, (none):1, NM:1, M:1, CAT:1",23,NOT_CONFIGURED
+NM,MW,Midwife,,,,"R:1, (none):1",2,NOT_CONFIGURED
+NM,NP,Nurse Practitioner,,,,"(none):32, CNP:16, RN:11, R:6",65,NOT_CONFIGURED
+NM,NPB,Nurse Practitioner (Broadened),,,,"CNP:1, (none):1",2,NOT_CONFIGURED
+NM,PAS,Physician Assistant,NM_MEDBOARD,New Mexico Board of Medical Examiners,"MD,DO,PA","PA:11, (none):1",12,CONFIGURED
+NM,PH,Pharmacist,,,,"MD:7, A:1",8,NOT_CONFIGURED
+NM,PN,Practical Nurse (LPN),,,,"(none):17, TEMP:1, CNP:1, CS:1",20,NOT_CONFIGURED
+NM,PT,Physical Therapist,NM_RLD,New Mexico Regulation and Licensing Department,"DC,OD,OT,PT,DDS,DMD,AU,SLP,AC,MT,RDN,DPM",PT:8,8,CONFIGURED
+NM,RNA,Registered Nurse Anesthetist,,,,"CRNA:1, RN:1",2,NOT_CONFIGURED
+NM,SH,Speech-Language Pathologist,NM_RLD,New Mexico Regulation and Licensing Department,"DC,OD,OT,PT,DDS,DMD,AU,SLP,AC,MT,RDN,DPM",SLP:5,5,CONFIGURED
+NM,SW,Social Worker,,,,"SWB:3, CCMH:1",4,NOT_CONFIGURED
+NV,ABA,Applied Behavior Analyst,NV_ABA,Nevada ABA Board,"BCBA,BCABA,RBT","LBA:6, (none):5",11,CONFIGURED
+NV,AP,Acupuncturist,,,,(none):11,11,NOT_CONFIGURED
+NV,AU,Audiologist,NV_SPEECH,"Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board","SLP,AUD,HIS",A:4,4,CONFIGURED
+NV,CP,Clinical Psychologist,,,,"(none):5, PA:1, PSYPACT:1",7,NOT_CONFIGURED
+NV,DAC,Drug & Alcohol Counselor,,,,(none):1,1,NOT_CONFIGURED
+NV,DC,Doctor of Chiropractic,NV_CHIRO,Nevada Chiropractic Physicians' Board,DC,B:1,1,CONFIGURED
+NV,DT,Dietitian/Nutritionist,NV_DIETITIAN,Nevada Division of Public and Behavioral Health — Dietitians & Music Therapists,"RD,MT","(none):10, A:1, LDD:1",12,CONFIGURED
+NV,LC,Licensed Counselor,NV_MFTPC,Nevada State Board of Examiners for Marriage and Family Therapists and Professional Counselors,"MFT,PC","L:1, NV:1",2,CONFIGURED
+NV,LPC,Licensed Professional Counselor,NV_MFTPC,Nevada State Board of Examiners for Marriage and Family Therapists and Professional Counselors,"MFT,PC","CP:55, (none):5, CI:2",62,CONFIGURED
+NV,MST,MST,,,,CP:1,1,NOT_CONFIGURED
+NV,MT,Massage Therapist,NV_DIETITIAN,Nevada Division of Public and Behavioral Health — Dietitians & Music Therapists,"RD,MT","(none):62, MI:4, CP:2",68,CONFIGURED
+NV,MT,Massage Therapist,NV_MASSAGE,Nevada State Board of Massage Therapists,MT,"(none):62, MI:4, CP:2",68,CONFIGURED
+NV,MW,Midwife,,,,"(none):4, RN:1",5,NOT_CONFIGURED
+NV,NP,Nurse Practitioner,,,,"(none):119, RN:55, APRN:14",188,NOT_CONFIGURED
+NV,OP,Optometrist (OP),NV_OPTOMETRY,Nevada State Board of Optometry,OD,(none):4,4,CONFIGURED
+NV,OT,Occupational Therapist,,,,"OT:3, OTA:1, (none):1",5,NOT_CONFIGURED
+NV,PAS,Physician Assistant,NV_MEDBOARD,Nevada State Board of Medical Examiners,"MD,DO,PA",PA:6,6,CONFIGURED
+NV,PH,Pharmacist,NV_PHARMACY,Nevada State Board of Pharmacy — Pharmacists,"RPH,PHARM","DO:82, (none):28, CL:15, D:2, DR:1, A:1",129,CONFIGURED
+NV,PN,Practical Nurse (LPN),,,,"(none):22, RN:11, APRN:2",35,NOT_CONFIGURED
+NV,PT,Physical Therapist,NV_PT,Nevada Physical Therapy Board,"PT,PTA",(none):12,12,CONFIGURED
+NV,RNA,Registered Nurse Anesthetist,,,,"(none):2, RN:1",3,NOT_CONFIGURED
+NV,SH,Speech-Language Pathologist,NV_SPEECH,"Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board","SLP,AUD,HIS","SP:8, (none):1",9,CONFIGURED
+NV,ST,Speech Therapist,,,,SP:1,1,NOT_CONFIGURED
+NV,SW,Social Worker,,,,(none):76,76,NOT_CONFIGURED
+NY,ABA,Applied Behavior Analyst,,,,(none):92,92,NOT_CONFIGURED
+NY,AP,Acupuncturist,,,,(none):20,20,NOT_CONFIGURED
+NY,AU,Audiologist,,,,(none):16,16,NOT_CONFIGURED
+NY,CP,Clinical Psychologist,,,,(none):31,31,NOT_CONFIGURED
+NY,DC,Doctor of Chiropractic,,,,(none):22,22,NOT_CONFIGURED
+NY,DP,Doctor of Podiatric Medicine,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession),"MD,DO,RN,DDS,RPh,PT,OT,Multi-Profession","(none):13, N:1",14,CONFIGURED
+NY,DT,Dietitian/Nutritionist,,,,(none):103,103,NOT_CONFIGURED
+NY,LC,Licensed Counselor,,,,(none):2,2,NOT_CONFIGURED
+NY,LPC,Licensed Professional Counselor,,,,(none):57,57,NOT_CONFIGURED
+NY,MT,Massage Therapist,,,,(none):12,12,NOT_CONFIGURED
+NY,MW,Midwife,,,,(none):8,8,NOT_CONFIGURED
+NY,NP,Nurse Practitioner,,,,"(none):268, F:23, SP:2, RN:1, MA:1",295,NOT_CONFIGURED
+NY,NPB,Nurse Practitioner (Broadened),,,,(none):6,6,NOT_CONFIGURED
+NY,NUT,Nutritionist,,,,(none):2,2,NOT_CONFIGURED
+NY,OP,Optometrist (OP),,,,(none):2,2,NOT_CONFIGURED
+NY,OT,Occupational Therapist,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession),"MD,DO,RN,DDS,RPh,PT,OT,Multi-Profession",(none):28,28,CONFIGURED
+NY,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+NY,PAS,Physician Assistant,,,,(none):40,40,NOT_CONFIGURED
+NY,PH,Pharmacist,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession),"MD,DO,RN,DDS,RPh,PT,OT,Multi-Profession","(none):704, WC:1, A:1",706,CONFIGURED
+NY,PN,Practical Nurse (LPN),,,,"(none):52, F:3",55,NOT_CONFIGURED
+NY,PT,Physical Therapist,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession),"MD,DO,RN,DDS,RPh,PT,OT,Multi-Profession",(none):142,142,CONFIGURED
+NY,RNA,Registered Nurse Anesthetist,,,,(none):5,5,NOT_CONFIGURED
+NY,SH,Speech-Language Pathologist,,,,(none):21,21,NOT_CONFIGURED
+NY,ST,Speech Therapist,,,,(none):1,1,NOT_CONFIGURED
+NY,SW,Social Worker,,,,"(none):167, R:5, P:1",173,NOT_CONFIGURED
+OH,ABA,Applied Behavior Analyst,,,,"(none):5, COBA:1",6,NOT_CONFIGURED
+OH,AP,Acupuncturist,,,,(none):4,4,NOT_CONFIGURED
+OH,AU,Audiologist,,,,A:1,1,NOT_CONFIGURED
+OH,CP,Clinical Psychologist,,,,"(none):6, PSYPACT:4, P:3, E:2, LICDC:1",16,NOT_CONFIGURED
+OH,DAC,Drug & Alcohol Counselor,,,,"LICDC:8, CDCA:1, E:1",10,NOT_CONFIGURED
+OH,DC,Doctor of Chiropractic,,,,"DC:166, (none):6, ACUP:2",174,NOT_CONFIGURED
+OH,DP,Doctor of Podiatric Medicine,,,,(none):16,16,NOT_CONFIGURED
+OH,DT,Dietitian/Nutritionist,,,,"LD:11, (none):5",16,NOT_CONFIGURED
+OH,LC,Licensed Counselor,,,,L:4,4,NOT_CONFIGURED
+OH,LPC,Licensed Professional Counselor,,,,"E:115, C:19, CDCA:3, LICDC:3, S:3, I:2, LCDCIII:1, LPC:1, KY:1",148,NOT_CONFIGURED
+OH,MST,MST,,,,(none):1,1,NOT_CONFIGURED
+OH,MT,Massage Therapist,,,,"F:3, C:2, M:1",6,NOT_CONFIGURED
+OH,MW,Midwife,,,,"DOU:1, APRN:1, (none):1",3,NOT_CONFIGURED
+OH,NP,Nurse Practitioner,,,,"APRN:199, RN:136, (none):40, CNP:6, COA:4, APRNCNP:2, NP:1, SP:1, F:1",390,NOT_CONFIGURED
+OH,NPB,Nurse Practitioner (Broadened),,,,"APRN:4, RN:2, AP:1",7,NOT_CONFIGURED
+OH,OT,Occupational Therapist,,,,"OT:1, PT:1",2,NOT_CONFIGURED
+OH,PAB,Physician Assistant (Board),,,,(none):2,2,NOT_CONFIGURED
+OH,PAS,Physician Assistant,,,,(none):71,71,NOT_CONFIGURED
+OH,PH,Pharmacist,,,,"(none):577, WC:1, C:1",579,NOT_CONFIGURED
+OH,PN,Practical Nurse (LPN),,,,"APRN:7, (none):4, RN:4",15,NOT_CONFIGURED
+OH,PT,Physical Therapist,,,,"PT:85, (none):5, CP:3, PTO:1",94,NOT_CONFIGURED
+OH,RNA,Registered Nurse Anesthetist,,,,"APRN:2, (none):1",3,NOT_CONFIGURED
+OH,SH,Speech-Language Pathologist,,,,"COND:1, SP:1",2,NOT_CONFIGURED
+OH,SW,Social Worker,,,,"I:97, S:24, LICDC:4, CDCA:2, (none):2, APS:1",130,NOT_CONFIGURED
+OK,ABA,Applied Behavior Analyst,,,,(none):16,16,NOT_CONFIGURED
+OK,AU,Audiologist,,,,(none):11,11,NOT_CONFIGURED
+OK,CP,Clinical Psychologist,,,,"(none):39, PSYPACT:1",40,NOT_CONFIGURED
+OK,DAC,Drug & Alcohol Counselor,OK_ADAC,Oklahoma State Board of Licensed Alcohol and Drug Counselors,"LADC,CADC,CADCI","(none):2, LMFT:1",3,CONFIGURED
+OK,DC,Doctor of Chiropractic,,,,(none):1,1,NOT_CONFIGURED
+OK,DT,Dietitian/Nutritionist,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision,"MD,PA,OT,PT,POD,RC,AT,LD",(none):2,2,CONFIGURED
+OK,LC,Licensed Counselor,,,,"L:4, R:1",5,NOT_CONFIGURED
+OK,LPC,Licensed Professional Counselor,,,,"(none):8, LPC:4, LMFT:1",13,NOT_CONFIGURED
+OK,MT,Massage Therapist,,,,"LMFT:29, (none):8",37,NOT_CONFIGURED
+OK,NP,Nurse Practitioner,,,,"R:87, (none):70, M:1, APN:1",159,NOT_CONFIGURED
+OK,NPB,Nurse Practitioner (Broadened),,,,"R:3, (none):1",4,NOT_CONFIGURED
+OK,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+OK,PAS,Physician Assistant,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision,"MD,PA,OT,PT,POD,RC,AT,LD","(none):123, OK:1",124,CONFIGURED
+OK,PE,PE,,,,(none):1,1,NOT_CONFIGURED
+OK,PH,Pharmacist,,,,(none):201,201,NOT_CONFIGURED
+OK,PN,Practical Nurse (LPN),,,,"(none):11, R:9, APRN:1",21,NOT_CONFIGURED
+OK,PT,Physical Therapist,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision,"MD,PA,OT,PT,POD,RC,AT,LD",(none):50,50,CONFIGURED
+OK,RNA,Registered Nurse Anesthetist,,,,"R:5, (none):2",7,NOT_CONFIGURED
+OK,SH,Speech-Language Pathologist,,,,(none):19,19,NOT_CONFIGURED
+OK,ST,Speech Therapist,,,,(none):2,2,NOT_CONFIGURED
+OK,SW,Social Worker,,,,"(none):123, LCSW:1",124,NOT_CONFIGURED
+OR,ABA,Applied Behavior Analyst,OR_HLO,Oregon Health Licensing Office,"AT,DIET,HAIR,NAIL,ABA,HEAR,RT,EMS,CW","(none):36, ABA:7, B:4, C:1",48,CONFIGURED
+OR,AU,Audiologist,OR_SLP,Oregon Board of Examiners for Speech-Language Pathology and Audiology,"SLP,SLPA,AUD",(none):18,18,CONFIGURED
+OR,CP,Clinical Psychologist,,,,(none):45,45,NOT_CONFIGURED
+OR,DAC,Drug & Alcohol Counselor,,,,(none):2,2,NOT_CONFIGURED
+OR,DC,Doctor of Chiropractic,,,,(none):5,5,NOT_CONFIGURED
+OR,DP,Doctor of Podiatric Medicine,,,,DP:17,17,NOT_CONFIGURED
+OR,DT,Dietitian/Nutritionist,,,,"(none):79, LD:39, D:7, LDD:1",126,NOT_CONFIGURED
+OR,LC,Licensed Counselor,OR_COUNSELORS,Oregon Board of Licensed Professional Counselors and Therapists,"LPC,LMFT","LC:5, (none):3",8,CONFIGURED
+OR,LPC,Licensed Professional Counselor,OR_COUNSELORS,Oregon Board of Licensed Professional Counselors and Therapists,"LPC,LMFT","C:176, (none):5, R:4, T:1",186,CONFIGURED
+OR,MST,MST,,,,T:1,1,NOT_CONFIGURED
+OR,MT,Massage Therapist,,,,T:40,40,NOT_CONFIGURED
+OR,MW,Midwife,,,,(none):8,8,NOT_CONFIGURED
+OR,ND,Naturopathic Doctor,OR_NATUROPATH,Oregon Board of Naturopathic Medicine,ND,(none):6,6,CONFIGURED
+OR,NP,Nurse Practitioner,,,,"(none):156, APRN:1",157,NOT_CONFIGURED
+OR,NPB,Nurse Practitioner (Broadened),,,,(none):1,1,NOT_CONFIGURED
+OR,NUT,Nutritionist,,,,(none):1,1,NOT_CONFIGURED
+OR,OP,Optometrist (OP),OR_OPTOMETRY,Oregon Board of Optometry,OD,"(none):17, AT:2",19,CONFIGURED
+OR,OT,Occupational Therapist,OR_OT,Oregon Occupational Therapy Licensing Board,"OT,OTA",(none):1,1,CONFIGURED
+OR,PAB,Physician Assistant (Board),,,,PA:2,2,NOT_CONFIGURED
+OR,PAS,Physician Assistant,OR_OMB,Oregon Medical Board,"MD,DO,PA,ACUP,POD","PA:113, (none):3",116,CONFIGURED
+OR,PH,Pharmacist,,,,"MD:518, DO:95, (none):8, D:2",623,NOT_CONFIGURED
+OR,PN,Practical Nurse (LPN),,,,"(none):36, L:1",37,NOT_CONFIGURED
+OR,PT,Physical Therapist,OR_PT,Oregon Board of Physical Therapy,"PT,PTA",(none):68,68,CONFIGURED
+OR,RNA,Registered Nurse Anesthetist,,,,(none):1,1,NOT_CONFIGURED
+OR,SH,Speech-Language Pathologist,OR_SLP,Oregon Board of Examiners for Speech-Language Pathology and Audiology,"SLP,SLPA,AUD",(none):14,14,CONFIGURED
+OR,ST,Speech Therapist,,,,(none):1,1,NOT_CONFIGURED
+OR,SW,Social Worker,,,,"L:68, A:4, (none):1",73,NOT_CONFIGURED
+PA,ABA,Applied Behavior Analyst,,,,"(none):5, BH:3",8,NOT_CONFIGURED
+PA,AP,Acupuncturist,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral",AK:1,1,CONFIGURED
+PA,CP,Clinical Psychologist,,,,"PS:96, PSO:1, PSYPACT:1, (none):1",99,NOT_CONFIGURED
+PA,DAC,Drug & Alcohol Counselor,,,,(none):1,1,NOT_CONFIGURED
+PA,DT,Dietitian/Nutritionist,,,,DN:2,2,NOT_CONFIGURED
+PA,GNC,Genetic Counselor,,,,GC:1,1,NOT_CONFIGURED
+PA,LPC,Licensed Professional Counselor,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","PC:4, APC:2",6,CONFIGURED
+PA,MW,Midwife,,,,"RN:5, SP:1",6,NOT_CONFIGURED
+PA,NP,Nurse Practitioner,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","SP:216, RN:154, NPPA:19, (none):3, SPO:1, MK:1, VP:1",395,CONFIGURED
+PA,NPB,Nurse Practitioner (Broadened),PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","SP:4, RN:3",7,CONFIGURED
+PA,NPS,Nurse Practitioner (Specialty),PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral",PS:2,2,CONFIGURED
+PA,OT,Occupational Therapist,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral",OC:1,1,CONFIGURED
+PA,PAS,Physician Assistant,,,,MA:3,3,NOT_CONFIGURED
+PA,PH,Pharmacist,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","MD:15, OS:3, (none):1",19,CONFIGURED
+PA,PN,Practical Nurse (LPN),PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","SP:44, RN:41, NPPA:2, CNS:1, (none):1",89,CONFIGURED
+PA,PT,Physical Therapist,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","PT:3, CP:1",4,CONFIGURED
+PA,RNA,Registered Nurse Anesthetist,,,,RN:2,2,NOT_CONFIGURED
+PA,SW,Social Worker,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards,"MD,DO,RN,LPN,APRN,DDS,RDH,RPh,OD,DC,PT,PTA,OT,OTA,Psychologist,LCSW,SLP,AUD,LPC,MFT,LMT,DVM,DPM,Cosmetology,Funeral","CW:2, SW:1",3,CONFIGURED
+SD,ABA,Applied Behavior Analyst,,,,(none):3,3,NOT_CONFIGURED
+SD,CP,Clinical Psychologist,,,,"PSYPACT:1, (none):1",2,NOT_CONFIGURED
+SD,DC,Doctor of Chiropractic,SD_CHIRO,South Dakota Board of Chiropractic Examiners,DC,(none):13,13,CONFIGURED
+SD,DT,Dietitian/Nutritionist,,,,(none):2,2,NOT_CONFIGURED
+SD,LPC,Licensed Professional Counselor,,,,LPCMH:1,1,NOT_CONFIGURED
+SD,NP,Nurse Practitioner,,,,"CP:7, R:3",10,NOT_CONFIGURED
+SD,PAS,Physician Assistant,,,,"(none):2, PA:1",3,NOT_CONFIGURED
+SD,PH,Pharmacist,,,,(none):8,8,NOT_CONFIGURED
+SD,PN,Practical Nurse (LPN),,,,"CP:5, R:3",8,NOT_CONFIGURED
+SD,PT,Physical Therapist,SD_PT,South Dakota Board of Physical Therapy,"PT,PTA",(none):7,7,CONFIGURED
+SD,RNA,Registered Nurse Anesthetist,,,,R:1,1,NOT_CONFIGURED
+SD,SW,Social Worker,,,,"(none):17, LCSW:1",18,NOT_CONFIGURED
+TN,ABA,Applied Behavior Analyst,,,,"(none):42, LBA:1",43,NOT_CONFIGURED
+TN,AP,Acupuncturist,,,,"(none):1, AC:1",2,NOT_CONFIGURED
+TN,AU,Audiologist,,,,"(none):8, A:1",9,NOT_CONFIGURED
+TN,CP,Clinical Psychologist,,,,"(none):19, PS:1, P:1",21,NOT_CONFIGURED
+TN,DC,Doctor of Chiropractic,,,,"(none):23, TN:1, DC:1",25,NOT_CONFIGURED
+TN,DP,Doctor of Podiatric Medicine,,,,"(none):8, DPM:1",9,NOT_CONFIGURED
+TN,DT,Dietitian/Nutritionist,,,,"(none):24, LDN:2",26,NOT_CONFIGURED
+TN,GNC,Genetic Counselor,,,,(none):2,2,NOT_CONFIGURED
+TN,LC,Licensed Counselor,,,,"(none):5, L:1, RN:1",7,NOT_CONFIGURED
+TN,LPC,Licensed Professional Counselor,,,,"(none):42, LPC:2",44,NOT_CONFIGURED
+TN,MT,Massage Therapist,,,,(none):9,9,NOT_CONFIGURED
+TN,MW,Midwife,,,,(none):10,10,NOT_CONFIGURED
+TN,NP,Nurse Practitioner,,,,"(none):425, APN:11, RN:2",438,NOT_CONFIGURED
+TN,NPB,Nurse Practitioner (Broadened),,,,(none):6,6,NOT_CONFIGURED
+TN,OP,Optometrist (OP),,,,(none):1,1,NOT_CONFIGURED
+TN,OT,Occupational Therapist,,,,(none):19,19,NOT_CONFIGURED
+TN,PAS,Physician Assistant,,,,"(none):45, PA:3",48,NOT_CONFIGURED
+TN,PH,Pharmacist,,,,"(none):312, MD:2, U:1, DO:1",316,NOT_CONFIGURED
+TN,PN,Practical Nurse (LPN),,,,(none):65,65,NOT_CONFIGURED
+TN,PT,Physical Therapist,,,,"(none):36, CP:2",38,NOT_CONFIGURED
+TN,RNA,Registered Nurse Anesthetist,,,,(none):9,9,NOT_CONFIGURED
+TN,SH,Speech-Language Pathologist,,,,(none):21,21,NOT_CONFIGURED
+TN,SW,Social Worker,,,,"(none):37, RN:1",38,NOT_CONFIGURED
+TX,ABA,Applied Behavior Analyst,,,,(none):73,73,NOT_CONFIGURED
+TX,AP,Acupuncturist,TX_MEDBOARD,Texas Medical Board,"MD,DO,PA,APRN",AC:10,10,CONFIGURED
+TX,AU,Audiologist,,,,(none):7,7,NOT_CONFIGURED
+TX,CP,Clinical Psychologist,,,,"(none):67, PS:1, PSYPACT:1",69,NOT_CONFIGURED
+TX,DAC,Drug & Alcohol Counselor,,,,(none):8,8,NOT_CONFIGURED
+TX,DC,Doctor of Chiropractic,TX_CHIRO,Texas State Board of Chiropractic Examiners,DC,"(none):66, DC:1",67,CONFIGURED
+TX,DN,Dental/Nurse,,,,(none):1,1,NOT_CONFIGURED
+TX,DP,Doctor of Podiatric Medicine,,,,(none):13,13,NOT_CONFIGURED
+TX,DT,Dietitian/Nutritionist,,,,"DT:183, (none):14",197,NOT_CONFIGURED
+TX,LC,Licensed Counselor,,,,"L:9, (none):6",15,NOT_CONFIGURED
+TX,LPC,Licensed Professional Counselor,,,,"(none):250, J:1",251,NOT_CONFIGURED
+TX,MT,Massage Therapist,,,,(none):23,23,NOT_CONFIGURED
+TX,MW,Midwife,,,,"(none):4, AP:1",5,NOT_CONFIGURED
+TX,NP,Nurse Practitioner,TX_MEDBOARD,Texas Medical Board,"MD,DO,PA,APRN","(none):505, AP:162, NP:1, RN:1, F:1",670,CONFIGURED
+TX,NPB,Nurse Practitioner (Broadened),TX_MEDBOARD,Texas Medical Board,"MD,DO,PA,APRN","(none):15, AP:3",18,CONFIGURED
+TX,NUT,Nutritionist,,,,DT:1,1,NOT_CONFIGURED
+TX,OP,Optometrist (OP),TX_OPTOMETRY,Texas Optometry Board,OD,(none):27,27,CONFIGURED
+TX,OT,Occupational Therapist,,,,(none):12,12,NOT_CONFIGURED
+TX,PAB,Physician Assistant (Board),,,,"PA:5, P:1",6,NOT_CONFIGURED
+TX,PAS,Physician Assistant,TX_MEDBOARD,Texas Medical Board,"MD,DO,PA,APRN","PA:68, (none):1",69,CONFIGURED
+TX,PH,Pharmacist,,,,"(none):279, V:55, L:49, U:46, S:39, R:37, K:37, M:35, P:35, T:30, J:29, N:26, H:24, Q:24, W:14, G:8, E:5, F:5, MMIN:3, IMMIN:3, TM:2, D:1, IMM:1",787,NOT_CONFIGURED
+TX,PN,Practical Nurse (LPN),,,,"(none):130, AP:27",157,NOT_CONFIGURED
+TX,PT,Physical Therapist,,,,"(none):23, CP:3",26,NOT_CONFIGURED
+TX,RN,Registered Nurse,,,,(none):1,1,NOT_CONFIGURED
+TX,RNA,Registered Nurse Anesthetist,,,,"(none):5, AP:4, TEMP:1",10,NOT_CONFIGURED
+TX,SH,Speech-Language Pathologist,,,,(none):16,16,NOT_CONFIGURED
+TX,SW,Social Worker,,,,(none):95,95,NOT_CONFIGURED
+UT,ABA,Applied Behavior Analyst,,,,(none):7,7,NOT_CONFIGURED
+UT,AU,Audiologist,,,,(none):1,1,NOT_CONFIGURED
+UT,CP,Clinical Psychologist,,,,"(none):8, PSYPACT:1",9,NOT_CONFIGURED
+UT,LPC,Licensed Professional Counselor,,,,(none):2,2,NOT_CONFIGURED
+UT,MW,Midwife,,,,(none):5,5,NOT_CONFIGURED
+UT,NP,Nurse Practitioner,,,,(none):125,125,NOT_CONFIGURED
+UT,NPB,Nurse Practitioner (Broadened),,,,(none):7,7,NOT_CONFIGURED
+UT,OT,Occupational Therapist,,,,(none):4,4,NOT_CONFIGURED
+UT,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+UT,PAS,Physician Assistant,,,,"(none):2, PA:1",3,NOT_CONFIGURED
+UT,PH,Pharmacist,,,,(none):211,211,NOT_CONFIGURED
+UT,PN,Practical Nurse (LPN),,,,(none):46,46,NOT_CONFIGURED
+UT,PT,Physical Therapist,,,,"(none):5, CP:3",8,NOT_CONFIGURED
+UT,SW,Social Worker,,,,(none):4,4,NOT_CONFIGURED
+VA,ABA,Applied Behavior Analyst,,,,"(none):69, LBA:1",70,NOT_CONFIGURED
+VA,AP,Acupuncturist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):2,2,CONFIGURED
+VA,AU,Audiologist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):3,3,CONFIGURED
+VA,CP,Clinical Psychologist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT","(none):13, PSYPACT:1",14,CONFIGURED
+VA,DC,Doctor of Chiropractic,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):48,48,CONFIGURED
+VA,DP,Doctor of Podiatric Medicine,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):20,20,CONFIGURED
+VA,DT,Dietitian/Nutritionist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT","(none):51, PT:1",52,CONFIGURED
+VA,GNC,Genetic Counselor,,,,(none):1,1,NOT_CONFIGURED
+VA,LC,Licensed Counselor,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT","L:1, (none):1",2,CONFIGURED
+VA,LPC,Licensed Professional Counselor,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):21,21,CONFIGURED
+VA,MST,MST,,,,(none):1,1,NOT_CONFIGURED
+VA,MT,Massage Therapist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):1,1,CONFIGURED
+VA,MW,Midwife,,,,(none):8,8,NOT_CONFIGURED
+VA,NP,Nurse Practitioner,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):346,346,CONFIGURED
+VA,NPB,Nurse Practitioner (Broadened),VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):5,5,CONFIGURED
+VA,NUT,Nutritionist,,,,CNS:1,1,NOT_CONFIGURED
+VA,OP,Optometrist (OP),VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):5,5,CONFIGURED
+VA,OT,Occupational Therapist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):40,40,CONFIGURED
+VA,PAB,Physician Assistant (Board),,,,(none):1,1,NOT_CONFIGURED
+VA,PAS,Physician Assistant,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):19,19,CONFIGURED
+VA,PH,Pharmacist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):616,616,CONFIGURED
+VA,PN,Practical Nurse (LPN),VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):83,83,CONFIGURED
+VA,PT,Physical Therapist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",CP:3,3,CONFIGURED
+VA,RNA,Registered Nurse Anesthetist,,,,(none):13,13,NOT_CONFIGURED
+VA,SH,Speech-Language Pathologist,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):1,1,CONFIGURED
+VA,SW,Social Worker,VA_DHP,Virginia Department of Health Professions — License Lookup,"MD,DO,RN,LPN,APRN,DDS,DMD,PharmD,PT,OT,PA,SW,LCSW,LPC,MFT,MT,OD,SLP,AUD,DC,PSYCH,DPM,NA,AT,RRT,ACUP,RD,LMFT",(none):8,8,CONFIGURED
+VT,CP,Clinical Psychologist,VT_OPR,Vermont Office of Professional Regulation,"LPC,SW,PSYCH,MFT,AC,DC,OD,PT,OT,RN,RPh,DENT",(none):13,13,CONFIGURED
+VT,LPC,Licensed Professional Counselor,VT_OPR,Vermont Office of Professional Regulation,"LPC,SW,PSYCH,MFT,AC,DC,OD,PT,OT,RN,RPh,DENT",(none):2,2,CONFIGURED
+VT,NP,Nurse Practitioner,,,,(none):6,6,NOT_CONFIGURED
+VT,PAS,Physician Assistant,VT_MEDBOARD,Vermont Board of Medical Practice,"MD,DO,PA",(none):8,8,CONFIGURED
+VT,PH,Pharmacist,VT_OPR,Vermont Office of Professional Regulation,"LPC,SW,PSYCH,MFT,AC,DC,OD,PT,OT,RN,RPh,DENT",(none):4,4,CONFIGURED
+VT,PN,Practical Nurse (LPN),,,,(none):1,1,NOT_CONFIGURED
+VT,PT,Physical Therapist,VT_OPR,Vermont Office of Professional Regulation,"LPC,SW,PSYCH,MFT,AC,DC,OD,PT,OT,RN,RPh,DENT",(none):1,1,CONFIGURED
+VT,SW,Social Worker,,,,(none):27,27,NOT_CONFIGURED
+WA,ABA,Applied Behavior Analyst,,,,"BA:22, (none):3, AB:1, LL:1, LBA:1",28,NOT_CONFIGURED
+WA,AU,Audiologist,,,,"LD:5, AUD:2",7,NOT_CONFIGURED
+WA,CP,Clinical Psychologist,,,,"PY:28, (none):9, PSYPACT:2, LH:1, MA:1, LW:1",42,NOT_CONFIGURED
+WA,DAC,Drug & Alcohol Counselor,,,,CP:6,6,NOT_CONFIGURED
+WA,DP,Doctor of Podiatric Medicine,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW",PO:5,5,CONFIGURED
+WA,DT,Dietitian/Nutritionist,,,,"(none):105, DI:49, NU:4, NUTR:1",159,NOT_CONFIGURED
+WA,LC,Licensed Counselor,,,,"LP:1, L:1",2,NOT_CONFIGURED
+WA,LPC,Licensed Professional Counselor,,,,"LH:119, MC:7, (none):3, MHC:2, CP:2, BA:2, LW:2, SC:1, NT:1, C:1",140,NOT_CONFIGURED
+WA,MST,MST,,,,MA:1,1,NOT_CONFIGURED
+WA,MT,Massage Therapist,,,,"LF:22, (none):1",23,NOT_CONFIGURED
+WA,MW,Midwife,,,,"(none):10, MW:8, RN:4, AP:2",24,NOT_CONFIGURED
+WA,ND,Naturopathic Doctor,,,,NT:1,1,NOT_CONFIGURED
+WA,NP,Nurse Practitioner,,,,"AP:69, RN:60, CH:1, N:1",131,NOT_CONFIGURED
+WA,NPB,Nurse Practitioner (Broadened),,,,"AP:1, RN:1",2,NOT_CONFIGURED
+WA,OP,Optometrist (OP),,,,OD:20,20,NOT_CONFIGURED
+WA,OT,Occupational Therapist,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW","OT:12, (none):1",13,CONFIGURED
+WA,PAS,Physician Assistant,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW",PA:16,16,CONFIGURED
+WA,PH,Pharmacist,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW","MD:99, OP:21, IMLC:4, DO:3, (none):2, AP:1",130,CONFIGURED
+WA,PM,PM,,,,"PH:5, PC:1",6,NOT_CONFIGURED
+WA,PN,Practical Nurse (LPN),WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW","AP:37, RN:31, (none):2, APTP:1",71,CONFIGURED
+WA,PT,Physical Therapist,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data,"RN,LPN,MD,DO,DDS,DMD,PA,PT,OT,RT,PharmD,SW","PT:25, (none):3, LL:1, CP:1",30,CONFIGURED
+WA,RNA,Registered Nurse Anesthetist,,,,"AP:2, RN:2",4,NOT_CONFIGURED
+WA,SH,Speech-Language Pathologist,,,,"LL:27, (none):2",29,NOT_CONFIGURED
+WA,SW,Social Worker,,,,"LW:69, SC:9, SA:2, (none):2, MC:1",83,NOT_CONFIGURED
+WI,ABA,Applied Behavior Analyst,,,,(none):1,1,NOT_CONFIGURED
+WI,CP,Clinical Psychologist,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):1,1,CONFIGURED
+WI,DC,Doctor of Chiropractic,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):1,1,CONFIGURED
+WI,DT,Dietitian/Nutritionist,,,,(none):2,2,NOT_CONFIGURED
+WI,LC,Licensed Counselor,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):8,8,CONFIGURED
+WI,LPC,Licensed Professional Counselor,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):9,9,CONFIGURED
+WI,MT,Massage Therapist,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):1,1,CONFIGURED
+WI,MW,Midwife,,,,(none):6,6,NOT_CONFIGURED
+WI,NP,Nurse Practitioner,,,,(none):117,117,NOT_CONFIGURED
+WI,NPB,Nurse Practitioner (Broadened),,,,(none):3,3,NOT_CONFIGURED
+WI,OP,Optometrist (OP),WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):1,1,CONFIGURED
+WI,PAB,Physician Assistant (Board),,,,(none):4,4,NOT_CONFIGURED
+WI,PAS,Physician Assistant,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):43,43,CONFIGURED
+WI,PH,Pharmacist,WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):170,170,CONFIGURED
+WI,PN,Practical Nurse (LPN),WI_DSPS,Wisconsin Department of Safety and Professional Services,"MD,DO,RN,LPN,PT,OT,DC,PA,DDS,RPh,DPM,SLP,AUD,MT,SW,LPC,MFT,PSY,OD",(none):26,26,CONFIGURED
+WI,RN,Registered Nurse,,,,(none):1,1,NOT_CONFIGURED
+WI,RNA,Registered Nurse Anesthetist,,,,(none):3,3,NOT_CONFIGURED
+WI,SW,Social Worker,,,,(none):5,5,NOT_CONFIGURED
+WV,ABA,Applied Behavior Analyst,,,,(none):4,4,NOT_CONFIGURED
+WV,CP,Clinical Psychologist,WV_PSYCH,West Virginia Board of Examiners of Psychologists,"PSY,MA_PSY",(none):12,12,CONFIGURED
+WV,DC,Doctor of Chiropractic,WV_CHIRO,West Virginia Board of Chiropractic,DC,(none):1,1,CONFIGURED
+WV,DT,Dietitian/Nutritionist,,,,(none):8,8,NOT_CONFIGURED
+WV,LPC,Licensed Professional Counselor,,,,"(none):4, DP:1",5,NOT_CONFIGURED
+WV,MW,Midwife,,,,(none):1,1,NOT_CONFIGURED
+WV,NP,Nurse Practitioner,,,,"(none):6, TLHT:1, APRN:1",8,NOT_CONFIGURED
+WV,OR,OR,,,,(none):1,1,NOT_CONFIGURED
+WV,OT,Occupational Therapist,,,,"(none):12, OT:1",13,NOT_CONFIGURED
+WV,PAS,Physician Assistant,WV_MEDBOARD_PA,West Virginia Board of Medicine — Physician Assistants,PA,(none):3,3,CONFIGURED
+WV,PH,Pharmacist,,,,"(none):6, ITR:1",7,NOT_CONFIGURED
+WV,PN,Practical Nurse (LPN),,,,(none):2,2,NOT_CONFIGURED
+WV,PT,Physical Therapist,WV_PT,West Virginia Board of Physical Therapy,"PT,PTA","PT:30, (none):2, CP:2",34,CONFIGURED
+WV,SH,Speech-Language Pathologist,,,,"P:1, SLP:1",2,NOT_CONFIGURED
+WV,SW,Social Worker,WV_SOCIALWORK,West Virginia Board of Social Work,"LCSW,LMSW,LBSW","DP:6, BP:3, TH:1",10,CONFIGURED
+WY,AU,Audiologist,WY_SPEECH,Wyoming Board of Examiners of Speech-Language Pathology and Audiology,"SLP,AUD",A:1,1,CONFIGURED
+WY,DAC,Drug & Alcohol Counselor,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board,"LPC,LMFT,SW,LCSW,DAC","PPC:1, (none):1",2,CONFIGURED
+WY,DT,Dietitian/Nutritionist,WY_DIETETICS,Wyoming Dietetics Licensing Board,"LD,DIET",(none):1,1,CONFIGURED
+WY,LPC,Licensed Professional Counselor,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board,"LPC,LMFT,SW,LCSW,DAC","LPC:5, (none):1",6,CONFIGURED
+WY,MT,Massage Therapist,,,,LMFT:1,1,NOT_CONFIGURED
+WY,NP,Nurse Practitioner,WY_PHYSICIAN,Wyoming Board of Medicine — Physician,"MD,DO",(none):5,5,CONFIGURED
+WY,OP,Optometrist (OP),WY_OPTOMETRY,Wyoming Board of Optometry,OD,(none):1,1,CONFIGURED
+WY,PAS,Physician Assistant,WY_PA,Wyoming Board of Medicine — Physician Assistant,PA,"PA:4, PT:1, (none):1",6,CONFIGURED
+WY,PH,Pharmacist,,,,"(none):9, TL:6, MED:1",16,NOT_CONFIGURED
+WY,PN,Practical Nurse (LPN),WY_PHYSICIAN,Wyoming Board of Medicine — Physician,"MD,DO",(none):1,1,CONFIGURED
+WY,RNA,Registered Nurse Anesthetist,WY_PHYSICIAN,Wyoming Board of Medicine — Physician,"MD,DO",(none):2,2,CONFIGURED
+WY,SW,Social Worker,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board,"LPC,LMFT,SW,LCSW,DAC","LCSW:5, PCSW:2",7,CONFIGURED

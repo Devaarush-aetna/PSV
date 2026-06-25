@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4445 CORPORATION LN STE 264",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234623671",
+          "state": "VA",
+          "telephone_number": "703-214-5121"
+        },
+        {
+          "address_1": "4445 CORPORATION LN STE 264",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234623671",
+          "state": "VA",
+          "telephone_number": "703-214-5121"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-08-25",
+        "enumeration_date": "2023-08-25",
+        "first_name": "KIM",
+        "last_name": "SEIDL",
+        "last_updated": "2023-08-25",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1692990729000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1692990729000",
+      "number": "1689459901",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -33,8 +33,11 @@ search:
       - "not found"
   post_search_click: "#usLicenseList_rdbtGrid"
 
-# Table rendered after grid-toggle click. Column order verified on live site.
-# Typical GenSearch columns: Name | License# | Type | Status | Expiration
+# Table rendered after grid-toggle click. Column order verified on live site 2026-06-22.
+# Full grid: 0=FirstName, 1=LastName, 2=Address, 3=Addr2, 4=City, 5=State, 6=Zip,
+#            7=Phone, 8=License, 9=Status, 10=Expiration, 11=PracticeCounty,
+#            12=AreaOfPractice, 13=TypeOfPractice, 14=YearLicensed, 15=MedSchool,
+#            16=YearGrad, 17=BoardAction
 results:
   type: table
   table:
@@ -44,10 +47,9 @@ results:
     columns:
       0: first_name
       1: last_name
-      2: license_number
-      3: license_type
-      4: status
-      5: expiration_date
+      8: license_number
+      9: status
+      10: expiration_date
   has_detail_page: false
   pagination:
     enabled: false
@@ -88,8 +90,10 @@ output:
   status_map:
     "Active": active
     "active": active
+    "Active Physician": active
     "Inactive": inactive
     "inactive": inactive
+    "Inactive Physician": inactive
     "Expired": expired
     "expired": expired
     "Suspended": suspended
@@ -129,7 +133,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KY_MEDBOARD/{run_id}/"
 
 compliance:
   requires_captcha: false

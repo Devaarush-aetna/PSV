@@ -10,6 +10,9 @@ identity:
   # so it works through corporate Zscaler SSL inspection that blocks bare TLS clients.
   base_url: "https://data.illinois.gov/resource/pzzh-kp68.json"
   archetype: socrata_bulk_csv
+  # license_type_selector = SoQL column name for AND-filtering by license type/profession
+  # license_type values: "PHYSICIAN AND SURGEON LICENSED", "REGISTERED NURSE", etc.
+  license_type_selector: "license_type"
 
 search:
   # input_selector = Socrata field name used in SoQL WHERE clause.
@@ -115,7 +118,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/IL_LICENSING/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-09"

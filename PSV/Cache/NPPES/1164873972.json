@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14146 W 119TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-308-5347",
+          "postal_code": "660626621",
+          "state": "KS",
+          "telephone_number": "913-232-8864"
+        },
+        {
+          "address_1": "14146 W 119TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-308-5347",
+          "postal_code": "660626621",
+          "state": "KS",
+          "telephone_number": "913-232-8864"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-12",
+        "enumeration_date": "2016-06-23",
+        "first_name": "LAUREN",
+        "last_name": "CERIER",
+        "last_updated": "2026-02-12",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1466705555000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770919355000",
+      "number": "1164873972",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-05448",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

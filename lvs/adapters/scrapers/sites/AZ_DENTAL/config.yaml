@@ -12,8 +12,11 @@ identity:
 search:
   modes:
     - mode: license_number
+      input_selector: "input#keywords"
     - mode: last_name
+      input_selector: "input#keywords"
     - mode: first_name
+      input_selector: "input#keywords"
   form:
     search_by_dropdown:
       strategy: none
@@ -101,7 +104,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/AZ_DENTAL/{run_id}/"
+  local_path: "Evidence/AZ_DENTAL/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-15"

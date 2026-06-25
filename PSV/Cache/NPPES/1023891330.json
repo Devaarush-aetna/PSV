@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6885 W 151ST ST STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662232501",
+          "state": "KS",
+          "telephone_number": "913-897-1100"
+        },
+        {
+          "address_1": "13600 KING ST APT 621",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662218123",
+          "state": "KS",
+          "telephone_number": "660-281-6534"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-04-30",
+        "credential": "PT, DPT",
+        "enumeration_date": "2023-08-18",
+        "first_name": "SARAH",
+        "last_name": "KEY",
+        "last_updated": "2025-04-30",
+        "middle_name": "FRANCEEN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1692382312000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1746030796000",
+      "number": "1023891330",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2251X0800X",
+          "desc": "Physical Therapist, Orthopedic",
+          "license": "11-07432",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

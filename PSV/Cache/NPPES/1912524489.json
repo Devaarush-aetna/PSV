@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10503 W 144TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662217570",
+          "state": "KS",
+          "telephone_number": "913-485-4609"
+        },
+        {
+          "address_1": "11408 W 135TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662219398",
+          "state": "KS",
+          "telephone_number": "913-485-4609"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-07-01",
+        "credential": "PT, DPT, SCS",
+        "enumeration_date": "2020-07-01",
+        "first_name": "BRIAN",
+        "last_name": "ADAMS",
+        "last_updated": "2020-07-01",
+        "middle_name": "DAVID",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1593618284000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1593618284000",
+      "number": "1912524489",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-02901",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

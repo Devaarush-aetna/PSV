@@ -17,12 +17,12 @@ csv_bulk:
   header_row: 0                  # converted CSV has headers at row 0
   download_timeout_ms: 300000    # 5-minute timeout for large XLSX export
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     last_name: "Last Name"
     first_name: "First Name"
-    license_number: "LicenseId"
+    license_number: "Registration Number"
 
 search:
   modes:
@@ -60,9 +60,9 @@ detail:
   field_map:
     "Last Name": last_name
     "First Name": first_name
-    "LicenseId": license_number
-    "License Status": status
-    "License Expiration Date": expiration_date
+    "Registration Number": license_number
+    "Status": status
+    "Expiration Date": expiration_date
     "City": city
     "State": state_code
     "Discipline": disciplinary_action
@@ -108,7 +108,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/NV_PHARMACY/{run_id}/"
+  local_path: "Evidence/NV_PHARMACY/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"

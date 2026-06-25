@@ -119,7 +119,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KS_DENTAL/{run_id}/"
 
 compliance:
   requires_captcha: false

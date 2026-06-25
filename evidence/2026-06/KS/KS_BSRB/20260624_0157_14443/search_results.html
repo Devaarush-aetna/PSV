@@ -1,0 +1,945 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head>
+		<title>SearchResults</title>
+		<link rel="stylesheet" href="stylesheets/elicense2000.css">
+	<script language="javascript">
+function SetValue(agencyID,licenseID)
+{
+	var href = window.opener.location.href;
+	var form = window.opener.document.forms[0];
+	form.elements["license_id"].value = licenseID;
+	form.elements["tempAgencyID"].value = agencyID;
+//	var action = href.substring(0,href.indexOf("?"));
+//	form.action = action + '?action=lu&agency_id=' + agencyID + '&license_id=' + licenseID;
+	form.submit();
+	window.close();
+}
+	</script></head>
+	
+	<body>
+		<form name="TheForm" method="post" action="./SearchResults.aspx" id="TheForm">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['TheForm'];
+if (!theForm) {
+    theForm = document.TheForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="F2340318">
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAf11IgtGzBGcpPHY46X05gvQwjb7dpaSQmPwtIuHjurAHFMAHrsd5b8+Xvbgnxy7bXrXDnHS0qGT9msBN4gT1V60Jzo/EEl4DFlyzKmMrEoR5Sm395/bdx8igU/gNBvIfX8QXpMlCMTD1IpCvsW9UKZWKdcIEGHrPfmTtkyKSX7p0mwOMXY1V+YgnhpnGLXPh0="><table role="presentation" cellspacing="0" cellpadding="0" class="layout">
+	<tbody><tr>
+		<td class="banner" rowspan="1" colspan="2"><table role="presentation" class="banner">
+			<tbody><tr>
+				<td rowspan="1" colspan="2"><span id="banner_image"></span></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td class="left" rowspan="1" colspan="1"><table role="presentation" width="160" background="/images/menu_bac.jpg" class="menu" valign="top">
+			<tbody><tr>
+			</tr>
+			<tr>
+				<td></td>
+				<td rowspan="1" colspan="1"><a id="home_link" href="Search.aspx">Search</a></td>
+			</tr>
+		</tbody></table>
+		</td>
+		<td class="center" rowspan="1" colspan="1"><table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
+		</table>
+		<table role="presentation" class="center">
+			<tbody><tr>
+				<td class="pagetitle" rowspan="1" colspan="4"><span id="Title">BSRB Licensee Search Results</span></td>
+			</tr>
+			<tr>
+				<td class="instructions" rowspan="1" colspan="4"><span id="instructions_top" class="instructions"><ol><li>For a more detailed view of a licensee's background, click on the licensee name from the alphabetical list below. Results will open in a new window.</li><li>Click the numbers below the grid to see additional pages of licensees. </li><li>To download a delimited text file of the search results, click the <strong>Download</strong> button (fees may apply).</li><li>To return to the Search page, use the <strong>New Search</strong> button below.  <strong><i>Do not use your browser's back button.</i></strong></li></ol></span></td>
+			</tr>
+			<tr>
+				<td rowspan="1" colspan="4"><table cellspacing="0" rules="all" border="1" id="datagrid_results" style="border-collapse:collapse;">
+					<caption>
+						Results
+					</caption><tbody><tr style="background-color:#4A5375;">
+						<th scope="col">Name</th><th scope="col"><a href="javascript:__doPostBack('datagrid_results$_ctl2$_ctl0','')"><font face="Arial" size="2" color="white"><center><b>License #</b></center></font></a></th><th scope="col"><font face="Arial" size="2" color="white"><center><b>Profession</b></center></font></th><th scope="col"><font face="Arial" size="2" color="white"><center><b>License Type</b></center></font></th><th scope="col"><font face="Arial" size="2" color="white"><center><b>Status</b></center></font></th><th scope="col"><font face="Arial" size="2" color="white"><center><b>Address</b></center></font></th>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl3_name" href="Details.aspx?result=eec68106-4461-4d70-b2c3-5df6bc55feb4" target="_blank">Adams, Samantha A</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 6088</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl3_license_type" maxlength="50">LMSW-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl4_name" href="Details.aspx?result=414227b4-06fd-4b8a-9ca1-97cb4346addb" target="_blank">Adams, Samantha A</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 6332</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl4_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl5_name" href="Details.aspx?result=d1b4ef98-f312-45c3-b479-cc409d05e750" target="_blank">Alvarado, Samantha Elizabeth</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LBA 00827</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl5_license_type" maxlength="50">LBA-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl6_name" href="Details.aspx?result=f4ad8736-e259-427f-bf14-33d50855471f" target="_blank">Alves, Samantha Costa</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LPC 04739-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl6_license_type" maxlength="50">LPC-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl7_name" href="Details.aspx?result=e054ad0a-98bd-486b-99cc-282e92e20b96" target="_blank">Anderson, Samantha Paige</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LCPC 03534</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl7_license_type" maxlength="50">LCPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl8_name" href="Details.aspx?result=08689722-0d0d-4358-8be6-cc77cfab4d4c" target="_blank">Andrews, Samantha Jo</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LPC 03978</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl8_license_type" maxlength="50">LPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl9_name" href="Details.aspx?result=9be825fd-f26d-4498-8f93-9d04e84462e1" target="_blank">Applebaum, Samantha Rae</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 05528</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl9_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl10_name" href="Details.aspx?result=ead97aa2-b7fb-44f9-ad7d-f16111cb465c" target="_blank">Archer, Samantha Marie</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span></span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl10_license_type" maxlength="50">LBSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl11_name" href="Details.aspx?result=52744fa8-679b-468c-8960-fc63cc32f958" target="_blank">Archer, Samantha Marie</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LBSW 09248-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl11_license_type" maxlength="50">LBSW-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl12_name" href="Details.aspx?result=4060870d-d761-4431-92d9-0d23d4976d6f" target="_blank">Archer, Samantha Marie</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LBSW 09282</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl12_license_type" maxlength="50">LBSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl13_name" href="Details.aspx?result=06a06735-0499-41a1-bf02-85cc69d15746" target="_blank">Attkisson-Shrimplin, Samantha</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LAC 818</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl13_license_type" maxlength="50">LAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl14_name" href="Details.aspx?result=6eacd5fb-b410-45c9-a2ae-dc421585c247" target="_blank">Attkisson-Shrimplin, Samantha</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 8439</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl14_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl15_name" href="Details.aspx?result=0d017b3b-99d0-40ec-875a-e2bae3e8a4a1" target="_blank">Attkisson-Shrimplin, Samantha</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 4358</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl15_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active - Renewal Pending</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl16_name" href="Details.aspx?result=e71099dc-0727-4cfd-9474-fcdace8df146" target="_blank">Attkisson-Shrimplin, Samantha</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LCAC 586</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl16_license_type" maxlength="50">LCAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl17_name" href="Details.aspx?result=2c9fa417-d703-48bd-ad05-b876694ab1c7" target="_blank">Baker, Samantha R.</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMLP 03354-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl17_license_type" maxlength="50">LMLP-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl18_name" href="Details.aspx?result=a5cd30ff-feff-4c9d-942f-53fc0e41019d" target="_blank">Barbosa, Samantha Marie</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 13853</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl18_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active - Renewal Pending</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl19_name" href="Details.aspx?result=e262c279-fab3-4e71-b60b-9625b1cdcce5" target="_blank">Beauchman, Samantha L.</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMLP 1400</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl19_license_type" maxlength="50">LMLP-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl20_name" href="Details.aspx?result=be246dbe-3365-4745-b96d-0e1fad1e787c" target="_blank">Black, Samantha Rae</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 4964</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl20_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl21_name" href="Details.aspx?result=2db9b1dd-1db6-4b10-918f-9d6ee0022145" target="_blank">Boatwright, Samantha Noel</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 05641</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl21_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl22_name" href="Details.aspx?result=477b72de-4be9-4543-9c5c-bd847bed1346" target="_blank">Boldra, Samantha Lee</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LBSW 09205</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl22_license_type" maxlength="50">LBSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl23_name" href="Details.aspx?result=44a2163b-ef0c-4b46-965c-cb53a140da11" target="_blank">Brandt, Samantha Kaye</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LPC 3281</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl23_license_type" maxlength="50">LPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active - Renewal Pending</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl24_name" href="Details.aspx?result=a18eb9f3-d0d5-418c-800b-573a85451c41" target="_blank">Brandt, Samantha Kaye</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMAC 01049</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl24_license_type" maxlength="50">LMAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl25_name" href="Details.aspx?result=b0aaeb57-bcaf-4407-b7c1-a07015c40630" target="_blank">Brandt, Samantha Kaye</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMAC 00951-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl25_license_type" maxlength="50">LMAC-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl26_name" href="Details.aspx?result=88bcdf2b-a953-458a-b5cd-2f393d197cf1" target="_blank">Brandt, Samantha Kaye</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span></span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl26_license_type" maxlength="50">LCPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Pending</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl27_name" href="Details.aspx?result=e00e169b-38d9-4368-9a45-d5aedf52b320" target="_blank">Brannen, Samantha Jo</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 06882</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl27_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl28_name" href="Details.aspx?result=cd3d1a3f-6d40-4a89-bee0-47a608e12eae" target="_blank">Brummell, Samantha Sturdevant</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 6807</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl28_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl29_name" href="Details.aspx?result=125da323-a302-4593-8f20-f86a8bbe70af" target="_blank">Brummell, Samantha Sturdevant</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 4903</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl29_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl30_name" href="Details.aspx?result=bfad66db-6f7d-4de2-ad44-cda7f26ebdc5" target="_blank">Brummer, Samantha A.</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 8860</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl30_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl31_name" href="Details.aspx?result=3ce3242e-5b9e-4dc9-b2eb-57c560d7a3c0" target="_blank">Burke, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 8753</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl31_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl32_name" href="Details.aspx?result=8e469b98-f3b9-406a-b63a-b10e7e499fb7" target="_blank">Cannon, Samantha May</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LBSW 8083</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl32_license_type" maxlength="50">LBSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl33_name" href="Details.aspx?result=0deb9f51-22e7-4ea3-83c4-18d2e2012b7a" target="_blank">Cardini, Samantha Nicole</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 14653-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl33_license_type" maxlength="50">LMSW-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl34_name" href="Details.aspx?result=6cf108b8-a7f3-4e08-a241-175669816d5e" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span></span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl34_license_type" maxlength="50">LAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl35_name" href="Details.aspx?result=0eb86503-f264-4165-baea-647b8b88bfb3" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span></span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl35_license_type" maxlength="50">LMAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl36_name" href="Details.aspx?result=25dd5cd8-74e3-4e28-af4b-4c0db0e3b267" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LPC 03856-T</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl36_license_type" maxlength="50">LPC-Temporary</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Obsolete</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl37_name" href="Details.aspx?result=27592b51-f446-45c5-b75f-e77ed3ba341f" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LPC 04195</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl37_license_type" maxlength="50">LPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl38_name" href="Details.aspx?result=1282afe8-9ef1-4c80-bec3-5428b9302c03" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMAC 01122</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl38_license_type" maxlength="50">LMAC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl39_name" href="Details.aspx?result=ff30633d-e2e5-462f-8e6c-905f807fd784" target="_blank">Carr, Samantha Dawn</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span></span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl39_license_type" maxlength="50">LCPC-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Pending</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl40_name" href="Details.aspx?result=a632dd4b-bb1e-47b6-bee4-073aa5c804b5" target="_blank">Cervetti, Samantha Lynne</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LMSW 10128</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl40_license_type" maxlength="50">LMSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl41_name" href="Details.aspx?result=1d641221-bed3-45bd-872d-dad52aad794c" target="_blank">Cervetti, Samantha Lynne</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 4999</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl41_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Active</span></td><td><span></span></td>
+					</tr><tr>
+						<td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="0" colspan="1"><a id="datagrid_results__ctl42_name" href="Details.aspx?result=84f74187-92a5-4ceb-915d-024bf8f7c590" target="_blank">Ching, Samantha</a></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>LSCSW 3953</span></td><td><span>BSRB</span></td><td><table role="presentation">
+							<tbody><tr>
+								<td rowspan="1" colspan="1"><span id="datagrid_results__ctl42_license_type" maxlength="50">LSCSW-Permanent</span></td>
+							</tr>
+							<tr>
+								<td rowspan="1" colspan="1"><span><span></span><table width="100%"><tbody><tr><td align="center"></td></tr></tbody></table></span></td>
+							</tr>
+						</tbody></table>
+						</td><td><span>Expired</span></td><td><span></span></td>
+					</tr><tr style="color:White;background-color:#4A5375;">
+						<td colspan="6"><span>1</span>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl1','')" style="color:White;">2</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl2','')" style="color:White;">3</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl3','')" style="color:White;">4</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl4','')" style="color:White;">5</a></td>
+					</tr>
+				</tbody></table></td>
+			</tr>
+			<tr>
+				<td align="center" class="button" rowspan="1" colspan="1"><span id="button_newsearch"><input type="reset" name="my_button" value="New Search" id="my_button" class="button" maxlength="9" onclick="javascript:document.location.href='Search.aspx' "><br></span></td>
+				<td></td>
+				<td align="center" class="button" rowspan="1" colspan="1"><input type="submit" name="btnBulkDownLoad" value="Download" id="btnBulkDownLoad" class="button"></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+	<tr>
+	</tr>
+	<tr>
+	</tr>
+	<tr>
+		<td class="footer" rowspan="1" colspan="2"><table role="presentation" class="footer">
+			<tbody><tr>
+				<td rowspan="1" colspan="1"><span id="footer"></span></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+</tbody></table>
+</form>
+	
+
+</body></html>

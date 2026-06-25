@@ -8,6 +8,8 @@ identity:
   # The engine's socrata_api archetype makes a direct HTTP GET request.
   base_url: "https://data.delaware.gov/resource/pjnv-eaih.json"
   archetype: socrata_bulk_csv
+  # license_type_selector = SoQL column name for AND-filtering by license/profession type
+  license_type_selector: "license_type"
 
 search:
   # input_selector stores the Socrata API field name used in the SoQL WHERE clause.
@@ -111,7 +113,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/DE_LICENSING/{run_id}/"
 
 compliance:
   requires_captcha: false

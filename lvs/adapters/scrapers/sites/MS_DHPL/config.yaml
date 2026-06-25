@@ -1,0 +1,131 @@
+identity:
+  source_id: MS_DHPL
+  board_name: Mississippi State Department of Health Professional Licensure
+  state: MS
+  country: US
+  profession_codes: [SLP, AUD, OT, LMT, LPC, RD, LPN, RN]
+  # ASP.NET WebForms portal at msdhpl.webapps.ms.gov — umbrella multi-profession board.
+  # Grid: #ctl00_Main_gvLicensees, each row has spans: lblName (col 1), lblLicenseNumber (col 2),
+  # lblOriginalIssueDate (col 3), lblExpirationDate (col 4), lblLicenseStatusName (col 5),
+  # lblLicenseSubStatus (col 6). Col 0 = detail link (skip).
+  # No-results: #ctl00_Main_lblNoRecords visible.
+  # Pagination: ul li a:has-text('Next') — ASP.NET GridView pager.
+  # Detail opens new tab (not supported by engine); all needed fields are in grid.
+  base_url: "https://www.msdhpl.webapps.ms.gov/PublicView/PublicIndSearch.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#ctl00_Main_txtLicenseNumber"
+    - mode: last_name
+      input_selector: "#ctl00_Main_txtLastName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ctl00_Main_txtLastName"
+    search_button:
+      selector: "#ctl00_Main_btnSearch"
+  results_wait:
+    strategy: element_visible
+    selector: "#ctl00_Main_gvLicensees tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "No matching records"
+      - "no records found"
+      - "0 results"
+      - "No records"
+
+results:
+  type: table
+  table:
+    row_selector: "#ctl00_Main_gvLicensees tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      1: full_name
+      2: license_number
+      3: issue_date
+      4: expiration_date
+      5: status
+      6: license_type
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_button_selector: "ul li a:has-text('Next')"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Non-renewed": expired
+    "Cancelled": inactive
+    "Lapsed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/MS_DHPL/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

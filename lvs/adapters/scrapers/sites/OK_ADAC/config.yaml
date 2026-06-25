@@ -1,0 +1,170 @@
+identity:
+  source_id: "OK_ADAC"
+  board_name: "Oklahoma State Board of Licensed Alcohol and Drug Counselors"
+  state: "OK"
+  country: "US"
+  profession_codes: ["LADC", "CADC", "CADCI"]
+  # Plain PHP POST form at okdrugcounselors.org — no JavaScript required.
+  # From oklahoma_state_board_of_licensed_alcohol_and_drug_counselors.py:
+  #   POST data: name, prof_num, city, county, prof_type, display.
+  #   Paginated (10/page) via 'next_page' POST param.
+  #   Results in table rows with provider details.
+  #   Site substring-matches on name — local filtering needed for exact match.
+  base_url: "https://www.okdrugcounselors.org/members.php"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='prof_num']"
+      button_selector: "input[type='submit']"
+    - mode: last_name
+      input_selector: "input[name='name']"
+      button_selector: "input[type='submit']"
+    - mode: first_name
+      input_selector: "input[name='name']"
+      button_selector: "input[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='name']"
+      fallback_selectors:
+        - "input[type='text']"
+    search_button:
+      selector: "input[type='submit']"
+      fallback_selectors:
+        - "button[type='submit']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records found"
+      - "no results"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    # Each provider is a <table border="1" width="398"> element.
+    # Row 0: name. Row 1+: <b>Label:</b> value pairs.
+    row_selector: "table[border] table[border] tbody tr:first-child"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+    custom_js: |
+      () => {
+        const FIELD_MAP = {
+          'City': 'city', 'County': 'county', 'Phone': 'phone',
+          'Employer': 'employer', 'Self-Employed': 'self_employed',
+          'Board Approved Supervisor': 'supervisor',
+          'License Number': 'license_number', 'Certificate Number': 'license_number',
+          'Type': 'license_type', 'Status': 'status', 'Status Class': 'license_class',
+          'Date First Licensed': 'issue_date', 'Expiration Date': 'expiration_date',
+          'Disciplinary History': 'disciplinary_actions'
+        };
+        const tables = [...document.querySelectorAll('table[border="1"][width="398"]')];
+        return tables.map(tbl => {
+          const rows = [...tbl.querySelectorAll('tr')];
+          const rec = {};
+          const nameB = rows[0] && rows[0].querySelector('b');
+          if (nameB) rec.full_name = nameB.textContent.trim();
+          for (let i = 1; i < rows.length; i++) {
+            for (const b of rows[i].querySelectorAll('b')) {
+              const rawLabel = b.textContent.trim().replace(/:+$/, '');
+              if (!rawLabel) continue;
+              const canonKey = FIELD_MAP[rawLabel] || rawLabel;
+              const nxt = b.nextSibling;
+              const value = (nxt && nxt.nodeType === 3) ? nxt.textContent.trim() : '';
+              rec[canonKey] = value;
+            }
+          }
+          return rec;
+        });
+      }
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "input[name='next_page']"
+    disabled_class: disabled
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+  field_map:
+    "License Number": license_number
+    "License Type": license_type
+    "Status": status
+    "Status Class": license_class
+    "Date First Licensed": issue_date
+    "Expiration Date": expiration_date
+    "City": city
+    "County": county
+    "Phone": phone
+    "Employer": employer
+    "Self-Employed": self_employed
+    "Board Approved Supervisor": supervisor
+    "Disciplinary History": disciplinary_actions
+
+output:
+  status_map:
+    "ACTIVE": active
+    "Active": active
+    "active": active
+    "INACTIVE": inactive
+    "Inactive": inactive
+    "EXPIRED": expired
+    "Expired": expired
+    "SUSPENDED": suspended
+    "Suspended": suspended
+    "REVOKED": revoked
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/OK_ADAC/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

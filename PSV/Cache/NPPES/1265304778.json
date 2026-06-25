@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1602 OAKFIELD DR STE 205",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BRANDON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335110827",
+          "state": "FL",
+          "telephone_number": "239-690-6906"
+        },
+        {
+          "address_1": "1602 OAKFIELD DR STE 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BRANDON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335110827",
+          "state": "FL",
+          "telephone_number": "239-690-6906"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-30",
+        "credential": "PMHNP-BC",
+        "enumeration_date": "2025-09-23",
+        "first_name": "ANABEL",
+        "last_name": "DELGADO",
+        "last_updated": "2025-09-30",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1758647403000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759259594000",
+      "number": "1265304778",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "APRN11042616",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7901 4TH ST N STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST PETERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "337024399",
+          "state": "FL",
+          "telephone_number": "239-493-1930"
+        },
+        {
+          "address_1": "7901 4TH ST N STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ST PETERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "337024399",
+          "state": "FL",
+          "telephone_number": "239-493-1930"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-10",
+        "credential": "PMHNP-BC",
+        "enumeration_date": "2025-06-07",
+        "first_name": "MARIA VICTORIA",
+        "last_name": "TELLEZ ALVAREZ",
+        "last_updated": "2026-02-10",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1749329703000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770732903000",
+      "number": "1578457073",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2913 LEE BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEHIGH ACRES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-491-6217",
+          "postal_code": "339711438",
+          "state": "FL",
+          "telephone_number": "239-491-8204"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "APRN11039648",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -266,7 +266,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: "local"
-  local_path: "./evidence/NV_DENTAL/{run_id}/"
+  local_path: "Evidence/NV_DENTAL/{run_id}/"
 
 # ─── H. Compliance ────────────────────────────────────────
 compliance:

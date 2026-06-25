@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1448 10TH AVE STE 304",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "304-691-8591",
+          "postal_code": "257013579",
+          "state": "WV",
+          "telephone_number": "304-691-6381"
+        },
+        {
+          "address_1": "1600 MEDICAL CENTER DR STE 3500",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "257013655",
+          "state": "WV",
+          "telephone_number": "304-691-1300"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-29",
+        "enumeration_date": "2020-04-24",
+        "first_name": "DUSTIN",
+        "last_name": "MILLER",
+        "last_updated": "2025-12-29",
+        "middle_name": "RICHARD",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1587740610000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767036321000",
+      "number": "1689294142",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3075 US ROUTE 60",
+          "address_2": "DOOR D",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "304-399-4433",
+          "postal_code": "257058859",
+          "state": "WV",
+          "telephone_number": "304-399-4422"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "4180",
+          "primary": true,
+          "state": "WV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2080N0001X",
+          "desc": "Pediatrics, Neonatal-Perinatal Medicine",
+          "license": "4180",
+          "primary": false,
+          "state": "WV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

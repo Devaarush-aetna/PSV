@@ -6,6 +6,11 @@ identity:
   profession_codes: [MD, DO]
   base_url: "https://wybomv7prod.glsuite.us/GLSuiteWeb/Clients/WYBOM/Public/LicenseeSearch.aspx?SearchType=Physician"
   archetype: classic_html_form
+  # NOTE: TL-prefix licenses (e.g. TL8870) are Wyoming Telemedicine Registrations — a separate
+  # license class issued by the same board.  They appear on a different GLSuite search page
+  # (SearchType=Telemedicine or a dedicated LicenseeSearchTM.aspx).  Searching here with a
+  # TL license number will not find them.  Create a separate WY_TELEHEALTH board config once
+  # the correct GLSuite SearchType parameter is confirmed.
 
 search:
   modes:
@@ -103,7 +108,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_PHYSICIAN/{run_id}/"
+  local_path: "Evidence/WY_PHYSICIAN/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"

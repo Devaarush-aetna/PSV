@@ -57,6 +57,28 @@ class LicenseRecord(BaseModel):
     evidence_screenshot_path: Optional[str] = None
     raw_fields: dict = Field(default_factory=dict)
     used_ai: bool = False
+    partial_result: bool = False
+
+    # ----- Orchestrator provenance fields (populated by output_emitter) -----
+    match_method: Optional[str] = None       # exact_license | exact_name |
+                                             # npi_substituted_exact | ai_fuzzy |
+                                             # tiebreak_provider_type | none
+    npi_discrepancy_used: bool = False
+    npi_other_name_match: bool = False
+    npi_source_flag: bool = False
+    ai_fallback_used: bool = False
+    ai_layer: Optional[int] = None
+    manual_flag: bool = False
+    secondary_check_passed: bool = False
+    provider_type_matched: bool = False
+    fuzzy_score: Optional[float] = None
+    fuzzy_breakdown: Optional[dict] = None
+    tiebreaker_used: bool = False
+    weight_profile_used: Optional[str] = None
+    evidence_dir: Optional[str] = None
+    trace_path: Optional[str] = None
+    attempts_used: int = 0
+    failure_reason: Optional[str] = None     # one of trace.REASON_* codes when not Pass
 
 
 # ---------------------------------------------------------------------------
@@ -69,6 +91,7 @@ class SearchQuery(BaseModel):
     # Structured fields — when set, they take precedence over `query` token splitting.
     license_number: Optional[str] = None
     first_name: Optional[str] = None
+    middle_name: Optional[str] = None   # optional; boards with a dedicated middle-name field use {middle} in extra_inputs
     last_name: Optional[str] = None
     # Orthogonal filter modifiers — applied alongside the chosen combo mode.
     license_type: Optional[str] = None    # sub-category of license (Active, Permanent, ...)
@@ -77,12 +100,12 @@ class SearchQuery(BaseModel):
     @model_validator(mode="after")
     def _auto_join_query(self) -> "SearchQuery":
         # If `query` is empty but explicit fields are set, build a sensible joined string
-        # so legacy code reading `query.query` still gets a usable value. license_type
-        # and provider_type are filter modifiers, not search terms — excluded from join.
+        # so legacy code reading `query.query` still gets a usable value. license_type,
+        # provider_type are filter modifiers — excluded from join. middle_name sits between
+        # first and last in the canonical order.
         if not self.query:
-            parts = [v for v in (self.license_number, self.first_name, self.last_name) if v]
+            parts = [v for v in (self.license_number, self.first_name, self.middle_name, self.last_name) if v]
             if parts:
-                # Use object.__setattr__ to avoid re-triggering validation
                 object.__setattr__(self, "query", " ".join(parts))
         return self
 
@@ -90,11 +113,15 @@ class SearchQuery(BaseModel):
 # Canonical combination mode names. The engine synthesises these at runtime by
 # merging the constituent single-field modes (license_number / first_name / last_name)
 # from the same config — no per-board YAML needed when the single-field modes exist.
+# middle_name is always optional in *_mid_* modes: synthesis falls back gracefully when
+# the board config has no dedicated middle-name field.
 COMBO_MODES = frozenset({
     "first_and_last",
     "license_and_first",
     "license_and_last",
     "license_first_last",
+    "first_mid_last",          # first + middle + last (middle silently skipped if board has no mid field)
+    "license_first_mid_last",  # license + first + middle + last
 })
 
 
@@ -112,6 +139,8 @@ class TelemetryEvent(BaseModel):
     used_ai: bool = False
     error_msg: Optional[str] = None
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+    partial_result: bool = False
+    warnings: list[str] = Field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -128,7 +157,7 @@ class SiteIdentity(BaseModel):
     archetype: Literal[
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
         "socrata_api", "socrata_bulk_csv", "pdf_bulk", "csv_bulk", "certemy",
-        "json_api", "datatables_jsapi", "filemaker_webdirect",
+        "json_api", "datatables_jsapi", "filemaker_webdirect", "pega_constellation",
     ]
     # Optional explicit capability list — overrides auto-derivation in check_board_capability.
     # Use when the auto-derivation is wrong (e.g. dropdown-switched single-field boards).
@@ -138,6 +167,17 @@ class SiteIdentity(BaseModel):
     # pattern (label-first, value-fallback) alongside the primary input fill.
     license_type_selector: Optional[str] = None
     provider_type_selector: Optional[str] = None
+    # Maps psv_prov_type code → dropdown option value (or label) for the provider_type_selector.
+    # Used by first_and_last_typed ladder rung to pre-set the board/profession dropdown.
+    # Store the <option value="..."> string so Playwright's select_option(value=...) matches exactly.
+    prov_type_values: dict[str, str] = Field(default_factory=dict)
+    skip: bool = False
+    skip_reason: str = ""
+    # When True, the name-search ladder will retry with first and last names swapped if the
+    # standard order returns no results. Useful when input data stores names in "Last First"
+    # order without a comma separator (e.g. "Tucker Robin" could mean Last=Tucker, First=Robin
+    # OR Last=Robin, First=Tucker depending on the source system).
+    try_name_swap: bool = False
 
 
 class SearchMode(BaseModel):
@@ -152,6 +192,17 @@ class SearchMode(BaseModel):
     # Additional <select> dropdowns to set alongside the primary input.
     # Key = CSS selector, value = option label or value to select (exact text).
     extra_selects: dict[str, str] = Field(default_factory=dict)
+    # Angular Ivy reactive-form support: key in FormGroup.controls to set via JS evaluate.
+    # When set, fill_search_input() traverses __ngContext__ LView to find the FormGroup
+    # (identified by _hasOwnPendingAsyncValidator) and calls controls[key].setValue(query).
+    # Needed for boards where Playwright fill()/keyboard.type() don't update the FormControl.
+    angular_formgroup_key: Optional[str] = None
+    # Click this selector before filling inputs for this mode (e.g. switch to a different tab).
+    pre_click: Optional[str] = None
+    # Evaluate this JS expression to submit instead of clicking the submit button.
+    # Use when the submit button's click event is intercepted by JS (Spring Web Flow, etc.)
+    # and a direct form.submit() is needed. Example: "document.querySelector('#myForm form').submit()"
+    submit_js: Optional[str] = None
 
 
 class ElementSelector(BaseModel):
@@ -160,7 +211,7 @@ class ElementSelector(BaseModel):
 
 
 class SearchByDropdown(BaseModel):
-    strategy: Literal["select", "custom_dropdown", "radio", "none"] = "none"
+    strategy: Literal["select", "custom_dropdown", "radio", "slds_combobox", "none"] = "none"
     selector: Optional[str] = None
 
 
@@ -227,6 +278,10 @@ class ResultsTableConfig(BaseModel):
     # vertical_kv extractor: rows are <strong>Label:</strong>Value blocks separated by a
     # known recurring marker label (e.g. "Name"). Set to use vertical_kv extraction.
     vertical_kv: Optional["VerticalKvConfig"] = None
+    # custom_js: JS expression (arrow function string) returning [{field: value, ...}].
+    # When set, page.evaluate(custom_js) is called and results are returned directly,
+    # bypassing all other table/vertical_kv extraction. Use for non-standard layouts.
+    custom_js: Optional[str] = None
 
 
 class VerticalKvConfig(BaseModel):
@@ -251,8 +306,13 @@ class SelectListConfig(BaseModel):
     license_number_mode: str = "license_number"  # mode name to use for re-search
 
 
+class ThTdMultiConfig(BaseModel):
+    """Config for th_td_multi results type: one record per matching container element."""
+    container_selector: str = "table"  # CSS selector — each matched element is one record
+
+
 class ResultsConfig(BaseModel):
-    type: Literal["table", "card_list", "single_record", "ag_grid", "select_list"] = "table"
+    type: Literal["table", "card_list", "single_record", "ag_grid", "select_list", "th_td_multi"] = "table"
     table: Optional[ResultsTableConfig] = None
     ag_grid_columns: list[str] = Field(default_factory=list)
     has_detail_page: bool = True
@@ -262,6 +322,8 @@ class ResultsConfig(BaseModel):
     # from that page instead of hunting for trigger links (which would find wrong links).
     single_result_url_pattern: Optional[str] = None
     select_list: Optional[SelectListConfig] = None
+    # Config for th_td_multi type (th=key, td=value per row, one container = one record).
+    th_td_multi: Optional[ThTdMultiConfig] = None
     pagination: PaginationConfig = Field(default_factory=PaginationConfig)
 
 
@@ -315,7 +377,7 @@ class RetryConfig(BaseModel):
 
 
 class ProxyConfig(BaseModel):
-    enabled: bool = False
+    enabled: Optional[bool] = None  # None=follow env var, False=force off, True=same as None
 
 
 class TransportConfig(BaseModel):
@@ -347,9 +409,34 @@ class ComplianceConfig(BaseModel):
 
 
 class PdfEntry(BaseModel):
-    url: str
+    url: Optional[str] = None     # direct URL; may be None when download_strategy="page_link"
     format: str = "default"       # "prof", "estab", or custom label
     license_prefix: Optional[str] = None  # route to this PDF when license_number starts with this prefix
+    link_selector: Optional[str] = None   # per-PDF anchor selector for page_link strategy; falls back to PdfBulkConfig.link_selector
+
+
+class PdfBulkConfig(BaseModel):
+    pdfs: list[PdfEntry] = Field(default_factory=list)
+    download_strategy: Literal["direct_url", "page_link"] = "direct_url"
+    # page_link: navigate to base_url (or pdf_bulk.base_url), find anchor matching link_selector,
+    # download its href. With multiple PdfEntry items each having link_selector, run page_link
+    # discovery once per entry — useful for boards that publish 2+ PDFs (e.g. prof + estab).
+    base_url: Optional[str] = None    # override identity.base_url for page_link discovery
+    link_selector: str = "a[href*='.pdf']"
+    cache_days: int = 7
+    cache_dir: str = "./pdfs"
+
+
+class MergeSourceEntry(BaseModel):
+    """One source board in a local_merge csv_bulk download."""
+    source_id: str
+    header_row: int = 0
+    encoding: str = "utf-8-sig"
+    separator: str = ","
+    cache_days: int = 7   # max age in days to accept a cached CSV for this source
+    # Maps canonical field name → CSV column name (license_number, last_name, first_name,
+    # status, issue_date, expiration_date).  Only listed columns are kept in the merged output.
+    columns: dict[str, str] = Field(default_factory=dict)
 
 
 class CsvBulkConfig(BaseModel):
@@ -357,7 +444,7 @@ class CsvBulkConfig(BaseModel):
         "link_text", "link_text_xlsx", "direct_url", "post_form",
         "multi_step_checkbox", "google_sheet_link", "aithent_portal_xls",
         "nvbop_angular_xlsx", "onedrive_excel", "ohio_data_portal_csv",
-        "mopro_zip",  # Missouri MOPRO Salesforce LWC portal ZIP download (pending engine implementation)
+        "mopro_zip", "local_merge",
     ] = "link_text"
     link_text: Optional[str] = None        # for link_text: visible anchor text to find
     link_selector: Optional[str] = None   # for google_sheet_link: CSS/text selector for the Google Sheets link
@@ -368,6 +455,12 @@ class CsvBulkConfig(BaseModel):
     practitioner_types: list[str] = Field(default_factory=list)  # for multi_step_checkbox: types to download
     business_unit: Optional[str] = None   # for aithent_portal_xls: Business Unit dropdown text to match
     license_type_filter: Optional[str] = None  # for nvbop_angular_xlsx: license type to select before export
+    # mopro_zip: Missouri MOPRO Salesforce LWC portal (mopro.mo.gov/license/s/license-downloads).
+    # Selects board_label from the portal combobox → Submit → download each ZIP → extract TXT.
+    board_label: Optional[str] = None
+    # File format and column separator for non-CSV roster files (e.g. tab-delimited TXT from mopro_zip).
+    file_format: str = "csv"   # "csv" or "txt"
+    separator: str = ","       # column separator; use "\t" for mopro_zip TXT files
     download_timeout_ms: int = 120000     # max ms to wait for file download (google_sheet_link, xls/xlsx strategies)
     cache_days: int = 7
     cache_dir: str = "./csvs"
@@ -381,12 +474,12 @@ class CsvBulkConfig(BaseModel):
     # Optional CSV columns to AND-filter on when SearchQuery has license_type/provider_type set.
     license_type_column: Optional[str] = None
     provider_type_column: Optional[str] = None
-
-
-class PdfBulkConfig(BaseModel):
-    pdfs: list[PdfEntry] = Field(default_factory=list)
-    cache_days: int = 7
-    cache_dir: str = "./pdfs"
+    # google_sheet_link: download additional sheets (e.g. expired roster) and concatenate with primary.
+    # Each selector is matched on the same base_url page.  Failures are logged and skipped.
+    additional_link_selectors: list[str] = Field(default_factory=list)
+    # local_merge: read + normalize already-cached CSVs from other source boards and merge them.
+    # Used by combined boards like WY_ALL.  Does not download from the web.
+    merge_sources: list["MergeSourceEntry"] = Field(default_factory=list)
 
 
 class SmokeTestExpect(BaseModel):
@@ -403,6 +496,7 @@ class SmokeTestConfig(BaseModel):
     # with these instead of (or in addition to) the legacy `query` string.
     license_number: Optional[str] = None
     first_name: Optional[str] = None
+    middle_name: Optional[str] = None
     last_name: Optional[str] = None
     license_type: Optional[str] = None
     provider_type: Optional[str] = None

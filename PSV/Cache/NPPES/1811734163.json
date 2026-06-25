@@ -1,0 +1,77 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "17720 W 67TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SHAWNEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662179550",
+          "state": "KS",
+          "telephone_number": "913-515-4361"
+        },
+        {
+          "address_1": "22700 W 55TH TER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SHAWNEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662265602",
+          "state": "KS",
+          "telephone_number": "866-389-2727"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-12",
+        "credential": "APRN, FNP-C",
+        "enumeration_date": "2024-07-12",
+        "first_name": "KATHERINE",
+        "last_name": "KERNER",
+        "last_updated": "2024-07-12",
+        "middle_name": "ELISABETH",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1720824302000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1720824302000",
+      "number": "1811734163",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "13144998052",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "2024010422",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "5383371052",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

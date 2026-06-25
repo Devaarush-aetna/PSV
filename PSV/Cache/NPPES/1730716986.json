@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 2379",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ASHLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "411052379",
+          "state": "KY",
+          "telephone_number": "606-408-6200"
+        },
+        {
+          "address_1": "613 23RD ST STE 340",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ASHLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "411012879",
+          "state": "KY",
+          "telephone_number": "606-329-2888"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-22",
+        "credential": "D.O.",
+        "enumeration_date": "2020-03-26",
+        "first_name": "TIMOTHY",
+        "last_name": "DEMSHAR",
+        "last_updated": "2025-12-22",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1585246960000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1766415177000",
+      "number": "1730716986",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1 AKRON GENERAL AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "AKRON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "443072432",
+          "state": "OH",
+          "telephone_number": "330-344-6000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "06034",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11301 W 88TH ST",
+          "address_2": "STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-681-9906",
+          "postal_code": "662141703",
+          "state": "KS",
+          "telephone_number": "913-681-9909"
+        },
+        {
+          "address_1": "11301 W 88TH ST",
+          "address_2": "STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-681-9906",
+          "postal_code": "662141703",
+          "state": "KS",
+          "telephone_number": "913-681-9909"
+        }
+      ],
+      "basic": {
+        "credential": "PT, DPT",
+        "enumeration_date": "2015-08-24",
+        "first_name": "AARON",
+        "last_name": "FAST",
+        "last_updated": "2016-07-20",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1440436655000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1469049406000",
+      "number": "1942677117",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-05221",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

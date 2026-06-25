@@ -31,8 +31,8 @@ search:
     search_button:
       selector: "button[type='submit']:has-text('Search'), input[type='submit'][value*='Search']"
   results_wait:
-    strategy: url_change
-    timeout_ms: 20000
+    strategy: network_idle
+    timeout_ms: 30000
     no_results_indicators:
       - "no results"
       - "no records found"
@@ -139,7 +139,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/NV_SPEECH/{run_id}/"
 
 compliance:
   requires_captcha: false

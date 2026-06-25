@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "103 MEMORIAL MEDICAL PKWY STE 125",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DAYTONA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "386-274-0269",
+          "postal_code": "321175672",
+          "state": "FL",
+          "telephone_number": "386-274-0250"
+        },
+        {
+          "address_1": "103 MEMORIAL MEDICAL PKWY STE 125",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DAYTONA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "386-274-0269",
+          "postal_code": "321175672",
+          "state": "FL",
+          "telephone_number": "386-274-0250"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-10",
+        "enumeration_date": "2020-04-13",
+        "first_name": "AMANDA",
+        "last_name": "BRIESE",
+        "last_updated": "2025-11-10",
+        "middle_name": "KRISTIN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1586811171000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1762800862000",
+      "number": "1588283246",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "OS22654",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

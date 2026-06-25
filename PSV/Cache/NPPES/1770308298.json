@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "80773 DESERT SPUR DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "INDIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "922018328",
+          "state": "CA",
+          "telephone_number": "760-409-8076"
+        },
+        {
+          "address_1": "80773 DESERT SPUR DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "INDIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "922018328",
+          "state": "CA",
+          "telephone_number": "760-409-8076"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-11-19",
+        "credential": "IBCLC",
+        "enumeration_date": "2024-11-19",
+        "first_name": "SUSANA",
+        "last_name": "BERUMEN OSEGUERA",
+        "last_updated": "2024-11-19",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1732057502000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1732057502000",
+      "number": "1770308298",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "174N00000X",
+          "desc": "Lactation Consultant, Non-RN",
+          "license": "L-30360",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

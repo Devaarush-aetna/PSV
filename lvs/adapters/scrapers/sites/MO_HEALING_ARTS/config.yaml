@@ -16,15 +16,15 @@ csv_bulk:
   download_strategy: mopro_zip
   board_label: "Healing Arts"
   cache_days: 7
-  cache_dir: "./csvs/mo_healing_arts"
+  cache_dir: "./PSV/CSVS/mo_healing_arts"
   encoding: "latin-1"
   file_format: txt
   separator: "\t"
   search_columns:
-    license_number: "LIC_NUM"
-    last_name: "PRC_LAST"
-    first_name: "PRC_FIRST"
-    full_name: "PRC_LAST"
+    license_number: "lic_number"
+    last_name: "prc_last_name"
+    first_name: "prc_first_name"
+    full_name: "prc_last_name"
 
 search:
   modes:
@@ -57,25 +57,20 @@ detail:
     timeout_ms: 500
   strategies: []
   field_map:
-    "LIC_NUM": license_number
-    "PRC_FIRST": licensee_first_name
-    "PRC_LAST": licensee_last_name
-    "PRC_MIDDLE": licensee_middle_name
-    "SUFFIX": licensee_suffix
-    "LST_DESC": status
-    "LIC_STATUS": status
-    "EXP_DATE": expiration_date
-    "LIC_EXP": expiration_date
-    "ORIG_ISSUE": issue_date
-    "ISSUE_DATE": issue_date
-    "LIC_ORIG": issue_date
-    "CLAS_DESC": license_type
-    "CTYPE_DESC": license_type
-    "BA_ADDRESS": address
-    "BA_CITY": city
-    "BA_STATE": state_code
-    "BA_ZIP": zip_code
-    "LD_DESC": disciplinary_actions
+    "lic_number": license_number
+    "prc_first_name": first_name
+    "prc_last_name": last_name
+    "prc_middle_name": middle_name
+    "prc_suffix": suffix
+    "lst_description": status
+    "lic_exp_date": expiration_date
+    "lic_orig_issue_date": issue_date
+    "lic_profession": license_type
+    "ba_address": address
+    "ba_city": city
+    "ba_state": state_code
+    "ba_zip": zip_code
+    "discipline": disciplinary_actions
 
 output:
   status_map:
@@ -127,7 +122,7 @@ evidence:
   capture_screenshot: false
   capture_on: ["error"]
   storage: local
-  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+  local_path: "Evidence/MO_HEALING_ARTS/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-16"
@@ -136,8 +131,6 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  skip: true
-  skip_reason: "mopro_zip_strategy_required — Salesforce LWC portal download not yet supported by csv_extractor; use missouri_all_txt.py standalone script"
   mode: last_name
   query: "Smith"
   expect:

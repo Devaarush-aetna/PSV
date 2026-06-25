@@ -1,0 +1,129 @@
+identity:
+  source_id: WV_PSYCH
+  board_name: West Virginia Board of Examiners of Psychologists
+  state: WV
+  country: US
+  profession_codes: [PSY, MA_PSY]
+  base_url: "https://psychbd.wv.gov/license-info/License-Search/Pages/default.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "input[name='LastName']"
+    - mode: license_number
+      input_selector: "input[name='PsychNumber']"
+    - mode: first_name
+      input_selector: "input[name='FirstName1']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='LastName']"
+    search_button:
+      selector: "#buttonhide"
+  results_wait:
+    strategy: element_visible
+    selector: "div.psychbdSearchContainer b"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "No results found"
+      - "no records"
+
+results:
+  type: table
+  table:
+    row_selector: "div.psychbdSearchContainer > div"
+    cell_selector: "b"
+    skip_first_row: false
+    columns: {}
+    custom_js: |
+      () => {
+        const FIELD_MAP = {
+          'Psychology License Number': 'license_number',
+          'Psychology License Start Date': 'issue_date',
+          'Psychology License Expiration Date': 'expiration_date',
+          'Disciplinary Actions': 'disciplinary_actions',
+          'Status': 'status',
+          'Degree': 'degree'
+        };
+        const container = document.querySelector('div.psychbdSearchContainer > div');
+        if (!container) return [];
+        const records = [];
+        let current = null;
+        for (const node of container.childNodes) {
+          if (node.nodeType !== 1 || node.tagName !== 'B') continue;
+          const raw = node.textContent.replace(/ /g, ' ').trim();
+          if (!raw.includes(':')) {
+            if (current) records.push(current);
+            current = { full_name: raw };
+          } else {
+            const colonIdx = raw.indexOf(':');
+            const rawLabel = raw.slice(0, colonIdx).trim();
+            const canonKey = FIELD_MAP[rawLabel] || rawLabel;
+            const nxt = node.nextSibling;
+            const value = (nxt && nxt.nodeType === 3) ? nxt.textContent.trim() : '';
+            if (current !== null) current[canonKey] = value;
+          }
+        }
+        if (current) records.push(current);
+        return records;
+      }
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/WV_PSYCH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

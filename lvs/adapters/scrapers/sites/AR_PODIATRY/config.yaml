@@ -16,7 +16,7 @@ pdf_bulk:
     - url: "https://healthy.arkansas.gov/wp-content/uploads/BoPM_LicenseVerification_20260612.pdf"
       format: default
   cache_days: 7
-  cache_dir: "./pdfs"
+  cache_dir: "./PSV/PDFS"
 
 search:
   modes:
@@ -109,7 +109,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/AR_PODIATRY/{run_id}/"
 
 compliance:
   requires_captcha: false

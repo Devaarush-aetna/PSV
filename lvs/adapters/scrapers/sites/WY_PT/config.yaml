@@ -17,7 +17,7 @@ csv_bulk:
   download_timeout_ms: 180000    # 3-minute timeout for Google Sheets CSV export
   header_row: 3
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "LICENSE #"
@@ -106,7 +106,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_PT/{run_id}/"
+  local_path: "Evidence/WY_PT/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"

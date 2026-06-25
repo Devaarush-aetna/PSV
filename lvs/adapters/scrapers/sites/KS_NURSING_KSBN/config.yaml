@@ -1,0 +1,147 @@
+identity:
+  source_id: KS_NURSING_KSBN
+  board_name: Kansas State Board of Nursing (KSBN Verifications Portal)
+  state: KS
+  country: US
+  profession_codes: [NP, PN, RN, RNA, MW]
+  base_url: "https://www.kansas.gov/ksbn-verifications/search/records"
+  archetype: classic_html_form
+  # Note: KS_NURSING (portal.egov.ksbn.ks.gov) has reCAPTCHA — skip: true.
+  # This board uses the alternate public portal which has no CAPTCHA.
+  # Input data sometimes stores names in "LastName FirstName" order without a comma
+  # separator. try_name_swap retries first_and_last with names reversed on failure.
+  try_name_swap: true
+
+search:
+  modes:
+    # ── Tab 1: License Number search (default active tab — no pre_click needed) ──
+    - mode: license_number
+      input_selector: "#verificationCommand_licenseNumber"
+      # The site says "Enter the middle digits only (example: 00-000000-000)".
+      # In practice, entering just the numeric sequence without dashes also works.
+      submit_js: "document.querySelector('#searchLicense form').submit()"
+
+    # ── Tab 2: Name search (requires clicking the tab first) ──
+    - mode: first_and_last
+      pre_click: "#myTab li:nth-child(2) a"     # switch to "Search By Name" tab
+      input_selector: "#verificationCommand_lastName"
+      extra_inputs:
+        "#verificationCommand_firstName": "{first}"
+      extra_selects:
+        "#searchName #verificationCommand_licenseType": "{type}"
+      submit_js: "document.querySelector('#searchName form').submit()"
+
+    - mode: last_name
+      pre_click: "#myTab li:nth-child(2) a"
+      input_selector: "#verificationCommand_lastName"
+      extra_selects:
+        "#searchName #verificationCommand_licenseType": "{type}"
+      submit_js: "document.querySelector('#searchName form').submit()"
+
+    - mode: first_name
+      pre_click: "#myTab li:nth-child(2) a"
+      input_selector: "#verificationCommand_firstName"
+      extra_selects:
+        "#searchName #verificationCommand_licenseType": "{type}"
+      submit_js: "document.querySelector('#searchName form').submit()"
+
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#verificationCommand_licenseNumber"
+    search_button:
+      selector: "#searchLicense button[name='_eventId_submit']"
+      fallback_selectors:
+        - "button[name='_eventId_submit']"
+
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "No record found matching your search criteria"
+      - "0 result(s)"
+      - "License Number is not formatted correctly"
+
+results:
+  # Results page: /ksbn-verifications/search/search
+  # Each record is a <table id="search-results"> with <tr><th>key :</th><td>val</td></tr> rows.
+  # Multiple records appear as sibling tables — one table per provider.
+  type: th_td_multi
+  th_td_multi:
+    container_selector: "table#search-results"
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "License": license_number
+    "Last Name": last_name
+    "First Name": first_name
+    "Middle Name": middle_name
+    "Expiration": expiry_date
+    "Status": status
+    "Professional Description": license_type
+    "Original Issue Date": issue_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "Lapsed": expired
+    "lapsed": expired
+    "Exempt": inactive
+    "Revoked": revoked
+    "revoked": revoked
+    "Suspended": suspended
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/KS_NURSING_KSBN/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: first_and_last
+  query: "ROBIN TUCKER"
+  license_type: "NP"
+  expect:
+    min_records: 1
+    field_contains:
+      last_name: "Tucker"
+      status: "Active"

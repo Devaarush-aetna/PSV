@@ -17,7 +17,7 @@ csv_bulk:
   download_strategy: link_text
   link_text: "Download"
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8"
   search_columns:
     license_number: "LicenseNumber"
@@ -100,7 +100,7 @@ evidence:
   capture_screenshot: false
   capture_on: ["error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/SD_CHIRO/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

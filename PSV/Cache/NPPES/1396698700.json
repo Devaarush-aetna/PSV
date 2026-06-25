@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4960 SW 72ND AVE STE 405",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331555506",
+          "state": "FL",
+          "telephone_number": "469-458-9222"
+        },
+        {
+          "address_1": "1910 SW 18TH CT STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-622-7186",
+          "postal_code": "344717857",
+          "state": "FL",
+          "telephone_number": "352-629-7011"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-23",
+        "enumeration_date": "2026-02-16",
+        "first_name": "KEYRIE",
+        "last_name": "CORTES-NIEVES",
+        "last_updated": "2026-03-23",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1771265703000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774246342000",
+      "number": "1396698700",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "2026000052",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

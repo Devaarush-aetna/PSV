@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11408 W 135TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662219398",
+          "state": "KS",
+          "telephone_number": "913-681-9909"
+        },
+        {
+          "address_1": "11408 W 135TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662219398",
+          "state": "KS"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-19",
+        "credential": "PT, DPT",
+        "enumeration_date": "2024-05-30",
+        "first_name": "LAUREN",
+        "last_name": "SHIPLEY",
+        "last_updated": "2025-03-19",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1717121402000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1742412153000",
+      "number": "1417797903",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-07713",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

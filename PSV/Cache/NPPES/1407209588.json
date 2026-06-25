@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6885 W 151ST ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662232507",
+          "state": "KS",
+          "telephone_number": "913-897-1100"
+        },
+        {
+          "address_1": "10396 S RIDGEVIEW RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660616436",
+          "state": "KS",
+          "telephone_number": "913-599-4600"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2016-07-13",
+        "first_name": "JASON",
+        "last_name": "ROSKAM",
+        "last_updated": "2016-07-13",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1468444409000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1468444409000",
+      "number": "1407209588",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-05440",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

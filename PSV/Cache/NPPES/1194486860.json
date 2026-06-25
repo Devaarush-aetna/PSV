@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12200 S GARDENS DR APT 106",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PALM BEACH GARDENS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334185880",
+          "state": "FL",
+          "telephone_number": "386-569-1604"
+        },
+        {
+          "address_1": "12200 S GARDENS DR APT 106",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PALM BEACH GARDENS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334185880",
+          "state": "FL",
+          "telephone_number": "386-569-1604"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-01-05",
+        "credential": "DC",
+        "enumeration_date": "2022-01-05",
+        "first_name": "ROBERT",
+        "last_name": "BULLOCK",
+        "last_updated": "2022-01-05",
+        "name_prefix": "Dr.",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1641408104000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1641408104000",
+      "number": "1194486860",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "13588",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

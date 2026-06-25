@@ -14,9 +14,13 @@ identity:
 csv_bulk:
   download_strategy: google_sheet_link
   link_selector: "a[aria-label='Active License Verification']"
+  # Also download the expired/inactive roster and concatenate with the active sheet.
+  # Both sheets share the same column layout (Last Name, First Name, ..., License Number, ..., License Status).
+  additional_link_selectors:
+    - "a[aria-label='Expired License Verification']"
   header_row: 3
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "License Number"
@@ -57,6 +61,7 @@ detail:
   strategies: []
   field_map:
     "Last Name": last_name
+    "First Name": first_name
     "License Number": license_number
     "Issue Date": issue_date
     "Expiration Date": expiration_date
@@ -97,7 +102,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_MENTAL_HEALTH/{run_id}/"
+  local_path: "Evidence/WY_MENTAL_HEALTH/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

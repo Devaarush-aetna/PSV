@@ -1,0 +1,110 @@
+identity:
+  source_id: AL_MFT
+  board_name: Alabama Board of Examiners in Marriage and Family Therapy
+  state: AL
+  country: US
+  profession_codes: [MFT, LMFT]
+  # ASP.NET form at mft.alabama.gov. Results in #ContentPlaceHolder1_GridView1.
+  # Columns: 0=Name (Last, First), 1=license number, 2=View Details link.
+  # Submit button is an image button: #ContentPlaceHolder1_SearchLinkButton1.
+  base_url: "https://mft.alabama.gov/search.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "#ContentPlaceHolder1_NameTextBox"
+    - mode: license_number
+      input_selector: "#ContentPlaceHolder1_NumberTextBox"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ContentPlaceHolder1_NameTextBox"
+    search_button:
+      selector: "#ContentPlaceHolder1_SearchLinkButton1"
+  results_wait:
+    strategy: element_visible
+    selector: "#ContentPlaceHolder1_GridView1 tr"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records"
+      - "no results"
+      - "no matching"
+      - "0 records"
+
+results:
+  type: table
+  table:
+    row_selector: "#ContentPlaceHolder1_GridView1 tr"
+    cell_selector: "xpath=./td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: license_number
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/AL_MFT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false

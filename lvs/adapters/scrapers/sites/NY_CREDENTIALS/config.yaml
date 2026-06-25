@@ -100,7 +100,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/NY_CREDENTIALS/{run_id}/"
+  local_path: "Evidence/NY_CREDENTIALS/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-15"
@@ -115,4 +115,4 @@ smoke_test:
     min_records: 1
     full_name_contains: "Smith"
   skip: true
-  skip_reason: "wrong_url_no_public_search_form: op.nysed.gov/verification-search redirects to eservices.nysed.gov/professions/verification-search which is the Online Registration Renewal portal (login required), not a public verification form. The global site search (op.nysed.gov/search) returns 0 rows. Unblock: identify the correct public free-text license lookup URL for NYSED OP (a per-profession lookup at data.ny.gov Socrata may be the better approach)."
+  skip_reason: "api_search_response_blocked: eservices.nysed.gov/professions/verification-search IS reachable (no proxy needed). Page uses Vue Select dropdowns (#vs12-combobox = Search Type with 6 options, second combobox = Profession with 116 including 'All Professions (ALL)'). Full UI interaction works: select Licensee Name → select All Professions → fill #searchInput → click #goButton. Form fires GET https://api.nysed.gov/rosa/V2/byProfessionAndName?name={q}&professionCode=ALL (API key x-oapi-key in header from vsc.js bundle). BUT the search API response never arrives — Zscaler/corporate firewall allows maintenance endpoints (CURRENT_AS_OF, licenseeProfessions) but drops the search query response. Unblock: (a) add api.nysed.gov to Zscaler bypass/allowlist for search endpoints, OR (b) use data.ny.gov Socrata per-profession datasets as an alternative source."

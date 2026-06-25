@@ -1,0 +1,16 @@
+[
+  {
+    "role": "assistant",
+    "content": null,
+    "tool_calls": [
+      {
+        "id": "call_demo_1",
+        "type": "function",
+        "function": {
+          "name": "give_up",
+          "arguments": "{\"reason\": \"name_mismatch\"}"
+        }
+      }
+    ]
+  }
+]

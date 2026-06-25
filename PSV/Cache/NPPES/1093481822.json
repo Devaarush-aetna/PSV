@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 748519",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ATLANTA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "303748519",
+          "state": "GA",
+          "telephone_number": "904-376-3800"
+        },
+        {
+          "address_1": "400 COLONNADE DR STE 230",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PONTE VEDRA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-390-7511",
+          "postal_code": "320816237",
+          "state": "FL",
+          "telephone_number": "904-376-3800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-07",
+        "credential": "PhD",
+        "enumeration_date": "2021-08-20",
+        "first_name": "MEGAN",
+        "last_name": "KRANTZ",
+        "last_updated": "2025-10-07",
+        "middle_name": "LEANNE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1629489232000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759847060000",
+      "number": "1093481822",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "007216",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "PY12981",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

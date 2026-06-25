@@ -1,0 +1,772 @@
+psv_prov_type,clinical_name,state,source_id,board_name
+ABA,Applied Behavior Analyst,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+ABA,Applied Behavior Analyst,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+ABA,Applied Behavior Analyst,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+ABA,Applied Behavior Analyst,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+ABA,Applied Behavior Analyst,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+ABA,Applied Behavior Analyst,IN,IN_PLA,Indiana Professional Licensing Agency
+ABA,Applied Behavior Analyst,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+ABA,Applied Behavior Analyst,MS,MS_ABA,Mississippi Board of Licensure for Professional Counselors and Autism Specialists
+ABA,Applied Behavior Analyst,ND,ND_AP,North Dakota Board of Integrative Health Care (AP/ABA)
+ABA,Applied Behavior Analyst,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+ABA,Applied Behavior Analyst,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+ABA,Applied Behavior Analyst,NV,NV_ABA,Nevada ABA Board
+ABA,Applied Behavior Analyst,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+ABA,Applied Behavior Analyst,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+ABA,Applied Behavior Analyst,OR,OR_HLO,Oregon Health Licensing Office
+ABA,Applied Behavior Analyst,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+ABA,Applied Behavior Analyst,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+ABA,Applied Behavior Analyst,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+AP,Acupuncturist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+AP,Acupuncturist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+AP,Acupuncturist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+AP,Acupuncturist,IN,IN_PLA,Indiana Professional Licensing Agency
+AP,Acupuncturist,MA,MA_HEALTH,Massachusetts Health License Verification
+AP,Acupuncturist,MD,MD_ACUPUNCTURE,Maryland Board of Acupuncture
+AP,Acupuncturist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+AP,Acupuncturist,MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+AP,Acupuncturist,MO,MO_NURSING,Missouri State Board of Nursing
+AP,Acupuncturist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+AP,Acupuncturist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+AP,Acupuncturist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+AP,Acupuncturist,TX,TX_MEDBOARD,Texas Medical Board
+AP,Acupuncturist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+AP,Acupuncturist,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+AU,Audiologist,AL,AL_ABESPA,Alabama Board of Examiners for Speech-Language Pathology and Audiology
+AU,Audiologist,AZ,AZ_SPEECH_HEAR,"Arizona Department of Health Services - Licensing Services (Speech-Language Pathology, Audiology, Hearing Aid Dispensing)"
+AU,Audiologist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+AU,Audiologist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+AU,Audiologist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+AU,Audiologist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+AU,Audiologist,IN,IN_PLA,Indiana Professional Licensing Agency
+AU,Audiologist,LA,LA_SPEECH,Louisiana Board of Examiners for Speech-Language Pathology and Audiology
+AU,Audiologist,MD,MD_AUDIOLOGY,"Maryland Board of Audiologists, Hearing Aid Dispensers, and Speech-Language Pathologists"
+AU,Audiologist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+AU,Audiologist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+AU,Audiologist,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+AU,Audiologist,NC,NC_SLP_AUD,North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists
+AU,Audiologist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+AU,Audiologist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+AU,Audiologist,NV,NV_SPEECH,"Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board"
+AU,Audiologist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+AU,Audiologist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+AU,Audiologist,OK,OK_SLP_AUD,Oklahoma Board of Examiners for Speech-Language Pathology and Audiology
+AU,Audiologist,OR,OR_SLP,Oregon Board of Examiners for Speech-Language Pathology and Audiology
+AU,Audiologist,OR,OR_HLO,Oregon Health Licensing Office
+AU,Audiologist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+AU,Audiologist,SD,SD_AUDIOLOGY,South Dakota Board of Hearing Aid Dispensers and Audiologists
+AU,Audiologist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+AU,Audiologist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+AU,Audiologist,WY,WY_SPEECH,Wyoming Board of Examiners of Speech-Language Pathology and Audiology
+CP,Clinical Psychologist,AZ,AZ_PSYCH,Arizona Board of Psychologist Examiners
+CP,Clinical Psychologist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+CP,Clinical Psychologist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+CP,Clinical Psychologist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+CP,Clinical Psychologist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+CP,Clinical Psychologist,IN,IN_PLA,Indiana Professional Licensing Agency
+CP,Clinical Psychologist,MD,MD_PSYCH,Maryland Board of Examiners of Psychologists
+CP,Clinical Psychologist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+CP,Clinical Psychologist,MO,MO_PSYCHOLOGISTS,Missouri Committee of Psychologists
+CP,Clinical Psychologist,MS,MS_PSYCH,Mississippi Board of Psychology
+CP,Clinical Psychologist,NC,NC_MENTAL_HEALTH,North Carolina Board of Licensed Clinical Mental Health Counselors
+CP,Clinical Psychologist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+CP,Clinical Psychologist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+CP,Clinical Psychologist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+CP,Clinical Psychologist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+CP,Clinical Psychologist,OR,OR_PSYCH,Oregon Board of Psychology
+CP,Clinical Psychologist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+CP,Clinical Psychologist,SD,SD_PSYCH,South Dakota Board of Examiners of Psychologists
+CP,Clinical Psychologist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+CP,Clinical Psychologist,VT,VT_OPR,
+CP,Clinical Psychologist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+CP,Clinical Psychologist,WV,WV_PSYCH,West Virginia Board of Examiners of Psychologists
+CP,Clinical Psychologist,WY,WY_PSYCH,Wyoming Board of Psychology
+DA,Dental Assistant,AZ,AZ_DENTAL,Arizona State Board of Dental Examiners
+DA,Dental Assistant,KS,KS_DENTAL,Kansas Dental Board
+DA,Dental Assistant,LA,LA_DENTAL,Louisiana State Board of Dentistry
+DA,Dental Assistant,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DA,Dental Assistant,MN,MN_DENTISTRY,Minnesota Board of Dentistry
+DA,Dental Assistant,MO,MO_DENTAL,Missouri Dental Board
+DA,Dental Assistant,NC,NC_DENTAL,North Carolina State Board of Dental Examiners
+DA,Dental Assistant,ND,ND_DENTISTRY,North Dakota State Board of Dental Examiners
+DA,Dental Assistant,NV,NV_NVADGC,Nevada Division of Alcohol and Drug Counselors
+DA,Dental Assistant,OK,OK_DENTAL,Oklahoma State Board of Dentistry
+DA,Dental Assistant,OR,OR_DENTAL,Oregon Board of Dentistry
+DA,Dental Assistant,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DA,Dental Assistant,TX,TX_DENTAL,Texas State Board of Dental Examiners
+DA,Dental Assistant,WV,WV_DENTAL,West Virginia Board of Dental Examiners
+DA,Dental Assistant,WY,WY_DENTAL,Wyoming Board of Dental Examiners
+DAC,Drug/Alcohol Counselor,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+DAC,Drug/Alcohol Counselor,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DAC,Drug/Alcohol Counselor,IN,IN_PLA,Indiana Professional Licensing Agency
+DAC,Drug/Alcohol Counselor,MA,MA_BSAS,Massachusetts Bureau of Substance Addiction Services
+DAC,Drug/Alcohol Counselor,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DAC,Drug/Alcohol Counselor,NC,NC_DAC,North Carolina Substance Abuse Professional Practice Board
+DAC,Drug/Alcohol Counselor,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+DAC,Drug/Alcohol Counselor,OK,OK_ADAC,Oklahoma State Board of Licensed Alcohol and Drug Counselors
+DAC,Drug/Alcohol Counselor,OK,OK_BEHAVIORAL_HEALTH,Oklahoma State Board of Behavioral Health Licensure
+DAC,Drug/Alcohol Counselor,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DAC,Drug/Alcohol Counselor,TX,TX_CHEMICAL,Texas HHS - Licensed Chemical Dependency Counselor Program
+DAC,Drug/Alcohol Counselor,WY,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board
+DC,Chiropractor,AZ,AZ_CHIRO,
+DC,Chiropractor,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+DC,Chiropractor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DC,Chiropractor,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+DC,Chiropractor,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DC,Chiropractor,IN,IN_PLA,Indiana Professional Licensing Agency
+DC,Chiropractor,MA,MA_HEALTH,Massachusetts Health License Verification
+DC,Chiropractor,MD,MD_CHIROPRACTIC,Maryland Board of Chiropractic Examiners
+DC,Chiropractor,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DC,Chiropractor,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+DC,Chiropractor,MO,MO_CHIROPRACTIC,Missouri Board of Chiropractic Examiners
+DC,Chiropractor,MS,MS_CHIRO,Mississippi Board of Chiropractic Examiners
+DC,Chiropractor,NC,NC_CHIRO,North Carolina Board of Chiropractic Examiners
+DC,Chiropractor,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+DC,Chiropractor,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+DC,Chiropractor,NM,NM_RLD,New Mexico Regulation and Licensing Department
+DC,Chiropractor,NV,NV_CHIRO,Nevada Chiropractic Physicians' Board
+DC,Chiropractor,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+DC,Chiropractor,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DC,Chiropractor,SD,SD_CHIRO,South Dakota Board of Chiropractic Examiners
+DC,Chiropractor,TX,TX_CHIRO,Texas State Board of Chiropractic Examiners
+DC,Chiropractor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DC,Chiropractor,VT,VT_OPR,
+DC,Chiropractor,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DC,Chiropractor,WV,WV_CHIRO,West Virginia Board of Chiropractic
+DC,Chiropractor,WY,WY_CHIRO,Wyoming Chiropractic Board
+DDS,Dentist (DDS),AZ,AZ_DENTAL,Arizona State Board of Dental Examiners
+DDS,Dentist (DDS),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+DDS,Dentist (DDS),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DDS,Dentist (DDS),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DDS,Dentist (DDS),KS,KS_DENTAL,Kansas Dental Board
+DDS,Dentist (DDS),LA,LA_DENTAL,Louisiana State Board of Dentistry
+DDS,Dentist (DDS),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DDS,Dentist (DDS),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+DDS,Dentist (DDS),MN,MN_DENTISTRY,Minnesota Board of Dentistry
+DDS,Dentist (DDS),MO,MO_DENTAL,Missouri Dental Board
+DDS,Dentist (DDS),NC,NC_DENTAL,North Carolina State Board of Dental Examiners
+DDS,Dentist (DDS),ND,ND_DENTISTRY,North Dakota State Board of Dental Examiners
+DDS,Dentist (DDS),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+DDS,Dentist (DDS),NM,NM_RLD,New Mexico Regulation and Licensing Department
+DDS,Dentist (DDS),NV,NV_NVADGC,Nevada Division of Alcohol and Drug Counselors
+DDS,Dentist (DDS),NV,NV_DENTAL,Nevada State Board of Dental Examiners
+DDS,Dentist (DDS),NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+DDS,Dentist (DDS),OK,OK_DENTAL,Oklahoma State Board of Dentistry
+DDS,Dentist (DDS),OR,OR_DENTAL,Oregon Board of Dentistry
+DDS,Dentist (DDS),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DDS,Dentist (DDS),TX,TX_DENTAL,Texas State Board of Dental Examiners
+DDS,Dentist (DDS),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DDS,Dentist (DDS),WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+DDS,Dentist (DDS),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DDS,Dentist (DDS),WV,WV_DENTAL,West Virginia Board of Dental Examiners
+DDS,Dentist (DDS),WY,WY_DENTAL,Wyoming Board of Dental Examiners
+DMD,Dentist (DMD),AZ,AZ_DENTAL,Arizona State Board of Dental Examiners
+DMD,Dentist (DMD),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+DMD,Dentist (DMD),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DMD,Dentist (DMD),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DMD,Dentist (DMD),KS,KS_DENTAL,Kansas Dental Board
+DMD,Dentist (DMD),LA,LA_DENTAL,Louisiana State Board of Dentistry
+DMD,Dentist (DMD),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DMD,Dentist (DMD),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+DMD,Dentist (DMD),MN,MN_DENTISTRY,Minnesota Board of Dentistry
+DMD,Dentist (DMD),MO,MO_DENTAL,Missouri Dental Board
+DMD,Dentist (DMD),NC,NC_DENTAL,North Carolina State Board of Dental Examiners
+DMD,Dentist (DMD),ND,ND_DENTISTRY,North Dakota State Board of Dental Examiners
+DMD,Dentist (DMD),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+DMD,Dentist (DMD),NM,NM_RLD,New Mexico Regulation and Licensing Department
+DMD,Dentist (DMD),NV,NV_NVADGC,Nevada Division of Alcohol and Drug Counselors
+DMD,Dentist (DMD),NV,NV_DENTAL,Nevada State Board of Dental Examiners
+DMD,Dentist (DMD),NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+DMD,Dentist (DMD),OK,OK_DENTAL,Oklahoma State Board of Dentistry
+DMD,Dentist (DMD),OR,OR_DENTAL,Oregon Board of Dentistry
+DMD,Dentist (DMD),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DMD,Dentist (DMD),TX,TX_DENTAL,Texas State Board of Dental Examiners
+DMD,Dentist (DMD),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DMD,Dentist (DMD),WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+DMD,Dentist (DMD),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DMD,Dentist (DMD),WV,WV_DENTAL,West Virginia Board of Dental Examiners
+DMD,Dentist (DMD),WY,WY_DENTAL,Wyoming Board of Dental Examiners
+DO,Osteopathic Physician,AL,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission
+DO,Osteopathic Physician,AR,AR_MEDBOARD,Arkansas State Medical Board
+DO,Osteopathic Physician,AZ,AZ_OSTEO,Arizona Board of Osteopathic Examiners in Medicine and Surgery
+DO,Osteopathic Physician,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+DO,Osteopathic Physician,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+DO,Osteopathic Physician,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DO,Osteopathic Physician,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+DO,Osteopathic Physician,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DO,Osteopathic Physician,IN,IN_PLA,Indiana Professional Licensing Agency
+DO,Osteopathic Physician,KY,KY_MEDBOARD,Kentucky Board of Medical Licensure
+DO,Osteopathic Physician,LA,LA_MEDBOARD,Louisiana State Board of Medical Examiners
+DO,Osteopathic Physician,MA,MA_MDDO,Massachusetts Board of Registration in Medicine (MD/DO/AP)
+DO,Osteopathic Physician,MA,MA_HEALTH,Massachusetts Health License Verification
+DO,Osteopathic Physician,MD,MD_PHYSICIANS,Maryland Board of Physicians
+DO,Osteopathic Physician,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DO,Osteopathic Physician,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+DO,Osteopathic Physician,MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+DO,Osteopathic Physician,MO,MO_HEALING_ARTS,Missouri State Board of Healing Arts
+DO,Osteopathic Physician,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+DO,Osteopathic Physician,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+DO,Osteopathic Physician,NM,NM_MEDBOARD,New Mexico Board of Medical Examiners
+DO,Osteopathic Physician,NV,NV_MEDBOARD,Nevada State Board of Medical Examiners
+DO,Osteopathic Physician,NV,NV_OSTEO,Nevada State Board of Osteopathic Medicine
+DO,Osteopathic Physician,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+DO,Osteopathic Physician,OK,OK_OSTEO,Oklahoma State Board of Osteopathic Examiners
+DO,Osteopathic Physician,OR,OR_OMB,Oregon Medical Board
+DO,Osteopathic Physician,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DO,Osteopathic Physician,TX,TX_MEDBOARD,Texas Medical Board
+DO,Osteopathic Physician,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DO,Osteopathic Physician,VT,VT_MEDBOARD,Vermont Board of Medical Practice
+DO,Osteopathic Physician,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+DO,Osteopathic Physician,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DO,Osteopathic Physician,WV,WV_MEDBOARD_MD,West Virginia Board of Medicine — Medical Doctors
+DO,Osteopathic Physician,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+DP,Podiatrist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+DP,Podiatrist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+DP,Podiatrist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DP,Podiatrist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+DP,Podiatrist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DP,Podiatrist,IN,IN_PLA,Indiana Professional Licensing Agency
+DP,Podiatrist,KS,KS_PHARMACY,Kansas State Board of Pharmacy
+DP,Podiatrist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+DP,Podiatrist,MO,MO_PHARMACY,Missouri Board of Pharmacy
+DP,Podiatrist,ND,ND_PODIATRY,North Dakota Board of Podiatric Medicine
+DP,Podiatrist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+DP,Podiatrist,NV,NV_PHARMACY,Nevada State Board of Pharmacy — Pharmacists
+DP,Podiatrist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+DP,Podiatrist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+DP,Podiatrist,OR,OR_OMB,Oregon Medical Board
+DP,Podiatrist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DP,Podiatrist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DP,Podiatrist,VT,VT_OPR,
+DP,Podiatrist,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+DP,Podiatrist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DT,Dietitian,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+DT,Dietitian,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+DT,Dietitian,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+DT,Dietitian,HI,HI_DIETITIANS,Hawaii Department of Health — Licensed Dietitians
+DT,Dietitian,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+DT,Dietitian,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+DT,Dietitian,IN,IN_PLA,Indiana Professional Licensing Agency
+DT,Dietitian,LA,LA_DIETETICS,Louisiana Board of Examiners in Dietetics and Nutrition
+DT,Dietitian,MD,MD_DIETETICS,Maryland Board of Dietetic Practice
+DT,Dietitian,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+DT,Dietitian,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+DT,Dietitian,NC,NC_DIETETICS,North Carolina Board of Dietetics/Nutrition
+DT,Dietitian,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+DT,Dietitian,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+DT,Dietitian,NM,NM_RLD,New Mexico Regulation and Licensing Department
+DT,Dietitian,NV,NV_DIETITIAN,Nevada Division of Public and Behavioral Health — Dietitians & Music Therapists
+DT,Dietitian,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+DT,Dietitian,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+DT,Dietitian,OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+DT,Dietitian,OR,OR_HLO,Oregon Health Licensing Office
+DT,Dietitian,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+DT,Dietitian,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+DT,Dietitian,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+DT,Dietitian,WY,WY_DIETETICS,Wyoming Dietetics Licensing Board
+GNC,Genetic Counselor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+GNC,Genetic Counselor,KY,KY_GC,Kentucky Board of Medical Licensure - Genetic Counselor
+GNC,Genetic Counselor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+LAC,Licensed Acupuncturist,AZ,AZ_ACUPUNCTURE,Arizona Acupuncture Board of Examiners
+LAC,Licensed Acupuncturist,KY,KY_AP,Kentucky Board of Medical Licensure - Acupuncture
+LAC,Licensed Acupuncturist,MD,MD_ACUPUNCTURE,Maryland Board of Acupuncture
+LAC,Licensed Acupuncturist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+LAC,Licensed Acupuncturist,NV,NV_ORIENTAL,Nevada State Board of Oriental Medicine
+LAC,Licensed Acupuncturist,VT,VT_OPR,
+LC,Licensed Counselor,AL,AL_MFT,Alabama Board of Examiners in Marriage and Family Therapy
+LC,Licensed Counselor,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+LC,Licensed Counselor,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+LC,Licensed Counselor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+LC,Licensed Counselor,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+LC,Licensed Counselor,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+LC,Licensed Counselor,IN,IN_PLA,Indiana Professional Licensing Agency
+LC,Licensed Counselor,KS,KS_BSRB,Kansas Behavioral Sciences Regulatory Board
+LC,Licensed Counselor,MD,MD_COUNSELORS,Maryland Board of Professional Counselors and Therapists
+LC,Licensed Counselor,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+LC,Licensed Counselor,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+LC,Licensed Counselor,MS,MS_LPC,Mississippi State Board of Examiners for Licensed Professional Counselors
+LC,Licensed Counselor,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+LC,Licensed Counselor,MS,MS_SWMFT,Mississippi Board of Examiners for Social Workers and Marriage and Family Therapists
+LC,Licensed Counselor,NC,NC_MENTAL_HEALTH,North Carolina Board of Licensed Clinical Mental Health Counselors
+LC,Licensed Counselor,NC,NC_DAC,North Carolina Substance Abuse Professional Practice Board
+LC,Licensed Counselor,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+LC,Licensed Counselor,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+LC,Licensed Counselor,NV,NV_MFTPC,Nevada State Board of Examiners for Marriage and Family Therapists and Professional Counselors
+LC,Licensed Counselor,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+LC,Licensed Counselor,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+LC,Licensed Counselor,OK,OK_BEHAVIORAL_HEALTH,Oklahoma State Board of Behavioral Health Licensure
+LC,Licensed Counselor,OR,OR_COUNSELORS,Oregon Board of Licensed Professional Counselors and Therapists
+LC,Licensed Counselor,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+LC,Licensed Counselor,SC,SC_SCLLR_LPCMFT,"SC Dept. of Labor, Licensing and Regulation — Telehealth LPC/MFT Registry"
+LC,Licensed Counselor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+LC,Licensed Counselor,VT,VT_OPR,
+LC,Licensed Counselor,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+LC,Licensed Counselor,WY,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board
+LPC,Licensed Professional Counselor,AL,AL_MFT,Alabama Board of Examiners in Marriage and Family Therapy
+LPC,Licensed Professional Counselor,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+LPC,Licensed Professional Counselor,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+LPC,Licensed Professional Counselor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+LPC,Licensed Professional Counselor,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+LPC,Licensed Professional Counselor,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+LPC,Licensed Professional Counselor,IN,IN_PLA,Indiana Professional Licensing Agency
+LPC,Licensed Professional Counselor,KS,KS_BSRB,Kansas Behavioral Sciences Regulatory Board
+LPC,Licensed Professional Counselor,MD,MD_COUNSELORS,Maryland Board of Professional Counselors and Therapists
+LPC,Licensed Professional Counselor,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+LPC,Licensed Professional Counselor,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+LPC,Licensed Professional Counselor,MS,MS_LPC,Mississippi State Board of Examiners for Licensed Professional Counselors
+LPC,Licensed Professional Counselor,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+LPC,Licensed Professional Counselor,MS,MS_SWMFT,Mississippi Board of Examiners for Social Workers and Marriage and Family Therapists
+LPC,Licensed Professional Counselor,NC,NC_MENTAL_HEALTH,North Carolina Board of Licensed Clinical Mental Health Counselors
+LPC,Licensed Professional Counselor,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+LPC,Licensed Professional Counselor,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+LPC,Licensed Professional Counselor,NV,NV_MFTPC,Nevada State Board of Examiners for Marriage and Family Therapists and Professional Counselors
+LPC,Licensed Professional Counselor,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+LPC,Licensed Professional Counselor,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+LPC,Licensed Professional Counselor,OK,OK_BEHAVIORAL_HEALTH,Oklahoma State Board of Behavioral Health Licensure
+LPC,Licensed Professional Counselor,OR,OR_COUNSELORS,Oregon Board of Licensed Professional Counselors and Therapists
+LPC,Licensed Professional Counselor,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+LPC,Licensed Professional Counselor,SC,SC_SCLLR_LPCMFT,"SC Dept. of Labor, Licensing and Regulation — Telehealth LPC/MFT Registry"
+LPC,Licensed Professional Counselor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+LPC,Licensed Professional Counselor,VT,VT_OPR,
+LPC,Licensed Professional Counselor,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+LPC,Licensed Professional Counselor,WY,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board
+MD,Medical Doctor,AL,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission
+MD,Medical Doctor,AR,AR_MEDBOARD,Arkansas State Medical Board
+MD,Medical Doctor,AZ,AZ_MEDBOARD,Arizona Medical Board
+MD,Medical Doctor,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+MD,Medical Doctor,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+MD,Medical Doctor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+MD,Medical Doctor,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+MD,Medical Doctor,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+MD,Medical Doctor,IN,IN_PLA,Indiana Professional Licensing Agency
+MD,Medical Doctor,KY,KY_MEDBOARD,Kentucky Board of Medical Licensure
+MD,Medical Doctor,LA,LA_MEDBOARD,Louisiana State Board of Medical Examiners
+MD,Medical Doctor,MA,MA_MDDO,Massachusetts Board of Registration in Medicine (MD/DO/AP)
+MD,Medical Doctor,MA,MA_HEALTH,Massachusetts Health License Verification
+MD,Medical Doctor,MD,MD_PHYSICIANS,Maryland Board of Physicians
+MD,Medical Doctor,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+MD,Medical Doctor,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+MD,Medical Doctor,MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+MD,Medical Doctor,MO,MO_HEALING_ARTS,Missouri State Board of Healing Arts
+MD,Medical Doctor,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+MD,Medical Doctor,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+MD,Medical Doctor,NM,NM_MEDBOARD,New Mexico Board of Medical Examiners
+MD,Medical Doctor,NV,NV_MEDBOARD,Nevada State Board of Medical Examiners
+MD,Medical Doctor,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+MD,Medical Doctor,OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+MD,Medical Doctor,OR,OR_OMB,Oregon Medical Board
+MD,Medical Doctor,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+MD,Medical Doctor,TX,TX_MEDBOARD,Texas Medical Board
+MD,Medical Doctor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+MD,Medical Doctor,VT,VT_MEDBOARD,Vermont Board of Medical Practice
+MD,Medical Doctor,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+MD,Medical Doctor,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+MD,Medical Doctor,WV,WV_MEDBOARD_MD,West Virginia Board of Medicine — Medical Doctors
+MD,Medical Doctor,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+MST,Massage Therapist (MST),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+MT,Massage Therapist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+MT,Massage Therapist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+MT,Massage Therapist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+MT,Massage Therapist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+MT,Massage Therapist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+MT,Massage Therapist,IN,IN_PLA,Indiana Professional Licensing Agency
+MT,Massage Therapist,LA,LA_MASSAGETHERAPY,Louisiana Board of Massage Therapy
+MT,Massage Therapist,MD,MD_MASSAGE,Maryland State Board of Massage Therapy Examiners
+MT,Massage Therapist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+MT,Massage Therapist,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+MT,Massage Therapist,ND,ND_AP,North Dakota Board of Integrative Health Care (AP/ABA)
+MT,Massage Therapist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+MT,Massage Therapist,NV,NV_DIETITIAN,Nevada Division of Public and Behavioral Health — Dietitians & Music Therapists
+MT,Massage Therapist,NV,NV_MASSAGE,Nevada State Board of Massage Therapists
+MT,Massage Therapist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+MT,Massage Therapist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+MT,Massage Therapist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+MT,Massage Therapist,TX,TX_TDLR,Texas Department of Licensing and Regulation
+MT,Massage Therapist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+MT,Massage Therapist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+MW,Midwife,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+MW,Midwife,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+MW,Midwife,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+MW,Midwife,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+MW,Midwife,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+ND,Naturopathic Doctor,AZ,AZ_NATUROPATHIC,Arizona Naturopathic Physicians Medical Board
+ND,Naturopathic Doctor,OR,OR_NATUROPATH,Oregon Board of Naturopathic Medicine
+NP,Nurse Practitioner,AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+NP,Nurse Practitioner,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+NP,Nurse Practitioner,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+NP,Nurse Practitioner,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+NP,Nurse Practitioner,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+NP,Nurse Practitioner,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+NP,Nurse Practitioner,IN,IN_PLA,Indiana Professional Licensing Agency
+NP,Nurse Practitioner,KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+NP,Nurse Practitioner,MA,MA_HEALTH,Massachusetts Health License Verification
+NP,Nurse Practitioner,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+NP,Nurse Practitioner,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+NP,Nurse Practitioner,MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+NP,Nurse Practitioner,MO,MO_NURSING,Missouri State Board of Nursing
+NP,Nurse Practitioner,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+NP,Nurse Practitioner,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+NP,Nurse Practitioner,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+NP,Nurse Practitioner,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+NP,Nurse Practitioner,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+NP,Nurse Practitioner,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+NP,Nurse Practitioner,TX,TX_MEDBOARD,Texas Medical Board
+NP,Nurse Practitioner,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+NP,Nurse Practitioner,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+NP,Nurse Practitioner,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+NP,Nurse Practitioner,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+NPB,Nurse Practitioner (Board Cert),AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+NPB,Nurse Practitioner (Board Cert),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+NPB,Nurse Practitioner (Board Cert),CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+NPB,Nurse Practitioner (Board Cert),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+NPB,Nurse Practitioner (Board Cert),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+NPB,Nurse Practitioner (Board Cert),IN,IN_PLA,Indiana Professional Licensing Agency
+NPB,Nurse Practitioner (Board Cert),KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+NPB,Nurse Practitioner (Board Cert),MA,MA_HEALTH,Massachusetts Health License Verification
+NPB,Nurse Practitioner (Board Cert),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+NPB,Nurse Practitioner (Board Cert),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+NPB,Nurse Practitioner (Board Cert),MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+NPB,Nurse Practitioner (Board Cert),MO,MO_NURSING,Missouri State Board of Nursing
+NPB,Nurse Practitioner (Board Cert),MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+NPB,Nurse Practitioner (Board Cert),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+NPB,Nurse Practitioner (Board Cert),NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+NPB,Nurse Practitioner (Board Cert),NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+NPB,Nurse Practitioner (Board Cert),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+NPB,Nurse Practitioner (Board Cert),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+NPB,Nurse Practitioner (Board Cert),TX,TX_MEDBOARD,Texas Medical Board
+NPB,Nurse Practitioner (Board Cert),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+NPB,Nurse Practitioner (Board Cert),WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+NPB,Nurse Practitioner (Board Cert),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+NPS,Nurse Practitioner (Specialty),CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+NPS,Nurse Practitioner (Specialty),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+NPS,Nurse Practitioner (Specialty),IN,IN_PLA,Indiana Professional Licensing Agency
+NPS,Nurse Practitioner (Specialty),MA,MA_HEALTH,Massachusetts Health License Verification
+NPS,Nurse Practitioner (Specialty),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+NPS,Nurse Practitioner (Specialty),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+NPS,Nurse Practitioner (Specialty),MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+NPS,Nurse Practitioner (Specialty),MO,MO_NURSING,Missouri State Board of Nursing
+NPS,Nurse Practitioner (Specialty),NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+NPS,Nurse Practitioner (Specialty),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+NPS,Nurse Practitioner (Specialty),TX,TX_MEDBOARD,Texas Medical Board
+NPS,Nurse Practitioner (Specialty),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+NSA,Nurse Specialist/APRN,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+NUT,Nutritionist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+NUT,Nutritionist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+NUT,Nutritionist,NC,NC_DIETETICS,North Carolina Board of Dietetics/Nutrition
+NUT,Nutritionist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+NUT,Nutritionist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+NUT,Nutritionist,OR,OR_HLO,Oregon Health Licensing Office
+NUT,Nutritionist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+OD,Optometrist,AL,AL_OPTOMETRY,Alabama Board of Optometry
+OD,Optometrist,AZ,AZ_OPTOMETRY,Arizona State Board of Optometry
+OD,Optometrist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+OD,Optometrist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+OD,Optometrist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+OD,Optometrist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+OD,Optometrist,IN,IN_PLA,Indiana Professional Licensing Agency
+OD,Optometrist,KS,KS_OPTOMETRY,Kansas Board of Optometry
+OD,Optometrist,KY,KY_OD,Kentucky Board of Optometric Examiners
+OD,Optometrist,LA,LA_OPTOMETRY,Louisiana State Board of Optometry Examiners
+OD,Optometrist,MD,MD_OPTOMETRY,Maryland Board of Optometry
+OD,Optometrist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+OD,Optometrist,MO,MO_OPTOMETRY,Missouri State Board of Optometry
+OD,Optometrist,MS,MS_OPTOMETRY,Mississippi State Board of Optometry
+OD,Optometrist,NC,NC_OPTOMETRY,North Carolina State Board of Examiners in Optometry
+OD,Optometrist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+OD,Optometrist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+OD,Optometrist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+OD,Optometrist,NV,NV_OPTOMETRY,Nevada State Board of Optometry
+OD,Optometrist,OK,OK_OPTOMETRY,Oklahoma Board of Examiners in Optometry
+OD,Optometrist,OR,OR_OPTOMETRY,Oregon Board of Optometry
+OD,Optometrist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+OD,Optometrist,SD,SD_OPT,South Dakota Board of Optometry
+OD,Optometrist,TX,TX_OPTOMETRY,Texas Optometry Board
+OD,Optometrist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+OD,Optometrist,VT,VT_OPR,
+OD,Optometrist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+OD,Optometrist,WV,WV_OPTOMETRY,West Virginia Board of Optometry
+OD,Optometrist,WY,WY_OPTOMETRY,Wyoming Board of Optometry
+OP,Optician/Optometrist,AL,AL_OPTOMETRY,Alabama Board of Optometry
+OP,Optician/Optometrist,AZ,AZ_OPTOMETRY,Arizona State Board of Optometry
+OP,Optician/Optometrist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+OP,Optician/Optometrist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+OP,Optician/Optometrist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+OP,Optician/Optometrist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+OP,Optician/Optometrist,IN,IN_PLA,Indiana Professional Licensing Agency
+OP,Optician/Optometrist,KS,KS_OPTOMETRY,Kansas Board of Optometry
+OP,Optician/Optometrist,KY,KY_OD,Kentucky Board of Optometric Examiners
+OP,Optician/Optometrist,LA,LA_OPTOMETRY,Louisiana State Board of Optometry Examiners
+OP,Optician/Optometrist,MD,MD_OPTOMETRY,Maryland Board of Optometry
+OP,Optician/Optometrist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+OP,Optician/Optometrist,MO,MO_OPTOMETRY,Missouri State Board of Optometry
+OP,Optician/Optometrist,MS,MS_OPTOMETRY,Mississippi State Board of Optometry
+OP,Optician/Optometrist,NC,NC_OPTOMETRY,North Carolina State Board of Examiners in Optometry
+OP,Optician/Optometrist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+OP,Optician/Optometrist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+OP,Optician/Optometrist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+OP,Optician/Optometrist,NV,NV_OPTOMETRY,Nevada State Board of Optometry
+OP,Optician/Optometrist,OK,OK_OPTOMETRY,Oklahoma Board of Examiners in Optometry
+OP,Optician/Optometrist,OR,OR_OPTOMETRY,Oregon Board of Optometry
+OP,Optician/Optometrist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+OP,Optician/Optometrist,SD,SD_OPT,South Dakota Board of Optometry
+OP,Optician/Optometrist,TX,TX_OPTOMETRY,Texas Optometry Board
+OP,Optician/Optometrist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+OP,Optician/Optometrist,VT,VT_OPR,
+OP,Optician/Optometrist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+OP,Optician/Optometrist,WV,WV_OPTOMETRY,West Virginia Board of Optometry
+OP,Optician/Optometrist,WY,WY_OPTOMETRY,Wyoming Board of Optometry
+OT,Occupational Therapist,AZ,AZ_OT,Arizona State Board of Occupational Therapy Examiners
+OT,Occupational Therapist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+OT,Occupational Therapist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+OT,Occupational Therapist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+OT,Occupational Therapist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+OT,Occupational Therapist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+OT,Occupational Therapist,IN,IN_PLA,Indiana Professional Licensing Agency
+OT,Occupational Therapist,LA,LA_MEDBOARD,Louisiana State Board of Medical Examiners
+OT,Occupational Therapist,MA,MA_HEALTH,Massachusetts Health License Verification
+OT,Occupational Therapist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+OT,Occupational Therapist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+OT,Occupational Therapist,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+OT,Occupational Therapist,NC,NC_OT,North Carolina Board of Occupational Therapy
+OT,Occupational Therapist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+OT,Occupational Therapist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+OT,Occupational Therapist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+OT,Occupational Therapist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+OT,Occupational Therapist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+OT,Occupational Therapist,OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+OT,Occupational Therapist,OR,OR_OT,Oregon Occupational Therapy Licensing Board
+OT,Occupational Therapist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+OT,Occupational Therapist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+OT,Occupational Therapist,VT,VT_OPR,
+OT,Occupational Therapist,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+OT,Occupational Therapist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+OT,Occupational Therapist,WY,WY_OT,Wyoming Occupational Therapy Licensing Board
+PA,Physician Assistant,AL,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission
+PA,Physician Assistant,AZ,AZ_MEDBOARD,Arizona Medical Board
+PA,Physician Assistant,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PA,Physician Assistant,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+PA,Physician Assistant,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PA,Physician Assistant,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+PA,Physician Assistant,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PA,Physician Assistant,IN,IN_PLA,Indiana Professional Licensing Agency
+PA,Physician Assistant,KY,KY_PA,Kentucky Board of Medical Licensure - Physician Assistant
+PA,Physician Assistant,LA,LA_MEDBOARD,Louisiana State Board of Medical Examiners
+PA,Physician Assistant,MA,MA_HEALTH,Massachusetts Health License Verification
+PA,Physician Assistant,MD,MD_PHYSICIANS,Maryland Board of Physicians
+PA,Physician Assistant,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+PA,Physician Assistant,MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+PA,Physician Assistant,MO,MO_HEALING_ARTS,Missouri State Board of Healing Arts
+PA,Physician Assistant,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+PA,Physician Assistant,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+PA,Physician Assistant,NM,NM_MEDBOARD,New Mexico Board of Medical Examiners
+PA,Physician Assistant,NV,NV_MEDBOARD,Nevada State Board of Medical Examiners
+PA,Physician Assistant,OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+PA,Physician Assistant,OR,OR_OMB,Oregon Medical Board
+PA,Physician Assistant,TX,TX_MEDBOARD,Texas Medical Board
+PA,Physician Assistant,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PA,Physician Assistant,VT,VT_MEDBOARD,Vermont Board of Medical Practice
+PA,Physician Assistant,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PA,Physician Assistant,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PA,Physician Assistant,WV,WV_MEDBOARD_PA,West Virginia Board of Medicine — Physician Assistants
+PA,Physician Assistant,WY,WY_PA,Wyoming Board of Medicine — Physician Assistant
+PAB,Physician Assistant (Board),AZ,AZ_MEDBOARD,Arizona Medical Board
+PAB,Physician Assistant (Board),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PAB,Physician Assistant (Board),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PAB,Physician Assistant (Board),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PAB,Physician Assistant (Board),KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+PAB,Physician Assistant (Board),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+PAB,Physician Assistant (Board),OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+PAB,Physician Assistant (Board),OR,OR_OMB,Oregon Medical Board
+PAB,Physician Assistant (Board),TX,TX_MEDBOARD,Texas Medical Board
+PAB,Physician Assistant (Board),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PAB,Physician Assistant (Board),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PAS,Physician Assistant (Specialty),AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+PAS,Physician Assistant (Specialty),AL,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission
+PAS,Physician Assistant (Specialty),AZ,AZ_MEDBOARD,Arizona Medical Board
+PAS,Physician Assistant (Specialty),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PAS,Physician Assistant (Specialty),CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+PAS,Physician Assistant (Specialty),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PAS,Physician Assistant (Specialty),ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+PAS,Physician Assistant (Specialty),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PAS,Physician Assistant (Specialty),IN,IN_PLA,Indiana Professional Licensing Agency
+PAS,Physician Assistant (Specialty),KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+PAS,Physician Assistant (Specialty),KY,KY_PA,Kentucky Board of Medical Licensure - Physician Assistant
+PAS,Physician Assistant (Specialty),LA,LA_MEDBOARD,Louisiana State Board of Medical Examiners
+PAS,Physician Assistant (Specialty),MA,MA_HEALTH,Massachusetts Health License Verification
+PAS,Physician Assistant (Specialty),MD,MD_PHYSICIANS,Maryland Board of Physicians
+PAS,Physician Assistant (Specialty),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+PAS,Physician Assistant (Specialty),MN,MN_MEDPRACTICE,Minnesota Board of Medical Practice
+PAS,Physician Assistant (Specialty),MO,MO_HEALING_ARTS,Missouri State Board of Healing Arts
+PAS,Physician Assistant (Specialty),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+PAS,Physician Assistant (Specialty),NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+PAS,Physician Assistant (Specialty),NM,NM_MEDBOARD,New Mexico Board of Medical Examiners
+PAS,Physician Assistant (Specialty),NV,NV_MEDBOARD,Nevada State Board of Medical Examiners
+PAS,Physician Assistant (Specialty),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+PAS,Physician Assistant (Specialty),OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+PAS,Physician Assistant (Specialty),OR,OR_OMB,Oregon Medical Board
+PAS,Physician Assistant (Specialty),TX,TX_MEDBOARD,Texas Medical Board
+PAS,Physician Assistant (Specialty),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PAS,Physician Assistant (Specialty),VT,VT_MEDBOARD,Vermont Board of Medical Practice
+PAS,Physician Assistant (Specialty),WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PAS,Physician Assistant (Specialty),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PAS,Physician Assistant (Specialty),WV,WV_MEDBOARD_PA,West Virginia Board of Medicine — Physician Assistants
+PAS,Physician Assistant (Specialty),WY,WY_PA,Wyoming Board of Medicine — Physician Assistant
+PC,Professional Counselor,NC,NC_DAC,North Carolina Substance Abuse Professional Practice Board
+PH,Pharmacist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PH,Pharmacist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+PH,Pharmacist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PH,Pharmacist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+PH,Pharmacist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PH,Pharmacist,IN,IN_PLA,Indiana Professional Licensing Agency
+PH,Pharmacist,KS,KS_PHARMACY,Kansas State Board of Pharmacy
+PH,Pharmacist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+PH,Pharmacist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+PH,Pharmacist,MO,MO_PHARMACY,Missouri Board of Pharmacy
+PH,Pharmacist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+PH,Pharmacist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+PH,Pharmacist,NV,NV_PHARMACY,Nevada State Board of Pharmacy — Pharmacists
+PH,Pharmacist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+PH,Pharmacist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+PH,Pharmacist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+PH,Pharmacist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PH,Pharmacist,VT,VT_OPR,
+PH,Pharmacist,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PH,Pharmacist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PH,Pharmacist,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+PM,Other Medical Professional,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PN,Practical Nurse (LPN),AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+PN,Practical Nurse (LPN),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PN,Practical Nurse (LPN),CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+PN,Practical Nurse (LPN),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PN,Practical Nurse (LPN),ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+PN,Practical Nurse (LPN),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PN,Practical Nurse (LPN),IN,IN_PLA,Indiana Professional Licensing Agency
+PN,Practical Nurse (LPN),KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+PN,Practical Nurse (LPN),MA,MA_HEALTH,Massachusetts Health License Verification
+PN,Practical Nurse (LPN),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+PN,Practical Nurse (LPN),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+PN,Practical Nurse (LPN),MO,MO_NURSING,Missouri State Board of Nursing
+PN,Practical Nurse (LPN),MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+PN,Practical Nurse (LPN),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+PN,Practical Nurse (LPN),NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+PN,Practical Nurse (LPN),NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+PN,Practical Nurse (LPN),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+PN,Practical Nurse (LPN),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+PN,Practical Nurse (LPN),TX,TX_MEDBOARD,Texas Medical Board
+PN,Practical Nurse (LPN),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PN,Practical Nurse (LPN),WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PN,Practical Nurse (LPN),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PN,Practical Nurse (LPN),WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+PT,Physical Therapist,AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+PT,Physical Therapist,AZ,AZ_PT,Arizona Board of Physical Therapy
+PT,Physical Therapist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+PT,Physical Therapist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+PT,Physical Therapist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+PT,Physical Therapist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+PT,Physical Therapist,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+PT,Physical Therapist,IN,IN_PLA,Indiana Professional Licensing Agency
+PT,Physical Therapist,LA,LA_PT,Louisiana Physical Therapy Board
+PT,Physical Therapist,MA,MA_HEALTH,Massachusetts Health License Verification
+PT,Physical Therapist,MD,MD_PT,Maryland Board of Physical Therapy Examiners
+PT,Physical Therapist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+PT,Physical Therapist,MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+PT,Physical Therapist,MS,MS_PT,Mississippi Board of Physical Therapy
+PT,Physical Therapist,NC,NC_PT,North Carolina Board of Physical Therapy Examiners
+PT,Physical Therapist,ND,ND_PT,North Dakota Board of Physical Therapy
+PT,Physical Therapist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+PT,Physical Therapist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+PT,Physical Therapist,NM,NM_RLD,New Mexico Regulation and Licensing Department
+PT,Physical Therapist,NV,NV_PT,Nevada Physical Therapy Board
+PT,Physical Therapist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+PT,Physical Therapist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+PT,Physical Therapist,OK,OK_MEDBOARD,Oklahoma Board of Medical Licensure and Supervision
+PT,Physical Therapist,OR,OR_PT,Oregon Board of Physical Therapy
+PT,Physical Therapist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+PT,Physical Therapist,SD,SD_PT,South Dakota Board of Physical Therapy
+PT,Physical Therapist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+PT,Physical Therapist,VT,VT_OPR,
+PT,Physical Therapist,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+PT,Physical Therapist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PT,Physical Therapist,WV,WV_PT,West Virginia Board of Physical Therapy
+PT,Physical Therapist,WY,WY_PT,Wyoming Board of Physical Therapy
+RN,Registered Nurse,MA,MA_HEALTH,Massachusetts Health License Verification
+RN,Registered Nurse,TX,TX_MEDBOARD,Texas Medical Board
+RN,Registered Nurse,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+RNA,CRNA/Nurse Anesthetist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+RNA,CRNA/Nurse Anesthetist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+RNA,CRNA/Nurse Anesthetist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+RNA,CRNA/Nurse Anesthetist,IN,IN_PLA,Indiana Professional Licensing Agency
+RNA,CRNA/Nurse Anesthetist,KS,KS_GLSUITE,Kansas KDADS Health Occupations Credentialing
+RNA,CRNA/Nurse Anesthetist,MA,MA_HEALTH,Massachusetts Health License Verification
+RNA,CRNA/Nurse Anesthetist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+RNA,CRNA/Nurse Anesthetist,MO,MO_NURSING,Missouri State Board of Nursing
+RNA,CRNA/Nurse Anesthetist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+RNA,CRNA/Nurse Anesthetist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+RNA,CRNA/Nurse Anesthetist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+RNA,CRNA/Nurse Anesthetist,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+RNA,CRNA/Nurse Anesthetist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+RNA,CRNA/Nurse Anesthetist,TX,TX_MEDBOARD,Texas Medical Board
+RNA,CRNA/Nurse Anesthetist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+RNA,CRNA/Nurse Anesthetist,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+RNA,CRNA/Nurse Anesthetist,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+RNA,CRNA/Nurse Anesthetist,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+SH,Speech/Hearing (SLP/AUD),AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
+SH,Speech/Hearing (SLP/AUD),AL,AL_ABESPA,Alabama Board of Examiners for Speech-Language Pathology and Audiology
+SH,Speech/Hearing (SLP/AUD),AZ,AZ_SPEECH_HEAR,"Arizona Department of Health Services - Licensing Services (Speech-Language Pathology, Audiology, Hearing Aid Dispensing)"
+SH,Speech/Hearing (SLP/AUD),CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+SH,Speech/Hearing (SLP/AUD),CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+SH,Speech/Hearing (SLP/AUD),FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+SH,Speech/Hearing (SLP/AUD),ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+SH,Speech/Hearing (SLP/AUD),IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+SH,Speech/Hearing (SLP/AUD),IN,IN_PLA,Indiana Professional Licensing Agency
+SH,Speech/Hearing (SLP/AUD),LA,LA_SPEECH,Louisiana Board of Examiners for Speech-Language Pathology and Audiology
+SH,Speech/Hearing (SLP/AUD),MD,MD_AUDIOLOGY,"Maryland Board of Audiologists, Hearing Aid Dispensers, and Speech-Language Pathologists"
+SH,Speech/Hearing (SLP/AUD),ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+SH,Speech/Hearing (SLP/AUD),MI,MI_LARA,Michigan Department of Licensing and Regulatory Affairs (LARA)
+SH,Speech/Hearing (SLP/AUD),MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
+SH,Speech/Hearing (SLP/AUD),NC,NC_SLP_AUD,North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists
+SH,Speech/Hearing (SLP/AUD),NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+SH,Speech/Hearing (SLP/AUD),NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+SH,Speech/Hearing (SLP/AUD),NM,NM_RLD,New Mexico Regulation and Licensing Department
+SH,Speech/Hearing (SLP/AUD),NV,NV_SPEECH,"Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board"
+SH,Speech/Hearing (SLP/AUD),NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+SH,Speech/Hearing (SLP/AUD),OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+SH,Speech/Hearing (SLP/AUD),OK,OK_SLP_AUD,Oklahoma Board of Examiners for Speech-Language Pathology and Audiology
+SH,Speech/Hearing (SLP/AUD),OR,OR_SLP,Oregon Board of Examiners for Speech-Language Pathology and Audiology
+SH,Speech/Hearing (SLP/AUD),PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+SH,Speech/Hearing (SLP/AUD),SD,SD_SPEECH,South Dakota Board of Examiners for Speech-Language Pathology
+SH,Speech/Hearing (SLP/AUD),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+SH,Speech/Hearing (SLP/AUD),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+SH,Speech/Hearing (SLP/AUD),WY,WY_SPEECH,Wyoming Board of Examiners of Speech-Language Pathology and Audiology
+ST,Speech Therapist,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+ST,Speech Therapist,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+ST,Speech Therapist,NC,NC_SLP_AUD,North Carolina Board of Examiners for Speech-Language Pathologists and Audiologists
+ST,Speech Therapist,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+ST,Speech Therapist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+ST,Speech Therapist,NV,NV_SPEECH,"Nevada Speech-Language Pathology, Audiology & Hearing Aid Dispensing Board"
+ST,Speech Therapist,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+ST,Speech Therapist,OK,OK_SLP_AUD,Oklahoma Board of Examiners for Speech-Language Pathology and Audiology
+ST,Speech Therapist,OR,OR_SLP,Oregon Board of Examiners for Speech-Language Pathology and Audiology
+SW,Social Worker,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
+SW,Social Worker,CT,CT_ELICENSE,Connecticut eLicense — Healthcare Practitioners
+SW,Social Worker,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
+SW,Social Worker,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
+SW,Social Worker,IL,IL_LICENSING,Illinois Department of Financial and Professional Regulation — Professional License Data
+SW,Social Worker,IN,IN_PLA,Indiana Professional Licensing Agency
+SW,Social Worker,KS,KS_BSRB,Kansas Behavioral Sciences Regulatory Board
+SW,Social Worker,LA,LA_SOCIALWORK,Louisiana State Board of Social Work Examiners
+SW,Social Worker,MD,MD_SOCIALWORK,Maryland Board of Social Work Examiners
+SW,Social Worker,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
+SW,Social Worker,MS,MS_SWMFT,Mississippi Board of Examiners for Social Workers and Marriage and Family Therapists
+SW,Social Worker,NH,NH_OPLC,New Hampshire Office of Professional Licensure and Certification
+SW,Social Worker,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
+SW,Social Worker,NY,NY_CREDENTIALS,New York State Education Department - Office of the Professions (Multi-Profession)
+SW,Social Worker,OH,OH_PROVIDERS_INDIVIDUAL,State of Ohio Licensure - Individual
+SW,Social Worker,OK,OK_SOCIALWORK,Oklahoma State Board of Licensed Social Workers
+SW,Social Worker,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
+SW,Social Worker,SC,SC_SCLLR_SW,"SC Dept. of Labor, Licensing and Regulation — Telehealth Social Workers Registry"
+SW,Social Worker,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
+SW,Social Worker,WA,WA_HEALTH,Washington State Department of Health — Health Care Provider Credential Data
+SW,Social Worker,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+SW,Social Worker,WV,WV_SOCIALWORK,West Virginia Board of Social Work
+SW,Social Worker,WY,WY_MENTAL_HEALTH,Wyoming Mental Health Professions Licensing Board

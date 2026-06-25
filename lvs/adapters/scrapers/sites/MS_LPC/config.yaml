@@ -1,0 +1,125 @@
+identity:
+  source_id: MS_LPC
+  board_name: Mississippi State Board of Examiners for Licensed Professional Counselors
+  state: MS
+  country: US
+  profession_codes: [LPC, PLPC, LPCS]
+  # Classic ASP results page at lpc.ms.gov.
+  # Search: licensesearch.asp; results POST to licensesearchresults.asp.
+  # Form: #licnbr (license number), #lname (last name), #fname (first name).
+  # Results: 4 tables on page; results table has no id/class — identified by td[width='100'].
+  # Row layout: row[0]=spacer (no width attrs), row[1]=header, row[2+]=data.
+  # tr:has(td[width='100']) skips the spacer; skip_first_row skips the header.
+  # Columns: 0=row#, 1=license_number, 2=full_name, 3=issue_date, 4=expiration_date, 5=status.
+  # License formats: "3244" (LPC), "P-0165" (P-LPC provisional), "S-0001" (LPC-S supervisor).
+  # Status formats: "LPC ACTIVE", "LPC LAPSED", "P-LPC", "P-LPC LAPSED", "LPC REVOKED".
+  base_url: "https://www.lpc.ms.gov/secure/licensesearch.asp"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "#lname"
+    - mode: license_number
+      input_selector: "#licnbr"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lname"
+    search_button:
+      selector: "input[name='Submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "a[href*='licensesearchdetails']"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "0 matching documents were found"
+
+results:
+  type: table
+  table:
+    # Data rows contain <a href="licensesearchdetails.asp?ID=N"> in the license cell.
+    # Using this to skip spacer (empty) and header (plain text) rows automatically.
+    row_selector: "tr:has(a[href*='licensesearchdetails'])"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      1: license_number
+      2: full_name
+      3: issue_date
+      4: expiration_date
+      5: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "LPC ACTIVE": active
+    "LPC LAPSED": expired
+    "LPC REVOKED": revoked
+    "LPC SUSPENDED": suspended
+    "LPC CANCELLED": inactive
+    "P-LPC": active
+    "P-LPC LAPSED": expired
+    "P-LPC SUSPENDED": suspended
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/MS_LPC/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+    # First result (probe 2026-06-17): "3244" ALLISON KENNA SMITH — LPC ACTIVE (+52 more)

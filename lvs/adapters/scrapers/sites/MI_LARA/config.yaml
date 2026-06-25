@@ -170,7 +170,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{month}/{source_id}/{run_id}/"
+  local_path: "Evidence/MI_LARA/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-16"

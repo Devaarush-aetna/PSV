@@ -38,15 +38,20 @@ results:
     row_selector: "#Form1 table tr"
     cell_selector: "td"
     skip_first_row: true
-    # AGY=8 grid layout differs from other web1.ky.gov boards:
-    # col0=first_name  col1=middle_name  col2=last_name  col3=address  col4=city  col5=state
+    # AGY=8 grid layout (verified 2026-06-24):
+    # col0=First  col1=Middle  col2=Last  col3=Addr1  col4=Addr2  col5=City
+    # col6=State  col7=Zip  col8=Phone  col9=IssueDate  col10=County  col11=Status
+    # Note: board does NOT expose license_number OR expiration_date in results.
+    # All active OD licenses expire March 1 of each year (board-standard, not per-record).
     columns:
       0: first_name
       1: middle_name
       2: last_name
       3: address
-      4: city
-      5: state_code
+      5: city
+      6: state_code
+      9: issue_date
+      11: status
   has_detail_page: false
   pagination:
     enabled: false
@@ -126,7 +131,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KY_OD/{run_id}/"
 
 compliance:
   requires_captcha: false

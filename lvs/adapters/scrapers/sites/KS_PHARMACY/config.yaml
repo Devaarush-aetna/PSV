@@ -21,8 +21,9 @@ search:
     search_button:
       selector: "input#btnSearch"
   results_wait:
-    strategy: network_idle
-    timeout_ms: 20000
+    strategy: element_visible
+    selector: "#gvResults tr"
+    timeout_ms: 30000
     no_results_indicators:
       - "no results"
       - "no records"
@@ -31,8 +32,11 @@ search:
 results:
   type: table
   table:
-    row_selector: "table tr"
+    # #gvResults is the ASP.NET GridView post-search; first tr is the header row.
+    # Smith returns 501 records, Baker ~80; columns are Name | AKA | L/P/R # | City | State | Class | Status.
+    row_selector: "#gvResults tr"
     cell_selector: "td"
+    skip_first_row: true
     columns:
       0: "full_name"
       1: "aka"
@@ -41,10 +45,9 @@ results:
       4: "state_code"
       5: "license_type"
       6: "status"
-  has_detail_page: true
-  detail_trigger:
-    type: link_in_cell
-    selector: "a[href*='xid=']"
+  # has_detail_page disabled because Smith returns 500+ rows; iterating detail pages
+  # would exceed the per-board timeout. List columns already cover all key fields.
+  has_detail_page: false
   pagination:
     enabled: false
     strategy: none
@@ -133,7 +136,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KS_PHARMACY/{run_id}/"
 
 compliance:
   requires_captcha: false
@@ -146,5 +149,3 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "BAKER"
-  skip: true
-  skip_reason: "login_required: ksbop.elicensesoftware.com landing page is now a STAFF-ONLY username/password login (verified 2026-06-15). Was PASS in session 10 but the public license-search endpoint has been removed. Unblock: confirm with KS Board of Pharmacy whether a public lookup URL exists, OR shift to alternate KS pharmacy data source (e.g. NABP)."

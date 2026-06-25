@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2675 WINKLER AVE FL 2",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "339019342",
+          "state": "FL"
+        },
+        {
+          "address_1": "2343 AARON ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PORT CHARLOTTE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "339525305",
+          "state": "FL",
+          "telephone_number": "855-979-5700"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-29",
+        "credential": "DO",
+        "enumeration_date": "2020-09-30",
+        "first_name": "JOSEPH",
+        "last_name": "PETKIEWICZ",
+        "last_updated": "2025-07-29",
+        "middle_name": "MICHAEL",
+        "name_prefix": "Dr.",
+        "name_suffix": "II",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1601491367000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753808869000",
+      "number": "1154938397",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "6000 49TH ST N",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST PETERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "337092114",
+          "state": "FL",
+          "telephone_number": "727-521-5057"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "OS22285",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "OS22285",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

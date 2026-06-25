@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1200 CORPORATE DR STE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOOVER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "423-238-3473",
+          "postal_code": "352425424",
+          "state": "AL",
+          "telephone_number": "423-238-7217"
+        },
+        {
+          "address_1": "2 E GREGORY BLVD STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-926-0277",
+          "postal_code": "641141118",
+          "state": "MO",
+          "telephone_number": "816-926-0222"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-10-23",
+        "credential": "PT, DPT",
+        "enumeration_date": "2020-10-23",
+        "first_name": "SAMUEL",
+        "last_name": "SHEPHERD",
+        "last_updated": "2020-10-23",
+        "middle_name": "JOSEPH",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1603468602000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1603468602000",
+      "number": "1568061208",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-06564",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "2020034759",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "132 CASTILIAN DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234627638",
+          "state": "VA",
+          "telephone_number": "970-573-2420"
+        },
+        {
+          "address_1": "132 CASTILIAN DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234627638",
+          "state": "VA",
+          "telephone_number": "970-573-2420"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-08",
+        "enumeration_date": "2019-11-20",
+        "first_name": "MADELINE",
+        "last_name": "HARPER",
+        "last_updated": "2026-06-08",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1574266438000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1780938501000",
+      "number": "1033755467",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3101 MAGIC HOLLOW BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234533010",
+          "state": "VA",
+          "telephone_number": "757-639-2218"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-24-73624",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

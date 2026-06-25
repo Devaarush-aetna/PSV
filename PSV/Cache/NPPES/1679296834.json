@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3651 COLLEGE BLVD STE 110",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEAWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-253-1760",
+          "postal_code": "662111910",
+          "state": "KS",
+          "telephone_number": "913-253-8980"
+        },
+        {
+          "address_1": "3651 COLLEGE BLVD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEAWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662111910",
+          "state": "KS",
+          "telephone_number": "913-253-8980"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-09-22",
+        "credential": "OT, CHT",
+        "enumeration_date": "2022-09-22",
+        "first_name": "ALLISON",
+        "last_name": "BARNETT",
+        "last_updated": "2022-09-22",
+        "middle_name": "LEA",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1663876504000",
+      "endpoints": [
+        {
+          "address_1": "3651 College Blvd Ste 110",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Leawood",
+          "contentOtherDescription": "email",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "abarnett@kcoi.com",
+          "endpointDescription": "email",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "662111910",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1663876504000",
+      "number": "1679296834",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225XH1200X",
+          "desc": "Occupational Therapist, Hand",
+          "license": "17-02254",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

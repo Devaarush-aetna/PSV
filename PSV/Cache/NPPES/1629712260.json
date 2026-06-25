@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "840 N STATE ROAD 434 STE B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ALTAMONTE SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "327147014",
+          "state": "FL",
+          "telephone_number": "407-869-7077"
+        },
+        {
+          "address_1": "4900 CYPRESS GARDENS RD APT 9",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WINTER HAVEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "338842969",
+          "state": "FL",
+          "telephone_number": "863-529-5576"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-14",
+        "credential": "DPM",
+        "enumeration_date": "2022-04-20",
+        "first_name": "NEIL",
+        "last_name": "JANI",
+        "last_updated": "2025-07-14",
+        "middle_name": "JAYESH",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1650493161000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752513514000",
+      "number": "1629712260",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1435 W 49TH PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HIALEAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330123197",
+          "state": "FL",
+          "telephone_number": "305-558-2500"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213ES0103X",
+          "desc": "Podiatrist, Foot & Ankle Surgery",
+          "license": "PO4673",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

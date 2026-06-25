@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1000 SUNNYSIDE AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAWRENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660457599",
+          "state": "KS",
+          "telephone_number": "785-864-0771"
+        },
+        {
+          "address_1": "1000 SUNNYSIDE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAWRENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660457599",
+          "state": "KS",
+          "telephone_number": "785-864-0771"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-02-18",
+        "credential": "BCBA",
+        "enumeration_date": "2019-03-18",
+        "first_name": "MARISSA",
+        "last_name": "KAMLOWSKY",
+        "last_updated": "2021-02-18",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1552933249000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1613669774000",
+      "number": "1972062149",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3790 DAIRY RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329047630",
+          "state": "FL",
+          "telephone_number": "321-729-6858"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "106S00000X",
+          "desc": "Behavior Technician",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "421",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

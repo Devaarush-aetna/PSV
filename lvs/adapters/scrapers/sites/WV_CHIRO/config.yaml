@@ -21,7 +21,7 @@ identity:
 csv_bulk:
   download_strategy: onedrive_excel
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   # XLSX columns mirror the previous PDF columns from the standalone scraper:
   # Last Name | First Name | Middle Initial | Title | License # |
@@ -117,7 +117,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/WV_CHIRO/{run_id}/"
+  local_path: "Evidence/WV_CHIRO/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-12"

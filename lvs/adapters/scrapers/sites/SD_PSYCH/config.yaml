@@ -1,0 +1,107 @@
+identity:
+  source_id: SD_PSYCH
+  board_name: South Dakota Board of Examiners of Psychologists
+  state: SD
+  country: US
+  profession_codes: [Psychologist]
+  # PDF roster published at sdboards.org/dss/psych/verify/.
+  # The verify page hosts a single PDF link (a[href*='pdf']); URL changes when a new
+  # roster is published. page_link strategy navigates to base_url and discovers the URL.
+  # PDF columns vary: Last Name, First Name, Level (Ph.D./Psy.D.), License #,
+  #   Effective Date, Expiration Date, Discipline
+  base_url: "https://www.sdboards.org/dss/psych/verify/"
+  archetype: pdf_bulk
+
+pdf_bulk:
+  download_strategy: page_link
+  link_selector: "a[href*='pdf']"
+  cache_days: 7
+  cache_dir: "./PSV/PDFS/{source_id}"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Last Name": last_name
+    "First Name": first_name
+    "Level": license_type
+    "License #": license_number
+    "Effective Date": issue_date
+    "Expiration Date": expiration_date
+    "Discipline": disciplinary_actions
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "Evidence/SD_PSYCH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1

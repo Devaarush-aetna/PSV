@@ -311,7 +311,8 @@ async def extract_ag_grid(page: Page, fallback_columns: list[str] | None = None)
             headers.pop()
         if not headers:
             headers = fb
-    except Exception:
+    except Exception as e:
+        log.warning("AG Grid header extraction failed, using fallback columns: %s", e)
         headers = fb
 
     log.info("AG Grid headers: %s", headers)
@@ -364,8 +365,9 @@ async def extract_ag_grid(page: Page, fallback_columns: list[str] | None = None)
                 await scroll_container.evaluate("el => { el.scrollTop += 500; }")
             else:
                 await page.evaluate("window.scrollBy(0, 500)")
-        except Exception:
-            pass
+        except Exception as e:
+            log.debug("AG Grid scroll step failed (stopping scroll): %s", e)
+            break
         await asyncio.sleep(0.5)
 
     log.info("AG Grid extracted %d records", len(records))
@@ -570,33 +572,78 @@ async def extract_vertical_kv(page_or_frame, vkv) -> list[dict]:
     return records
 
 
-async def extract_results_table(page: Page, config: ResultsConfig) -> list[dict]:
-    """Extract rows directly from a results table (no detail page click)."""
+async def extract_th_td_multi(page: Page, config: ResultsConfig) -> list[dict]:
+    """Extract multiple records from a page where each container holds th/td key-value rows.
+
+    One record per element matching `th_td_multi.container_selector`.
+    Each <tr><th>key</th><td>value</td></tr> inside a container becomes one field.
+    """
+    records: list[dict] = []
+    cfg = config.th_td_multi
+    if not cfg:
+        return records
+    try:
+        containers = page.locator(cfg.container_selector)
+        count = await containers.count()
+        for i in range(count):
+            container = containers.nth(i)
+            rec: dict = {}
+            rows = container.locator("tr")
+            row_count = await rows.count()
+            for r in range(row_count):
+                row = rows.nth(r)
+                ths = row.locator("th")
+                tds = row.locator("td")
+                if await ths.count() == 1 and await tds.count() == 1:
+                    key = (await ths.nth(0).inner_text()).strip().rstrip(":")
+                    val = (await tds.nth(0).inner_text()).strip()
+                    if key:
+                        rec[key] = val
+            if rec:
+                records.append(rec)
+    except Exception as e:
+        log.warning("extract_th_td_multi failed: %s", e)
+    return records
+
+
+async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list[dict], str | None]:
+    """Extract rows directly from a results table (no detail page click).
+
+    Returns (records, warning_or_None). Callers should append warning to partial_failures
+    when it is non-None.
+    """
     records: list[dict] = []
     if config.type == "ag_grid":
-        return await extract_ag_grid(page, config.ag_grid_columns or None)
+        return await extract_ag_grid(page, config.ag_grid_columns or None), None
 
     tbl_cfg = config.table
     if not tbl_cfg:
-        return records
+        return records, None
+
+    # custom_js: run arbitrary JS and return records directly
+    if tbl_cfg.custom_js:
+        try:
+            raw = await page.evaluate(tbl_cfg.custom_js)
+            if isinstance(raw, list):
+                return [r for r in raw if isinstance(r, dict)], None
+        except Exception as e:
+            log.warning("custom_js extraction failed: %s", e)
+            return records, f"custom_js extraction failed: {e}"
 
     # vertical_kv layout: no <table>, scan labelled fields
     if tbl_cfg.vertical_kv:
         ctx = page
         if tbl_cfg.iframe_selector:
-            frame = page.frame_locator(tbl_cfg.iframe_selector)
             try:
-                # frame_locator → use the underlying frame for evaluate()
-                ctx = await page.frame(name=None) or page
-                # Easier: query iframe element and grab content_frame()
+                # query iframe element and grab content_frame()
                 el = await page.query_selector(tbl_cfg.iframe_selector)
                 if el:
                     frm = await el.content_frame()
                     if frm:
                         ctx = frm
-            except Exception:
-                pass
-        return await extract_vertical_kv(ctx, tbl_cfg.vertical_kv)
+            except Exception as e:
+                log.warning("vertical_kv iframe '%s' resolution failed: %s", tbl_cfg.iframe_selector, e)
+        return await extract_vertical_kv(ctx, tbl_cfg.vertical_kv), None
 
     # iframe-scoped table extraction
     ctx = page
@@ -630,5 +677,6 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> list[dict]
                 records.append(rec)
     except Exception as e:
         log.warning("extract_results_table failed: %s", e)
+        return records, f"extract_results_table failed: {e}"
 
-    return records
+    return records, None

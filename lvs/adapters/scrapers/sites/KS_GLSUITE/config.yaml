@@ -42,6 +42,7 @@ results:
       3: "last_name"
       4: "license_number"
       5: "license_type"
+  single_result_url_pattern: "LicenseeDetails"
   has_detail_page: true
   detail_trigger:
     type: link_in_cell
@@ -125,7 +126,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KS_GLSUITE/{run_id}/"
 
 compliance:
   requires_captcha: false

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7426 US HIGHWAY 42 STE 106",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FLORENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-282-8018",
+          "postal_code": "410422056",
+          "state": "KY",
+          "telephone_number": "859-282-0119"
+        },
+        {
+          "address_1": "7426 US HIGHWAY 42 STE 106",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FLORENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-282-8018",
+          "postal_code": "410422056",
+          "state": "KY",
+          "telephone_number": "859-282-0119"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-05",
+        "enumeration_date": "2025-11-13",
+        "first_name": "KELSI",
+        "last_name": "CORCORAN",
+        "last_updated": "2026-02-05",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1763071802000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770327865000",
+      "number": "1053271932",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "257995",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

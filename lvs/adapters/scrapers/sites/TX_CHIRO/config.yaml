@@ -84,11 +84,11 @@ transport:
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
-  capture_html: false
-  capture_screenshot: false
-  capture_on: ["error"]
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/TX_CHIRO/{run_id}/"
+  local_path: "Evidence/TX_CHIRO/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-15"

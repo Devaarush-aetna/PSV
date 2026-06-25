@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1667 N CLYDE MORRIS BLVD # 2",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DAYTONA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "321175500",
+          "state": "FL"
+        },
+        {
+          "address_1": "1667 N CLYDE MORRIS BLVD STE 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DAYTONA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "386-274-2215",
+          "postal_code": "321175500",
+          "state": "FL",
+          "telephone_number": "386-518-6401"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-27",
+        "credential": "FNP-C",
+        "enumeration_date": "2025-08-27",
+        "first_name": "VERONICA",
+        "last_name": "PELLINO",
+        "last_updated": "2026-02-27",
+        "middle_name": "GEMA",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1756328403000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772230321000",
+      "number": "1275412041",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "11041931",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

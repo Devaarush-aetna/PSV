@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "24151 PALM AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOWEY IN THE HILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "347373919",
+          "state": "FL",
+          "telephone_number": "352-460-6707"
+        },
+        {
+          "address_1": "24151 PALM AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HOWEY IN THE HILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "347373919",
+          "state": "FL",
+          "telephone_number": "352-460-6707"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-07",
+        "enumeration_date": "2026-02-07",
+        "first_name": "ALICIA",
+        "last_name": "NORTHUP",
+        "last_updated": "2026-02-07",
+        "middle_name": "FRANCES",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1770462015000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770462015000",
+      "number": "1104777887",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "APRN11045354",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

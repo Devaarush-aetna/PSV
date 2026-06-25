@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "15125 STONERIDGE DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BASEHOR",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660075252",
+          "state": "KS",
+          "telephone_number": "913-775-3497"
+        },
+        {
+          "address_1": "11940 W 119TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-563-5174",
+          "postal_code": "662132216",
+          "state": "KS",
+          "telephone_number": "913-563-5500"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-25",
+        "credential": "DPT",
+        "enumeration_date": "2019-06-19",
+        "first_name": "BROOKE",
+        "last_name": "SCOTT",
+        "last_updated": "2026-03-25",
+        "middle_name": "KATHLEEN",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1560940628000",
+      "endpoints": [
+        {
+          "address_1": "11940 W 119th St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Overland Park",
+          "contentType": "CSV",
+          "contentTypeDescription": "CSV",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "WebPT",
+          "endpointDescription": "Documentation portal",
+          "endpointType": "OTHERS",
+          "endpointTypeDescription": "Other URL",
+          "postal_code": "662132216",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774453446000",
+      "number": "1730749904",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "1106210",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

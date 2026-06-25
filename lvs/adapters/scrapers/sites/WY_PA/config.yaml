@@ -38,8 +38,39 @@ results:
   table:
     row_selector: "#ContentPlaceHolder1_tblResults tr"
     cell_selector: "td"
-    columns:
-      1: "full_name"
+    custom_js: |
+      () => {
+        const FIELD_MAP = {
+          'Licensee Name': 'full_name',
+          'License Number': 'license_number',
+          'License Status': 'status',
+          'Date Licensed': 'issue_date',
+          'Office Address and Phone': 'address'
+        };
+        const rows = [...document.querySelectorAll('#ContentPlaceHolder1_tblResults tr')];
+        const records = [];
+        let cur = null;
+        for (const row of rows) {
+          const cells = row.querySelectorAll('td');
+          if (cells.length < 2) continue;
+          const label = cells[0].textContent.trim();
+          const value = cells[1].textContent.trim();
+          if (label === 'Licensee Name') {
+            if (cur && cur.license_number) records.push(cur);
+            cur = {};
+          }
+          if (!cur) continue;
+          const key = FIELD_MAP[label];
+          if (!key) continue;
+          if (key === 'status') {
+            cur[key] = value.includes(';') ? value.split(';').pop().trim() : value;
+          } else {
+            cur[key] = value;
+          }
+        }
+        if (cur && cur.license_number) records.push(cur);
+        return records;
+      }
   has_detail_page: false
   pagination:
     enabled: false
@@ -85,7 +116,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/WY_PA/{run_id}/"
+  local_path: "Evidence/WY_PA/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"
@@ -94,8 +125,9 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  mode: last_name
-  query: "Smith"
+  mode: license_number
+  query: "PA1424"
   expect:
     min_records: 1
+    license_number: "PA1424"
     full_name_contains: "Smith"

@@ -1,0 +1,116 @@
+identity:
+  source_id: "NM_MIDWIVES"
+  board_name: "Registry of Midwives Licensed by New Mexico Department of Health"
+  state: "NM"
+  country: "US"
+  profession_codes: ["MW"]
+  # NM DOH midwife registry — simple HTML table with live server-side search.
+  # Input: input#searchByName (placeholder "Search for...") — name search only.
+  # Table auto-loads all ~21 active midwives on page load; pressing Enter filters
+  # server-side and returns matching rows. No submit button — Enter key required.
+  # Columns (probe 2026-06-17): License Type | Applicant Name | License Number |
+  #   Issue Date | Expiration Date | Standing | Print License
+  base_url: "https://license.nmmidwife.doh.nm.gov/registry.html"
+  archetype: classic_html_form
+
+search:
+  submit_via_enter: true
+  modes:
+    - mode: last_name
+      input_selector: "input#searchByName"
+    - mode: first_name
+      input_selector: "input#searchByName"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#searchByName"
+    search_button:
+      selector: "input#searchByName"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 12000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+
+results:
+  type: table
+  table:
+    # Table probe (2026-06-17): row 0 = header, rows 1-N = data rows.
+    # Cols: 0=License Type, 1=Applicant Name (Last, First), 2=License Number,
+    #       3=Issue Date, 4=Expiration Date, 5=Standing, 6=Print License (skip)
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: license_type
+      1: full_name
+      2: license_number
+      3: issue_date
+      4: expiration_date
+      5: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Applicant Name": full_name
+    "License Number": license_number
+    "Standing": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Good": active
+    "Active": active
+    "good": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NM_MIDWIVES/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

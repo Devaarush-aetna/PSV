@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4801 ROANOKE PKWY APT 705",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641121672",
+          "state": "MO",
+          "telephone_number": "913-544-4642"
+        },
+        {
+          "address_1": "124 MISSOURI AVE STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641061499",
+          "state": "MO",
+          "telephone_number": "816-423-2593"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-01-20",
+        "credential": "MA, PLPC, LPC",
+        "enumeration_date": "2023-01-20",
+        "first_name": "GRACE",
+        "last_name": "GRIFFIN-SPAIN",
+        "last_updated": "2023-01-20",
+        "middle_name": "SAKOULAS",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1674249857000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1674249857000",
+      "number": "1184339434",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "4801 ROANOKE PKWY APT 705",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641121672",
+          "state": "MO",
+          "telephone_number": "913-544-4642"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "2021840944",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

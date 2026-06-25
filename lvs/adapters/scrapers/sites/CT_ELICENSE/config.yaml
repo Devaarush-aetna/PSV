@@ -27,7 +27,7 @@ csv_bulk:
     - "Chiropractor"
     - "Dentist"
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "LICENSE NO."
@@ -114,7 +114,7 @@ evidence:
   capture_screenshot: false
   capture_on: ["error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/CT_ELICENSE/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"

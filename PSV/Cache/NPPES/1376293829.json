@@ -1,0 +1,88 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "222 S ALSTON ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FOLEY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-633-4879",
+          "postal_code": "365351914",
+          "state": "AL",
+          "telephone_number": "850-633-4877"
+        },
+        {
+          "address_1": "222 S ALSTON ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FOLEY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-633-4879",
+          "postal_code": "365351914",
+          "state": "AL",
+          "telephone_number": "850-633-4877"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-12",
+        "credential": "DO",
+        "enumeration_date": "2022-03-27",
+        "first_name": "MORGAN",
+        "last_name": "MAJORS",
+        "last_updated": "2026-06-12",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1648421290000",
+      "endpoints": [
+        {
+          "address_1": "200 N. McKenzie Street",
+          "address_2": "Suite 200",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Foley",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "Tebra",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "36535",
+          "state": "AL",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1781279040000",
+      "number": "1376293829",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "DO",
+          "first_name": "MORGAN",
+          "last_name": "THORN",
+          "middle_name": "ELIZABETH",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "DO3583",
+          "primary": true,
+          "state": "AL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

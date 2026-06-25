@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "100 W KEY AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674017672",
+          "state": "KS",
+          "telephone_number": "785-643-1788"
+        },
+        {
+          "address_1": "400 S SANTA FE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674014144",
+          "state": "KS",
+          "telephone_number": "785-452-7000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-07",
+        "credential": "FNP-C",
+        "enumeration_date": "2025-08-07",
+        "first_name": "OLIVIA",
+        "last_name": "WEIR",
+        "last_updated": "2025-08-07",
+        "middle_name": "KRISTINE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1754610602000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754610602000",
+      "number": "1508741661",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "OLIVIA",
+          "last_name": "GIROUX",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "53-84389-022",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

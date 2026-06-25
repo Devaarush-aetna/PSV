@@ -37,13 +37,15 @@ results:
     row_selector: "#Form1 table tr"
     cell_selector: "td"
     skip_first_row: true
+    # Verified column layout (2026-06-21):
+    # col0=First  col1=Last  col2=LicType  col3=Address  col4=City  col5=State
+    # col6=Zip  col7=License Number  col8=IssueDate  col9=ExpDate
     columns:
       0: first_name
       1: last_name
-      2: license_number
-      3: license_type
-      4: status
-      5: expiration_date
+      2: license_type
+      7: license_number
+      9: expiration_date
   has_detail_page: false
   pagination:
     enabled: false
@@ -123,7 +125,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/KY_PA/{run_id}/"
 
 compliance:
   requires_captcha: false

@@ -928,6 +928,249 @@ async def _download_onedrive_excel(
             await browser.close()
 
 
+async def _download_mopro_zip(
+    board_label: str, proxy_cfg=None, download_timeout_ms: int = 180_000,
+) -> str:
+    """Missouri MOPRO Salesforce LWC portal ZIP download.
+
+    Portal: https://mopro.mo.gov/license/s/license-downloads
+    Flow:
+      1. Navigate and wait for the "Downloadable Listings" heading (Salesforce LWC renders async).
+      2. Select board_label from the combobox (tries native <select> then Lightning combobox).
+      3. Click Submit.
+      4. Wait for Download button(s) and click each — one per ZIP file.
+      5. Extract the tab-delimited TXT from each ZIP.
+      6. Merge all TXT DataFrames and return as a tab-separated string.
+
+    Returns the merged roster as a tab-delimited UTF-8 string (no BOM) ready for
+    pandas read_csv(..., sep='\\t').
+    """
+    import difflib
+    import io
+    import zipfile
+    import pandas as pd
+    from playwright.async_api import async_playwright
+
+    PORTAL_URL = "https://mopro.mo.gov/license/s/license-downloads"
+
+    async def _select_board(page, label: str) -> None:
+        label_lower = label.lower()
+
+        # Strategy 1: native <select> element (some portal versions render one)
+        sel = page.locator("select").first
+        if await sel.count() > 0:
+            try:
+                await sel.select_option(label=label)
+                await page.wait_for_timeout(300)
+                return
+            except Exception:
+                pass
+            chosen = await sel.evaluate(
+                """(el, lbl) => {
+                    for (const o of el.options) {
+                        if (o.text.trim().toLowerCase() === lbl) {
+                            el.value = o.value;
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                            el.dispatchEvent(new Event('input',  { bubbles: true }));
+                            return o.text.trim();
+                        }
+                    }
+                    for (const o of el.options) {
+                        if (o.text.trim().toLowerCase().includes(lbl)) {
+                            el.value = o.value;
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                            el.dispatchEvent(new Event('input',  { bubbles: true }));
+                            return o.text.trim();
+                        }
+                    }
+                    return null;
+                }""",
+                label_lower,
+            )
+            if chosen:
+                await page.wait_for_timeout(300)
+                return
+
+        # Strategy 2: Salesforce Lightning combobox
+        for clicker in [
+            page.get_by_placeholder("Select Board here"),
+            page.get_by_label("Select Board here"),
+            page.locator("button[aria-haspopup='listbox']"),
+            page.locator("[role='combobox']"),
+            page.locator(".slds-combobox__form-element"),
+        ]:
+            try:
+                if await clicker.count() > 0:
+                    await clicker.first.click()
+                    await page.wait_for_timeout(800)
+                    if await page.locator("[role='option']").count() > 0:
+                        break
+            except Exception:
+                continue
+        else:
+            raise RuntimeError(f"mopro_zip: could not open board dropdown for '{label}'")
+
+        # Read available options for fuzzy match
+        available: list[str] = await page.evaluate("""() =>
+            Array.from(document.querySelectorAll('[role="option"]'))
+                .map(el => el.textContent.trim()).filter(t => t)
+        """) or []
+
+        # Exact match first
+        for locator in [
+            page.locator(f"[role='option']:has-text('{label}')"),
+            page.get_by_role("option", name=label),
+        ]:
+            if await locator.count() > 0:
+                await locator.first.click()
+                await page.wait_for_timeout(300)
+                return
+
+        # Fuzzy match fallback (handles minor portal name drift)
+        close = difflib.get_close_matches(label, available, n=1, cutoff=0.4)
+        if close:
+            matched = close[0]
+            log.info("mopro_zip: '%s' → fuzzy-matched portal name '%s'", label, matched)
+            await page.locator(f"[role='option']:has-text('{matched}')").first.click()
+            await page.wait_for_timeout(300)
+            return
+
+        raise RuntimeError(
+            f"mopro_zip: option '{label}' not found in portal dropdown. "
+            f"Available: {available}"
+        )
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
+            slow_mo=150,
+        )
+        ctx_kwargs: dict = {
+            "user_agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            ),
+            "ignore_https_errors": True,
+            "accept_downloads": True,
+            "extra_http_headers": {"Accept-Language": "en-US,en;q=0.9"},
+        }
+        if proxy_cfg:
+            ctx_kwargs["proxy"] = proxy_cfg
+        ctx = await browser.new_context(**ctx_kwargs)
+        page = await ctx.new_page()
+        # Suppress headless detection
+        await page.add_init_script(
+            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+        )
+        try:
+            log.info("mopro_zip: navigating to %s", PORTAL_URL)
+            await page.goto(PORTAL_URL, wait_until="domcontentloaded", timeout=120_000)
+            # Wait for the LWC component to finish rendering
+            await page.get_by_role(
+                "heading", name="Downloadable Listings"
+            ).wait_for(timeout=90_000)
+            await page.wait_for_timeout(3_000)
+
+            log.info("mopro_zip: selecting board '%s'", board_label)
+            await _select_board(page, board_label)
+            # Give LWC time to commit the selection before Submit
+            await page.wait_for_timeout(2_000)
+
+            # Click Submit
+            for submit_sel in [
+                page.get_by_role("button", name="Submit"),
+                page.locator("input[type='submit'], input[value='Submit']"),
+                page.locator("button:has-text('Submit')"),
+            ]:
+                if await submit_sel.count() > 0:
+                    await submit_sel.first.click()
+                    break
+            log.info("mopro_zip: submitted — waiting for Download button(s)")
+            # Brief settle after Submit so LWC can start rendering download section
+            await page.wait_for_timeout(2_000)
+
+            dl_locator = page.locator(
+                "input[value='Download'], button:has-text('Download')"
+            )
+            try:
+                await dl_locator.first.wait_for(timeout=120_000)
+            except Exception:
+                # Save a screenshot to help diagnose what the portal rendered
+                _ss_path = Path(__file__).parent.parent / f"_mopro_debug_{board_label.replace(' ', '_')}.png"
+                try:
+                    await page.screenshot(path=str(_ss_path), full_page=True)
+                    log.warning("mopro_zip: Download button timeout for '%s'; screenshot: %s", board_label, _ss_path)
+                except Exception:
+                    pass
+                raise
+            await page.wait_for_timeout(800)
+
+            count = await dl_locator.count()
+            log.info("mopro_zip: %d ZIP file(s) available", count)
+
+            zip_payloads: list[bytes] = []
+            for i in range(count):
+                log.info("mopro_zip: downloading ZIP %d/%d ...", i + 1, count)
+                async with page.expect_download(timeout=download_timeout_ms) as dl_ctx:
+                    await dl_locator.nth(i).click()
+                dl = await dl_ctx.value
+                raw = (await dl.path() and Path(await dl.path()).read_bytes()) or b""
+                if not raw:
+                    tmp = await dl.path()
+                    raw = Path(tmp).read_bytes() if tmp else b""
+                log.info("mopro_zip: ZIP %d → %d bytes", i + 1, len(raw))
+                zip_payloads.append(raw)
+        finally:
+            await browser.close()
+
+    # Extract TXT from each ZIP, decode, merge
+    dfs: list[pd.DataFrame] = []
+    for idx, zip_bytes in enumerate(zip_payloads):
+        with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zf:
+            members = zf.namelist()
+            # Pick first non-filedesc .TXT member; fall back to any non-filedesc member
+            data_mbr = next(
+                (m for m in members
+                 if not re.search(r"filedesc", m, re.IGNORECASE)
+                 and m.upper().endswith(".TXT")),
+                None,
+            ) or next(
+                (m for m in members if not re.search(r"filedesc", m, re.IGNORECASE)),
+                members[0],
+            )
+            txt_bytes = zf.read(data_mbr)
+        log.info("mopro_zip: ZIP %d member='%s' (%d bytes)", idx + 1, data_mbr, len(txt_bytes))
+
+        if len(txt_bytes) < 10:
+            log.info("mopro_zip: ZIP %d member='%s' is empty — skipping", idx + 1, data_mbr)
+            continue
+
+        for enc in ("utf-8-sig", "utf-8", "latin-1"):
+            try:
+                df = pd.read_csv(
+                    io.BytesIO(txt_bytes), sep="\t", dtype=str, encoding=enc,
+                    on_bad_lines="skip",
+                )
+                df.columns = df.columns.str.strip()
+                df = df.fillna("")
+                if df.empty:
+                    log.info("mopro_zip: ZIP %d member='%s' parsed to 0 rows — skipping", idx + 1, data_mbr)
+                    break
+                log.info("mopro_zip: ZIP %d → %d rows (enc=%s)", idx + 1, len(df), enc)
+                dfs.append(df)
+                break
+            except (UnicodeDecodeError, pd.errors.EmptyDataError):
+                continue
+
+    if not dfs:
+        raise RuntimeError("mopro_zip: no readable TXT data found in any downloaded ZIP")
+
+    merged = pd.concat(dfs, ignore_index=True).fillna("") if len(dfs) > 1 else dfs[0]
+    log.info("mopro_zip: merged %d record(s) from %d ZIP(s)", len(merged), len(dfs))
+    return merged.to_csv(index=False, sep="\t")
+
+
 async def _download_post_form(url: str) -> str:
     """POST ASP.NET hidden-field form to receive the CSV response body."""
     from playwright.async_api import async_playwright
@@ -973,20 +1216,116 @@ async def _download_post_form(url: str) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
-async def get_csv(base_url: str, source_id: str, csv_cfg) -> Path:
-    """Return the path to a fresh (possibly cached) CSV file."""
+async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
+    """Return (path, effective_header_row) for a fresh (possibly cached) CSV file.
+
+    effective_header_row is 0 when the file was produced by a multi-sheet merge or
+    local_merge (clean DataFrame dump); otherwise equals csv_cfg.header_row.
+    """
     from .proxy import get_proxy_config
 
-    cache_dir = Path(csv_cfg.cache_dir)
+    _raw_cache = Path(csv_cfg.cache_dir)
+    if not _raw_cache.is_absolute():
+        # Resolve relative paths against the project root (PSV_DEV/), not CWD,
+        # so cache files land in PSV/CSVS/ regardless of working directory.
+        # __file__ = .../PSV_DEV/lvs/adapters/scrapers/engine/csv_extractor.py
+        # parents[4] = PSV_DEV/
+        _raw_cache = Path(__file__).parents[4] / csv_cfg.cache_dir.lstrip("./")
+    cache_dir = _raw_cache
     cache_dir.mkdir(parents=True, exist_ok=True)
 
-    cached = _find_cached_csv(csv_cfg.cache_dir, source_id, csv_cfg.cache_days)
+    # Determine whether the result will be a processed (header row 0) CSV.
+    _is_processed = (
+        bool(getattr(csv_cfg, "additional_link_selectors", []))
+        or csv_cfg.download_strategy == "local_merge"
+    )
+    effective_header_row = 0 if _is_processed else csv_cfg.header_row
+
+    cached = _find_cached_csv(str(cache_dir), source_id, csv_cfg.cache_days)
     if cached:
-        return cached
+        if _is_processed:
+            # Cache may have been written before the multi-sheet feature was added (raw format).
+            # Detect format by peeking at the first line: if it looks like a preamble (board name /
+            # description row) rather than column headers, fall back to the raw header_row.
+            try:
+                import pandas as _pd
+                _peek = _pd.read_csv(cached, dtype=str, header=0, nrows=0, encoding=csv_cfg.encoding)
+                _peek.columns = _peek.columns.str.strip()
+                _first = _peek.columns[0] if len(_peek.columns) else ""
+                if len(_first) > 40 or any(
+                    kw in _first.lower()
+                    for kw in ("wyoming", "note", "board", "license", "please", "last update")
+                ):
+                    effective_header_row = csv_cfg.header_row  # raw legacy cache
+            except Exception:
+                pass
+        return cached, effective_header_row
 
     log.info("[%s] Downloading CSV (strategy=%s) ...", source_id, csv_cfg.download_strategy)
     strategy = csv_cfg.download_strategy
     dl_timeout = getattr(csv_cfg, "download_timeout_ms", 120_000)
+
+    # --- local_merge: read + normalize already-cached CSVs from peer boards ---
+    if strategy == "local_merge":
+        import pandas as pd
+        merge_sources = getattr(csv_cfg, "merge_sources", [])
+        dfs: list[pd.DataFrame] = []
+        src_cache_paths: list[Path] = []
+        for src_entry in merge_sources:
+            src_cache = _find_cached_csv(str(cache_dir), src_entry.source_id, src_entry.cache_days)
+            if not src_cache:
+                log.warning("[%s] local_merge: no cached CSV for '%s' — skipping", source_id, src_entry.source_id)
+                continue
+            # Use the header_row declared in merge_sources. For boards with additional_link_selectors,
+            # their processed cache is a DataFrame dump (header at row 0); update WY_ALL's
+            # header_row for that source to 0 after the board's cache is next refreshed.
+            src_df = None
+            for enc in (src_entry.encoding, "utf-8-sig", "latin-1"):
+                try:
+                    src_df = pd.read_csv(
+                        src_cache, dtype=str, encoding=enc, on_bad_lines="skip",
+                        header=src_entry.header_row, sep=src_entry.separator,
+                    )
+                    src_df.columns = src_df.columns.str.strip()
+                    src_df = src_df.fillna("")
+                    break
+                except UnicodeDecodeError:
+                    continue
+            if src_df is None:
+                log.warning("[%s] local_merge: cannot decode '%s' — skipping", source_id, src_entry.source_id)
+                continue
+            # Rename source columns to canonical field names
+            rename_map: dict[str, str] = {}
+            for canonical_field, csv_col in src_entry.columns.items():
+                for actual_col in src_df.columns:
+                    if actual_col.strip().upper() == csv_col.strip().upper():
+                        rename_map[actual_col] = canonical_field
+                        break
+            src_df = src_df.rename(columns=rename_map)
+            keep_cols = [k for k in src_entry.columns if k in src_df.columns]
+            src_df = src_df[keep_cols].copy()
+            src_df["_source_board"] = src_entry.source_id
+            dfs.append(src_df)
+            src_cache_paths.append(src_cache)
+            log.info("[%s] local_merge: %s → %d rows", source_id, src_entry.source_id, len(src_df))
+        if not dfs:
+            raise RuntimeError(
+                f"local_merge: no data found for any of "
+                f"{[s.source_id for s in merge_sources]!r}"
+            )
+        merged_df = pd.concat(dfs, ignore_index=True).fillna("")
+        # Timestamp = max mtime of the peer board files, so the merged filename
+        # reflects when the newest input was last downloaded (not the current clock).
+        max_mtime = max((p.stat().st_mtime for p in src_cache_paths), default=None)
+        if max_mtime is not None:
+            from datetime import datetime as _dt
+            date_tag = _dt.fromtimestamp(max_mtime, tz=_EST).strftime("%Y%m%d_%H%M")
+        else:
+            date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+        save_path = cache_dir / f"{source_id}_{date_tag}.csv"
+        save_path.write_text(merged_df.to_csv(index=False), encoding="utf-8")
+        log.info("[%s] CSV saved → %s (%d rows total)", source_id, save_path.name, len(merged_df))
+        return save_path, 0
 
     if strategy == "link_text":
         text = await _download_link_text(base_url, csv_cfg.link_text or "")
@@ -1022,6 +1361,35 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> Path:
             link_selector_nth=getattr(csv_cfg, "link_selector_nth", 0),
             download_timeout_ms=dl_timeout,
         )
+        extra_selectors = getattr(csv_cfg, "additional_link_selectors", [])
+        if extra_selectors:
+            import pandas as pd, io
+            primary_df = pd.read_csv(
+                io.StringIO(text), dtype=str, header=csv_cfg.header_row, on_bad_lines="skip"
+            )
+            primary_df.columns = primary_df.columns.str.strip()
+            primary_df = primary_df.fillna("")
+            dfs_multi: list[pd.DataFrame] = [primary_df]
+            for extra_sel in extra_selectors:
+                try:
+                    extra_text = await _download_google_sheet_link(
+                        base_url, extra_sel, download_timeout_ms=dl_timeout,
+                    )
+                    extra_df = pd.read_csv(
+                        io.StringIO(extra_text), dtype=str, header=csv_cfg.header_row, on_bad_lines="skip"
+                    )
+                    extra_df.columns = extra_df.columns.str.strip()
+                    extra_df = extra_df.fillna("")
+                    dfs_multi.append(extra_df)
+                    log.info("[%s] Additional sheet (%s): %d rows", source_id, extra_sel, len(extra_df))
+                except Exception as exc:
+                    log.warning("[%s] Additional sheet download failed (%s): %s", source_id, extra_sel, exc)
+            merged_df = pd.concat(dfs_multi, ignore_index=True).fillna("")
+            date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+            save_path = cache_dir / f"{source_id}_{date_tag}.csv"
+            save_path.write_text(merged_df.to_csv(index=False), encoding=csv_cfg.encoding)
+            log.info("[%s] CSV saved → %s (%d rows)", source_id, save_path.name, len(merged_df))
+            return save_path, 0
     elif strategy == "aithent_portal_xls":
         proxy_cfg = get_proxy_config()
         text = await _download_aithent_portal_xls(
@@ -1045,28 +1413,38 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> Path:
             proxy_cfg=proxy_cfg,
             download_timeout_ms=dl_timeout,
         )
+    elif strategy == "mopro_zip":
+        proxy_cfg = get_proxy_config()
+        text = await _download_mopro_zip(
+            csv_cfg.board_label or "",
+            proxy_cfg=proxy_cfg,
+            download_timeout_ms=dl_timeout,
+        )
     else:
         raise ValueError(f"Unknown CSV download strategy: {strategy!r}")
 
     date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
     save_path = cache_dir / f"{source_id}_{date_tag}.csv"
-    save_path.write_text(text, encoding=csv_cfg.encoding)
+    # mopro_zip output is already decoded Unicode — save as UTF-8 to avoid latin-1
+    # encode failures from special characters (e.g. ‘ right single quote).
+    save_enc = "utf-8" if strategy == "mopro_zip" else csv_cfg.encoding
+    save_path.write_text(text, encoding=save_enc)
     log.info("[%s] CSV saved → %s", source_id, save_path.name)
-    return save_path
+    return save_path, effective_header_row
 
 
-def load_csv(path: Path, encoding: str = "utf-8-sig", header_row: int = 0):
-    """Load CSV into a DataFrame, trying multiple encodings.
+def load_csv(path: Path, encoding: str = "utf-8-sig", header_row: int = 0, sep: str = ","):
+    """Load CSV (or tab-delimited TXT) into a DataFrame, trying multiple encodings.
 
-    header_row: 0-based row index of the CSV header.  Wyoming Google Sheets CSVs
-    have 3 description rows before the header, so pass header_row=3 for those boards.
+    header_row: 0-based row index of the CSV header.
+    sep: column separator — use "\\t" for mopro_zip tab-delimited files.
     """
     import pandas as pd
     for enc in (encoding, "utf-8-sig", "latin-1"):
         try:
             df = pd.read_csv(
                 path, dtype=str, encoding=enc, on_bad_lines="skip",
-                header=header_row,
+                header=header_row, sep=sep,
             )
             df.columns = df.columns.str.strip()
             return df.fillna("")
@@ -1093,7 +1471,19 @@ def search_by_license_number(df, col: str, num: str) -> list[dict]:
     # 2. Leading-zero normalized (e.g. "82619" matches "082619" and vice versa)
     target_norm = num.strip().lstrip("0") or "0"
     result = df[col_s.str.lstrip("0").str.upper() == target_norm.upper()]
-    return result.to_dict(orient="records")
+    if not result.empty:
+        return result.to_dict(orient="records")
+    # 3. Substring match — handles prefix/suffix variants (e.g. "1198" matches "LPC-1198")
+    result = df[col_s.str.upper().str.contains(num.strip().upper(), regex=False, na=False)]
+    if not result.empty:
+        return result.to_dict(orient="records")
+    # 4. Dash/space-stripped match — "PT1414" finds "PT-1414", "LPC1336" finds "LPC-1336",
+    #    and the reverse: "PT-1414" finds "PT1414" in boards that store without a dash.
+    target_stripped = re.sub(r"[-\s]", "", num.strip()).upper()
+    result = df[col_s.str.replace(r"[-\s]", "", regex=True).str.upper() == target_stripped]
+    if not result.empty:
+        return result.to_dict(orient="records")
+    return []
 
 
 def search_by_name(df, col: str, name: str) -> list[dict]:

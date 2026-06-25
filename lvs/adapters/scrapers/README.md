@@ -1,8 +1,9 @@
 # PSV License Verification Scraper Engine
 
 Spec-driven Playwright scraper engine for professional license verification.  
-253 qualifying boards across 41 states (133 engine configs) — each board is a `sites/XX_BOARD/config.yaml` file;
-no engine code changes are needed to add a new board (including new `csv_bulk` and `certemy` boards).
+243 qualifying boards from the source Excel — each board is a `sites/XX_BOARD/config.yaml` file;
+no engine code changes are needed to add a new board (including new `csv_bulk`, `pdf_bulk`, and `certemy` boards).
+**Current smoke baseline: 178 PASS / 0 FAIL / 10 SKIP** (2026-06-22; 188 board configs).
 
 ---
 
@@ -12,9 +13,13 @@ no engine code changes are needed to add a new board (including new `csv_bulk` a
 lvs/adapters/scrapers/
 ├── engine/                  # shared engine (15 modules)
 │   ├── models.py            # Pydantic v2 models — all config + output contracts
+│   │                        #   LicenseRecord.partial_result flags degraded results
+│   │                        #   TelemetryEvent.partial_result + .warnings for telemetry
 │   ├── browser.py           # Playwright launch helper (proxy-aware)
 │   ├── navigator.py         # form fill, dropdown, search button interactions
+│   │                        #   fill_search_form(partial_failures=) propagates silent errors
 │   ├── extractor.py         # results table + detail page extraction strategies
+│   │                        #   extract_results_table() → tuple[list, str | None]
 │   ├── pdf_extractor.py     # PDF bulk-roster download, table extract, search
 │   ├── csv_extractor.py     # CSV bulk-roster download (link_text / post_form), search
 │   ├── pagination.py        # next-button / page-numbers pagination
@@ -22,28 +27,52 @@ lvs/adapters/scrapers/
 │   ├── post_processors.py   # apply_field_map, status_map, date parsing
 │   ├── ai_fallback.py       # Azure OpenAI GPT-4 fallback (< 3 fields extracted)
 │   ├── telemetry.py         # SQLite scrape_events / ai_touchpoints logging
+│   │                        #   scrape_events has partial_result + warnings columns
 │   ├── evidence.py          # HTML + screenshot capture per run
+│   │                        #   Path: Evidence/{YYYY-MM}/{state}/{source_id}/{YYYYMMDD_HHMM}_{query}/
+│   │                        #   capture_evidence(page, config, stage, run_id, source_id, state, query)
 │   ├── proxy.py             # corporate proxy config from env vars
 │   ├── retry.py             # exponential back-off wrapper
 │   └── validate.py          # load_config: YAML → SiteConfig (Pydantic)
 │
-├── sites/                   # per-board YAML configs (127 boards)
+├── archetypes/              # per-archetype scrape implementations (split from run.py)
+│   ├── __init__.py          # re-exports verify_license for backward compat
+│   ├── dispatcher.py        # verify_license: run_id generation, capability check, routing
+│   ├── _shared.py           # _emit_event, _scrape_one_detail, _navigate_back,
+│   │                        #   _wait_for_detail_content, _set_iteration_value
+│   ├── socrata.py           # socrata_api + socrata_bulk_csv
+│   ├── csv_bulk.py          # csv_bulk
+│   ├── pdf_bulk.py          # pdf_bulk
+│   ├── certemy.py           # certemy
+│   ├── json_api.py          # json_api
+│   ├── datatables.py        # datatables_jsapi (partial_failures wired)
+│   ├── filemaker.py         # filemaker_webdirect
+│   └── browser_form.py      # classic_html_form, state_portal, thentia_cloud,
+│                            #   ag_grid_spa, pega_constellation (partial_failures wired)
+│
+├── sites/                   # per-board YAML configs (188 boards)
 │   ├── AK_CBP, AL_ALBME
+│   ├── AL_ABESPA, AL_MFT, AL_OPTOMETRY                     # Alabama boards (session 42)
 │   ├── FL_MQA
 │   ├── NV_MEDBOARD, NV_CHIRO, NV_NVADGC, NV_PT, NV_BOP, NV_DENTAL, NV_OSTEO
 │   ├── NV_MASSAGE, NV_SPEECH, NV_OPTOMETRY
 │   ├── NV_PODIATRY, NV_MFTPC, NV_ORIENTAL, NV_ABA         # certemy archetype
 │   ├── NV_DIETITIAN, NV_PHARMACY                          # aithent_portal_xls / nvbop_angular_xlsx
 │   ├── MA_HEALTH, MA_MDDO                                  # MA_MDDO: json_api archetype (session 26 PASS)
+│   ├── MA_BSAS                                             # session 42 classic_html_form (MA Substance Abuse)
 │   ├── MD_PHYSICIANS, MD_CHIROPRACTIC, MD_MASSAGE, MD_OPTOMETRY, MD_AUDIOLOGY, MD_PT
 │   ├── MD_SOCIALWORK, MD_PSYCH, MD_DIETETICS, MD_COUNSELORS
 │   ├── MD_ACUPUNCTURE                                      # session 29 csv_bulk direct_url (PASS)
 │   ├── MN_COSMETOLOGY, MN_DENTISTRY                        # MN GLSuite PASS
 │   ├── MN_EMS, MN_MEDPRACTICE                              # MN_EMS: PASS (session 29); MN_MEDPRACTICE: SKIP (Angular)
 │   ├── MI_LARA                                             # Michigan LARA Accela Citizen Access (session 31)
-│   ├── MO_HEALING_ARTS, MO_NURSING                         # Missouri mopro_zip csv_bulk (session 31, SKIP until engine support)
-│   ├── MO_DENTAL, MO_OPTOMETRY, MO_PHARMACY                # Missouri mopro_zip csv_bulk (session 31, SKIP until engine support)
+│   ├── MO_HEALING_ARTS, MO_DENTAL, MO_OPTOMETRY, MO_PHARMACY  # Missouri mopro_zip csv_bulk (session 36, PASS)
+│   ├── MO_CHIROPRACTIC, MO_PSYCHOLOGISTS                   # Missouri mopro_zip csv_bulk (session 42)
+│   ├── MO_NURSING                                          # Missouri Nursing — SKIP (portal redirects to Nursys.com)
 │   ├── MS_CHIRO, MS_OPTOMETRY, MS_PT                       # Mississippi: classic_html_form + datatables_jsapi (session 31)
+│   ├── MS_DHPL, MS_PSYCH, MS_SWMFT                        # Mississippi: classic_html_form (session 39)
+│   ├── MS_LPC                                             # session 40 classic_html_form PASS (MS LPC Board; lpc.ms.gov)
+│   ├── MS_ABA                                             # session 41 classic_html_form PASS (MS Autism Board; msautismboard.ms.gov)
 │   ├── NJ_DCA
 │   ├── KS_DENTAL, KS_OPTOMETRY, KS_PHARMACY, KS_GLSUITE, KS_KSBHADA, KS_BSRB
 │   ├── DE_LICENSING
@@ -77,23 +106,44 @@ lvs/adapters/scrapers/
 │   ├── TX_MEDBOARD, TX_TDLR, TX_OPTOMETRY                  # TX_OPTOMETRY: session 30 PASS (tob.texas.gov jqGrid)
 │   ├── TX_CHEMICAL                                         # session 29 PASS (csv_bulk link_text_xlsx)
 │   ├── WV_PT, WV_SOCIALWORK                                # session 25-26 PASS
+│   ├── WV_MEDBOARD_MD, WV_MEDBOARD_PA, WV_MEDBOARD_DPM    # WV Board of Medicine (session 32)
+│   ├── WV_DENTAL                                          # session 37 PASS (GLSuite ASP.NET form)
+│   ├── WV_PSYCH                                           # session 44 PASS (custom_js extraction)
 │   ├── ID_DOPL                                             # session 30 PASS (use_keyboard_type + td.TDS)
 │   ├── WI_DSPS, NY_APPEARANCE
 │   ├── IL_LICENSING, VA_DHP
 │   ├── SD_CHIRO, SD_OPT                                    # csv_bulk JS-rendered download
+│   ├── SD_AUDIOLOGY, SD_PT, SD_PODIATRY, SD_PSYCH, SD_SPEECH  # pdf_bulk page_link (sdboards.org)
+│   ├── HI_DIETITIANS                                          # Hawaii Licensed Dietitians (session 34, datatables_jsapi)
+│   ├── PA_PALS                                                # Pennsylvania umbrella PALS portal (session 34, classic_html_form)
 │   ├── WV_OPTOMETRY                                        # certemy archetype
 │   ├── WV_CHIRO                                            # SKIP (SPO-migrated OneDrive share requires auth)
 │   ├── AZ_ACUPUNCTURE, AZ_BEHAVIORAL_HEALTH, AZ_NATUROPATHIC  # session 25 Thentia PASS
 │   ├── AZ_OSTEO, AZ_PSYCH, AZ_PT                           # session 25 Thentia PASS
 │   ├── AZ_DENTAL, AZ_OPTOMETRY                             # session 24 classic_html_form PASS
 │   ├── AZ_SPEECH_HEAR                                      # session 26 multi_iteration PASS
+│   ├── AZ_PODIATRY                                         # session 38 Thentia portalus PASS
+│   ├── AZ_OT                                               # session 38 onGovCore PASS
+│   ├── AZ_CHIRO                                            # session 43 onGovCore PASS (AZSBCE)
+│   ├── AZ_MEDBOARD                                         # session 38 GLSuite SKIP (azbomv7prod proxy block)
+│   ├── NM_MEDBOARD                                         # session 38 SKIP (Salesforce LWC no archetype)
+│   ├── NM_RLD, NM_MIDWIVES                                 # session 38 SKIP/PASS (NM_MIDWIVES PASS; NM_RLD SKIP)
+│   ├── NH_OPLC                                             # session 42 classic_html_form (NH OPLC; no proxy — Akamai WAF)
+│   ├── OK_ADAC                                             # session 44 PASS (custom_js extraction; PROXY)
+│   ├── OK_ODOHCS                                           # session 43 SKIP (thentiacloud_api_blocked_corporate; proxy: false)
 │   ├── OH_PROVIDERS_BUSINESS, OH_PROVIDERS_INDIVIDUAL       # session 29 csv_bulk ohio_data_portal_csv PASS
-│   └── CT_ELICENSE, IN_PLA, VT_MEDBOARD
+│   ├── SC_SCLLR_LPCMFT, SC_SCLLR_SW                       # session 39 datatables_jsapi PASS (SC LLR Telehealth)
+│   └── CT_ELICENSE, IN_PLA, VT_MEDBOARD, VT_OPR           # VT_OPR: session 43 SKIP (Pega Constellation)
 │
-├── run.py                   # CLI entry point — single board, single query
+├── run.py                   # CLI entry point (167 lines) — thin dispatcher; re-exports
+│                            #   verify_license from archetypes.dispatcher for backward compat
 ├── smoke_all.py             # regression gate — runs all boards' smoke_test blocks
+├── psv_test.py              # PSV batch verifier — reads Input.xlsx, writes Pass/Fail + expiry + reason
+├── psv_config.yaml          # project-level settings: proxy.server default (auto-loaded by proxy.py)
+├── board_routing_master.csv # routing: (state, psv_prov_type) → [source_id, ...]  (795 entries, 41 states)
+├── board_routing.py         # same routing as hardcoded Python dict — fallback when CSV absent
 ├── board_inventory.py       # reads Excel, emits filtered board list
-├── board_inventory.xlsx     # 243 qualifying boards from source Excel
+├── board_inventory.xlsx     # 186 boards — smoke test status, 6-sprint priority, proxy flags
 └── requirements.txt
 ```
 
@@ -108,23 +158,74 @@ cd lvs/adapters/scrapers
 pip install -r requirements.txt
 playwright install chromium
 
-# Single board — license number lookup
+# Single board — license number lookup (proxy auto-configured via psv_config.yaml)
 python run.py --config sites/NV_MEDBOARD/config.yaml --mode license_number --query "17371"
 
-# Single board — last name search, headed browser for debugging
+# Single board — last name, headed browser for debugging
 python run.py --config sites/KY_MEDBOARD/config.yaml --mode last_name --query "Smith" --headed
 
-# Validate config without running
-python run.py --config sites/KS_DENTAL/config.yaml --mode license_number --query "13578" --dry-run
+# Structured field combo (preferred over --mode/--query)
+python run.py --config sites/OH_PROVIDERS_INDIVIDUAL/config.yaml \
+  --license-number 35076302 --last-name SMITH
 
-# Regression gate — all boards
+# Validate config without running
+python run.py --config sites/KS_DENTAL/config.yaml --dry-run
+
+# Regression gate — all boards (proxy auto-configured; no PROXY= prefix needed)
 python smoke_all.py
 
-# Regression gate — specific boards only
+# Regression gate — specific boards
 python smoke_all.py --filter KY_OD KY_MULTIBOARD NV_OPTOMETRY
 
 # Show what would run without launching browsers
 python smoke_all.py --dry-run
+```
+
+---
+
+## Proxy configuration
+
+Proxy is **automatic** — no `PROXY=proxy:9119` prefix is required.
+
+`engine/proxy.py` resolves the proxy server in this order:
+1. `LVS_PROXY_SERVER` env var (highest priority)
+2. `PROXY` env var
+3. `psv_config.yaml` → `proxy.server` (project-level default, already set to `proxy:9119`)
+
+Each board's `config.yaml` declares:
+- `transport.proxy.enabled: true`  → board requires proxy (auto-resolved from above)
+- `transport.proxy.enabled: false` → proxy force-disabled (e.g. NH_OPLC — Akamai WAF)
+- *(absent)*                       → use proxy if configured, skip if not
+
+### Boards requiring proxy (`proxy: enabled: true`)
+
+| Board | Notes |
+|-------|-------|
+| AL_MFT, AL_OPTOMETRY | Alabama boards |
+| LA_ADRA, LA_MASSAGETHERAPY | Louisiana boards |
+| MS_ABA, MS_LPC | Mississippi boards |
+| OH_PROVIDERS_INDIVIDUAL | Ohio CSV download via proxy |
+| OK_ADAC | Oklahoma DAC board |
+| WV_DENTAL, WV_OPTOMETRY, WV_PT, WV_PSYCH, WV_SOCIALWORK | West Virginia boards |
+
+### Boards that block proxy (`proxy: enabled: false`)
+
+| Board | Reason |
+|-------|--------|
+| NH_OPLC | Akamai WAF returns 403 when request comes through corporate proxy |
+| NV_MEDBOARD | Direct connection required |
+
+### Overriding from the shell
+
+```bash
+# Disable proxy for a run
+PROXY="" python smoke_all.py
+
+# Force a specific proxy
+PROXY=proxy:8080 python smoke_all.py --filter WV_PT
+
+# Check what proxy will be used
+python -c "from engine.proxy import get_proxy_config; print(get_proxy_config())"
 ```
 
 ---
@@ -167,27 +268,24 @@ python run.py --config sites/IL_LICENSING/config.yaml --mode license_number --qu
 # IL_LICENSING — last_name search
 python run.py --config sites/IL_LICENSING/config.yaml --mode last_name --query "Smith"
 
-# VA_DHP — requires proxy, license_number mode, query "0024166737" (John R Smith, APRN)
-PROXY=proxy:9119 python run.py --config sites/VA_DHP/config.yaml --mode license_number --query "0024166737"
+# VA_DHP — proxy auto-configured via psv_config.yaml
+python run.py --config sites/VA_DHP/config.yaml --mode license_number --query "0024166737"
 
-# NV_CHIRO — requires proxy, license_number mode, query "B02060"
-PROXY=proxy:9119 python run.py --config sites/NV_CHIRO/config.yaml --mode license_number --query "B02060"
+# NV_CHIRO — proxy auto-configured
+python run.py --config sites/NV_CHIRO/config.yaml --mode license_number --query "B02060"
 ```
 
 ### Run the full smoke suite with all known good values
 
 ```bash
-# Linux/macOS — with proxy for NV boards
-PROXY=proxy:9119 python smoke_all.py
-
-# Windows CMD
-set PROXY=proxy:9119 && python smoke_all.py
-
-# Windows PowerShell
-$env:PROXY="proxy:9119"; python smoke_all.py
+# All boards — proxy is auto-configured via psv_config.yaml (no PROXY= prefix needed)
+python smoke_all.py
 
 # Save results to a timestamped file
-PROXY=proxy:9119 python smoke_all.py 2>&1 | tee output/smoke_regression_$(date +%Y%m%d).txt
+python smoke_all.py > smoke_$(date +%Y%m%d_%H%M).txt 2>&1
+
+# Parallel (faster — 3 browsers at once)
+python smoke_all.py --concurrency 3
 ```
 
 ### Run a subset of boards by name
@@ -221,13 +319,17 @@ import json; print(json.dumps(cfg.get('smoke_test', {}), indent=2))
 
 | Board | Mode | Query | Expected first result |
 |-------|------|-------|-----------------------|
-| AK_CBP | last_name | Smith | Smith — min 1 record (PROXY) |
-| AL_ALBME | last_name | Smith | Smith — min 1 record (PROXY) |
+| AK_CBP | last_name | Smith | **SKIP** (DataDome CAPTCHA from corp IP) |
+| AL_ABESPA | last_name | Smith | [3171] Smith, Abby Lauren — active (+16 more) (session 44) |
+| AL_ALBME | last_name | Smith | Smith — min 1 record (auto-proxy) |
+| AL_MFT | last_name | Smith | [259] Smith, Charles Manuel — unknown (+7 more) (auto-proxy) |
+| AL_OPTOMETRY | last_name | Smith | [S-275] Howard Smith — unknown (+10 more) (auto-proxy) |
 | AR_PODIATRY | license_number | 247 | [247] Jason Smith — min 1 record |
 | CO_DORA | license_number | 9944947 | [9944947] Kevin Smith — active |
 | CT_ELICENSE | license_number | 82619 | [082619] Alif Ahmed — active |
 | DE_LICENSING | last_name | Smith | min 1 record |
 | FL_MQA | last_name | Smith | Smith — min 1 record |
+| HI_DIETITIANS | last_name | Smith | [75-LD] Daryl Smith-Oswald (+2 more) |
 | IL_LICENSING | license_number | 198000043 | [198000043] David Smith — active |
 | IN_PLA | last_name | Smith | Smith IV, Robert H. — unknown (min 1 record) |
 | KS_BSRB | license_number | LSCSW 4719 | MeLinda Smith-Moore — active |
@@ -243,16 +345,17 @@ import json; print(json.dumps(cfg.get('smoke_test', {}), indent=2))
 | KY_OD | last_name | Smith | min 1 record |
 | KY_PA | last_name | Smith | min 1 record |
 | KY_SA | last_name | Smith | min 1 record |
-| LA_ADRA | last_name | Smith | [641] Charles R. Smith — active |
+| LA_ADRA | last_name | Smith | [641] Charles R. Smith — active (+19) (auto-proxy) |
 | LA_DENTAL | license_number | 3842 | [3842] SHANA SMITHWICK — active |
 | LA_DIETETICS | last_name | Smith | **SKIP** (lazy_loaded_accordion) |
-| LA_MASSAGETHERAPY | license_number | TBD | **SKIP** (pdf_url_required) |
+| LA_MASSAGETHERAPY | last_name | Smith | [LA9826] ALEXIS SMITH (+30 more) (auto-proxy) |
 | LA_OPTOMETRY | last_name | Buisson | Laura Buisson — min 1 record |
 | LA_PT | last_name | Smith | Smith — min 1 record |
 | LA_SOCIALWORK | last_name | Smith | [?] Addie Smith — min 1 record |
 | LA_SPEECH | last_name | Smith | **SKIP** (lazy_loaded_accordion) |
+| MA_BSAS | last_name | Smith | [11100] Krista Sand — unknown (+21 more Smith records) |
 | MA_HEALTH | last_name | Smith | min 1 record |
-| MI_LARA | last_name | Smith | Smith — min 1 record (PROXY) |
+| MI_LARA | last_name | Smith | Smith — min 1 record (auto-proxy) |
 | MN_COSMETOLOGY | last_name | Smith | Smith — min 1 record (191 records) |
 | MN_DENTISTRY | last_name | Smith | Smith — min 1 record (169 records) |
 | MD_AUDIOLOGY | last_name | Smith | Smith — min 1 record |
@@ -269,37 +372,46 @@ import json; print(json.dumps(cfg.get('smoke_test', {}), indent=2))
 | ND_DENTISTRY | last_name | Smith | [2550] Smith, Joshua — expired (+2) |
 | ND_PODIATRY | last_name | Anderson | [46] Brad Anderson — unknown (no Smiths in registry) |
 | ND_PT | last_name | Smith | [PT] NAISMITH BERG, LAURIE — unknown (+15) |
+| NH_OPLC | last_name | Smith | [002720-21] Smith, A. Jean — inactive (+40 more) |
 | NJ_DCA | last_name | Smith | Smith — min 1 record |
+| NM_MIDWIVES | last_name | Smith | [928] Smith, Szodyraa — active |
 | NV_ABA | last_name | Smith | [RBT2632] Smith Cheregosha — expired |
 | NV_BOP | last_name | Highsmith | Jennifer Highsmith — active |
 | NV_DIETITIAN | last_name | Smith | Smith — min 1 record (27 records; PROXY) |
 | NV_PHARMACY | last_name | Smith | Smith — min 1 record (89 records; PROXY) |
-| NV_CHIRO | license_number | B02060 | Francisco Cruz — active (PROXY) |
+| NV_CHIRO | license_number | B02060 | Francisco Cruz — active (auto-proxy) |
 | NV_DENTAL | license_number | LL-251-11 | min 1 record |
-| NV_MASSAGE | last_name | Smith | Smith — min 1 record (PROXY) |
+| NV_MASSAGE | last_name | Smith | Smith — min 1 record (auto-proxy) |
 | NV_MEDBOARD | license_number | 17371 | Eli Azzi — inactive |
 | NV_MFTPC | last_name | Smith | Hernoria Childress-Smith — active |
-| NV_NVADGC | last_name | Smith | [183-C] Anita Smith — expired (PROXY) |
+| NV_NVADGC | last_name | Smith | [183-C] Anita Smith — expired (auto-proxy) |
 | NV_OPTOMETRY | last_name | Smith | Smith — min 1 record |
 | NV_ORIENTAL | last_name | Abare | [2031] Rachel Abare — unknown |
-| NV_OSTEO | last_name | Hatch | Preston Hatch — active (PROXY) |
+| NV_OSTEO | last_name | Hatch | Preston Hatch — active (auto-proxy) |
 | NV_PODIATRY | last_name | Smith | [9203] Lary Smith — active |
-| NV_PT | license_number | 3485 | Sarah Distad — active (PROXY) |
-| NV_SPEECH | last_name | Smith | Smith — min 1 record (PROXY) |
+| NV_PT | license_number | 3485 | Sarah Distad — active (auto-proxy) |
+| NV_SPEECH | last_name | Smith | Smith — min 1 record (auto-proxy) |
 | NY_APPEARANCE | last_name | Smith | SMITH — min 1 record |
 | OR_HLO | last_name | Smith | **SKIP** (network_blocked: UpdatePanel AJAX issue) |
+| PA_PALS | last_name | Smith | [AA002213L] LEE A SMITH — active (+9 more) |
 | OR_OMB | last_name | Smith | Ayre-Smith, Geoffrey — min 1 record |
 | TX_MEDBOARD | last_name | Smith | Smith — min 1 record (50+ records) |
 | TX_OPTOMETRY | last_name | Smith | **SKIP** (reCAPTCHA on every search) |
 | TX_TDLR | last_name | Smithwick | SMITHWICK — min 1 record (4 records) |
+| SD_AUDIOLOGY | last_name | Smith | Smith — min 1 record |
 | SD_CHIRO | last_name | Smith | [952] Tracy J Smith — active |
 | SD_OPT | last_name | Anderson | [738] Eva Anderson — active |
-| VA_DHP | license_number | 0024166737 | [0024166737] John R Smith — expired (PROXY) |
+| SD_PODIATRY | last_name | Johnson | [?] Rylan Johnson — min 1 record |
+| SD_PSYCH | last_name | Smith | Smith — min 1 record |
+| SD_PT | last_name | Smith | Smith — min 1 record |
+| SD_SPEECH | last_name | Smith | Smith — min 1 record |
+| VA_DHP | license_number | 0024166737 | [0024166737] John R Smith — expired (auto-proxy) |
 | VT_MEDBOARD | last_name | Smith | Smith, Delaney — unknown (min 1 record) |
 | WA_HEALTH | license_number | RN.RN.61663091 | Madeline Smith — active |
 | WI_DSPS | last_name | Smith | Smith — min 1 record |
 | WV_CHIRO | license_number | 3842 | **SKIP** (pdf_url_required) |
-| WV_OPTOMETRY | last_name | Smith | [873-OD] Gary Smith — active |
+| WV_DENTAL | last_name | Smith | [1918] Smith, Terri Lynn — unknown (+32 more) (auto-proxy) |
+| WV_OPTOMETRY | last_name | Smith | [873-OD] Gary Smith — active (auto-proxy) |
 | WY_CHIRO | last_name | Smith | [520] Brian Smith — active |
 | WY_DENTAL | last_name | Smith | Smith — min 1 record (2 records) |
 | WY_DIETETICS | last_name | Smith | [266] Katherine Smith — active |
@@ -332,17 +444,36 @@ import json; print(json.dumps(cfg.get('smoke_test', {}), indent=2))
 | OR_SLP | last_name | Smith | **SKIP** (thentia_search_by_dropdown_not_set) |
 | TX_CHIRO | last_name | Smith | **SKIP** (filemaker_webdirect_unsupported) |
 | TX_DENTAL | last_name | Smith | **SKIP** (datatables_column_search_unsupported) |
-| WV_PT | last_name | Smith | **SKIP** (thentia_portalus_dom_differs) |
-| WV_SOCIALWORK | last_name | Smith | **SKIP** (dnn_sqlviewpro_postback_required) |
+| WV_MEDBOARD_DPM | last_name | Smith | [373] Stacey Smith — unknown (min 1 record) |
+| WV_MEDBOARD_MD | last_name | Smith | [31652] Rhonda Burch-Smith — unknown (+63 more) |
+| WV_MEDBOARD_PA | last_name | Smith | [1955] Justin Smith — unknown (+20 more) |
+| WV_PT | last_name | Smith | Smith — min 1 record (auto-proxy) |
+| WV_SOCIALWORK | last_name | Smith | [BP00941134] Michelle Abruzzino-Smith — unknown (+25 more) (auto-proxy) |
 | MA_MDDO | last_name | Smith | **SKIP** (json_api_archetype_required) |
-| MO_HEALING_ARTS | last_name | Smith | **SKIP** (mopro_zip_strategy_required) |
-| MO_NURSING | last_name | Smith | **SKIP** (mopro_zip_strategy_required) |
-| MO_DENTAL | last_name | Smith | **SKIP** (mopro_zip_strategy_required) |
-| MO_OPTOMETRY | last_name | Smith | **SKIP** (mopro_zip_strategy_required) |
-| MO_PHARMACY | last_name | Smith | **SKIP** (mopro_zip_strategy_required) |
-| MS_CHIRO | last_name | Smith | Smith — min 1 record (PROXY) |
-| MS_OPTOMETRY | last_name | Smith | Smith — min 1 record (PROXY) |
-| MS_PT | last_name | Smith | Smith — min 1 record (PROXY) |
+| MO_CHIROPRACTIC | last_name | Smith | [2023046993] Delia Smith — active (+29 more) |
+| MO_PSYCHOLOGISTS | last_name | Smith | [01487] Lizette Smith — active (+15 more) |
+| MO_HEALING_ARTS | last_name | Smith | [2012030851] Stephen Smith — active (+809 more) |
+| MO_NURSING | last_name | Smith | **SKIP** (portal_disabled_redirects_to_nursys) |
+| MO_DENTAL | last_name | Smith | [003366] Kathleen Lucente-Smith — active (+173 more) |
+| MO_OPTOMETRY | last_name | Smith | [T03249] Jill Smith — active (+15 more) |
+| MO_PHARMACY | last_name | Smith | [2024026846] Tinley Smith — active (+334 more) |
+| MS_CHIRO | last_name | Smith | Smith — min 1 record (auto-proxy) |
+| MS_DHPL | last_name | Smith | [TA-4248] ABAGAIL GRAYCE SMITH — active (+49 more) (auto-proxy) |
+| MS_OPTOMETRY | last_name | Smith | Smith — min 1 record (auto-proxy) |
+| MS_PSYCH | last_name | Smith | [34 559] Smith — unknown (+7 more) (auto-proxy) |
+| MS_PT | last_name | Smith | Smith — min 1 record (auto-proxy) |
+| MS_SWMFT | last_name | Smith | [Licensed Social Worker] Amelita R Smith — unknown (+49 more) (auto-proxy) |
+| MS_LPC | last_name | Smith | [3244] Allison Kenna Smith — active (+52 more) (auto-proxy) |
+| MS_ABA | last_name | Smith | [200017] Chelsea Lynn Smith — unknown (+2 more) (auto-proxy) |
+| WV_PSYCH | last_name | Smith | [785] Tracy P. Smith — active (+17 more) (session 44, PROXY) |
+| SC_SCLLR_LPCMFT | last_name | Smith | [TLC 491 MFT] MICKENS-SMITH, KENYAH MONET — unknown (+9 more) |
+| SC_SCLLR_SW | last_name | Smith | [TLS 152 CP] BOYD, KARA ILENE SMITH — unknown (+9 more) |
+| AZ_CHIRO | last_name | Smith | [006086] Damian Smith — unknown (+19 more) (auto-proxy) |
+| OK_ADAC | last_name | Smith | [288] Flucard-Smith, Vicki — inactive (+9 more) (session 44, PROXY) |
+| OK_BEHAVIORAL_HEALTH | last_name | Johnson | **SKIP** (thentiacloud_api_blocked_corporate: obbhl.us.thentiacloud.net; proxy: false) |
+| OK_SOCIALWORK | last_name | Smith | **SKIP** (thentiacloud_api_blocked_corporate: osblsw.portalus.thentiacloud.net; proxy: false) |
+| OK_ODOHCS | last_name | Smith | **SKIP** (thentiacloud_api_blocked_corporate: odohcs.portalus.thentiacloud.net; proxy: false) |
+| VT_OPR | last_name | Smith | **SKIP** (pega_constellation_unsupported) |
 
 ---
 
@@ -386,11 +517,26 @@ These sites are blocked by Zscaler without the proxy:
 | VA_DHP | `dhp.virginiainteractive.org` blocked by Zscaler |
 | MI_LARA | `aca-prod.accela.com` blocked by Zscaler |
 | MS_CHIRO | `msbce.ms.gov` blocked by Zscaler |
+| MS_DHPL | `msdhpl.webapps.ms.gov` blocked by Zscaler |
 | MS_OPTOMETRY | `ms.gov` (msbo subdomain) blocked by Zscaler |
+| MS_PSYCH | `msbop.ms.gov` blocked by Zscaler |
 | MS_PT | `msbpt.ms.gov` blocked by Zscaler |
+| MS_SWMFT | `swmft.webapps.ms.gov` blocked by Zscaler |
+| MS_LPC | `lpc.ms.gov` blocked by Zscaler |
+| MS_ABA | `msautismboard.ms.gov` blocked by Zscaler |
+| AL_MFT | `mft.alabama.gov` blocked by Zscaler |
+| AL_OPTOMETRY | `optometry.alabama.gov` blocked by Zscaler |
+| OK_ADAC | `okdrugcounselors.org` blocked by Zscaler |
+| AZ_CHIRO | `azus-sbce.ongovcore.com` blocked by Zscaler |
+| WV_OPTOMETRY | `wvbo.certemy.com` blocked by Zscaler |
+| WV_PT | `wvbopt.portalus.thentiacloud.net` blocked by Zscaler |
+| WV_SOCIALWORK | `wvsocialworkboard.org` blocked by Zscaler |
+| LA_ADRA | `app.certemy.com` blocked by Zscaler |
 
-All other boards (including all Certemy, SD, NJ, MD, FL, IL, CO, WA, NY, DE, WI, KY, KS, MA boards)
+All other boards (including SD, NJ, MD, FL, IL, CO, WA, NY, DE, WI, KY, KS, MA, WV_MEDBOARD_* boards)
 work without proxy — accessible on the corporate network directly or via public Socrata/CSV APIs.
+Some Certemy boards (nvba.certemy.com, wvbo.certemy.com) differ: nvba is accessible without proxy;
+wvbo.certemy.com requires proxy. Always run the full suite with `PROXY=proxy:9119` to be safe.
 
 > **Note:** FL_MQA (`mqa-internet.doh.state.fl.us`) does NOT require the unauthenticated proxy — it
 > is reachable on the corporate network directly. The original `florida_all_providers_web_scraping.py`
@@ -553,6 +699,29 @@ by matching the sibling text node after the `<span><input></span>` wrapper, subm
 Each requested practitioner type produces a separate CSV (with a `_practitioner_type` column added);
 all are concatenated and returned as a single merged CSV. Used by **CT_ELICENSE**.
 
+**`mopro_zip` strategy** — Missouri MOPRO Salesforce LWC portal (`mopro.mo.gov/license/s/license-downloads`).
+Selects `board_label` from the Lightning combobox (tries native `<select>` first, falls back to clicking
+the Lightning combobox and selecting by role), clicks Submit, waits for Download button(s), downloads
+each ZIP, extracts the tab-delimited TXT member (skipping `filedesc*.txt` and 0-byte members), merges
+all DataFrames, and returns UTF-8 tab-delimited text. Multi-ZIP boards (e.g. Healing Arts = 36 ZIPs)
+are supported — all ZIPs are downloaded sequentially and merged. Cache is saved as UTF-8 regardless of
+`encoding` config (portal TXT files can contain Unicode characters).
+
+```yaml
+csv_bulk:
+  download_strategy: mopro_zip
+  board_label: "Pharmacy"       # label to select from the portal combobox
+  file_format: txt              # "csv" or "txt"
+  separator: "\t"               # column separator (tab for mopro_zip TXT files)
+  cache_days: 7
+  cache_dir: "./csvs/mo_pharmacy"
+  encoding: "latin-1"          # used for load_csv; mopro_zip saves as utf-8 regardless
+  search_columns:
+    license_number: "lic_number"
+    last_name: "prc_last_name"
+    first_name: "prc_first_name"
+```
+
 Both strategies use a real Chromium browser (proxy-aware) so they work behind Zscaler SSL inspection.
 The `search_columns` mapping tells the engine which CSV column to search for each mode.
 
@@ -644,13 +813,36 @@ re-download on first run after upgrading.
 
 ## Adding a new board
 
-1. Create `sites/XX_BOARD/config.yaml` — see schema below.
-2. Validate: `python -m engine.validate sites/XX_BOARD/config.yaml`
+### Step 0 (required): Run the archetype triage script first
+
+```bash
+python new_board_check.py --url <board-url> --state XX --source-id XX_BOARD
+```
+
+This script walks through a 10-question decision tree and tells you:
+- **Which archetype to use** (csv_bulk / pdf_bulk / certemy / classic_html_form / etc.)
+- **Whether Python code changes are required first** — ~15-20% of real boards need a new
+  archetype or download strategy that does not yet exist in the engine
+- **A starter `config.yaml` skeleton** tailored to the archetype (pass `--output sites/XX_BOARD/config.yaml` to save it)
+
+**Do not create a `config.yaml` before completing Step 0.**
+If the triage verdict is `NEEDS_PYTHON`, file a GitHub issue / Jira ticket before
+proceeding. A developer must add the archetype to `archetypes/` first.
+
+```bash
+# List all archetypes and their decision signals (no triage, just reference)
+python new_board_check.py --non-interactive
+```
+
+### Steps 1–7 (after triage confirms an existing archetype)
+
+1. Create `sites/XX_BOARD/config.yaml` — use the skeleton from the triage script.
+2. Validate schema: `python -m engine.validate sites/XX_BOARD/config.yaml`
 3. Dry-run: `python run.py --config sites/XX_BOARD/config.yaml --mode license_number --query "TBD" --dry-run`
 4. Live test (headed): `python run.py --config sites/XX_BOARD/config.yaml --mode license_number --query "TBD" --headed`
 5. Add a `smoke_test` block with a real stable query and run `python smoke_all.py --filter XX_BOARD`.
 6. Run full regression: `python smoke_all.py` — all prior PASS boards must still PASS.
-7. Update `board_inventory.xlsx` — set `Smoke Test Status` to PASS.
+7. Update `board_inventory.xlsx` — set `Smoke Test Status` to READY, assign Sprint column, add to `board_routing_master.csv`.
 
 ### Minimal config skeleton
 
@@ -741,7 +933,7 @@ evidence:
   # Use ["search_results", "error"] when has_detail_page: false
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/{source_id}/{run_id}/"  # kept for reference; actual path computed by engine
 
 compliance:
   requires_captcha: false
@@ -783,49 +975,98 @@ smoke_test:
 
 ## Evidence capture
 
-Every run produces HTML and screenshot evidence in `./evidence/{source_id}/{run_id}/`.
+Every browser-based run produces HTML and screenshot evidence.
 
-Files saved per run (when `capture_on` includes the matching stage):
+### Folder structure
+
+```
+PSV_DEV/
+  Evidence/
+    2026-06/
+      TX/
+        TX_CHIRO/
+          20260622_1121_Smith/
+            search_results.html    ← full page DOM after results load
+            search_results.png     ← full-page screenshot
+      NV/
+        NV_MEDBOARD/
+          20260622_1122_17371/     ← license number as query label
+            search_results.html
+            search_results.png
+          20260622_1122/           ← detail page (no query label)
+            detail_page.html
+            detail_page.png
+```
+
+**Path template:** `Evidence/{YYYY-MM}/{state}/{source_id}/{YYYYMMDD_HHMM}_{query_label}/`
+
+- `{YYYY-MM}` — month folder extracted from `run_id` (e.g. `2026-06`)
+- `{state}` — from `config.identity.state` (e.g. `TX`)
+- `{source_id}` — board ID (e.g. `TX_CHIRO`)
+- `{YYYYMMDD_HHMM}_{query_label}` — timestamp + query identifier (license_number → first_name → last_name → raw query)
+- Detail page captures use `{YYYYMMDD_HHMM}/` only (no query label in the detail scraper)
+
+### Files saved per run
 
 | File | Stage | When saved |
 |------|-------|------------|
-| `search_results.html` | `search_results` | After results load (all archetypes) |
-| `search_results.png` | `search_results` | After results load (all archetypes) |
-| `detail_page.html` | `detail_page` | When visiting detail page (`has_detail_page: true`) |
-| `detail_page.png` | `detail_page` | When visiting detail page (`has_detail_page: true`) |
-| `error.html` | `error` | When an exception or extraction failure occurs |
-| `error.png` | `error` | When an exception or extraction failure occurs |
+| `search_results.html` | `search_results` | Full page DOM after results load |
+| `search_results.png` | `search_results` | Full-page screenshot after results load |
+| `detail_page.html` | `detail_page` | DOM when visiting a detail page (`has_detail_page: true`) |
+| `detail_page.png` | `detail_page` | Screenshot when visiting a detail page |
+| `error.html` | `error` | Page DOM at the point of any exception or failure |
+| `error.png` | `error` | Screenshot at the point of any exception or failure |
+| `summary.json` | *(non-browser)* | JSON summary for csv_bulk / pdf_bulk / json_api / socrata_api (no Playwright page) |
+
+### Archetype coverage
+
+| Archetype | HTML | Screenshot | Notes |
+|-----------|------|------------|-------|
+| `classic_html_form`, `state_portal`, `thentia_cloud`, `ag_grid_spa`, `pega_constellation` | ✓ | ✓ | Via `browser_form.py` |
+| `certemy` | ✓ | ✓ | Via `certemy.py` |
+| `datatables_jsapi` | ✓ | ✓ | Via `datatables.py` |
+| `filemaker_webdirect` | ✓ | ✓ | Via `filemaker.py` |
+| `socrata_bulk_csv` | ✓ | ✓ | Via `socrata.py` — captures raw JSON body as HTML |
+| `csv_bulk`, `pdf_bulk`, `json_api`, `socrata_api` | — | — | No Playwright page; `summary.json` written instead |
+
+All 147 browser-based boards have `capture_html: true`, `capture_screenshot: true`, and `capture_on: ["search_results", "error"]`. Boards with `has_detail_page: true` also have `"detail_page"` in `capture_on`.
 
 ### Evidence config options
 
 ```yaml
 evidence:
-  capture_html: true              # Save page HTML to .html file
-  capture_screenshot: true        # Save full-page screenshot to .png file
+  capture_html: true              # Save page HTML to {stage}.html
+  capture_screenshot: true        # Save full-page screenshot to {stage}.png
   capture_on:
     - search_results              # Capture after search results load
     - detail_page                 # Capture on detail page (only if has_detail_page: true)
-    - error                       # Capture whenever an error occurs
+    - error                       # Capture whenever an error or exception occurs
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"   # {source_id} and {run_id} are expanded at runtime
+  local_path: "Evidence/{source_id}/{run_id}/"  # NOTE: local_path is ignored by the engine;
+                                                 # actual path is always computed from project root
+                                                 # as Evidence/{YYYY-MM}/{state}/{source_id}/{ts}_{query}/
 ```
 
 ### Finding evidence for a specific run
 
 ```bash
-# List recent evidence directories for a board
-ls evidence/CO_DORA/
+# List all evidence for a board this month
+ls Evidence/2026-06/TX/TX_CHIRO/
 
-# Open latest screenshot
-ls -t evidence/NV_MEDBOARD/*/search_results.png | head -1
+# Find the latest search_results screenshot for a board
+ls -t Evidence/2026-06/NV/NV_MEDBOARD/*/search_results.png | head -1
+
+# Find all error screenshots across all boards (AI debug triage)
+find Evidence/ -name "error.png" | sort
+
+# Find HTML for a specific query
+find Evidence/2026-06/ -path "*/NV_MEDBOARD/*17371*/search_results.html"
 ```
 
-**Note:** For `pdf_bulk` boards (AR_PODIATRY, NV_OPTOMETRY, LA_MASSAGETHERAPY), the
-`search_results` stage captures the PDF download page state, not search result rows —
-this is less useful visually but still captures errors. For `socrata_bulk_csv` boards
-(DE_LICENSING, WA_HEALTH, CO_DORA, NY_APPEARANCE), the screenshot shows the raw JSON
-blob rendered in Chromium. For `csv_bulk` boards (AK_CBP, AL_ALBME), evidence capture
-is disabled by default (`capture_html: false`) since no browser page renders the search results.
+**Notes on non-standard archetypes:**
+- `socrata_bulk_csv` (CO_DORA, DE_LICENSING, IL_LICENSING, NY_APPEARANCE, WA_HEALTH) — the screenshot and HTML show the raw JSON API response rendered in Chromium. Useful for debugging malformed API responses or blocked requests, not for visual form review.
+- `pdf_bulk` (AR_PODIATRY, NV_OPTOMETRY, LA_MASSAGETHERAPY, SD_*) — no browser page after download; evidence captures the download-page state only.
+- `csv_bulk`, `json_api`, `socrata_api` — no browser page; a `summary.json` is written with file path, record count, and timestamp.
 
 ---
 
@@ -905,9 +1146,11 @@ Every run writes to `lvs_scrape.db` (SQLite, auto-created):
 
 | Table | Contents |
 |-------|----------|
-| `scrape_events` | Per-run: board, mode, query, status, duration, record count |
+| `scrape_events` | Per-run: board, mode, query, status, duration, record count, `partial_result` flag, `warnings` JSON array |
 | `ai_touchpoints` | AI fallback invocations: board, run_id, tokens used |
-| `license_records` | Canonical `LicenseRecord` output per record |
+| `license_records` | Canonical `LicenseRecord` output per record; `partial_result` column flags records from degraded runs |
+
+A run has `status="partial"` (instead of `"success"`) when any step silently failed but still returned records — e.g. search-by dropdown didn't apply the right mode, extra filters failed to set, or table extraction fell back. The `warnings` column carries the failure details. `partial_result=1` on `license_records` rows flags which records came from those runs.
 
 Query the DB to audit runs:
 
@@ -961,7 +1204,7 @@ to `socrata_bulk_csv` (browser) which works without proxy credentials.
 
 ---
 
-## Board status (as of 2026-06-15)
+## Board status (as of 2026-06-16)
 
 | Board | State | Archetype | Smoke Status | Notes |
 |-------|-------|-----------|--------------|-------|
@@ -979,7 +1222,7 @@ to `socrata_bulk_csv` (browser) which works without proxy credentials.
 | KS_GLSUITE | KS | classic_html_form | PASS | br_column_table strategy |
 | KS_KSBHADA | KS | state_portal | PASS | strong_label strategy; query Burroughs |
 | KS_OPTOMETRY | KS | classic_html_form | PASS | 16 Smiths |
-| KS_PHARMACY | KS | state_portal | PASS | query Baker; Abdalla Abu Baker — active |
+| KS_PHARMACY | KS | classic_html_form | PASS | session 35 SKIP→PASS — public form at ksbop.elicensesoftware.com/portal.aspx is reachable (was wrongly diagnosed as login-only); ASP.NET GridView `#gvResults`, 7 cols (Name/AKA/L/P/R #/City/State/Class/Status); query Baker → [1-126156] Abu Baker, Abdalla — active (+129 more) |
 | KY_AP | KY | classic_html_form | PASS | web1.ky.gov AGY=26 |
 | KY_GC | KY | classic_html_form | PASS | web1.ky.gov AGY=27 |
 | KY_MEDBOARD | KY | classic_html_form | PASS | web1.ky.gov AGY=5; 309 Smiths |
@@ -990,7 +1233,7 @@ to `socrata_bulk_csv` (browser) which works without proxy credentials.
 | LA_ADRA | LA | certemy | PASS | [641] Charles R. Smith — active (+19); app.certemy.com |
 | LA_DENTAL | LA | classic_html_form | PASS | [3842] SHANA SMITHWICK — active; member-base.net portal; table table tr; col order H/D, Lic#, Last, First, Status |
 | LA_DIETETICS | LA | classic_html_form | PASS | session 28 — post_search_click_all accordion-expand; 40 Smith records |
-| LA_MASSAGETHERAPY | LA | pdf_bulk | **SKIP** | pdf_urls_stale_404: labmt.org May 2026 PDFs return 404; online.labmt.org requires login; labmt.org/search/ is WordPress site-search |
+| LA_MASSAGETHERAPY | LA | pdf_bulk | PASS | session 35 — switched to `page_link` strategy; labmt.org/search/ has anchors "PROFESSIONAL LICENSE SEARCH" + "ESTABLISHMENT LICENSE SEARCH"; engine extended to support per-PDF link_selector; [LA9826] ALEXIS SMITH (+30 more) |
 | LA_OPTOMETRY | LA | classic_html_form | PASS | Laura Buisson; MemberLeap portal; element_visible div.search-result; name only (no detail) |
 | LA_PT | LA | classic_html_form | PASS | Smith (9 records); laptboard.org; pre_search_click + submit_via_enter; div.licensee cards; h3+dd cell extraction |
 | LA_SOCIALWORK | LA | classic_html_form | PASS | [?] Addie Smith — unknown (+9); labswe.org ColdFusion; a#search_button; li.row + h3 name extraction |
@@ -1065,7 +1308,11 @@ to `socrata_bulk_csv` (browser) which works without proxy credentials.
 | OR_SLP | OR | thentia_cloud | PASS | session 23/25 — portalus breakthrough |
 | TX_CHIRO | TX | classic_html_form | PASS | session 26 — filemaker_webdirect archetype; 23 records |
 | TX_DENTAL | TX | ag_grid_spa | PASS | session 26 — datatables_jsapi archetype; 15 records |
+| WV_MEDBOARD_DPM | WV | csv_bulk | PASS | session 32 — link_text_xlsx; wvbom.wv.gov "Roster of Podiatric Physicians" XLSX (1 sheet) |
+| WV_MEDBOARD_MD | WV | csv_bulk | PASS | session 32 — link_text_xlsx; wvbom.wv.gov "Roster of Medical Doctors" XLSX (6 sheets, engine reads Licenses sheet) |
+| WV_MEDBOARD_PA | WV | csv_bulk | PASS | session 32 — link_text_xlsx; wvbom.wv.gov "Roster of Physician Assistants" XLSX (3 sheets, engine reads Licenses sheet) |
 | WV_PT | WV | thentia_cloud | PASS | session 25 — portalus breakthrough; has_detail_page: false |
+| WV_DENTAL | WV | classic_html_form | PASS | session 37 — GLSuite ASP.NET form; wvbodv7prod.glsuite.us; 33 Smith records; no detail page; expiration_date used for status |
 | WV_SOCIALWORK | WV | classic_html_form | PASS | session 26 — ajax_row_count wait; DNN SQLViewPro; 26 records |
 | MA_MDDO | MA | classic_html_form | PASS | session 26 — json_api archetype; api.medboard.mass.gov; 504 records |
 | MN_COSMETOLOGY | MN | classic_html_form | PASS | 191 Smiths; GLSuite bcegl.hlb.state.mn.us; has_detail_page: false (detail links are javascript:__doPostBack) |
@@ -1104,8 +1351,193 @@ to `socrata_bulk_csv` (browser) which works without proxy credentials.
 | OH_PROVIDERS_BUSINESS | OH | csv_bulk | PASS | session 29 — ohio_data_portal_csv strategy; State of Ohio Licensure |
 | OH_PROVIDERS_INDIVIDUAL | OH | csv_bulk | PASS | session 29 — ohio_data_portal_csv strategy; State of Ohio Licensure |
 | TX_CHEMICAL | TX | csv_bulk | PASS | session 29 — link_text_xlsx strategy; Texas HHS Licensed Chemical Dependency Counselors |
+| HI_DIETITIANS | HI | datatables_jsapi | PASS | session 34 — TablePress 7 DataTables 2.x global search; #tablepress-7; [75-LD] Daryl Smith-Oswald (+2 more) |
+| PA_PALS | PA | classic_html_form | PASS | session 34 — Pennsylvania umbrella PALS portal (29 boards/commissions); AngularJS SPA at pals.pa.gov; ajax_row_count wait on #DataTables_Table_3; [AA002213L] LEE A SMITH — active (+9 more) |
+| MO_HEALING_ARTS | MO | csv_bulk | PASS | session 36 — mopro_zip strategy; 36 ZIPs, 134K records; [2012030851] Stephen Smith — active (+809 more) |
+| MO_DENTAL | MO | csv_bulk | PASS | session 36 — mopro_zip strategy; 19 ZIPs, 18K records; [003366] Kathleen Lucente-Smith — active (+173 more) |
+| MO_OPTOMETRY | MO | csv_bulk | PASS | session 36 — mopro_zip strategy; 1 ZIP, 1.5K records; [T03249] Jill Smith — active (+15 more) |
+| MO_PHARMACY | MO | csv_bulk | PASS | session 36 — mopro_zip strategy; 10 ZIPs, 39K records; [2024026846] Tinley Smith — active (+334 more) |
+| MS_DHPL | MS | classic_html_form | PASS | session 39 — ASP.NET WebForms GridView; msdhpl.webapps.ms.gov; [TA-4248] ABAGAIL GRAYCE SMITH — active (+49 more); requires PROXY=proxy:9119 |
+| MS_PSYCH | MS | classic_html_form | PASS | session 39 — Classic ASP table; msbop.ms.gov; [34 559] Smith (+7 more); requires PROXY=proxy:9119 |
+| MS_SWMFT | MS | classic_html_form | PASS | session 39 — ASP.NET WebForms GridView; swmft.webapps.ms.gov; [Licensed Social Worker] Amelita R Smith (+49 more); requires PROXY=proxy:9119 |
+| MS_LPC | MS | classic_html_form | PASS | session 40 — Classic ASP; lpc.ms.gov/secure/licensesearch.asp; POST to licensesearchresults.asp; row_selector tr:has(a[href*='licensesearchdetails']); no_results_indicator '0 matching documents'; [3244] Allison Kenna Smith (+52 more); requires PROXY=proxy:9119 |
+| MS_ABA | MS | classic_html_form | PASS | session 41 — Classic ASP; msautismboard.ms.gov/secure/licenseverification.asp; nested table structure; row_selector tr:has(a[href*='licenseverificationdetails']):not(:has(tr)); no status column (all active); [200017] Chelsea Lynn Smith (+2 more); requires PROXY=proxy:9119 |
+| WV_PSYCH | WV | classic_html_form | PASS | session 44 — custom_js extraction; psychbd.wv.gov; all results flat in div.psychbdSearchContainer; bare `<b>Name</b>` + `<b>Label:</b>` text nodes; [785] Tracy P. Smith — active (+17 more); requires PROXY=proxy:9119 |
+| AL_ABESPA | AL | classic_html_form | PASS | session 44 — proxy: false (site works directly, not Zscaler-blocked); ASP.NET form; #ContentPlaceHolder1_gv1; [3171] Smith, Abby Lauren — active (+16 more) |
+| AL_MFT | AL | classic_html_form | PASS | session 42 — ASP.NET form at mft.alabama.gov; results in #ContentPlaceHolder1_GridView1; [259] Smith, Charles Manuel — unknown (+7 more); requires PROXY=proxy:9119 |
+| AL_OPTOMETRY | AL | classic_html_form | PASS | session 42 — ASP.NET GET form at optometry.alabama.gov; #GridView1 cols: Last Name/First Name/City/State/License#; [S-275] Howard Smith — unknown (+10 more); requires PROXY=proxy:9119 |
+| MA_BSAS | MA | classic_html_form | PASS | session 42 — MA Bureau of Substance Addiction Services eLicensing at hhsvgapps03.hhs.state.ma.us; input#lastName + input[value='Search']; 22 Smith records; [11100] Krista Sand — unknown (+21 more) |
+| MO_CHIROPRACTIC | MO | csv_bulk | PASS | session 42 — mopro_zip strategy; board_label 'Chiropractic Examiners'; 1 ZIP, 2883 records; [2023046993] Delia Smith — active (+29 more) |
+| MO_PSYCHOLOGISTS | MO | csv_bulk | PASS | session 42 — mopro_zip strategy; board_label 'Psychologists'; 2 ZIPs, 1813 records; [01487] Lizette Smith — active (+15 more) |
+| NH_OPLC | NH | classic_html_form | PASS | session 42 — ASP.NET form at forms.nh.gov/licenseverification; #ctl00_Main_txtName + #ctl00_Main_btnSearch; #ctl00_Main_gvLicensees results; 41 Smith records; [002720-21] Smith, A. Jean — inactive (+40 more); NO proxy (Akamai WAF blocks proxy IP) |
+| NM_MIDWIVES | NM | classic_html_form | PASS | session 42 — NM Midwife Registry at license.nmmidwife.doh.nm.gov; input#searchByName + Enter; table rows; [928] Smith, Szodyraa — active |
+| OK_ADAC | OK | classic_html_form | PASS | session 44 — custom_js extraction; okdrugcounselors.org; each provider in `<table border="1" width="398">`; row 0 = name `<b>`, rows 1+ = `<b>Label:</b>` value pairs; [288] Flucard-Smith, Vicki — inactive (+9 more); requires PROXY=proxy:9119 |
+| AZ_CHIRO | AZ | classic_html_form | PASS | session 43 — onGovCore React SPA (azus-sbce.ongovcore.com); same platform as AZ_OT/AZ_OPTOMETRY/AZ_DENTAL; [006086] Damian Smith — unknown (+19 more); requires PROXY=proxy:9119 |
+| OK_BEHAVIORAL_HEALTH | OK | thentia_cloud | **SKIP** | thentiacloud_api_blocked_corporate: obbhl.us.thentiacloud.net page loads without proxy but Thentia search XHR API times out from corporate network (both via proxy and direct). Column mapping corrected (0=last_name/1=first_name/2=city/3=state/4=zip/5=license_type/6=status/7=supervisor/8=disciplinary). proxy: false; strategy: select; timeouts: 90s/60s. Confirmed 2026-06-19. |
+| OK_SOCIALWORK | OK | thentia_cloud | **SKIP** | thentiacloud_api_blocked_corporate: osblsw.portalus.thentiacloud.net page loads without proxy but Thentia search XHR API times out from corporate network. Column mapping corrected (0=license_number/1=first_name/2=last_name/3=city/4=license_type/5=status/6=expiration_date/7=disciplinary). proxy: false; strategy: none. Confirmed 2026-06-19. |
+| OK_ODOHCS | OK | thentia_cloud | **SKIP** | thentiacloud_api_blocked_corporate: odohcs.portalus.thentiacloud.net page loads without proxy but Thentia search XHR API times out from corporate network. Column mapping corrected (0=license_number/1=first_name/2=last_name/3=city/4=license_type/5=status/6=expiration_date/7=disciplinary). proxy: false; results_wait timeout 60s. Confirmed 2026-06-19. |
+| VT_OPR | VT | classic_html_form | **SKIP** | session 43 — Pega Constellation React SPA at secure.professionals.vermont.gov; requires press_sequentially, React event dispatch, 90s boot wait, CSS force-enable for submit button; no engine archetype supports Pega |
 
-**Summary: 127 PASS / 0 FAIL / 8 SKIP** *(post-session 30; smoke v3 2026-06-16: 7 FAIL boards all resolved — 4 PASS, 3 new SKIP. 22 new boards added. Board table to be fully refreshed from smoke v3 results.)*
+**Summary: 178 PASS / 0 FAIL / 10 SKIP** *(current as of 2026-06-22; 188 total configs)*
+
+SKIP(10): WV_CHIRO / NC_OPTOMETRY / NC_PT / NY_CREDENTIALS / MO_NURSING / AZ_MEDBOARD / OK_BEHAVIORAL_HEALTH / OK_SOCIALWORK / AK_CBP / OK_ODOHCS
+
+---
+
+Session 45–46 (2026-06-22) — **Evidence capture overhaul; RI_HEALTH FAIL fix; screenshot/HTML audit; PSV_DEV cleanup; 178 PASS / 0 FAIL / 10 SKIP**:
+
+**RI_HEALTH FAIL fix:**
+- `results_wait.strategy: element_visible, timeout_ms: 30000` → `strategy: network_idle, timeout_ms: 60000`. Under full-run load, `healthri.mylicense.com` (myLicense.com platform) takes >30s to respond — the prior fix that made `wait_for_results` correctly return `False` on timeout triggered this as a FAIL. Changed to `network_idle` with 60s (same as IN_PLA, same platform). PASS in 13.8s.
+
+**Evidence path restructured:**
+- Old: `Evidence/{source_id}/{run_id}/search_results.png`
+- New: `Evidence/{YYYY-MM}/{state}/{source_id}/{YYYYMMDD_HHMM}_{query_label}/{stage}.{ext}`
+- `{query_label}` = `license_number` → `first_name` → `last_name` → raw query (filesystem-safe, 40-char max)
+- Month and timestamp extracted from `run_id` (format `20260622_091856_001`), falls back to `datetime.now()`
+- Updated `engine/evidence.py`: `resolve_evidence_path(source_id, run_id, state, query_label)` + `_query_label(query)` helper
+- Updated all archetype callers to pass `state=config.identity.state, query=query`
+
+**Screenshot + HTML audit — all 147 browser boards now fully configured:**
+- Added `capture_evidence` calls to `certemy.py`, `datatables.py`, `filemaker.py` (previously never called it)
+- Added `capture_evidence` calls to `socrata.py` (`socrata_bulk_csv` uses Playwright but was missing evidence calls)
+- Fixed 8 browser board configs: `capture_html: false → true` (AZ_SPEECH_HEAR, KS_NURSING, NC_DIETETICS, NC_MENTAL_HEALTH, OK_DENTAL, TX_CHIRO, TX_DENTAL, WV_SOCIALWORK)
+- Fixed KS_NURSING `capture_on: [] → ["search_results", "error"]`
+- All 147 browser boards now have: `capture_html: true`, `capture_screenshot: true`, `capture_on: ["search_results", "error"]` (or `["search_results", "detail_page", "error"]` for boards with detail pages)
+- 43 non-browser boards (csv_bulk / pdf_bulk / json_api / socrata_api) correctly have no screenshot config (no Playwright page)
+
+**PSV_DEV folder cleanup (~1.07 GB freed):**
+- Removed `csvs/` root directory (822 MB stale CSV cache — now maintained in `PSV/CSVS/`)
+- Removed `Edgedriver/` (20 MB Selenium Edge driver — replaced by Playwright)
+- Removed stale standalone scripts, historical run outputs, and intermediate files from project root and subdirectories
+
+Session 44 (2026-06-19) — **3 SKIP→PASS + engine custom_js feature + csv cache_dir fix; 175 PASS / 0 FAIL / 13 SKIP**:
+
+**SKIP→PASS (3):**
+- **AL_ABESPA** — `abespa.alabama.gov` is NOT Zscaler-blocked — was a proxy misconfiguration. Switched `proxy: enabled: false`; ASP.NET form works directly. [3171] Smith, Abby Lauren — active (+16 more).
+- **WV_PSYCH** — West Virginia Board of Examiners of Psychologists. All results rendered flat inside `div.psychbdSearchContainer > div` with bare `<b>Name</b>` nodes + `<b>Label:</b> Value` text-node siblings. Added `custom_js` engine feature to walk `childNodes`, detect colon presence to distinguish name vs. field, and build records. `results_wait.selector` changed to `div.psychbdSearchContainer b` (the `#psychbdSearchResultsPane` div was always present before search — not a valid sentinel). [785] Tracy P. Smith — active (+17 more).
+- **OK_ADAC** — `okdrugcounselors.org` PHP POST form. Each provider rendered in a `<table border="1" width="398">`; row 0 = name `<b>`, subsequent rows = `<b>Label:</b> value` pairs. `vertical_kv` with `record_marker_label` couldn't capture the pre-colon bare-bold name. Fixed via `custom_js` iterating each provider table. [288] Flucard-Smith, Vicki — inactive (+9 more). Requires PROXY=proxy:9119.
+
+**Engine change — `custom_js` in `ResultsTableConfig`** (`engine/models.py` + `engine/extractor.py`):
+- New `custom_js: Optional[str]` field on `ResultsTableConfig`. When set, `page.evaluate(custom_js)` is called and results are returned directly, bypassing all other table/vertical_kv extraction. JS must return `[{field: value, ...}]`. Used by WV_PSYCH and OK_ADAC.
+
+**Skip reason updates (3 Thentia boards — still SKIP, improved configs):**
+- **OK_BEHAVIORAL_HEALTH** — `obbhl.us.thentiacloud.net` page loads without proxy (proxy: false now); Thentia search XHR API calls time out from corporate network regardless. Column mapping corrected; strategy: select; timeouts increased to 90s/60s.
+- **OK_SOCIALWORK** — `osblsw.portalus.thentiacloud.net` same XHR-blocked pattern. Proxy: false; strategy: none (custom_dropdown broke Angular page state). Column mapping corrected.
+- **OK_ODOHCS** — `odohcs.portalus.thentiacloud.net` same pattern. Proxy: false; results_wait timeout increased to 60s. Column mapping corrected.
+
+**New SKIP(13):** WV_CHIRO / NC_OPTOMETRY / NC_PT / NY_CREDENTIALS / MO_NURSING / AZ_MEDBOARD / NM_MEDBOARD / NM_RLD / OK_BEHAVIORAL_HEALTH / OK_SOCIALWORK / AK_CBP / OK_ODOHCS / VT_OPR.
+
+**Engine fix — `csv_extractor.py` cache_dir resolution** (`engine/csv_extractor.py`):
+- `get_csv()` now resolves relative `cache_dir` values (e.g. `./csvs`) against `Path(__file__).parent.parent` (the scrapers root), not the process CWD. Prevents WY google_sheet_link boards from failing when `smoke_all.py` is run from the project root instead of the scrapers directory.
+- WY boards' `google_sheet_link` CSV downloads are also blocked by McAfee Web Gateway (`URLBlockedStorage`) on the corporate network. The 7-day cache in `lvs/adapters/scrapers/csvs/` is used automatically; cached files expire 2026-06-23 (next refresh needs non-corporate network or McAfee allowlist update for `docs.google.com/spreadsheets/export`).
+
+Session 43 (2026-06-18) — **3 new boards added from PSV_DEV scripts; 172 PASS / 0 FAIL / 16 SKIP**:
+
+**New PASS boards (1):** AZ_CHIRO.
+
+**New SKIP boards (2):**
+- **OK_ODOHCS** — network_timeout: `odohcs.portalus.thentiacloud.net` hung >180s via corporate proxy — same pattern as OK_SOCIALWORK/OK_BEHAVIORAL_HEALTH. Thentia portalus board. Test outside corporate proxy to confirm.
+- **VT_OPR** — Pega Constellation React SPA at `secure.professionals.vermont.gov`. Requires `press_sequentially`, React native-setter event dispatch, 90s boot wait, and CSS force-enable for DISPLAY RESULTS button. No engine archetype currently supports Pega Constellation.
+
+**New boards detail:**
+- **AZ_CHIRO** — Arizona State Board of Chiropractic Examiners. onGovCore React SPA at `azus-sbce.ongovcore.com`. Identical platform to AZ_OT/AZ_OPTOMETRY/AZ_DENTAL. Columns: NAME/LICENSE NUMBER/LICENSE TYPE/STATUS/EXPIRATION DATE/BOARD ACTIONS. Requires PROXY=proxy:9119.
+- **OK_ODOHCS** — Oklahoma State Dept. of Health Consumer Health Service. Thentia portalus at `odohcs.portalus.thentiacloud.net`. Keyword-only search (no Search By dropdown, unlike OK_SOCIALWORK). Detail page via `a.btn-single`. Requires PROXY=proxy:9119.
+- **VT_OPR** — Vermont Office of Professional Regulation. Multi-profession portal (LPC, SW, PSYCH, MFT, DC, OD, PT, OT, RN, RPh, DENT, and more). Distinct from VT_MEDBOARD (`search.medicallicensing.vermont.gov`).
+
+Session 42 (2026-06-18) — **11 new boards added; 171 PASS / 0 FAIL / 14 SKIP**:
+
+**New PASS boards (9):** AL_MFT, AL_OPTOMETRY, AZ_OT (session 38, carried), AZ_PODIATRY (session 38, carried), HI_DIETITIANS (session 34, carried), MA_BSAS, MO_CHIROPRACTIC, MO_PSYCHOLOGISTS, NH_OPLC, NM_MIDWIVES. Plus MS_ABA/MS_DHPL/MS_LPC/MS_PSYCH/MS_SWMFT already counted in sessions 39–41.
+
+**New SKIP boards (2):**
+- **AL_ABESPA** — network_timeout: `abespa.alabama.gov` times out (30s) via corporate proxy. Site is Zscaler-blocked or intermittently slow. ASP.NET form; results in `#ContentPlaceHolder1_gv1`; cols: Name/License#/Status. Unblock: test directly or add to allowlist.
+- **OK_ADAC** — vertical_kv nested-table layout at `okdrugcounselors.org`. PHP POST form confirmed working (member results appear). Requires custom parser for nested-table record extraction. Requires PROXY=proxy:9119.
+
+**New boards detail:**
+- **AL_MFT** — ASP.NET ImageButton form at `mft.alabama.gov`; `#ContentPlaceHolder1_GridView1`; cols: Name/License#/Status. Requires PROXY=proxy:9119.
+- **AL_OPTOMETRY** — ASP.NET GET form at `optometry.alabama.gov`; `#GridView1`; cols: Last/First/City/State/License#. Requires PROXY=proxy:9119.
+- **MA_BSAS** — MA Bureau of Substance Addiction Services eLicensing at `hhsvgapps03.hhs.state.ma.us`; `input#lastName` + `input[value='Search']`; 22 Smith records. No proxy.
+- **MO_CHIROPRACTIC** — mopro_zip; `board_label: 'Chiropractic Examiners'`; 1 ZIP, 2883 records.
+- **MO_PSYCHOLOGISTS** — mopro_zip; `board_label: 'Psychologists'`; 2 ZIPs, 1813 records.
+- **NH_OPLC** — ASP.NET form at `forms.nh.gov/licenseverification`; `#ctl00_Main_gvLicensees`; 41 Smith records. NO proxy (Akamai WAF blocks proxy IP).
+- **NM_MIDWIVES** — NM Midwife Registry at `license.nmmidwife.doh.nm.gov`; `input#searchByName` + Enter; small board. No proxy.
+
+Session 37 (2026-06-16) — **WV_DENTAL added; 153 PASS / 0 FAIL / 6 SKIP**:
+
+**New board — WV_DENTAL** (West Virginia Board of Dental Examiners):
+- Platform: GLSuite ASP.NET WebForms at `wvbodv7prod.glsuite.us` (same platform as MN_COSMETOLOGY, MN_DENTISTRY, WY_PA, WY_PHYSICIAN).
+- URL: `https://wvbodv7prod.glsuite.us/GLSuiteWeb/Clients/WVBOD/Public/Verification/Search.aspx`
+- Selectors: `#ContentPlaceHolder1_tbLast` / `#ContentPlaceHolder1_tbFirst` / `#ContentPlaceHolder1_tbNumber` + `#ContentPlaceHolder1_btnSearch`.
+- Results: flat table (no detail page). Columns: Licensee Name (Last, First) | Degree | Graduation Year | School | License Number | License Date | Specialty | Anesthesia | Expiration Date | Action Indicator.
+- No explicit Status column — `expiration_date` used to infer active/expired. `disciplinary_actions` from Action Indicator (Yes/No).
+- Smoke: `last_name/Smith → [1918] Smith, Terri Lynn — unknown (+32 more)` PASS (13s, proxy).
+- Note: the Excel inventory listed this board as "Manual" ingestion; overridden in `_EXTRA_BOARDS` since the public form is scrapable.
+
+Session 36 (2026-06-16) — **`mopro_zip` strategy implemented; 4 MO boards SKIP→PASS; MO_NURSING permanently SKIP**:
+
+**Engine change — `mopro_zip` csv_bulk download strategy** in `csv_extractor.py`:
+- New `_download_mopro_zip(board_label, ...)` function: navigates `mopro.mo.gov/license/s/license-downloads` (Salesforce LWC portal), selects the board from the Lightning combobox via a two-strategy selector (`select_option` → Lightning combobox click), clicks Submit, downloads each ZIP, extracts the tab-delimited TXT, skips empty 0-byte members, merges all DataFrames, and returns UTF-8 tab-delimited text.
+- New fields in `CsvBulkConfig`: `board_label`, `file_format`, `separator` — enable per-board portal name and separator config.
+- `load_csv` extended with `sep` parameter; `_scrape_csv_bulk` in `run.py` passes `csv_cfg.separator`.
+- Cache saved as UTF-8 for `mopro_zip` (portals TXT files can contain Unicode e.g. right single-quote `’`).
+- Screenshot-on-timeout diagnostic in the Download button wait — saves `_mopro_debug_{board}.png` to scrapers root.
+
+**SKIP→PASS (4):**
+- **MO_HEALING_ARTS** — 36 ZIPs, 134K records (38 license types including osteopathy, acupuncture, PT, OT, massage, etc.). [2012030851] Stephen Smith — active (+809 more).
+- **MO_DENTAL** — 19 ZIPs, 18K records (DDS, DMD, hygienists, assistants). [003366] Kathleen Lucente-Smith — active (+173 more).
+- **MO_OPTOMETRY** — 1 ZIP, 1.5K ODs. [T03249] Jill Smith — active (+15 more).
+- **MO_PHARMACY** — 10 ZIPs, 39K records (pharmacists, technicians, interns). [2024026846] Tinley Smith — active (+334 more).
+
+**Permanently SKIP (1):**
+- **MO_NURSING** — Screenshot confirmed: MOPRO portal displays "Downloadable files for nursing are not available." Portal redirects to Nursys.com (NCSBN QuickConfirm). No bulk file exists. Cannot unblock without a separate Nursys-based source.
+
+**Still SKIP (6):** WV_CHIRO, MN_MEDPRACTICE, NC_OPTOMETRY, NC_PT, NY_CREDENTIALS, MO_NURSING.
+
+Session 35 (2026-06-16) — **SKIP triage: 2 SKIP→PASS, NY_CREDENTIALS skip-reason updated; engine multi-PDF page_link**:
+
+**SKIP→PASS recoveries (2):**
+- **KS_PHARMACY** — public form was always reachable; the prior "login_required" diagnosis was incorrect (the page renders chrome that LOOKS like a portal but the public form is right there). ASP.NET GridView `#gvResults` with 7 cols (Name/AKA/L/P/R #/City/State/Class/Status). Tightened `row_selector: "#gvResults tr"` + `skip_first_row: true`, `results_wait.strategy: element_visible` on `#gvResults tr`, `has_detail_page: false` (501 records on Smith would time out). Smoke: `last_name/Baker → [1-126156] Abu Baker, Abdalla — active (+129 more)` PASS.
+- **LA_MASSAGETHERAPY** — labmt.org/search/ now exposes anchors `"PROFESSIONAL LICENSE SEARCH"` (prof PDF) and `"ESTABLISHMENT LICENSE SEARCH"` (estab PDF). Switched from hard-coded `direct_url` URLs (which went stale weekly) to new `page_link` strategy with per-PDF `link_selector`. URLs auto-discover at runtime — config no longer goes stale. Smoke: `last_name/Smith → [LA9826] ALEXIS SMITH — active (+30 more)` PASS.
+
+**Engine enhancement: multi-PDF `page_link` strategy** in `run.py` `_scrape_pdf_bulk`:
+- `PdfEntry.link_selector: Optional[str]` added to `models.py` — per-PDF anchor selector for `page_link` discovery.
+- `PdfBulkConfig.base_url: Optional[str]` added — overrides `identity.base_url` for discovery (LA_MASSAGETHERAPY uses `labmt.org/search/` for discovery while `identity.base_url` stays at `labmt.org`).
+- When `download_strategy: page_link` AND `pdfs` list is non-empty, run.py loops each entry, calls `discover_pdf_url(discovery_url, entry.link_selector or pdf_cfg.link_selector)`, preserving `format` + `license_prefix` routing for multi-PDF boards. Single-PDF boards (SD_*) continue to work via the empty-list fallback path.
+
+**NY_CREDENTIALS** — skip reason updated. eservices.nysed.gov/professions/verification-search IS reachable with browser user-agent (was 403 in session 30); page has 2 unlabeled `input[placeholder='Select option']` typeahead widgets (Profession + Search Type) + `#goButton`. Custom widgets have no id/name; classic_html_form selectors can't fill them. Future unblock requires investigating the typeahead widget framework (likely Drupal Views + ng-select or react-select).
+
+**Confirmed still SKIP:**
+- **NC_PT** — Cloudflare WAF firmly blocks the proxy IP range (`Attention Required! | Cloudflare`, "Sorry, you have been blocked"). No bypass available.
+- **MN_MEDPRACTICE** — site reachable, returns 200 OK, but Angular FormControl ignores Playwright fill (search returns unfiltered top-200 records — `Lia Filice Alvarez` instead of `Smith`). Engine gap: needs zone-aware FormControl.setValue() + ShieldSquare bypass.
+- **NC_OPTOMETRY**, **WV_CHIRO** — same architectural blockers (cross-origin iframe, SPO auth).
+- **MO_HEALING_ARTS / MO_NURSING / MO_DENTAL / MO_OPTOMETRY / MO_PHARMACY** — `mopro_zip` strategy not yet implemented in csv_extractor.
+
+**Still SKIP (10):** WV_CHIRO, MN_MEDPRACTICE, NC_OPTOMETRY, NC_PT, NY_CREDENTIALS, MO_HEALING_ARTS, MO_NURSING, MO_DENTAL, MO_OPTOMETRY, MO_PHARMACY. *(Note: 4 of these were resolved in session 36.)*
+
+Session 34 (2026-06-16) — **2 new boards added (HI_DIETITIANS, PA_PALS) — first HI and PA boards in inventory**:
+
+**New boards (2):**
+- **HI_DIETITIANS** — Hawaii Department of Health Licensed Dietitians (LD, RD). TablePress 7 with DataTables 2.x global search at health.hawaii.gov; full roster client-side; jQuery DataTables `api.search(q).draw()` filters rows. `datatables_jsapi` archetype, `column_index: -1` for global filter, `settle_ms: 1500`. Columns: License Number (e.g. `2-LD`) | Name | Effective Date | Expiration Date. No proxy required. Smoke: `last_name/Smith → [75-LD] Daryl Smith-Oswald (+2 more)` PASS in 8.0s.
+- **PA_PALS** — Pennsylvania Licensing System umbrella portal (covers ALL 29 PA boards/commissions: Medicine, Osteopathic, Nursing, Dental, Pharmacy, Optometry, Chiropractic, PT, OT, Psych, Social Work, SLP/AUD, Counselors, Massage, Veterinary, Funeral, Cosmetology, Auctioneers, etc.). AngularJS SPA at pals.pa.gov; form fields `#LicenseNo / #lName / #fName / #mName`; submit `button.btn-primary:has-text('Search')`. Results in `#DataTables_Table_3` (7 cols: full_name/license_number/board/license_type/status/address/action — last skipped). Pagination `#DataTables_Table_3_next`. `classic_html_form` archetype with `ajax_row_count` results_wait (form chrome contains generic "no results" text — rely on row-count signal). No proxy required. Smoke: `last_name/Smith → [AA002213L] LEE A SMITH — active (+9 more)` PASS in 12.7s.
+
+Source: standalone scripts `HawaiDietitians.py`, `PensylvaniaAllProvider.py`. Both files preserved in repo root for reference. No engine changes required — both boards fit existing archetypes (`datatables_jsapi` from session 26, `classic_html_form` with `ajax_row_count` from session 26).
+
+Session 33 (2026-06-16) — **5 new SD boards added (SD_AUDIOLOGY, SD_PT, SD_PODIATRY, SD_PSYCH, SD_SPEECH); new pdf_bulk page_link strategy; pdf_bulk capability fix**:
+
+**New boards (5):** All use new `pdf_bulk / page_link` strategy. `discover_pdf_url()` navigates to `base_url`, finds `a[href*='pdf']`, downloads at runtime. SD_PODIATRY uses query `Johnson` (only 66 DPMs in SD; no Smith). SD_PSYCH uses `/dss/` subdomain (intermittently slow; retry on 60s timeout).
+
+**Engine changes:** (a) `pdf_bulk.download_strategy: page_link` added to `PdfBulkConfig` (and `PdfEntry.url` made Optional). (b) `discover_pdf_url()` added to `pdf_extractor.py`. (c) `_scrape_pdf_bulk` in `run.py` dispatches to `discover_pdf_url` when strategy is `page_link`. (d) **pdf_bulk capability fix in `_auto_derive_capabilities`** — same pattern as certemy fix from session 32: pdf_bulk modes have no `input_selector`/`dropdown_value`, so caps was `{}`. (e) PDF filename fix: URLs like `roster.pdf?tim=123` were extracting `document` as stem (query string broke `.endswith('.pdf')` check). Now strips `?` and `#` fragments before filename extraction. (f) Per-board cache dirs `cache_dir: "./pdfs/{source_id}"` prevent cross-board cache collisions when all boards serve `roster.pdf`.
+
+Session 32 (2026-06-16) — **3 new WV boards added (WV_MEDBOARD_MD, WV_MEDBOARD_PA, WV_MEDBOARD_DPM)**:
+
+**New boards (3):**
+- **WV_MEDBOARD_MD** — csv_bulk `link_text_xlsx`; wvbom.wv.gov "Roster of Medical Doctors" XLSX (6 sheets).
+- **WV_MEDBOARD_PA** — csv_bulk `link_text_xlsx`; wvbom.wv.gov "Roster of Physician Assistants" XLSX (3 sheets).
+- **WV_MEDBOARD_DPM** — csv_bulk `link_text_xlsx`; wvbom.wv.gov "Roster of Podiatric Physicians" XLSX (1 sheet).
+
+All three use the same base_url; engine differentiates by `csv_bulk.link_text`. XLSX structure: row 0 = section title,
+row 1 = column headers, `xlsx_header_row: 1`. Evidence paths updated to `{month}/{source_id}/{run_id}/` on all 4
+existing WV configs (WV_CHIRO, WV_PT, WV_SOCIALWORK, WV_OPTOMETRY). Source: standalone scripts
+`westvirginia_MD_csv.py`, `westvirginia_PA_csv.py`, `westvirginia_DPM_csv.py`.
 
 Session 30 (2026-06-16) — **7 FAIL → resolved; ID_DOPL SKIP lifted; 4 FAIL fixed, 3 FAIL→SKIP**:
 
@@ -1247,7 +1679,6 @@ Session 21 added 23 new boards (20 from PSV_DEV root + 3 from Desktop\Codes) —
 | Board | State | Archetype | Skip Reason | Unblock Path |
 |-------|-------|-----------|-------------|--------------|
 | LA_DIETETICS | LA | classic_html_form | `lazy_loaded_accordion` — lbedn.org groups results by profession; panel-body divs are empty until group header is clicked, triggering AJAX load of `li.row` items | Implement accordion-expand strategy: click each profession group header, wait for `li.row` to appear in that group's panel-body, extract; repeat for all groups |
-| LA_MASSAGETHERAPY | LA | pdf_bulk | `pdf_url_required` — labmt.org PDFs dated 5-15-2026 return HTTP 404; board has not published current roster | Update `pdf_bulk.pdfs[].url` in [config.yaml](sites/LA_MASSAGETHERAPY/config.yaml) when new files appear at labmt.org; remove `skip: true` |
 | LA_SPEECH | LA | classic_html_form | `lazy_loaded_accordion` — lbespa.org groups results by profession; same accordion AJAX pattern as LA_DIETETICS | Same fix as LA_DIETETICS: implement accordion-expand strategy |
 | OR_HLO | OR | classic_html_form | `network_blocked` — ASP.NET UpdatePanel AJAX POST to elite.hlo.state.or.us returns empty results; `tblRecordFinder` form rows are extracted instead of search results | Investigate UpdatePanel AJAX postback mechanism; try offline with direct browser; button value is "Start Search" (not "Search"); license field is `CPH1_txtsrcLicenseNo` |
 | ID_DOPL | ID | thentia_cloud | `partial` — Angular SPA uses dynamic form field discovery (no hardcoded selectors in standalone script); engine config uses best-guess selectors | Run `python run.py --config sites/ID_DOPL/config.yaml --mode last_name --query Smith --headed` to see live DOM; update `search.modes[*].input_selector` and `results.table.row_selector` from actual page structure |
@@ -1273,9 +1704,10 @@ Session 21 added 23 new boards (20 from PSV_DEV root + 3 from Desktop\Codes) —
 | OR_SLP | OR | thentia_cloud | `thentia_search_by_dropdown_not_set` — same as OR_COUNSELORS | Same fix as OR_COUNSELORS |
 | TX_CHIRO | TX | classic_html_form | `filemaker_webdirect_unsupported` — `db.tbce.texas.gov` uses FileMaker WebDirect on Vaadin 8; no native `<input>` elements; fields are `div.fm-textarea` readonly divs requiring `.click()` then `keyboard.type()` (not `fill()`) | Add `archetype: 'filemaker_webdirect'` with click→type fallback in `navigator.py`; plus 60s Vaadin boot wait |
 | TX_DENTAL | TX | ag_grid_spa | `datatables_column_search_unsupported` — DataTables 2.x with per-column search inputs (col 7 = Last Name) requires `.DataTable().column(7).search(val).draw()` JS API call; detail page is Bootstrap modal where field values come from `disabled <input>.value` attributes | Implement `datatables_jsapi_search` strategy in `navigator.py` + `label_input_disabled` extractor that reads `.value` attribute |
-| WV_PT | WV | thentia_cloud | `thentia_portalus_dom_differs` — `wvbopt.portalus.thentiacloud.net` template differs from standard `*.us.thentiacloud.net` (same as OK_OPTOMETRY/OK_OSTEO) | Same fix as OK_OPTOMETRY: run `--headed` to identify actual selectors on portalus subdomain |
-| WV_SOCIALWORK | WV | classic_html_form | `dnn_sqlviewpro_postback_required` — DNN SQLViewPro module uses `a.CommandButton` submit triggering iframe-based ASP.NET postback; engine's `table tbody tr` selector misses the iframe results panel | Identify result iframe selector via `--headed` (likely `iframe[src*='QueryResults']` or `div#dnn_ctr...`); point row_selector inside iframe context |
-| MA_MDDO | MA | classic_html_form | `json_api_archetype_required` — `api.medboard.mass.gov/api-public/search` is a POST JSON endpoint; engine has no `json_api` archetype | Add `archetype: 'json_api'` that POSTs JSON to `base_url + endpoint` and parses `response.results[]`; OR verify if `MA_HEALTH` already covers MD/DO/AP and mark as duplicate |
+| OK_BEHAVIORAL_HEALTH | OK | thentia_cloud | `thentiacloud_api_blocked_corporate` — `obbhl.us.thentiacloud.net` page loads OK but Thentia search XHR API returns no data from corporate network (both via proxy and direct). proxy: false; strategy: select; column mapping corrected. | Test from non-corporate network; if XHR works, remove `skip: true` and confirm results table populates |
+| OK_SOCIALWORK | OK | thentia_cloud | `thentiacloud_api_blocked_corporate` — `osblsw.portalus.thentiacloud.net` same pattern. proxy: false; strategy: none (custom_dropdown broke Angular state); column mapping corrected. | Test from non-corporate network; if XHR works, remove `skip: true` |
+| OK_ODOHCS | OK | thentia_cloud | `thentiacloud_api_blocked_corporate` — `odohcs.portalus.thentiacloud.net` page loads OK but Thentia search XHR API times out from corporate network. proxy: false; results_wait timeout 60s; column mapping corrected. | Test from non-corporate network; if XHR works, remove `skip: true` and confirm `button.btn-brand` selector works |
+| VT_OPR | VT | classic_html_form | `pega_constellation_unsupported` — `secure.professionals.vermont.gov` uses Pega Constellation React SPA. Requires `press_sequentially` + React native-setter event dispatch + 90s boot wait + CSS force-enable for DISPLAY RESULTS button. | Implement `pega_constellation` archetype: `get_by_label()` fill + `press_sequentially(value, delay=40)` + `page.evaluate` native-setter + poll for button un-disable + force-click |
 
 ---
 
@@ -1526,11 +1958,25 @@ python -m engine.validate sites/XX_BOARD/config.yaml
   Initial, Last Name, Org Name, DBA, Status, Expiration Date. `has_detail_page: false` — list view
   provides all needed fields; detail links are `lnkLicenseRefNumber`. Requires `PROXY=proxy:9119`.
 
-- **MO_HEALING_ARTS / MO_NURSING / MO_DENTAL / MO_OPTOMETRY / MO_PHARMACY** — Missouri Division
-  of Professional Registration at mopro.mo.gov (Salesforce Experience Cloud / LWC portal). Each board
-  requires selecting from a Salesforce Lightning combobox → Submit → Download ZIP → extract tab-delimited
-  TXT. A 7-day file cache under `csvs/mo_<board>/` avoids repeated portal downloads.
-  Uses the `mopro_zip` csv_bulk strategy (not yet in csv_extractor; marked SKIP until implemented).
-  Use `missouri_all_txt.py` standalone script in the interim. Field names in the TXT files follow the
-  Missouri MOPRO schema: `LIC_NUM`, `PRC_FIRST`, `PRC_LAST`, `LST_DESC`, `EXP_DATE`, `BA_*` address fields.
-  EST timestamps in HHMM format are embedded in cache filenames for traceability (session 31).
+- **WV_MEDBOARD_MD / WV_MEDBOARD_PA / WV_MEDBOARD_DPM** — West Virginia Board of Medicine at wvbom.wv.gov.
+  All three boards share the same Rosters page (`wvbom.wv.gov/Rosters.asp`). Each downloads a separate
+  XLSX by clicking the matching anchor text: "Roster of Medical Doctors" / "Roster of Physician Assistants" /
+  "Roster of Podiatric Physicians". XLSX structure: row 0 = section title, row 1 = column headers, rows 2+ = data.
+  Engine reads first sheet ("Licenses") via `link_text_xlsx` with `xlsx_header_row=1`.
+  MD roster has 6 sheets (Licenses, Special Licenses, Temporary Licenses, Educational Permits,
+  Reciprocal Educational Permits, Interstate Telehealth Registration); PA has 3; DPM has 1.
+  Columns: First Name, Last Name, Middle Name, Suffix, License Number, License Expiration Date,
+  License Type (MD only). Source scripts: `westvirginia_MD_csv.py`, `westvirginia_PA_csv.py`,
+  `westvirginia_DPM_csv.py`. No proxy required (`wvbom.wv.gov` accessible on corporate network).
+
+- **MO_HEALING_ARTS / MO_DENTAL / MO_OPTOMETRY / MO_PHARMACY** — Missouri Division of Professional
+  Registration at mopro.mo.gov (Salesforce LWC portal). `mopro_zip` csv_bulk strategy: selects board
+  label from Lightning combobox → Submit → downloads each ZIP → extracts tab-delimited TXT → merges.
+  Cache: 7-day TTL under `csvs/mo_<board>/`, saved as UTF-8. Column names in TXT files are lowercase:
+  `lic_number`, `prc_first_name`, `prc_last_name`, `lst_description`, `lic_exp_date`, `ba_address`, etc.
+  Multi-ZIP boards: Healing Arts (36 ZIPs, 38 profession types), Dental (19), Pharmacy (10), Optometry (1).
+
+- **MO_NURSING** — MOPRO portal explicitly states "Downloadable files for nursing are not available."
+  Portal redirects to Nursys.com (NCSBN QuickConfirm + e-Notify). Permanently SKIP; would need a
+  separate Nursys-based source implementation. Screenshot confirming portal message saved as
+  `_mopro_debug_Nursing.png` in scrapers root.

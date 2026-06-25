@@ -15,7 +15,7 @@ identity:
 csv_bulk:
   download_strategy: direct_url
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8"
   # CSV columns from the standalone scraper:
   # RegNum | LName | FName | StatusCode | OrigLicDate | ExpDate
@@ -105,7 +105,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/MD_ACUPUNCTURE/{run_id}/"
+  local_path: "Evidence/MD_ACUPUNCTURE/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-16"

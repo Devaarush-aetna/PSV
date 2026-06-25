@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1900 W 75TH ST",
+          "address_2": "SUITE 10",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PRAIRIE VILLAGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-432-3948",
+          "postal_code": "662083502",
+          "state": "KS",
+          "telephone_number": "913-432-3950"
+        },
+        {
+          "address_1": "1900 W 75TH ST",
+          "address_2": "SUITE 10",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PRAIRIE VILLAGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-432-3948",
+          "postal_code": "662083502",
+          "state": "KS",
+          "telephone_number": "913-432-3950"
+        }
+      ],
+      "basic": {
+        "credential": "PT",
+        "enumeration_date": "2017-01-23",
+        "first_name": "STACY",
+        "last_name": "HEINEN",
+        "last_updated": "2017-01-23",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1485195482000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1485195482000",
+      "number": "1629515184",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-03748",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "2004018044",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

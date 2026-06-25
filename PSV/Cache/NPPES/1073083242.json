@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4738 NORWOOD AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-924-9203",
+          "postal_code": "322066152",
+          "state": "FL",
+          "telephone_number": "904-924-9200"
+        },
+        {
+          "address_1": "3225 SABAL PALM DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "322772811",
+          "state": "FL",
+          "telephone_number": "904-744-8088"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-07-08",
+        "credential": "APRN",
+        "enumeration_date": "2018-11-30",
+        "first_name": "TRACEY",
+        "last_name": "RAMEY-SHEPPARD",
+        "last_updated": "2021-07-08",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1543605100000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1625770753000",
+      "number": "1073083242",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "FNP-BC",
+          "first_name": "TRACEY",
+          "last_name": "RAMEY-SHEPPARD",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "3625 UNIVERSITY BLVD S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "322164207",
+          "state": "FL",
+          "telephone_number": "904-702-7111"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "11000364",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

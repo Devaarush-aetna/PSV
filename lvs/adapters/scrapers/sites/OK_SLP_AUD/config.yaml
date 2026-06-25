@@ -1,0 +1,148 @@
+identity:
+  source_id: "OK_SLP_AUD"
+  board_name: "Oklahoma Board of Examiners for Speech-Language Pathology and Audiology"
+  state: "OK"
+  country: "US"
+  profession_codes: ["SLP", "AUD", "SLPA"]
+  # Classic HTML form at pay.apps.ok.gov (Oklahoma state apps portal).
+  # From oklahoma_board_of_examiners_for_speech_language_pathology_and_audiology.py:
+  #   Only ACTIVE license holders are searchable (site limitation).
+  #   No first-name field on site — last name sent; first name filtered locally.
+  #   Inputs: input[name='last_name'], input[name='lic_number'], input[name='city'],
+  #           select[name='lic_type_seq'] (license type dropdown).
+  #   Submit: input[value='Search'].
+  #   Results in tr.report-body > td blocks with Name, License#, Type, Address, Dates, Status.
+  #   License types: Audiologists(0), Audiology Assistant(8),
+  #     Speech Language Pathologists(10), SLP Assistant 20%(5), SLP Clinical Exp Year(4).
+  # The mimecast-protected URL redirects to the actual search form on pay.apps.ok.gov.
+  # Direct URL path unknown — using mimecast redirect link.
+  base_url: "https://url.usb.m.mimecastprotect.com/s/TSeMCm7WVgtW0Pp9EGpt9sDcRLlSq?domain=pay.apps.ok.gov"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='lic_number']"
+      button_selector: "input[value='Search']"
+    - mode: last_name
+      input_selector: "input[name='last_name']"
+      button_selector: "input[value='Search']"
+    - mode: first_name
+      # No first_name field on site — engine sends to last_name field;
+      # local filter handles first_name matching.
+      input_selector: "input[name='last_name']"
+      button_selector: "input[value='Search']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='last_name']"
+      fallback_selectors:
+        - "input[type='text']"
+    search_button:
+      selector: "input[value='Search']"
+      fallback_selectors:
+        - "input[type='submit']"
+        - "button[type='submit']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no records found"
+      - "no results"
+      - "0 results"
+      - "no licensees"
+
+results:
+  type: table
+  table:
+    row_selector: "tr.report-body"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+  field_map:
+    "License Number": license_number
+    "License Type": license_type
+    "Status": status
+    "Current Status": status
+    "License Issue Date": issue_date
+    "License Expiration Date": expiration_date
+    "Expiration Date": expiration_date
+    "Work Number": phone
+    "Work Email": email
+    "Address": address
+    "City": city
+    "State": state_code
+    "Zip Code": zip_code
+    "Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+
+output:
+  status_map:
+    "ACTIVE": active
+    "Active": active
+    "active": active
+    "INACTIVE": inactive
+    "Inactive": inactive
+    "EXPIRED": expired
+    "Expired": expired
+    "SUSPENDED": suspended
+    "Suspended": suspended
+    "REVOKED": revoked
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/OK_SLP_AUD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10396 S RIDGEVIEW RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660616436",
+          "state": "KS",
+          "telephone_number": "913-599-4600"
+        },
+        {
+          "address_1": "10396 S RIDGEVIEW RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660616436",
+          "state": "KS",
+          "telephone_number": "913-599-4600"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-03",
+        "credential": "PT, DPT",
+        "enumeration_date": "2025-07-03",
+        "first_name": "MACKENZIE",
+        "last_name": "BOHN",
+        "last_updated": "2025-07-03",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1751556302000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751556302000",
+      "number": "1366332215",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-07951",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

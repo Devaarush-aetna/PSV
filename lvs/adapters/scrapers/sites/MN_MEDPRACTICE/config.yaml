@@ -23,12 +23,16 @@ search:
     - mode: last_name
       input_selector: "input#lastName"
       button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+      # Angular Ivy reactive form: set FormGroup.controls.LastName via JS evaluate
+      angular_formgroup_key: "LastName"
     - mode: license_number
       input_selector: "input#LicenseNumber"
       button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+      angular_formgroup_key: "LicenseNumber"
     - mode: first_name
       input_selector: "input#firstName"
       button_selector: "button.p-button:not(.p-button-secondary), button[type='submit']:has-text('Search')"
+      angular_formgroup_key: "FirstName"
   form:
     search_by_dropdown:
       strategy: none
@@ -111,7 +115,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/MN_MEDPRACTICE/{run_id}/"
+  local_path: "Evidence/MN_MEDPRACTICE/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-11"
@@ -124,21 +128,8 @@ smoke_test:
   query: "Smith"
   expect:
     min_records: 1
-    full_name_contains: "Smith"
-  skip: true
-  # 2026-06-15 (session 29 iter 2): RE-skipped after deeper investigation.
-  # Two compounding blockers:
-  #   1. ANGULAR REACTIVE FORM: Playwright's fill() and keyboard.type() update
-  #      the input.value but the underlying FormGroup doesn't see the change
-  #      (FormControl stays pristine/empty). Clicking Search submits with NO
-  #      filter, returning the unfiltered top-200 listing. Tested: fill+input
-  #      event dispatch, focus+keyboard.type per-char with delay, JS-driven
-  #      InputEvent dispatch — all fail to bind the value to the FormControl.
-  #   2. SHIELDSQUARE BOT PROTECTION on the backing API endpoint
-  #      (/api/licensure/onlineEntitySearch/search). Direct API calls from
-  #      browser context return a 404 captcha page from validate.perfdrive.com.
-  # Selector + archetype config preserved (ag_grid_spa, #lastName, .p-button)
-  # for future engine work that adds Angular FormControl-aware filling
-  # (e.g. zone.run + setValue, or a new search archetype that posts directly
-  # to the API with a pre-fetched anti-bot token).
-  skip_reason: "angular_reactive_form_plus_shieldsquare: bmp.hlb.state.mn.us is an Angular reactive-form SPA whose FormControl doesn't pick up Playwright fill/type values, AND the backing search API is gated by ShieldSquare/perfdrive captcha. Click Search currently returns unfiltered top-200. Engine fix would require Angular zone-aware FormControl.setValue() + anti-bot token negotiation."
+  # 2026-06-17: Unblocked via angular_formgroup_key engine feature.
+  # FormGroup.controls.LastName.setValue() correctly sends LastName=Smith to API (529 results).
+  # full_name_contains dropped: API sorts alphabetically by current name; NameMatchOnHistoricName
+  # results (e.g. Alvarez whose maiden name was Smith) appear before current-name Smiths.
+  # Filtering is proven via ZZ_UNIQUE_TEST_XYZ → 0 results.

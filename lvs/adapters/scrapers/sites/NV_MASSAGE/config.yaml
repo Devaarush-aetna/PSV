@@ -142,7 +142,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/NV_MASSAGE/{run_id}/"
 
 compliance:
   requires_captcha: false

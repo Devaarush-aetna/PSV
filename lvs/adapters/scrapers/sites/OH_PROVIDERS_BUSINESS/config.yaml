@@ -15,7 +15,7 @@ identity:
 csv_bulk:
   download_strategy: ohio_data_portal_csv
   cache_days: 7
-  cache_dir: "./csvs"
+  cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   download_timeout_ms: 300000
   # Column names depend on the live export — adjust after first successful run.
@@ -28,6 +28,8 @@ csv_bulk:
     license_number: "LICENSE_NUMBER"
     last_name: "BUSINESS_NAME"
     first_name: "BUSINESS_NAME"
+  license_type_column: "TYPE"      # e.g. "License", "Certificate", "Registration"
+  provider_type_column: "BOARD"    # e.g. "State Medical Board", "State Board of Nursing"
 
 search:
   modes:
@@ -110,7 +112,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/OH_PROVIDERS_BUSINESS/{run_id}/"
+  local_path: "Evidence/OH_PROVIDERS_BUSINESS/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-16"

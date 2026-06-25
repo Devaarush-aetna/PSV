@@ -12,6 +12,40 @@ identity:
   #   PROXY=proxy:9119 python run.py --config sites/FL_MQA/config.yaml ...
   base_url: "https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders"
   archetype: classic_html_form
+  # Profession dropdown selector — used by first_and_last_typed to narrow by license type.
+  # Stores <option value="..."> numeric strings so Playwright's select_option(value=...) matches.
+  provider_type_selector: "select[name='SearchDto.Profession']"
+  prov_type_values:
+    AP: "3801"    # Acupuncturist
+    AU: "3002"    # Audiologist
+    CP: "2701"    # Psychologist
+    DC: "501"     # Chiropractic Physician
+    DDS: "701"    # Dental
+    DMD: "701"    # Dental
+    DO: "1901"    # Osteopathic Physician
+    DP: "2101"    # Podiatric Physician
+    DT: "6101"    # Dietetics/Nutritionist
+    GNC: "5301"   # Genetic Counselor
+    LPC: "5203"   # Licensed Mental Health Counselor (FL equivalent of LPC)
+    MD: "1501"    # Medical Doctor
+    MT: "1401"    # Massage Therapist
+    MW: "3201"    # Midwifery
+    NP: "1711"    # Advanced Practice Registered Nurse
+    NPB: "1711"   # Advanced Practice Registered Nurse
+    OD: "1801"    # Optometrist
+    OP: "2001"    # Optician
+    OT: "5601"    # Occupational Therapist
+    PA: "1512"    # Physician Assistant
+    PAB: "1512"   # Physician Assistant
+    PAS: "1512"   # Physician Assistant
+    PH: "2201"    # Pharmacist
+    PN: "1702"    # Licensed Practical Nurse
+    PT: "5501"    # Physical Therapist
+    RNA: "1701"   # Registered Nurse
+    SH: "3001"    # Speech-Language Pathologist
+    ST: "3001"    # Speech-Language Pathologist
+    SW: "5201"    # Licensed Clinical Social Worker
+    # LC omitted — ambiguous (could be LCSW/LMFT/LMHC); falls back to unfiltered first_and_last
 
 search:
   modes:
@@ -117,6 +151,8 @@ detail:
     "License No": license_number
     "License #": license_number
     "License": license_number
+    "Registration Number": license_number
+    "Reg Number": license_number
     "Name": full_name
     "Provider Name": full_name
     "Licensee Name": full_name
@@ -129,9 +165,11 @@ detail:
     "License Status": status
     "Status": status
     "Primary Status": status
+    "Registration Status": status
     "Issue Date": issue_date
     "Original Issue Date": issue_date
     "License Original Issue Date": issue_date
+    "Registration Issued": issue_date
     "Effective Date": effective_date
     "Expiration Date": expiration_date
     "License Expiration Date": expiration_date
@@ -211,7 +249,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/FL_MQA/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-08"

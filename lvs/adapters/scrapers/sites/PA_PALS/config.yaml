@@ -1,0 +1,130 @@
+identity:
+  source_id: PA_PALS
+  board_name: Pennsylvania Licensing System (PALS) — All Boards
+  state: PA
+  country: US
+  # PALS is the umbrella verification portal for ALL Pennsylvania professional boards.
+  # Coverage spans: Medicine, Osteopathic, Nursing, Dental, Pharmacy, Optometry,
+  # Chiropractic, PT, OT, Psychology, Social Work, Speech-Audiology, Counselors,
+  # Massage, Veterinary, Funeral, Cosmetology, Auctioneers, etc. (29 boards/commissions).
+  profession_codes: [MD, DO, RN, LPN, APRN, DDS, RDH, RPh, OD, DC, PT, PTA, OT, OTA, Psychologist, LCSW, SLP, AUD, LPC, MFT, LMT, DVM, DPM, Cosmetology, Funeral]
+  # AngularJS SPA at pals.pa.gov. Form fields:
+  #   #LicenseNo / #lName / #fName / #mName  (#City, #zip, #selBoardOrCommission optional)
+  # Submit: button.btn-primary:has-text('Search')
+  # Results table id is #DataTables_Table_3 (other ng-isolate-scope tables 0/1/2 are
+  # search-form scaffolding; only Table_3 populates after a name/license search).
+  # Columns: 0=Full Name, 1=License Number, 2=Board/Commission, 3=License Type, 4=Status, 5=Address, 6=action(skip).
+  # Pagination via #DataTables_Table_3_next (DataTables 1.x classic).
+  base_url: "https://www.pals.pa.gov/#!/page/search"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#LicenseNo"
+      button_selector: "button.btn-primary:has-text('Search')"
+    - mode: last_name
+      input_selector: "#lName"
+      button_selector: "button.btn-primary:has-text('Search')"
+    - mode: first_name
+      input_selector: "#fName"
+      button_selector: "button.btn-primary:has-text('Search')"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lName"
+    search_button:
+      selector: "button.btn-primary:has-text('Search')"
+  results_wait:
+    strategy: ajax_row_count
+    selector: "#DataTables_Table_3 tbody tr"
+    timeout_ms: 30000
+    min_rows: 1
+    stable_ticks: 2
+    poll_interval_ms: 500
+    # Search form chrome contains generic "no results" placeholder text;
+    # rely purely on the row-count signal — no body-text indicators.
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: "#DataTables_Table_3 tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: board
+      3: license_type
+      4: status
+      5: address
+  has_detail_page: false
+  pagination:
+    enabled: true
+    strategy: next_button
+    next_selector: "#DataTables_Table_3_next:not(.disabled)"
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Active - Renewed": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Lapsed": expired
+    "Voluntary Surrender": revoked
+    "Closed": inactive
+    "Deceased": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1440
+    height: 900
+  timeout_ms: 90000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/PA_PALS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-16"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

@@ -1,0 +1,114 @@
+identity:
+  source_id: MS_ABA
+  board_name: Mississippi Board of Licensure for Professional Counselors and Autism Specialists
+  state: MS
+  country: US
+  profession_codes: [LBA, LABA]
+  # Classic ASP results page at msautismboard.ms.gov.
+  # Search: licenseverification.asp; results POST to licenseverificationresults.asp.
+  # Form: #licnbr (license number), #lname (last name), #name (org/first), #city (city).
+  # Results: nested table layout — outer table wraps formtext table inside <tr> wrappers.
+  # tr:has(a[...]):not(:has(tr)) skips the outer wrapper rows, leaving only 5-cell data rows.
+  # Columns: 0=row#, 1=license_number, 2=full_name, 3=issue_date, 4=expiration_date.
+  # No status column — site states "A list of active LBAs and LABAs based on your search".
+  # All returned records are implicitly active.
+  base_url: "https://www.msautismboard.ms.gov/secure/licenseverification.asp"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "#lname"
+    - mode: license_number
+      input_selector: "#licnbr"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#lname"
+    search_button:
+      selector: "input[value='SEARCH']"
+  results_wait:
+    strategy: element_visible
+    selector: "a[href*='licenseverificationdetails']"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "No Behavior Analyst and Assistant Behavior Analyst"
+
+results:
+  type: table
+  table:
+    # Data rows have 5 cells and a detail-page link; outer wrapper rows also match
+    # :has(a[...]) transitively. :not(:has(tr)) excludes wrapper rows containing nested tables.
+    row_selector: "tr:has(a[href*='licenseverificationdetails']):not(:has(tr))"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      1: license_number
+      2: full_name
+      3: issue_date
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/MS_ABA/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+    # First result (probe 2026-06-17): "200017" Chelsea Lynn Smith — 1/15/2021 → 1/15/2027

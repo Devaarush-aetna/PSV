@@ -1,0 +1,113 @@
+identity:
+  source_id: "NM_MEDBOARD"
+  board_name: "New Mexico Board of Medical Examiners"
+  state: "NM"
+  country: "US"
+  profession_codes: ["MD", "DO", "PA"]
+  # Salesforce Experience Cloud (LWC/Aura SPA) at nmrldlpi.my.site.com.
+  # SSR-rendered: inputs appear in initial HTML so classic_html_form works without special archetype.
+  # Inputs found via :has(label:text-is()) Playwright selector (LWC assigns dynamic IDs).
+  # Optional SLDS comboboxes (License Type, License Status) not required for basic name/number search.
+  base_url: "https://nmrldlpi.my.site.com/nmmb/s/searchlicense"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: ".slds-form-element:has(label:text-is(\"License Number\")) input"
+    - mode: last_name
+      input_selector: ".slds-form-element:has(label:text-is(\"Licensee Name\")) input"
+    - mode: first_name
+      input_selector: ".slds-form-element:has(label:text-is(\"Licensee Name\")) input"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ".slds-form-element:has(label:text-is(\"Licensee Name\")) input"
+    search_button:
+      selector: "button.slds-button_brand"
+      fallback_selectors:
+        - "button:has-text('Search')"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    # Columns: 0=licensee_name, 1=license_type, 2=license_number, 3=status,
+    #          4=county, 5=issue_date, 6=expiration_date, 7=business_address
+    columns:
+      0: full_name
+      1: license_type
+      2: license_number
+      3: status
+      5: issue_date
+      6: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+
+output:
+  status_map:
+    "Active": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 45000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 6000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NM_MEDBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-17"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

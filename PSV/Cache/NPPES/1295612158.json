@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "16070 S DILLIE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GARDNER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660309469",
+          "state": "KS",
+          "telephone_number": "913-689-8529"
+        },
+        {
+          "address_1": "14864 METCALF AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662232206",
+          "state": "KS",
+          "telephone_number": "913-689-8529"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-09",
+        "credential": "D.C",
+        "enumeration_date": "2025-08-20",
+        "first_name": "ANDREW",
+        "last_name": "PLANK",
+        "last_updated": "2025-09-09",
+        "middle_name": "DON",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1755718805000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757426455000",
+      "number": "1295612158",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "01-06419",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

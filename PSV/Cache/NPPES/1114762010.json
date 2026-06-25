@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7868 GALL BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ZEPHYRHILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335414302",
+          "state": "FL",
+          "telephone_number": "937-450-5547"
+        },
+        {
+          "address_1": "6911 GIDEON CIR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ZEPHYRHILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335412588",
+          "state": "FL"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-26",
+        "credential": "D.C.",
+        "enumeration_date": "2024-07-01",
+        "first_name": "BENJAMIN",
+        "last_name": "LOYA",
+        "last_updated": "2024-08-26",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1719857703000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1724700108000",
+      "number": "1114762010",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "15063",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

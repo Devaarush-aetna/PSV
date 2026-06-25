@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1316 N MERIDIAN AVE APT 208",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672034626",
+          "state": "KS"
+        },
+        {
+          "address_1": "9300 E 29TH ST N STE 204",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672262183",
+          "state": "KS",
+          "telephone_number": "316-500-6000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-20",
+        "credential": "PA",
+        "enumeration_date": "2025-07-21",
+        "first_name": "BRITTYN",
+        "last_name": "BIBY",
+        "last_updated": "2025-07-21",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1753092317000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753092317000",
+      "number": "1376435693",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "BRITTYN",
+          "last_name": "HIPP",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

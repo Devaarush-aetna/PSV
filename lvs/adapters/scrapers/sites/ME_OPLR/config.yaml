@@ -125,7 +125,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "detail_page", "error"]
   storage: local
-  local_path: "./evidence/ME_OPLR/{run_id}/"
+  local_path: "Evidence/ME_OPLR/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-15"

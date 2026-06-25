@@ -132,7 +132,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: "local"
-  local_path: "./evidence/MA_HEALTH/{run_id}/"
+  local_path: "Evidence/MA_HEALTH/{run_id}/"
 
 compliance:
   tos_review_date: "2026-05-15"
@@ -142,7 +142,8 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  mode: last_name
+  mode: name
   query: "Smith"
   expect:
     min_records: 10
+    full_name_contains: "Smith"

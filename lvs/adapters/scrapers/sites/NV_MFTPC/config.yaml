@@ -85,7 +85,7 @@ transport:
     width: 1440
     height: 900
   timeout_ms: 60000
-  navigation_timeout_ms: 30000
+  navigation_timeout_ms: 90000
   rate_limit:
     delay_between_requests_ms: 1000
     max_concurrent: 1
@@ -100,7 +100,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "./evidence/{source_id}/{run_id}/"
+  local_path: "Evidence/NV_MFTPC/{run_id}/"
 
 compliance:
   tos_review_date: "2026-06-10"
