@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1225 S GEAR AVE STE 251",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WEST BURLINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "319-768-3712",
+          "postal_code": "526551688",
+          "state": "IA",
+          "telephone_number": "319-768-3700"
+        },
+        {
+          "address_1": "5301 W HILLSBORO BLVD APT 307",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "COCONUT CREEK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330734311",
+          "state": "FL",
+          "telephone_number": "817-965-7112"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-04-29",
+        "credential": "D.O",
+        "enumeration_date": "2016-06-08",
+        "first_name": "MARISSA",
+        "last_name": "CROWDIS",
+        "last_updated": "2020-04-29",
+        "middle_name": "ANN",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1465393351000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1588165713000",
+      "number": "1215386578",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": "UO5023",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084P0800X",
+          "desc": "Psychiatry & Neurology, Psychiatry",
+          "license": "DO-05571",
+          "primary": true,
+          "state": "IA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

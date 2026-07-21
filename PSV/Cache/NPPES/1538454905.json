@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2135 N RIDGE RD STE 400",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-719-2406",
+          "postal_code": "672121404",
+          "state": "KS",
+          "telephone_number": "316-768-6444"
+        },
+        {
+          "address_1": "2135 N RIDGE RD STE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-719-2406",
+          "postal_code": "672121406",
+          "state": "KS",
+          "telephone_number": "316-768-6444"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-03-31",
+        "credential": "DO",
+        "enumeration_date": "2011-06-14",
+        "first_name": "MICHAEL",
+        "last_name": "SCHEVE",
+        "last_updated": "2021-03-31",
+        "middle_name": "C",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1308081780000",
+      "endpoints": [
+        {
+          "address_1": "2135 N Ridge Rd Ste 400",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Wichita",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "info@stgiannamed.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "672121404",
+          "state": "KS",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1617193726000",
+      "number": "1538454905",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "05-36001",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

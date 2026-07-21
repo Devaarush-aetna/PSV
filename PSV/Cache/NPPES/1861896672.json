@@ -1,0 +1,327 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "100 HOSPITAL DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "287925272",
+          "state": "NC",
+          "telephone_number": "828-691-2728"
+        },
+        {
+          "address_1": "100 HOSPITAL DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "287925272",
+          "state": "NC",
+          "telephone_number": "828-681-2750"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-01",
+        "credential": "R.D., L.D.N.",
+        "enumeration_date": "2014-10-22",
+        "first_name": "HALEY",
+        "last_name": "JUSTUS",
+        "last_updated": "2025-10-01",
+        "middle_name": "D",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1413999902000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759329791000",
+      "number": "1861896672",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "HALEY",
+          "last_name": "DONALDSON",
+          "middle_name": "JUNE",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "2900 WESTFORK DR STE 401",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BATON ROUGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "708270010",
+          "state": "LA",
+          "telephone_number": "504-910-7878"
+        },
+        {
+          "address_1": "3100 45TH ST STE 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HIGHLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "463223277",
+          "state": "IN",
+          "telephone_number": "888-998-7337"
+        },
+        {
+          "address_1": "401 W MAIN ST STE 1810",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "877-326-3531",
+          "postal_code": "402022927",
+          "state": "KY",
+          "telephone_number": "270-240-2585"
+        },
+        {
+          "address_1": "2810 CROSSROADS DR STE 4000",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MADISON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "537188014",
+          "state": "WI",
+          "telephone_number": "608-492-2940"
+        },
+        {
+          "address_1": "30700 TELEGRAPH RD STE 1540",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BINGHAM FARMS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "480255811",
+          "state": "MI",
+          "telephone_number": "313-631-7878"
+        },
+        {
+          "address_1": "8741 S GREENWOOD AVE STE 106-108",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "844-465-6341",
+          "postal_code": "606197061",
+          "state": "IL",
+          "telephone_number": "773-920-2755"
+        },
+        {
+          "address_1": "201 N ILLINOIS ST # 1656",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "INDIANAPOLIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "462041904",
+          "state": "IN",
+          "telephone_number": "720-204-5760"
+        },
+        {
+          "address_1": "4208 SIX FORKS RD STE 1000",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RALEIGH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "276095738",
+          "state": "NC",
+          "telephone_number": "919-877-6800"
+        },
+        {
+          "address_1": "9039 SPRINGBORO PIKE STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMISBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "453425442",
+          "state": "OH",
+          "telephone_number": "513-916-4128"
+        },
+        {
+          "address_1": "1500 WALNUT ST STE 603",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHILADELPHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "191023516",
+          "state": "PA",
+          "telephone_number": "267-754-8400"
+        },
+        {
+          "address_1": "1320 MAIN ST STE 351",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "292013204",
+          "state": "SC",
+          "telephone_number": "980-443-4852"
+        },
+        {
+          "address_1": "5100 POPLAR AVE FL 27",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MEMPHIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "381372701",
+          "state": "TN",
+          "telephone_number": "901-625-5408"
+        },
+        {
+          "address_1": "5605 N MACARTHUR BLVD FL 10",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "IRVING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "750382617",
+          "state": "TX",
+          "telephone_number": "972-460-0910"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "2544",
+          "primary": false,
+          "state": "SC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "3562",
+          "primary": false,
+          "state": "LA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "20240272021",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "86047176",
+          "primary": false,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "D-2360",
+          "primary": false,
+          "state": "MS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "5056",
+          "primary": false,
+          "state": "AL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "L004454",
+          "primary": true,
+          "state": "NC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "010850",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "ND12966",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "LD.09612",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "LD006373",
+          "primary": false,
+          "state": "GA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "37003397A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "DN007616",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "164008540",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "285116",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

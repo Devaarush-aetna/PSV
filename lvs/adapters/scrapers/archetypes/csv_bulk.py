@@ -1,7 +1,11 @@
 """CSV bulk-roster archetype."""
 from __future__ import annotations
 
+import asyncio
 import logging
+
+_DOWNLOAD_MAX_ATTEMPTS = 3
+_DOWNLOAD_BACKOFF_S = [5, 15]
 
 from engine.models import SearchQuery, SiteConfig
 from engine.output import map_to_license_record, upsert_to_db
@@ -38,11 +42,35 @@ async def scrape_csv_bulk(
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, f"no_search_column:{query.mode}")
         return []
 
+    csv_path = effective_header_row = None
+    last_exc: Exception | None = None
+    for _attempt in range(_DOWNLOAD_MAX_ATTEMPTS):
+        try:
+            csv_path, effective_header_row = await get_csv(config.identity.base_url, source_id, csv_cfg)
+            break
+        except Exception as exc:
+            last_exc = exc
+            if _attempt < _DOWNLOAD_MAX_ATTEMPTS - 1:
+                delay = _DOWNLOAD_BACKOFF_S[min(_attempt, len(_DOWNLOAD_BACKOFF_S) - 1)]
+                log.warning(
+                    "[%s] CSV download attempt %d/%d failed (%s) — retrying in %ds",
+                    source_id, _attempt + 1, _DOWNLOAD_MAX_ATTEMPTS, exc, delay,
+                )
+                await asyncio.sleep(delay)
+            else:
+                log.error(
+                    "[%s] CSV download failed after %d attempts: %s",
+                    source_id, _DOWNLOAD_MAX_ATTEMPTS, exc,
+                )
+
+    if csv_path is None:
+        await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(last_exc))
+        return []
+
     try:
-        csv_path, effective_header_row = await get_csv(config.identity.base_url, source_id, csv_cfg)
         df = load_csv(csv_path, csv_cfg.encoding, effective_header_row, csv_cfg.separator)
     except Exception as exc:
-        log.error("[%s] CSV load failed: %s", source_id, exc)
+        log.error("[%s] CSV parse failed: %s", source_id, exc)
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(exc))
         return []
 

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1251 SE 7TH AVE APT 104",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DANIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330044681",
+          "state": "FL",
+          "telephone_number": "812-212-6457"
+        },
+        {
+          "address_1": "1131 N 35TH AVE FL 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HOLLYWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-276-0166",
+          "postal_code": "330215403",
+          "state": "FL",
+          "telephone_number": "954-265-6319"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-17",
+        "credential": "MS, LCGC",
+        "enumeration_date": "2025-09-17",
+        "first_name": "LAUREN",
+        "last_name": "ECKSTEIN",
+        "last_updated": "2025-09-17",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1758118202000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758118202000",
+      "number": "1366313710",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "170300000X",
+          "desc": "Genetic Counselor, MS",
+          "license": "799",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

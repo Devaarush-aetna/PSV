@@ -1,0 +1,87 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3632 AMERICAN WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CASPER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-234-6998",
+          "postal_code": "826043164",
+          "state": "WY",
+          "telephone_number": "307-234-6765"
+        },
+        {
+          "address_1": "3632 AMERICAN WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CASPER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-234-6998",
+          "postal_code": "826043164",
+          "state": "WY",
+          "telephone_number": "307-234-6765"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-12-22",
+        "credential": "MD",
+        "enumeration_date": "2007-09-24",
+        "first_name": "MAXIM",
+        "last_name": "SALVA",
+        "last_updated": "2022-12-22",
+        "middle_name": "ESLAO",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1190652398000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1671734292000",
+      "number": "1932395944",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2600 SIXTH ST SW",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CANTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "447101702",
+          "state": "OH",
+          "telephone_number": "330-363-6235"
+        },
+        {
+          "address_1": "16 GUION PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEW ROCHELLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "108015502",
+          "state": "NY",
+          "telephone_number": "914-365-3680"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "13172A",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

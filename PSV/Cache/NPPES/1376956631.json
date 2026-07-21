@@ -1,0 +1,98 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2231 W CHARLESTON BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022254",
+          "state": "NV",
+          "telephone_number": "702-383-2663"
+        },
+        {
+          "address_1": "2231 W CHARLESTON BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022254",
+          "state": "NV",
+          "telephone_number": "702-383-2663"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-09-24",
+        "credential": "D.O.",
+        "enumeration_date": "2014-06-04",
+        "first_name": "DREW",
+        "last_name": "IMAN",
+        "last_updated": "2024-09-24",
+        "middle_name": "JOSEPH",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1401908523000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1727216904000",
+      "number": "1376956631",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "D.O.",
+          "first_name": "JOSEPH",
+          "last_name": "IMAN",
+          "middle_name": "DREW",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "2779 W HORIZON RIDGE PKWY STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890524186",
+          "state": "NV",
+          "telephone_number": "702-990-2290"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "5101021030",
+          "primary": false,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207XS0114X",
+          "desc": "Orthopaedic Surgery, Adult Reconstructive Orthopaedic Surgery",
+          "license": "OS16167",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207XS0114X",
+          "desc": "Orthopaedic Surgery, Adult Reconstructive Orthopaedic Surgery",
+          "license": "DO3258",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

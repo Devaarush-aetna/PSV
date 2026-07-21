@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "104 S FRONT AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PRESTONSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-886-4433",
+          "postal_code": "416531614",
+          "state": "KY",
+          "telephone_number": "606-886-8572"
+        },
+        {
+          "address_1": "104 S FRONT AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PRESTONSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-886-4433",
+          "postal_code": "416531614",
+          "state": "KY",
+          "telephone_number": "606-886-8572"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2018-09-21",
+        "first_name": "MATTHEW",
+        "last_name": "FIELDS",
+        "last_updated": "2018-09-21",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1537559594000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1537559594000",
+      "number": "1982188272",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

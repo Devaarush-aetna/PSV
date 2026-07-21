@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2600 TUSCARAWAS ST W",
+          "address_2": "SUITE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CANTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "447084644",
+          "state": "OH",
+          "telephone_number": "330-458-2000"
+        },
+        {
+          "address_1": "2600 TUSCARAWAS ST W",
+          "address_2": "SUITE 400",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CANTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "447084644",
+          "state": "OH",
+          "telephone_number": "330-458-2000"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2007-07-17",
+        "first_name": "JEFFREY",
+        "last_name": "CERONE",
+        "last_updated": "2012-03-22",
+        "middle_name": "SAMUEL",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1184684624000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1332448666000",
+      "number": "1770782922",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208800000X",
+          "desc": "Urology",
+          "license": "57.010280",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

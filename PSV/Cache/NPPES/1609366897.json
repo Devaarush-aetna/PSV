@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "325 SW FRAZIER AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-972-0503",
+          "postal_code": "666061963",
+          "state": "KS",
+          "telephone_number": "785-232-5005"
+        },
+        {
+          "address_1": "325 SW FRAZIER AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-972-0503",
+          "postal_code": "666061963",
+          "state": "KS",
+          "telephone_number": "785-232-5005"
+        }
+      ],
+      "basic": {
+        "credential": "TLMLP",
+        "enumeration_date": "2018-05-14",
+        "first_name": "AUSTIN",
+        "last_name": "SOLIS",
+        "last_updated": "2018-05-14",
+        "middle_name": "T",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1526328971000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1526328971000",
+      "number": "1609366897",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "2839",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

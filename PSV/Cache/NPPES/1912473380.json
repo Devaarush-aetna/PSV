@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "605 SIERRA ROSE DR STE 4",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-786-4031",
+          "postal_code": "895112093",
+          "state": "NV",
+          "telephone_number": "775-689-5410"
+        },
+        {
+          "address_1": "605 SIERRA ROSE DR STE 4",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-451-1713",
+          "postal_code": "895112093",
+          "state": "NV",
+          "telephone_number": "775-689-5410"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-20",
+        "credential": "FNP-BC",
+        "enumeration_date": "2018-10-23",
+        "first_name": "RAQUEL",
+        "last_name": "HERRERA-TRENKLER",
+        "last_updated": "2025-06-20",
+        "middle_name": "P",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1540325328000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750446568000",
+      "number": "1912473380",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "041-333667",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "209-018833",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "859559",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

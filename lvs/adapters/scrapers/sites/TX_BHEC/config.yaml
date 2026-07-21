@@ -1,0 +1,132 @@
+identity:
+  source_id: TX_BHEC
+  board_name: Texas Behavioral Health Executive Council
+  state: TX
+  country: US
+  profession_codes: [LPC, PSY, MFT, LCSW, SW]
+  # BHEC publishes 4 direct CSV roster files (one per license category):
+  #   LPC.csv  — Licensed Professional Counselors         (~43 000 rows)
+  #   PSY.csv  — Psychologists (LSP, LSSP, etc.)          (~12 000 rows)
+  #   MFT.csv  — Marriage & Family Therapists             (~5 700 rows)
+  #   SW.csv   — Clinical/Licensed Social Workers         (~37 000 rows)
+  # All 4 share identical headers (LIC_TYPE, RANK, LIC_NBR, ENTITY_NBR,
+  # LAST_NME, FIRST_NME, MIDDLE_NME, SFX_NME, LIC_STATUS, LIC_EXPR_DTE,
+  # RANK_EFCT_DTE, DISCPL_ACTN). The engine downloads all 4 via
+  # multi_direct_url, concatenates them into a single cached CSV, and
+  # searches in-memory — bypassing the reCAPTCHA-Enterprise-protected portal.
+  # Cache TTL: 7 days (daily freshness overkill for a 98k-row combined roster).
+  base_url: "https://www.bhec.texas.gov/csv/LPC.csv"
+  archetype: csv_bulk
+
+csv_bulk:
+  download_strategy: multi_direct_url
+  multi_urls:
+    - "https://www.bhec.texas.gov/csv/LPC.csv"
+    - "https://www.bhec.texas.gov/csv/PSY.csv"
+    - "https://www.bhec.texas.gov/csv/MFT.csv"
+    - "https://www.bhec.texas.gov/csv/SW.csv"
+  header_row: 0
+  cache_days: 7
+  cache_dir: "./PSV/CSVS"
+  encoding: "utf-8-sig"
+  download_timeout_ms: 120000
+  search_columns:
+    license_number: "LIC_NBR"
+    last_name: "LAST_NME"
+    first_name: "FIRST_NME"
+
+search:
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "LIC_NBR": license_number
+    "LAST_NME": last_name
+    "FIRST_NME": first_name
+    "MIDDLE_NME": licensee_middle_name
+    "SFX_NME": licensee_suffix
+    "RANK": license_type
+    "LIC_STATUS": status
+    "LIC_EXPR_DTE": expiration_date
+    "RANK_EFCT_DTE": issue_date
+    "DISCPL_ACTN": disciplinary_actions
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Cancelled": inactive
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 120000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [5000, 15000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/TX_BHEC/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-30"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"

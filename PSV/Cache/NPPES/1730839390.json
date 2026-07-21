@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3325 RESEARCH WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CARSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "897067913",
+          "state": "NV",
+          "telephone_number": "702-220-9902"
+        },
+        {
+          "address_1": "98 E LAKE MEAD PKWY STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-868-0290",
+          "postal_code": "890156443",
+          "state": "NV",
+          "telephone_number": "702-868-0327"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-03",
+        "enumeration_date": "2022-03-26",
+        "first_name": "JEMARIE",
+        "last_name": "REMO",
+        "last_updated": "2025-07-03",
+        "middle_name": "REYES",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1648326213000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751589548000",
+      "number": "1730839390",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "9260 W SUNSET RD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891484903",
+          "state": "NV",
+          "telephone_number": "702-916-6902"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "DO3881",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

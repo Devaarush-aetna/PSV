@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 95469",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GRAPEVINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "405-445-3310",
+          "postal_code": "760999700",
+          "state": "TX",
+          "telephone_number": "405-445-1210"
+        },
+        {
+          "address_1": "11462 S. UNION AVE",
+          "address_2": "SUITE F",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JENKS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "539-664-9562",
+          "postal_code": "740376901",
+          "state": "OK",
+          "telephone_number": "918-518-0220"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-07",
+        "credential": "DO",
+        "enumeration_date": "2021-07-16",
+        "first_name": "BRYCE",
+        "last_name": "ARMSTRONG",
+        "last_updated": "2025-11-07",
+        "middle_name": "ALEXANDER",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1626446366000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1762519463000",
+      "number": "1629640768",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "9380",
+          "primary": true,
+          "state": "OK",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

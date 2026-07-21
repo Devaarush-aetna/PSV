@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11621 SW 82ND TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331733628",
+          "state": "FL"
+        },
+        {
+          "address_1": "11621 SW 82ND TER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331733628",
+          "state": "FL",
+          "telephone_number": "786-262-4330"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-03-09",
+        "credential": "LAc",
+        "enumeration_date": "2020-03-09",
+        "first_name": "LILLIAM",
+        "last_name": "BOTTARO",
+        "last_updated": "2020-03-09",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1583790501000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1583790501000",
+      "number": "1043845159",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "LILLIAM",
+          "last_name": "CAMPBELL",
+          "middle_name": "BOTTARO",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "AP4134",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1785 E SAHARA AVE STE 340",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891043717",
+          "state": "NV",
+          "telephone_number": "702-823-4300"
+        },
+        {
+          "address_1": "1785 E SAHARA AVE STE 340",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891043717",
+          "state": "NV",
+          "telephone_number": "702-823-4300"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-23",
+        "credential": "LMSW, CSW-Intern",
+        "enumeration_date": "2021-06-14",
+        "first_name": "BRADLEY",
+        "last_name": "ALEXANDER",
+        "last_updated": "2026-02-23",
+        "name_prefix": "Mr.",
+        "name_suffix": "II",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1623697776000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771877659000",
+      "number": "1982272233",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "11271-M",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

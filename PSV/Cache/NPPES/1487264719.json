@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "385 TERRACE LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BEDMINSTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "079211927",
+          "state": "NJ",
+          "telephone_number": "201-655-5697"
+        },
+        {
+          "address_1": "385 TERRACE LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BEDMINSTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "079211927",
+          "state": "NJ",
+          "telephone_number": "201-655-5697"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-12",
+        "credential": "RD, CDN",
+        "enumeration_date": "2020-08-02",
+        "first_name": "JACLYN",
+        "last_name": "PADOVANO",
+        "last_updated": "2022-09-07",
+        "middle_name": "JOSEPHINE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1596383286000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1662580121000",
+      "number": "1487264719",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133N00000X",
+          "desc": "Nutritionist",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133NN1002X",
+          "desc": "Nutritionist, Nutrition, Education",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "86051906",
+          "primary": true,
+          "state": "NJ",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

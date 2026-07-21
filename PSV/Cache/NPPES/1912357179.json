@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6216 FLORENCIA LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "AUSTIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "787246195",
+          "state": "TX",
+          "telephone_number": "512-799-0917"
+        },
+        {
+          "address_1": "530 LYTTON AVE FL 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PALO ALTO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "943011541",
+          "state": "CA",
+          "telephone_number": "415-663-5584"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-05-22",
+        "credential": "N.P.",
+        "enumeration_date": "2016-06-20",
+        "first_name": "JESSICA",
+        "last_name": "SCHOENING",
+        "last_updated": "2023-05-22",
+        "middle_name": "NICOLE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1466429729000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1684766793000",
+      "number": "1912357179",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "AP131187",
+          "primary": true,
+          "state": "TX",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

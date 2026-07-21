@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "106 W FRONT ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GLASGOW",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421412804",
+          "state": "KY",
+          "telephone_number": "270-904-0976"
+        },
+        {
+          "address_1": "106 W FRONT ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GLASGOW",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421412804",
+          "state": "KY",
+          "telephone_number": "270-904-0976"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-10-31",
+        "credential": "APRN",
+        "enumeration_date": "2021-09-17",
+        "first_name": "ANTOINETTE",
+        "last_name": "THARRETT",
+        "last_updated": "2023-10-31",
+        "middle_name": "ANN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1631918835000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1698777270000",
+      "number": "1447920624",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "5966 SCOTTSVILLE RD STE 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421047908",
+          "state": "KY",
+          "telephone_number": "270-904-5104"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "1135085",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "3016793",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

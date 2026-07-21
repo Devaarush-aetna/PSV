@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4603 TIMBERWALK CT",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LA GRANGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "400316746",
+          "state": "KY",
+          "telephone_number": "502-235-2428"
+        },
+        {
+          "address_1": "270 LANCER DR APT 319",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NICHOLASVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "403562157",
+          "state": "KY",
+          "telephone_number": "814-327-8651"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-03-06",
+        "credential": "MA, CCC-SLP",
+        "enumeration_date": "2021-08-24",
+        "first_name": "LYNDSEY",
+        "last_name": "MACADAM",
+        "last_updated": "2024-03-06",
+        "middle_name": "MARIE",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1629826901000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1709742992000",
+      "number": "1033886445",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3001 LITITZ PIKE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LITITZ",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "175439414",
+          "state": "PA",
+          "telephone_number": "717-581-4379"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "277561",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

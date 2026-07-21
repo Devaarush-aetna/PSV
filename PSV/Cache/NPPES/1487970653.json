@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "306 HOSPITAL DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SOUTH WILLIAMSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "415034095",
+          "state": "KY",
+          "telephone_number": "606-237-4958"
+        },
+        {
+          "address_1": "306 HOSPITAL DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SOUTH WILLIAMSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "415034095",
+          "state": "KY",
+          "telephone_number": "606-237-4958"
+        }
+      ],
+      "basic": {
+        "credential": "M.D",
+        "enumeration_date": "2010-04-13",
+        "first_name": "WALID",
+        "last_name": "BAZ",
+        "last_updated": "2011-06-07",
+        "middle_name": "ELIE",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1271207686000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1307459244000",
+      "number": "1487970653",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207RH0003X",
+          "desc": "Internal Medicine, Hematology & Oncology",
+          "license": "43240",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RH0003X",
+          "desc": "Internal Medicine, Hematology & Oncology",
+          "license": "ME105476",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

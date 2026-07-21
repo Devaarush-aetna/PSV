@@ -1,0 +1,124 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "UK DIVISION OF CARDIOLOGY",
+          "address_2": "900 S. LIMESTONE, CTW320",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405360200",
+          "state": "KY"
+        },
+        {
+          "address_1": "UK DIVISION OF CARDIOLOGY",
+          "address_2": "GILL HEART INSTITUTE, 800 ROSE STREET",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-257-8699",
+          "postal_code": "405360001",
+          "state": "KY",
+          "telephone_number": "859-323-0295"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-12-13",
+        "credential": "M.D., Ph.D.",
+        "enumeration_date": "2007-04-02",
+        "first_name": "ANDREW",
+        "last_name": "LEVENTHAL",
+        "last_updated": "2021-12-13",
+        "middle_name": "R.",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1175517646000",
+      "endpoints": [
+        {
+          "address_1": "1249 15th St Ste 4000",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Huntington",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "andrew.leventhal@marshall.cernerdirect.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "257013663",
+          "state": "WV",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1639419848000",
+      "number": "1508986498",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1249 15TH ST STE 4000",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "257013663",
+          "state": "WV",
+          "telephone_number": "304-691-8500"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "48895",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0000X",
+          "desc": "Internal Medicine, Cardiovascular Disease",
+          "license": "27587",
+          "primary": false,
+          "state": "WV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0200X",
+          "desc": "Internal Medicine, Critical Care Medicine",
+          "license": "48895",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RI0011X",
+          "desc": "Internal Medicine, Interventional Cardiology",
+          "license": "48895",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0000X",
+          "desc": "Internal Medicine, Cardiovascular Disease",
+          "license": "48895",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

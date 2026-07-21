@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10268 TIMBERLINE VALLEY AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891666573",
+          "state": "NV",
+          "telephone_number": "702-339-8061"
+        },
+        {
+          "address_1": "7495 W AZURE DR # 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-475-4394",
+          "postal_code": "891304416",
+          "state": "NV",
+          "telephone_number": "702-515-4015"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-16",
+        "credential": "LCSW",
+        "enumeration_date": "2022-08-16",
+        "first_name": "DIANE",
+        "last_name": "BARBER",
+        "last_updated": "2022-08-16",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1660672849000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1660672849000",
+      "number": "1124746144",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "4574-C",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

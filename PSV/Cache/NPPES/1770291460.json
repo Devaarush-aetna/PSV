@@ -1,0 +1,91 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4505 5TH ST NW",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "200114713",
+          "state": "DC",
+          "telephone_number": "202-503-0158"
+        },
+        {
+          "address_1": "7450 ALBERT RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BRANDYWINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "206133035",
+          "state": "MD",
+          "telephone_number": "301-888-2223"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-11-10",
+        "credential": "RD, RDN",
+        "enumeration_date": "2022-11-10",
+        "first_name": "BRETHA",
+        "last_name": "HARRIS",
+        "last_updated": "2022-11-10",
+        "middle_name": "MICHELLE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1668114535000",
+      "endpoints": [
+        {
+          "address_1": "7450 Albert Rd",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "Greater Baden Medical Service Incorporated",
+          "city": "Brandywine",
+          "contentType": "CSV",
+          "contentTypeDescription": "CSV",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "Unknown",
+          "endpointDescription": "Unknown",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "206133035",
+          "state": "MD",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1668114535000",
+      "number": "1770291460",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "RD, RDN",
+          "first_name": "B. MICHELLE",
+          "last_name": "HARRIS",
+          "prefix": "Dr.",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "D01677",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

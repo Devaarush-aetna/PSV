@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2195 STAGE STOP DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890525825",
+          "state": "NV",
+          "telephone_number": "702-677-4859"
+        },
+        {
+          "address_1": "3021 W HORIZON RIDGE PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890523990",
+          "state": "NV",
+          "telephone_number": "702-646-5000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-03-30",
+        "credential": "BSW",
+        "enumeration_date": "2023-03-30",
+        "first_name": "DAPHNE",
+        "last_name": "FRANKS",
+        "last_updated": "2023-03-30",
+        "middle_name": "LEANNE",
+        "name_prefix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1680216554000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1680216554000",
+      "number": "1316642473",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "STUDENT",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

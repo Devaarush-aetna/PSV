@@ -196,6 +196,57 @@ async def _download_direct_url(base_url: str, proxy_cfg=None, download_timeout_m
             await browser.close()
 
 
+async def _download_multi_direct_url(urls: list[str], proxy_cfg=None, download_timeout_ms: int = 120_000) -> str:
+    """Download multiple CSV URLs and concatenate into a single CSV string.
+
+    Uses Playwright's expect_download mechanism (browser-native download) rather
+    than JS fetch(), which is blocked by CORS on some domains (e.g. bhec.texas.gov).
+    The header row from the first file is kept; subsequent files skip their header.
+    Designed for boards that publish one CSV per license type sharing identical headers.
+    """
+    from playwright.async_api import async_playwright
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True)
+        ctx = await browser.new_context(
+            proxy=proxy_cfg,
+            ignore_https_errors=True,
+            accept_downloads=True,
+        )
+        page = await ctx.new_page()
+        try:
+            all_lines: list[str] = []
+            for i, url in enumerate(urls):
+                log.info("multi_direct_url [%d/%d]: GET %s", i + 1, len(urls), url)
+                async with page.expect_download(timeout=download_timeout_ms) as dl_info:
+                    try:
+                        await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+                    except Exception:
+                        pass  # download already started; exception expected on navigation
+                dl = await dl_info.value
+                tmp_path = await dl.path()
+                if not tmp_path:
+                    raise RuntimeError(f"multi_direct_url: download path is None for {url} — {await dl.failure()}")
+                raw = Path(tmp_path).read_bytes()
+                for enc in ("utf-8-sig", "utf-8", "latin-1"):
+                    try:
+                        text = raw.decode(enc)
+                        break
+                    except UnicodeDecodeError:
+                        continue
+                else:
+                    text = raw.decode("latin-1")
+                lines = [ln for ln in text.splitlines() if ln.strip()]
+                if i == 0:
+                    all_lines.extend(lines)       # header + data rows
+                else:
+                    all_lines.extend(lines[1:])   # skip duplicate header
+                log.info("multi_direct_url: %s → %d data rows", url.rsplit("/", 1)[-1], len(lines) - 1)
+            return "\n".join(all_lines)
+        finally:
+            await browser.close()
+
+
 async def _download_link_text(base_url: str, link_text: str) -> str:
     """Navigate to base_url, find anchor whose text contains link_text, fetch via JS."""
     from playwright.async_api import async_playwright
@@ -1332,6 +1383,10 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
     elif strategy == "direct_url":
         proxy_cfg = get_proxy_config()
         text = await _download_direct_url(base_url, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
+    elif strategy == "multi_direct_url":
+        proxy_cfg = get_proxy_config()
+        urls = getattr(csv_cfg, "multi_urls", []) or [base_url]
+        text = await _download_multi_direct_url(urls, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
     elif strategy == "link_text_xlsx":
         proxy_cfg = get_proxy_config()
         text = await _download_link_text_xlsx(

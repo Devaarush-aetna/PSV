@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2800 E DESERT INN RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-734-4900",
+          "postal_code": "891213609",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        },
+        {
+          "address_1": "8477 SEWARDS BLUFF AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "614-778-8312",
+          "postal_code": "891297378",
+          "state": "NV",
+          "telephone_number": "614-778-8312"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-01",
+        "credential": "DO",
+        "enumeration_date": "2019-05-07",
+        "first_name": "AJIT",
+        "last_name": "AMESUR",
+        "last_updated": "2025-08-01",
+        "middle_name": "KUMAR",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1557249068000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754074364000",
+      "number": "1427613215",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "SL1432",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207XS0106X",
+          "desc": "Orthopaedic Surgery, Hand Surgery",
+          "license": "25MB12206400",
+          "primary": false,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207XS0106X",
+          "desc": "Orthopaedic Surgery, Hand Surgery",
+          "license": "DO3940",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

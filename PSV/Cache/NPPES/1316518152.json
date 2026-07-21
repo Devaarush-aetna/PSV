@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1771 ANTELOPE VALLEY AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890123408",
+          "state": "NV",
+          "telephone_number": "702-234-4934"
+        },
+        {
+          "address_1": "4455 S PECOS RD STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891215029",
+          "state": "NV",
+          "telephone_number": "702-234-4934"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-06-28",
+        "credential": "CPC",
+        "enumeration_date": "2021-07-02",
+        "first_name": "JODI",
+        "last_name": "AUGUSTINE",
+        "last_updated": "2021-07-02",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1625245229000",
+      "endpoints": [
+        {
+          "address_1": "4455 S Pecos Rd Ste C",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Las Vegas",
+          "contentOtherDescription": "thehealingcentervegas@gmail.com",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "thehealingcentervegas@gmail.com",
+          "endpointDescription": "Employment email",
+          "endpointType": "SOAP",
+          "endpointTypeDescription": "SOAP URL",
+          "postal_code": "891215029",
+          "state": "NV",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1625245229000",
+      "number": "1316518152",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": "C15017",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

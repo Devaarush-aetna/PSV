@@ -1,7 +1,11 @@
 """PDF bulk-roster archetype."""
 from __future__ import annotations
 
+import asyncio
 import logging
+
+_DOWNLOAD_MAX_ATTEMPTS = 3
+_DOWNLOAD_BACKOFF_S = [5, 15]
 from pathlib import Path
 
 from engine.models import SearchQuery, SiteConfig
@@ -86,23 +90,36 @@ async def scrape_pdf_bulk(
         if query.mode == "license_number" and entry.license_prefix:
             if not q.upper().startswith(entry.license_prefix.upper()):
                 continue
+
+        pdf_path = None
+        last_exc: Exception | None = None
+        for _attempt in range(_DOWNLOAD_MAX_ATTEMPTS):
+            try:
+                pdf_path = download_pdf(entry.url, cache_dir, pdf_cfg.cache_days)
+                break
+            except Exception as exc:
+                last_exc = exc
+                if _attempt < _DOWNLOAD_MAX_ATTEMPTS - 1:
+                    delay = _DOWNLOAD_BACKOFF_S[min(_attempt, len(_DOWNLOAD_BACKOFF_S) - 1)]
+                    log.warning(
+                        "[%s] PDF download attempt %d/%d failed (%s) — retrying in %ds",
+                        source_id, _attempt + 1, _DOWNLOAD_MAX_ATTEMPTS, exc, delay,
+                    )
+                    await asyncio.sleep(delay)
+                else:
+                    log.warning(
+                        "[%s] PDF download failed after %d attempts: %s",
+                        source_id, _DOWNLOAD_MAX_ATTEMPTS, last_exc,
+                    )
+
+        if pdf_path is None:
+            continue
+
         try:
-            pdf_path = download_pdf(entry.url, cache_dir, pdf_cfg.cache_days)
             records, fmt = extract_table_data(pdf_path)
             all_pdf_data.append((records, entry.format if entry.format != "default" else fmt))
         except Exception as exc:
-            log.warning("[%s] Failed to load PDF %s: %s", source_id, entry.url, exc)
-
-    if not all_pdf_data:
-        for entry in resolved_entries:
-            if not entry.url:
-                continue
-            try:
-                pdf_path = download_pdf(entry.url, cache_dir, pdf_cfg.cache_days)
-                records, fmt = extract_table_data(pdf_path)
-                all_pdf_data.append((records, entry.format if entry.format != "default" else fmt))
-            except Exception as exc:
-                log.warning("[%s] PDF fallback load failed: %s", source_id, exc)
+            log.warning("[%s] Failed to extract PDF %s: %s", source_id, entry.url, exc)
 
     if not all_pdf_data:
         log.error("[%s] No PDFs could be loaded", source_id)

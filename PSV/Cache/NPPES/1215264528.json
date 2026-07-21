@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "639 ISBELL RD STE 380",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895094982",
+          "state": "NV",
+          "telephone_number": "775-440-1520"
+        },
+        {
+          "address_1": "639 ISBELL RD STE 380",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895094982",
+          "state": "NV",
+          "telephone_number": "775-440-1520"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-06-06",
+        "credential": "APRN-PMHNP",
+        "enumeration_date": "2009-11-06",
+        "first_name": "OKECHUKWU",
+        "last_name": "OLISA",
+        "last_updated": "2020-06-06",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1257525971000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "825185",
+          "issuer": "Advance Practice Registered Nurse",
+          "state": "NV"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "RN52945",
+          "issuer": "Registered Nurse",
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1591466829000",
+      "number": "1215264528",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "825185",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

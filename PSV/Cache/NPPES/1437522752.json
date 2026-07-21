@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "150 NW 70TH AVE STE 10",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PLANTATION",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-333-2629",
+          "postal_code": "333172911",
+          "state": "FL",
+          "telephone_number": "954-368-3529"
+        },
+        {
+          "address_1": "150 NW 70TH AVE STE 10",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PLANTATION",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-333-2629",
+          "postal_code": "333172911",
+          "state": "FL",
+          "telephone_number": "954-368-3529"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-02-16",
+        "credential": "APRN",
+        "enumeration_date": "2015-11-09",
+        "first_name": "WILMER",
+        "last_name": "SANTIESTEBAN GARCIA",
+        "last_updated": "2023-02-16",
+        "middle_name": "R.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1447091294000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1437522752",
+          "issuer": "NPI",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1676561480000",
+      "number": "1437522752",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "15105 NW 77TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI LAKES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-455-0354",
+          "postal_code": "330147803",
+          "state": "FL",
+          "telephone_number": "305-455-3200"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "ARNP9383548",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

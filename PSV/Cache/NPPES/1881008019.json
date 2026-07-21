@@ -1,0 +1,96 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "407 LINCOLN RD STE 10F",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-672-1385",
+          "postal_code": "331393026",
+          "state": "FL",
+          "telephone_number": "305-674-1104"
+        },
+        {
+          "address_1": "407 LINCOLN RD STE 10F",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-672-1385",
+          "postal_code": "33139",
+          "state": "FL",
+          "telephone_number": "305-674-1104"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2014-06-16",
+        "first_name": "VIVIANNE",
+        "last_name": "ARRIOLA",
+        "last_updated": "2019-06-10",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1402960545000",
+      "endpoints": [
+        {
+          "address_1": "407 Lincoln Rd Ste 10F",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Miami Beach",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "Miami",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "33139",
+          "state": "FL",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1234567",
+          "issuer": "not applicable",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1560215050000",
+      "number": "1881008019",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "10261 SW 72ND ST STE 104",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331733023",
+          "state": "FL",
+          "telephone_number": "786-773-3654"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "PY10009",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

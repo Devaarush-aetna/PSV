@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4324 W BRADLEY RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MILWAUKEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "532233710",
+          "state": "WI",
+          "telephone_number": "414-446-3450"
+        },
+        {
+          "address_1": "PO BOX 1003",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672011003",
+          "state": "KS"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-07-01",
+        "credential": "MD",
+        "enumeration_date": "2006-05-15",
+        "first_name": "MATTHEW",
+        "last_name": "FLEMING",
+        "last_updated": "2021-07-01",
+        "middle_name": "G",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1147727680000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "002000162R",
+          "issuer": "Humana",
+          "state": null
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "32099900",
+          "issuer": null,
+          "state": "WI"
+        }
+      ],
+      "last_updated_epoch": "1625169983000",
+      "number": "1962453787",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207ND0900X",
+          "desc": "Dermatology, Dermatopathology",
+          "license": "36238",
+          "primary": false,
+          "state": "WI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207N00000X",
+          "desc": "Dermatology",
+          "license": "36238",
+          "primary": true,
+          "state": "WI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

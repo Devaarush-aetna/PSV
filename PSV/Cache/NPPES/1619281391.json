@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "610 W GERMANTOWN PIKE STE 150",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PLYMOUTH MEETING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "194621062",
+          "state": "PA",
+          "telephone_number": "610-525-4966"
+        },
+        {
+          "address_1": "610 W GERMANTOWN PIKE",
+          "address_2": "SUITE 150",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PLYMOUTH MEETING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "194621062",
+          "state": "PA",
+          "telephone_number": "610-525-4966"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-02",
+        "credential": "CRNA",
+        "enumeration_date": "2010-08-05",
+        "first_name": "ARNALDO",
+        "last_name": "COLON",
+        "last_updated": "2026-04-02",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1280989168000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1775137440000",
+      "number": "1619281391",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "9617 GULF RESEARCH LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-418-0091",
+          "postal_code": "339124560",
+          "state": "FL",
+          "telephone_number": "239-418-0999"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "APRN9490302",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "RN553893",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

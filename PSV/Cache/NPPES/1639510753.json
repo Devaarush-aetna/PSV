@@ -1,0 +1,175 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 781076",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DETROIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "317-865-1479",
+          "postal_code": "482781076",
+          "state": "MI",
+          "telephone_number": "317-528-4800"
+        },
+        {
+          "address_1": "3900 ST FRANCIS WAY STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAFAYETTE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "765-775-2831",
+          "postal_code": "479054940",
+          "state": "IN",
+          "telephone_number": "765-775-2800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-29",
+        "credential": "M.D.",
+        "enumeration_date": "2013-07-17",
+        "first_name": "MOHAMMED",
+        "last_name": "AL-YAFI",
+        "last_updated": "2025-10-29",
+        "middle_name": "ABDUL HASEEB",
+        "name_prefix": "Dr.",
+        "name_suffix": "I",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1374087535000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1761741157000",
+      "number": "1639510753",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "UK GILL HEART INSTITUTE",
+          "address_2": "800 ROSE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405360294",
+          "state": "KY",
+          "telephone_number": "859-323-0295"
+        },
+        {
+          "address_1": "2428 KNOB CREEK RD STE 201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JOHNSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "376042396",
+          "state": "TN",
+          "telephone_number": "423-262-4400"
+        },
+        {
+          "address_1": "115 JUDGE GRESHAM RD STE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GRAY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "376156213",
+          "state": "TN",
+          "telephone_number": "423-467-3000"
+        },
+        {
+          "address_1": "271 MEDICAL PARK BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BRISTOL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "376207455",
+          "state": "TN",
+          "telephone_number": "423-274-8600"
+        },
+        {
+          "address_1": "1500 E MEDICAL CENTER DR.",
+          "address_2": "CVC ROOM 2396-A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ANN ARBOR",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "734-936-7026",
+          "postal_code": "481095853",
+          "state": "MI",
+          "telephone_number": "734-353-5624"
+        },
+        {
+          "address_1": "2050 MEADOWVIEW PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KINGSPORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "376607475",
+          "state": "TN",
+          "telephone_number": "423-230-5000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207RC0001X",
+          "desc": "Internal Medicine, Clinical Cardiac Electrophysiology",
+          "license": "TP792",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "282N00000X",
+          "desc": "General Acute Care Hospital",
+          "license": "4301102762",
+          "primary": false,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0000X",
+          "desc": "Internal Medicine, Cardiovascular Disease",
+          "license": "01097871A",
+          "primary": true,
+          "state": "IN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0000X",
+          "desc": "Internal Medicine, Cardiovascular Disease",
+          "license": "71580",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "71580",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0001X",
+          "desc": "Internal Medicine, Clinical Cardiac Electrophysiology",
+          "license": "71580",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

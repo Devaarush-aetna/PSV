@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2560 E FORT LOWELL RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TUCSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "520-323-6364",
+          "postal_code": "857161514",
+          "state": "AZ",
+          "telephone_number": "520-323-9086"
+        },
+        {
+          "address_1": "408 HIGUERA ST STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN LUIS OBISPO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "805-788-0845",
+          "postal_code": "934016135",
+          "state": "CA",
+          "telephone_number": "805-788-0805"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-20",
+        "credential": "DPT",
+        "enumeration_date": "2023-05-09",
+        "first_name": "FERNANDO",
+        "last_name": "DOMINGUEZ",
+        "last_updated": "2024-06-20",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1683642504000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1718919820000",
+      "number": "1477243079",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "LPT033634",
+          "primary": true,
+          "state": "AZ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "29574",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

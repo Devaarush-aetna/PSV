@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10241 ANGELS LOFT ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891311541",
+          "state": "NV",
+          "telephone_number": "702-430-0424"
+        },
+        {
+          "address_1": "4218 W CHARLESTON BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-243-0117",
+          "postal_code": "891021625",
+          "state": "NV",
+          "telephone_number": "702-425-5050"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-06-17",
+        "credential": "APRN",
+        "enumeration_date": "2022-06-26",
+        "first_name": "REBA",
+        "last_name": "MATHEW",
+        "last_updated": "2022-06-26",
+        "middle_name": "MARYANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1656260788000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1656260788000",
+      "number": "1841922234",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "854662",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

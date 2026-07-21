@@ -1,0 +1,91 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10301 HAGEN RANCH RD STE D720",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOYNTON BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334373777",
+          "state": "FL",
+          "telephone_number": "561-402-3971"
+        },
+        {
+          "address_1": "PO BOX 2400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "603-893-8886",
+          "postal_code": "329022400",
+          "state": "FL",
+          "telephone_number": "321-255-9671"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-07-10",
+        "credential": "PA-C",
+        "enumeration_date": "2013-08-14",
+        "first_name": "KINDAL",
+        "last_name": "SWEET",
+        "last_updated": "2023-07-10",
+        "middle_name": "ALYSSE",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1376526049000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1689020577000",
+      "number": "1174956031",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7677 W PARADISE LN APT 1128",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PEORIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "853824974",
+          "state": "AZ",
+          "telephone_number": "407-474-9351"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": "PA9110564",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA9110564",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": null,
+          "primary": false,
+          "state": "AZ",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

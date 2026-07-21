@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4201 ANDERSON AVE STE C",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MANHATTAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-539-8597",
+          "postal_code": "665037603",
+          "state": "KS",
+          "telephone_number": "785-539-3504"
+        },
+        {
+          "address_1": "4201 ANDERSON AVE STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MANHATTAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-539-8597",
+          "postal_code": "665037603",
+          "state": "KS",
+          "telephone_number": "785-539-3504"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-10",
+        "credential": "D.O.",
+        "enumeration_date": "2005-12-28",
+        "first_name": "ERIC",
+        "last_name": "PURDOM",
+        "last_updated": "2025-12-10",
+        "middle_name": "BURL",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1135790901000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1765391610000",
+      "number": "1053398339",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Y00000X",
+          "desc": "Otolaryngology",
+          "license": "05-33198",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

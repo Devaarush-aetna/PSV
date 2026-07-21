@@ -1,0 +1,194 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3030 NW EXPRESSWAY STE 1000",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OKLAHOMA CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-618-2497",
+          "postal_code": "731125468",
+          "state": "OK",
+          "telephone_number": "248-781-8593"
+        },
+        {
+          "address_1": "800 OAK RIDGE TPKE STE C200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OAK RIDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "865-588-8841",
+          "postal_code": "378306982",
+          "state": "TN",
+          "telephone_number": "865-588-8831"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-22",
+        "credential": "MD",
+        "enumeration_date": "2006-05-01",
+        "first_name": "DAVID",
+        "last_name": "BERNS",
+        "last_updated": "2026-06-22",
+        "middle_name": "HERSCHEL",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1146478114000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "0744912",
+          "issuer": null,
+          "state": "OH"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "Q113685",
+          "issuer": null,
+          "state": "TN"
+        }
+      ],
+      "last_updated_epoch": "1782118865000",
+      "number": "1518924737",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "125 WAMSUTTA MILL RD STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MORGANTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "286555522",
+          "state": "NC",
+          "telephone_number": "828-430-3511"
+        },
+        {
+          "address_1": "6850 LOWS RD",
+          "address_2": "STE 317",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BLOOMSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "570-784-6242",
+          "postal_code": "178158708",
+          "state": "PA",
+          "telephone_number": "570-784-6243"
+        },
+        {
+          "address_1": "37115 MILES RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MORELAND HILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "440222338",
+          "state": "OH",
+          "telephone_number": "216-514-1199"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "21796",
+          "primary": false,
+          "state": "WV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "4301082825",
+          "primary": false,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "036109015",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "46402-020",
+          "primary": false,
+          "state": "WI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "201802343",
+          "primary": false,
+          "state": "NC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "234435",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "01059855A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "ME88321",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "41423",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "MD418672",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "051210",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

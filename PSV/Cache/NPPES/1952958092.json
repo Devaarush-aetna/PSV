@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2770 CAPITAL MEDICAL BLVD STE 220",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-450-6214",
+          "postal_code": "323088417",
+          "state": "FL",
+          "telephone_number": "850-391-3880"
+        },
+        {
+          "address_1": "2770 CAPITAL MEDICAL BLVD STE 220",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "323088417",
+          "state": "FL",
+          "telephone_number": "850-391-3880"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-18",
+        "credential": "CNM, DNP",
+        "enumeration_date": "2019-08-22",
+        "first_name": "MARIE",
+        "last_name": "MILLER",
+        "last_updated": "2026-02-18",
+        "middle_name": "MATHURIN",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1566524637000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771445440000",
+      "number": "1952958092",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "MARIE",
+          "last_name": "MATHURIN",
+          "prefix": "Dr.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367A00000X",
+          "desc": "Advanced Practice Midwife",
+          "license": "APRN11003003",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367A00000X",
+          "desc": "Advanced Practice Midwife",
+          "license": "3-001935",
+          "primary": true,
+          "state": "AL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12902 KNOLLWOOD DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BAXTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "564258373",
+          "state": "MN",
+          "telephone_number": "915-422-6375"
+        },
+        {
+          "address_1": "49725 COUNTY 83",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "STAPLES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "564795280",
+          "state": "MN",
+          "telephone_number": "218-894-1515"
+        }
+      ],
+      "basic": {
+        "credential": "CRNA",
+        "enumeration_date": "2015-09-15",
+        "first_name": "ROBERT",
+        "last_name": "GONZALEZ",
+        "last_updated": "2015-09-15",
+        "name_prefix": "Mr.",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1442365073000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1442365073000",
+      "number": "1285003608",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "195330-5",
+          "primary": true,
+          "state": "MN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

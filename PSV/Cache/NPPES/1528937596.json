@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "839 QUINCE ORCHARD BLVD STE G",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GAITHERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "835-213-7550",
+          "postal_code": "208781614",
+          "state": "MD",
+          "telephone_number": "301-825-8385"
+        },
+        {
+          "address_1": "839 QUINCE ORCHARD BLVD STE G",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GAITHERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "835-213-7550",
+          "postal_code": "208781614",
+          "state": "MD",
+          "telephone_number": "301-825-8385"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-21",
+        "enumeration_date": "2025-10-30",
+        "first_name": "KYMONI",
+        "last_name": "SMITH",
+        "last_updated": "2025-11-21",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1761833103000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1763769006000",
+      "number": "1528937596",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "R244267",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

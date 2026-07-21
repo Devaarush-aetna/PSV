@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "710 COLLEGE PKWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "20850",
+          "state": "MD",
+          "telephone_number": "301-258-0485"
+        },
+        {
+          "address_1": "932 HUNGERFORD DR",
+          "address_2": "#39A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "20850",
+          "state": "MD",
+          "telephone_number": "301-294-6856"
+        }
+      ],
+      "basic": {
+        "credential": "RN APRN",
+        "enumeration_date": "2006-08-15",
+        "first_name": "MARY-MARGARET",
+        "last_name": "BRADLEY",
+        "last_updated": "2007-07-08",
+        "name_prefix": "Ms.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1155666082000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "521747556",
+          "issuer": "Tax Id",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1183947785000",
+      "number": "1245243435",
+      "other_names": [
+        {
+          "code": "5",
+          "credential": "RN APRN",
+          "first_name": "PEGGY",
+          "last_name": "BRADLEY",
+          "prefix": "Ms.",
+          "suffix": "--",
+          "type": "Other Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "RO30540",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7450 KESSLER ST STE 201",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MERRIAM",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-632-9209",
+          "postal_code": "662042553",
+          "state": "KS",
+          "telephone_number": "913-632-9100"
+        },
+        {
+          "address_1": "7450 KESSLER ST STE 201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MERRIAM",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-632-9209",
+          "postal_code": "662042553",
+          "state": "KS",
+          "telephone_number": "913-632-9100"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-16",
+        "enumeration_date": "2021-04-02",
+        "first_name": "LAUREN",
+        "last_name": "MEYER",
+        "last_updated": "2026-02-16",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1617395947000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771277687000",
+      "number": "1942889563",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7840 W 165TH ST STE 260",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-632-9209",
+          "postal_code": "662233020",
+          "state": "KS",
+          "telephone_number": "913-632-9100"
+        },
+        {
+          "address_1": "16990 W 86TH ST STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-632-9209",
+          "postal_code": "662194506",
+          "state": "KS",
+          "telephone_number": "913-632-9100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "2021013057",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "53-80039",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

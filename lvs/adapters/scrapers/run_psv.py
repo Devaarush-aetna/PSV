@@ -32,6 +32,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from psv_test import (  # noqa: E402
     _load_routing,
     _ROUTING,
+    CAPTCHA_PROV_TYPES,
     load_input_rows,
     load_configs_by_source_ids,
     run_state,

@@ -567,6 +567,14 @@ async def click_search_button(page: Page, config: SearchConfig, query: SearchQue
         form = config.form
         selectors = [form.search_button.selector] + form.search_button.fallback_selectors
 
+    # An explicitly empty selector means "no button needed" (e.g. DataTable live search
+    # that filters on the input event — pressing Enter would navigate away via the
+    # surrounding WordPress form).
+    selectors = [s for s in selectors if s and s.strip()]
+    if not selectors:
+        log.info("No search button configured — board auto-filters on fill (e.g. DataTable)")
+        return True
+
     for sel in selectors:
         try:
             await page.wait_for_selector(sel, state="visible", timeout=3000)

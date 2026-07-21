@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "715 JAMES CURRIE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DUBLIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "478-274-0809",
+          "postal_code": "310211489",
+          "state": "GA",
+          "telephone_number": "478-274-0037"
+        },
+        {
+          "address_1": "715 JAMES CURRIE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DUBLIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "478-274-0809",
+          "postal_code": "310211489",
+          "state": "GA",
+          "telephone_number": "478-274-0037"
+        }
+      ],
+      "basic": {
+        "credential": "LMFT",
+        "enumeration_date": "2006-12-27",
+        "first_name": "DAVID",
+        "last_name": "CURRIE, JR.",
+        "last_updated": "2007-07-08",
+        "middle_name": "JAMES",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1167244114000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1114082351",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "MFT000722",
+          "primary": true,
+          "state": "GA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7004 GOLDEN DESERT AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891297114",
+          "state": "NV",
+          "telephone_number": "702-374-9478"
+        },
+        {
+          "address_1": "7004 GOLDEN DESERT AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891297114",
+          "state": "NV",
+          "telephone_number": "702-374-9478"
+        }
+      ],
+      "basic": {
+        "credential": "MS, LMFT",
+        "enumeration_date": "2011-08-04",
+        "first_name": "MARY",
+        "last_name": "WAMMACK",
+        "last_updated": "2022-07-21",
+        "middle_name": "IRENE",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1312497421000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1658438081000",
+      "number": "1861771180",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "01399",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

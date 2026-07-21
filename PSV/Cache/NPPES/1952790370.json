@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6325 WOODSIDE CT STE 350",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210461042",
+          "state": "MD",
+          "telephone_number": "410-910-9660"
+        },
+        {
+          "address_1": "6325 WOODSIDE CT STE 350",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210461042",
+          "state": "MD",
+          "telephone_number": "410-910-9660"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-11-17",
+        "credential": "PhD",
+        "enumeration_date": "2015-01-22",
+        "first_name": "KRISTEN",
+        "last_name": "IZANT",
+        "last_updated": "2020-11-17",
+        "middle_name": "KEEFE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1421964961000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1605625778000",
+      "number": "1952790370",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "06380",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

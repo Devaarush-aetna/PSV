@@ -1,0 +1,86 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7 SEXTON COVE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KEY LARGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330373029",
+          "state": "FL",
+          "telephone_number": "786-406-0828"
+        },
+        {
+          "address_1": "105960 OVERSEAS HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KEY LARGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330373049",
+          "state": "FL",
+          "telephone_number": "786-406-0828"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-02",
+        "credential": "PT, DPT",
+        "enumeration_date": "2024-10-15",
+        "first_name": "SAUL",
+        "last_name": "CASTILLO",
+        "last_updated": "2025-09-02",
+        "middle_name": "E",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1728986411000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756871209000",
+      "number": "1659191674",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "100210 OVERSEAS HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KEY LARGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330372526",
+          "state": "FL",
+          "telephone_number": "305-453-1088"
+        },
+        {
+          "address_1": "5815 SW 32ND ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331554021",
+          "state": "FL",
+          "telephone_number": "786-406-0828"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "42319",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

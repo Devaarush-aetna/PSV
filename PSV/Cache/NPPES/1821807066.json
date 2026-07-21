@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8403 BALM ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEEKI WACHEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "346074419",
+          "state": "FL",
+          "telephone_number": "352-310-3330"
+        },
+        {
+          "address_1": "8403 BALM ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WEEKI WACHEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "346074419",
+          "state": "FL",
+          "telephone_number": "352-310-3330"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-12-31",
+        "credential": "DC",
+        "enumeration_date": "2025-01-02",
+        "first_name": "TREVOR",
+        "last_name": "GAMBLE",
+        "last_updated": "2025-01-02",
+        "middle_name": "GREGORY",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1735851914000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1735851914000",
+      "number": "1821807066",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "CH15299",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

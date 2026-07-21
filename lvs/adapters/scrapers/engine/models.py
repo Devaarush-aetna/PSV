@@ -250,6 +250,11 @@ class SearchConfig(BaseModel):
     # instead of filling the form. Used for boards with hash-route search (e.g. Thentia Cloud).
     # Skips set_search_by + fill_search_input + click_search_button.
     direct_search_url: Optional[str] = None
+    # Dash-format spec for boards that require a hyphenated license number in the search field.
+    # Format: "N1-N2-N3" where N1/N2/N3 are digit-group lengths (sum must equal total digits).
+    # Example: "2-5-3" reformats "5383371052" (10 digits) → "53-83371-052".
+    # The ladder will add a synthetic `license_formatted` attempt after license_numeric_only.
+    license_dash_format: Optional[str] = None
 
 
 class DetailTrigger(BaseModel):
@@ -441,11 +446,12 @@ class MergeSourceEntry(BaseModel):
 
 class CsvBulkConfig(BaseModel):
     download_strategy: Literal[
-        "link_text", "link_text_xlsx", "direct_url", "post_form",
+        "link_text", "link_text_xlsx", "direct_url", "multi_direct_url", "post_form",
         "multi_step_checkbox", "google_sheet_link", "aithent_portal_xls",
         "nvbop_angular_xlsx", "onedrive_excel", "ohio_data_portal_csv",
         "mopro_zip", "local_merge",
     ] = "link_text"
+    multi_urls: list[str] = Field(default_factory=list)  # for multi_direct_url: list of CSV URLs to download and concatenate
     link_text: Optional[str] = None        # for link_text: visible anchor text to find
     link_selector: Optional[str] = None   # for google_sheet_link: CSS/text selector for the Google Sheets link
     link_selector_nth: int = 0            # for google_sheet_link: 0-based index when multiple links match

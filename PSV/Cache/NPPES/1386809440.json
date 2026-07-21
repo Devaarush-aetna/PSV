@@ -1,0 +1,108 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "600 HIGHLAND AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MADISON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "608-262-6247",
+          "postal_code": "537925395",
+          "state": "WI",
+          "telephone_number": "608-263-8100"
+        },
+        {
+          "address_1": "PO BOX 840857 M/S #3",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DALLAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-805-0307",
+          "postal_code": "752846062",
+          "state": "TX",
+          "telephone_number": "725-204-4632"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-08",
+        "credential": "D.O.",
+        "enumeration_date": "2008-07-28",
+        "first_name": "MICHAEL",
+        "last_name": "MULICK",
+        "last_updated": "2025-07-08",
+        "middle_name": "JAMES",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1217273695000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751990746000",
+      "number": "1386809440",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1800 W CHARLESTON BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022386",
+          "state": "NV",
+          "telephone_number": "702-383-2000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207L00000X",
+          "desc": "Anesthesiology",
+          "license": "20A12359",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207L00000X",
+          "desc": "Anesthesiology",
+          "license": "047459",
+          "primary": false,
+          "state": "CT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207L00000X",
+          "desc": "Anesthesiology",
+          "license": "DO3686",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207L00000X",
+          "desc": "Anesthesiology",
+          "license": "102612-875",
+          "primary": true,
+          "state": "WI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207L00000X",
+          "desc": "Anesthesiology",
+          "license": "op60020990",
+          "primary": false,
+          "state": "WA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

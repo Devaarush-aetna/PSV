@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "21350 W 153RD ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660615413",
+          "state": "KS",
+          "telephone_number": "913-322-4900"
+        },
+        {
+          "address_1": "2701 W 6TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAWRENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-331-4455",
+          "postal_code": "660494306",
+          "state": "KS",
+          "telephone_number": "785-331-4200"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-16",
+        "credential": "MA, LPC, NCC",
+        "enumeration_date": "2020-03-12",
+        "first_name": "KARI",
+        "last_name": "MORGAN",
+        "last_updated": "2025-12-16",
+        "middle_name": "ANN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1584043802000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1765903009000",
+      "number": "1083240840",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "3443",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

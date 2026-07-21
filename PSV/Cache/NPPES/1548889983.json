@@ -1,0 +1,91 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 27128",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALT LAKE CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "841270128",
+          "state": "UT"
+        },
+        {
+          "address_1": "2947 E 1450 S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST GEORGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "847907372",
+          "state": "UT",
+          "telephone_number": "435-688-3400"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-05-28",
+        "credential": "DO",
+        "enumeration_date": "2020-04-15",
+        "first_name": "CHASE",
+        "last_name": "BEAL",
+        "last_updated": "2026-05-28",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1586967597000",
+      "endpoints": [
+        {
+          "address_1": "1300 SE Cardinal Ct Ste 190",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "Bluemark LLC/ Office Ally",
+          "city": "Vancouver",
+          "contentOtherDescription": "CMS esMD eMDR",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://esmd.officeally.io:8291/Gateway/DocumentSubmission/2_0/NhinService/XDRRequest_Service",
+          "endpointDescription": "2.16.840.1.113883.3.2019.3",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "986839683",
+          "state": "WA",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1779957059000",
+      "number": "1548889983",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1610 E LAKE MEAD BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890307145",
+          "state": "NV",
+          "telephone_number": "702-476-9999"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "14285944-1204",
+          "primary": true,
+          "state": "UT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

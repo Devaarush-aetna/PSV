@@ -1,0 +1,100 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 399",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BELOIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674200399",
+          "state": "KS"
+        },
+        {
+          "address_1": "400 W 8TH",
+          "address_2": "SURGICAL CLINIC",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BELOIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674200399",
+          "state": "KS",
+          "telephone_number": "785-738-9406"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-03-25",
+        "credential": "APRN",
+        "enumeration_date": "2019-11-21",
+        "first_name": "ALAN",
+        "last_name": "CURTIS",
+        "last_updated": "2021-03-25",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1574360872000",
+      "endpoints": [
+        {
+          "address_1": "400 W 8th St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Beloit",
+          "contentOtherDescription": "CCDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "HIM@mchhs.cernerdirect.com",
+          "endpointDescription": "Mitchell County Hospital Health Systems's Direct Email Address",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "674201605",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        },
+        {
+          "address_1": "400 W 8th",
+          "address_2": "Surgical Clinic",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Beloit",
+          "contentOtherDescription": "CCDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "alan.curtis.1@19235.direct.athenahealth.com",
+          "endpointDescription": "Mitchell County Hospital Health Systems Surgery Clinic",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "674200399",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1616699866000",
+      "number": "1881230118",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP2300X",
+          "desc": "Nurse Practitioner, Primary Care",
+          "license": "79025",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

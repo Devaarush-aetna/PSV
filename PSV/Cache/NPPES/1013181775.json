@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2412 WILKINS DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SANFORD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "273307268",
+          "state": "NC",
+          "telephone_number": "919-776-6000"
+        },
+        {
+          "address_1": "2412 WILKINS DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SANFORD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "273307268",
+          "state": "NC",
+          "telephone_number": "919-776-6000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-04-14",
+        "credential": "M.D.",
+        "enumeration_date": "2008-04-14",
+        "first_name": "HIROMI",
+        "last_name": "MARUYAMA",
+        "last_updated": "2021-04-14",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1208214718000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1618403408000",
+      "number": "1013181775",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "855 EAST ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PITTSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "273128816",
+          "state": "NC",
+          "telephone_number": "919-542-2731"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "2019-02523",
+          "primary": true,
+          "state": "NC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

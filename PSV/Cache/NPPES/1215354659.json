@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10105 BANBURRY CROSS DRIVE SUITE 370",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-869-0133",
+          "postal_code": "89144",
+          "state": "NV",
+          "telephone_number": "702-260-4525"
+        },
+        {
+          "address_1": "10105 BANBURRY CROSS DRIVE SUITE 370",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-869-0133",
+          "postal_code": "89144",
+          "state": "NV",
+          "telephone_number": "702-260-4525"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-09-23",
+        "credential": "D.O.",
+        "enumeration_date": "2014-03-24",
+        "first_name": "ALIREZA",
+        "last_name": "HABIBI",
+        "last_updated": "2020-09-23",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1395692695000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1600881796000",
+      "number": "1215354659",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "DO2221",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11304 STATE ROAD 54",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TRINITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-247-1236",
+          "postal_code": "346552294",
+          "state": "FL",
+          "telephone_number": "727-247-1234"
+        },
+        {
+          "address_1": "11304 STATE ROAD 54",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TRINITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-247-1236",
+          "postal_code": "346552294",
+          "state": "FL",
+          "telephone_number": "727-247-1234"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-17",
+        "credential": "Au.D.",
+        "enumeration_date": "2007-01-15",
+        "first_name": "CAROL",
+        "last_name": "CLINGERMAN",
+        "last_updated": "2026-06-17",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1168855070000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1781690109000",
+      "number": "1720139025",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "Au.D.",
+          "first_name": "CAROL",
+          "last_name": "HENN-STAINO",
+          "middle_name": "ANN",
+          "prefix": "Dr.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "10810 SHELDON RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-925-5005",
+          "postal_code": "336265117",
+          "state": "FL",
+          "telephone_number": "813-925-5000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "AY2144",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

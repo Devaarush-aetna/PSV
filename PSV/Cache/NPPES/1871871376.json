@@ -1,0 +1,77 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 609001",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN DIEGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "619-528-4625",
+          "postal_code": "921609001",
+          "state": "CA",
+          "telephone_number": "619-528-4600"
+        },
+        {
+          "address_1": "1550 HOTEL CIR N STE 450",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN DIEGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "619-692-1588",
+          "postal_code": "921082933",
+          "state": "CA",
+          "telephone_number": "619-692-1581"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-12",
+        "credential": "PhD",
+        "enumeration_date": "2011-08-01",
+        "first_name": "SUSAN",
+        "last_name": "GEHRIG",
+        "last_updated": "2025-09-12",
+        "middle_name": "M",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1312233791000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757717033000",
+      "number": "1871871376",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "725 WELCH RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PALO ALTO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "943041601",
+          "state": "CA",
+          "telephone_number": "800-516-0975"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "26228",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

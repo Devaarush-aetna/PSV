@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2030 NORTHSIDE DR",
+          "address_2": "UNIT C",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HEBRON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "206-333-1232",
+          "postal_code": "410487195",
+          "state": "KY",
+          "telephone_number": "859-372-0888"
+        },
+        {
+          "address_1": "2030 NORTHSIDE DR",
+          "address_2": "UNIT C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HEBRON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "206-333-1232",
+          "postal_code": "410487195",
+          "state": "KY",
+          "telephone_number": "859-372-0888"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2010-04-14",
+        "first_name": "JONATHAN",
+        "last_name": "LANGLEY",
+        "last_updated": "2010-04-14",
+        "middle_name": "JAY",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1271275288000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1271275288000",
+      "number": "1740506880",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "5239",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

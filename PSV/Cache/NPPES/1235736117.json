@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1420 PADRE BAY DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891081823",
+          "state": "NV",
+          "telephone_number": "503-602-6898"
+        },
+        {
+          "address_1": "1481 W WARM SPRINGS RD STE 138",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890147641",
+          "state": "NV",
+          "telephone_number": "702-800-3391"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-05",
+        "enumeration_date": "2020-10-05",
+        "first_name": "JESSIE",
+        "last_name": "TSANG",
+        "last_updated": "2025-11-05",
+        "middle_name": "THANH LE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1601916091000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1762396552000",
+      "number": "1235736117",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "JESSIE",
+          "last_name": "LE",
+          "middle_name": "THANH",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SP-4243",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

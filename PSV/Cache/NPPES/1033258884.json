@@ -1,0 +1,157 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 392573",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PITTSBURGH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "724-343-4069",
+          "postal_code": "152519573",
+          "state": "PA",
+          "telephone_number": "724-343-4060"
+        },
+        {
+          "address_1": "11070 CATHELL RD",
+          "address_2": "SUITE 4",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BERLIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "218119344",
+          "state": "MD",
+          "telephone_number": "410-208-3630"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-18",
+        "credential": "P.T.",
+        "enumeration_date": "2007-02-06",
+        "first_name": "CHARLES",
+        "last_name": "CURRAN",
+        "last_updated": "2026-03-18",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1170769848000",
+      "endpoints": [
+        {
+          "address_1": "8215 W 108th Ter",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "eSolutions Inc",
+          "city": "Overland Park",
+          "contentOtherDescription": "CSV",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://199.119.81.30:8291/Gateway/DocumentSubmission/2_0/NhinService/XDRResponse_Service",
+          "endpointDescription": "2.16.840.1.113883.3.1066.1",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "662101661",
+          "state": "KS",
+          "use": "OTHER",
+          "useDescription": "Other",
+          "useOtherDescription": "CMS esMD eMDR"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "022657A84",
+          "issuer": "MEDICARE INDIVIDUAL #",
+          "state": "DE"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1124117916",
+          "issuer": "GROUP NPI #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "713M",
+          "issuer": "MEDICARE GROUP #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "713MR273",
+          "issuer": "MEDICARE INDIVIDUAL #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "754AAT",
+          "issuer": "CAREFIRST GROUP #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "84128704",
+          "issuer": "CAREFIRST INDIVI REND. #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "9000709DE",
+          "issuer": "BLUE CROSS GROUP #",
+          "state": "DE"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "G02084",
+          "issuer": "MEDICARE GROUP #",
+          "state": "DE"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "J564",
+          "issuer": "BLUE CHOICE GROUP #",
+          "state": "MD"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "J5640007",
+          "issuer": "BLUE CHOICE INDIVID. #",
+          "state": "MD"
+        }
+      ],
+      "last_updated_epoch": "1773829353000",
+      "number": "1033258884",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "18278",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

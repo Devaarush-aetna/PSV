@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "311 HARVEST MOON DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SARATOGA SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-540-7061",
+          "postal_code": "840433933",
+          "state": "UT",
+          "telephone_number": "801-699-1696"
+        },
+        {
+          "address_1": "7370 CREEK RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SANDY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-542-7061",
+          "postal_code": "840936107",
+          "state": "UT",
+          "telephone_number": "801-542-7060"
+        }
+      ],
+      "basic": {
+        "credential": "CSW",
+        "enumeration_date": "2006-04-12",
+        "first_name": "CHRIS",
+        "last_name": "GAUGER",
+        "last_updated": "2007-07-08",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1144879884000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1932163540",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "53112913502",
+          "primary": true,
+          "state": "UT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

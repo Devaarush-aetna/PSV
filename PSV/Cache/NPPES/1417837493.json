@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2308 MUNDARE DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890023710",
+          "state": "NV",
+          "telephone_number": "818-523-1617"
+        },
+        {
+          "address_1": "9121 W RUSSELL RD STE 115",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891481238",
+          "state": "NV",
+          "telephone_number": "702-499-6638"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-02",
+        "enumeration_date": "2025-09-02",
+        "first_name": "ALEXANDRA",
+        "last_name": "RANDS",
+        "last_updated": "2025-09-02",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1756864205000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756864205000",
+      "number": "1417837493",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SP-4321",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

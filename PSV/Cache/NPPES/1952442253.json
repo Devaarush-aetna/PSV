@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "420 MOUNTAIN AVE FL 4",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NEW PROVIDENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "079742736",
+          "state": "NJ"
+        },
+        {
+          "address_1": "130 PARK ST SE STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VIENNA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "703-938-8332",
+          "postal_code": "221804626",
+          "state": "VA",
+          "telephone_number": "703-938-2266"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-08",
+        "credential": "MD",
+        "enumeration_date": "2007-02-09",
+        "first_name": "JOHN",
+        "last_name": "MITCHELL",
+        "last_updated": "2025-09-08",
+        "middle_name": "DAVID",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1171045482000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "010041813",
+          "issuer": null,
+          "state": "VA"
+        }
+      ],
+      "last_updated_epoch": "1757365502000",
+      "number": "1952442253",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207W00000X",
+          "desc": "Ophthalmology",
+          "license": "D0052312",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207W00000X",
+          "desc": "Ophthalmology",
+          "license": "MD30373",
+          "primary": false,
+          "state": "DC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207W00000X",
+          "desc": "Ophthalmology",
+          "license": "101042795",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1701 W CHARLESTON BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022325",
+          "state": "NV"
+        },
+        {
+          "address_1": "1701 W CHARLESTON BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022325",
+          "state": "NV",
+          "telephone_number": "702-780-7588"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-03-20",
+        "enumeration_date": "2022-03-20",
+        "first_name": "CHELSEA",
+        "last_name": "PROLLAMANTE",
+        "last_updated": "2022-03-20",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1647811363000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1647811363000",
+      "number": "1225787138",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

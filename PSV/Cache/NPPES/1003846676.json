@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3700 N CAPITOL ST NW",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "301-262-1259",
+          "postal_code": "200118400",
+          "state": "DC",
+          "telephone_number": "800-422-9988"
+        },
+        {
+          "address_1": "6196 OXON HILL RD",
+          "address_2": "STE 120",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OXON HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "202-318-8174",
+          "postal_code": "207453138",
+          "state": "MD",
+          "telephone_number": "301-567-6400"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-01-10",
+        "credential": "P.T.",
+        "enumeration_date": "2006-07-03",
+        "first_name": "COURTLAND",
+        "last_name": "WYATT",
+        "last_updated": "2024-01-10",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1151943965000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1704917787000",
+      "number": "1003846676",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "PT2863",
+          "primary": true,
+          "state": "DC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

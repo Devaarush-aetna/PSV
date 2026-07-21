@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "376 PASCOE BLVD",
+          "address_2": "APT 22",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421045455",
+          "state": "KY",
+          "telephone_number": "270-535-2639"
+        },
+        {
+          "address_1": "376 PASCOE BLVD",
+          "address_2": "APT 22",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421045455",
+          "state": "KY",
+          "telephone_number": "270-535-2639"
+        }
+      ],
+      "basic": {
+        "credential": "M.S.CCC-SLP",
+        "enumeration_date": "2010-03-27",
+        "first_name": "JENNIFER",
+        "last_name": "JOHNSON",
+        "last_updated": "2010-03-27",
+        "middle_name": "LYNN",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1269735042000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1269735042000",
+      "number": "1568787018",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "KY3383",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

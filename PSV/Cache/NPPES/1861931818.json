@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "79 NEALY AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HAMPTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "236652040",
+          "state": "VA"
+        },
+        {
+          "address_1": "79 NEALY AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAMPTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "236652040",
+          "state": "VA",
+          "telephone_number": "975-675-7764"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-05-22",
+        "credential": "DO",
+        "enumeration_date": "2017-02-22",
+        "first_name": "SAMUEL",
+        "last_name": "PERRY",
+        "last_updated": "2026-05-22",
+        "middle_name": "EATON",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1487792528000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1779438714000",
+      "number": "1861931818",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "9960 CENTRAL PARK BLVD N STE 150A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOCA RATON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-367-5399",
+          "postal_code": "334281760",
+          "state": "FL",
+          "telephone_number": "561-922-9112"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "5101027213",
+          "primary": true,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "OS23745",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

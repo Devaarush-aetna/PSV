@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7090 SAMUEL MORSE DR STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210463444",
+          "state": "MD",
+          "telephone_number": "301-793-4161"
+        },
+        {
+          "address_1": "7090 SAMUEL MORSE DR STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210463444",
+          "state": "MD"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-05-24",
+        "enumeration_date": "2021-01-13",
+        "first_name": "BISOLA",
+        "last_name": "ALLI",
+        "last_updated": "2024-05-24",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1610582136000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1716600789000",
+      "number": "1508455585",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

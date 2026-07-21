@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4715 S FLORIDA AVE STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "863-274-3542",
+          "postal_code": "338132101",
+          "state": "FL",
+          "telephone_number": "863-209-7004"
+        },
+        {
+          "address_1": "4715 S FLORIDA AVE STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAKELAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "863-274-3542",
+          "postal_code": "338132101",
+          "state": "FL",
+          "telephone_number": "863-209-7004"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-02-14",
+        "credential": "M.D",
+        "enumeration_date": "2015-06-17",
+        "first_name": "ISABEL",
+        "last_name": "HIDALGO ACOSTA",
+        "last_updated": "2024-02-14",
+        "middle_name": "VICTORIA",
+        "name_suffix": "I",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1434566340000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1707916517000",
+      "number": "1376924191",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208D00000X",
+          "desc": "General Practice",
+          "license": "ME144764",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

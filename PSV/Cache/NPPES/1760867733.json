@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1805 27TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PORTSMOUTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "456622640",
+          "state": "OH",
+          "telephone_number": "740-356-5000"
+        },
+        {
+          "address_1": "5129 STATE ROUTE 7",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SOUTH SHORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "411758828",
+          "state": "KY",
+          "telephone_number": "606-922-9816"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-08-28",
+        "credential": "NP-C",
+        "enumeration_date": "2015-07-20",
+        "first_name": "MATTHEW",
+        "last_name": "STONE",
+        "last_updated": "2023-08-28",
+        "middle_name": "MITCHELL",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1437427881000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1693232129000",
+      "number": "1760867733",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "3012406",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "COA.17761-NP",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

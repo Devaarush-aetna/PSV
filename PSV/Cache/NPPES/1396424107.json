@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "626 GROVE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKE WORTH BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334615614",
+          "state": "FL",
+          "telephone_number": "561-252-0898"
+        },
+        {
+          "address_1": "626 GROVE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAKE WORTH BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334615614",
+          "state": "FL",
+          "telephone_number": "561-252-0898"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-27",
+        "credential": "CCC-SLP",
+        "enumeration_date": "2023-07-18",
+        "first_name": "ERICA",
+        "last_name": "PASCOE",
+        "last_updated": "2025-08-27",
+        "middle_name": "EMERY",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1689692631000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756311785000",
+      "number": "1396424107",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

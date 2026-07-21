@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "210 N HIGHWAY 27 STE 4",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CLERMONT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "347112411",
+          "state": "FL",
+          "telephone_number": "352-708-6283"
+        },
+        {
+          "address_1": "858 S DUNCAN DR STE 307",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TAVARES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "327784044",
+          "state": "FL",
+          "telephone_number": "352-708-6283"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-02-08",
+        "credential": "IMH24665",
+        "enumeration_date": "2024-02-08",
+        "first_name": "JOAN",
+        "last_name": "MERVAR",
+        "last_updated": "2024-02-08",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1707423614000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1707423614000",
+      "number": "1447014634",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "IMH24665",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

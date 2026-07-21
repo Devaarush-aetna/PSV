@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "16560 WEDGE PKWY # 200A",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895113318",
+          "state": "NV",
+          "telephone_number": "775-384-1400"
+        },
+        {
+          "address_1": "4878 SPARKS BLVD STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SPARKS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "894368150",
+          "state": "NV",
+          "telephone_number": "775-507-4084"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-07-31",
+        "credential": "DPT",
+        "enumeration_date": "2023-07-31",
+        "first_name": "MICHAEL",
+        "last_name": "HENDRICKSON",
+        "last_updated": "2023-07-31",
+        "middle_name": "CARL",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1690830041000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1690830041000",
+      "number": "1578244612",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "5171",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

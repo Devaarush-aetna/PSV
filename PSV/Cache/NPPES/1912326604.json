@@ -1,0 +1,69 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "650 STEWART RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MONROE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "740-240-1997",
+          "postal_code": "481624222",
+          "state": "MI",
+          "telephone_number": "734-240-1991"
+        },
+        {
+          "address_1": "4300 ALTON RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331402948",
+          "state": "FL"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-10-18",
+        "credential": "DO",
+        "enumeration_date": "2014-04-10",
+        "first_name": "JOSEPH",
+        "last_name": "SHERER",
+        "last_updated": "2024-10-18",
+        "middle_name": "HOUSTON",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1397140477000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1729279720000",
+      "number": "1912326604",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "3382",
+          "primary": true,
+          "state": "TN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

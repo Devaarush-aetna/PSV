@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4450 W EAU GALLIE BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329347213",
+          "state": "FL",
+          "telephone_number": "321-255-6627"
+        },
+        {
+          "address_1": "4450 W EAU GALLIE BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329347213",
+          "state": "FL",
+          "telephone_number": "321-255-6627"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-06",
+        "enumeration_date": "2011-10-04",
+        "first_name": "FEDERICA",
+        "last_name": "CARULLI",
+        "last_updated": "2025-08-06",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1317748711000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "SZ5637",
+          "issuer": "DOH License Number",
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1754510144000",
+      "number": "1982988309",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SZ5637",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

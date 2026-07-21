@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2401 GILLHAM ROAD",
+          "address_2": "PROVIDER ENROLLMENT DEPT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641084619",
+          "state": "MO",
+          "telephone_number": "816-234-3000"
+        },
+        {
+          "address_1": "2401 GILLHAM RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-302-9939",
+          "postal_code": "641084619",
+          "state": "MO",
+          "telephone_number": "816-234-3000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-18",
+        "credential": "PhD",
+        "enumeration_date": "2020-01-06",
+        "first_name": "KATHERINE",
+        "last_name": "TEPPER",
+        "last_updated": "2025-12-18",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1578321414000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1766092608000",
+      "number": "1255970455",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TC2200X",
+          "desc": "Psychologist, Clinical Child & Adolescent",
+          "license": "LP03152",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103TC2200X",
+          "desc": "Psychologist, Clinical Child & Adolescent",
+          "license": "2022032817",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

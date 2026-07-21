@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8906 SPANISH RIDGE AVE STE 202",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-912-4994",
+          "postal_code": "891481319",
+          "state": "NV",
+          "telephone_number": "702-330-3102"
+        },
+        {
+          "address_1": "9120 W POST RD STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-870-0515",
+          "postal_code": "891482427",
+          "state": "NV",
+          "telephone_number": "702-870-2229"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-05",
+        "enumeration_date": "2024-08-05",
+        "first_name": "CAROLYN",
+        "last_name": "BURZYNSKI",
+        "last_updated": "2024-08-05",
+        "middle_name": "SUSANNE",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1722898203000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1722898203000",
+      "number": "1962232868",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367A00000X",
+          "desc": "Advanced Practice Midwife",
+          "license": "877558",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

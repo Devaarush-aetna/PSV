@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12966 SW 89TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331765850",
+          "state": "FL",
+          "telephone_number": "786-554-8920"
+        },
+        {
+          "address_1": "3170 CORAL WAY APT 801",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331453351",
+          "state": "FL",
+          "telephone_number": "786-390-8847"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-10",
+        "enumeration_date": "2022-06-14",
+        "first_name": "HALEY",
+        "last_name": "CHONIN",
+        "last_updated": "2022-08-23",
+        "middle_name": "OLIVIA",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1655230132000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1661301455000",
+      "number": "1720718604",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SA20522",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

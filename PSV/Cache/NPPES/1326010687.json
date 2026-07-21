@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3613 LEXINGTON RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-895-9571",
+          "postal_code": "402072949",
+          "state": "KY",
+          "telephone_number": "502-895-3831"
+        },
+        {
+          "address_1": "3613 LEXINGTON RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-895-9571",
+          "postal_code": "402072949",
+          "state": "KY",
+          "telephone_number": "502-895-3831"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2006-02-02",
+        "first_name": "MARK",
+        "last_name": "SMITH",
+        "last_updated": "2019-03-12",
+        "middle_name": "JOSEPH",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1138898919000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1552426392000",
+      "number": "1326010687",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "4887",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

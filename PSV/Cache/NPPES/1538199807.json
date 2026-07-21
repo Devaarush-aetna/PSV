@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5860 RANCH LAKE BLVD STE 110",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAKEWOOD RANCH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "342023719",
+          "state": "FL",
+          "telephone_number": "941-229-2122"
+        },
+        {
+          "address_1": "5860 RANCH LAKE BLVD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAKEWOOD RANCH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "941-757-3732",
+          "postal_code": "342023719",
+          "state": "FL",
+          "telephone_number": "941-229-2122"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-02",
+        "credential": "Au.D.",
+        "enumeration_date": "2006-07-03",
+        "first_name": "KRISTIN",
+        "last_name": "DESERMIA",
+        "last_updated": "2024-08-02",
+        "middle_name": "C",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1151978187000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1722619469000",
+      "number": "1538199807",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "MA",
+          "first_name": "KRISTIN",
+          "last_name": "LAURENT",
+          "middle_name": "C",
+          "prefix": "Mrs.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "3651 CORTEZ RD W STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BRADENTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "941-757-3732",
+          "postal_code": "342103167",
+          "state": "FL",
+          "telephone_number": "941-229-2122"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "237600000X",
+          "desc": "Audiologist-Hearing Aid Fitter",
+          "license": "AY1497",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "AY1497",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

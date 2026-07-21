@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3460 N RIDGE RD STE 120",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-272-0600",
+          "postal_code": "672051223",
+          "state": "KS",
+          "telephone_number": "316-272-0800"
+        },
+        {
+          "address_1": "1307 INDIAN ROCK LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674013337",
+          "state": "KS",
+          "telephone_number": "316-371-1503"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-11",
+        "enumeration_date": "2024-05-20",
+        "first_name": "FALON",
+        "last_name": "NELSON",
+        "last_updated": "2025-07-11",
+        "middle_name": "MARIE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1716223505000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752239621000",
+      "number": "1285473405",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "400 S SANTA FE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-452-6119",
+          "postal_code": "674014144",
+          "state": "KS",
+          "telephone_number": "785-452-6113"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "163WP0808X",
+          "desc": "Registered Nurse, Psych/Mental Health",
+          "license": "13-141853-012",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "53-84419-012",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

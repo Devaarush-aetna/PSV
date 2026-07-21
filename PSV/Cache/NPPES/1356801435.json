@@ -1,0 +1,119 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5578 LONGLEY LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895111825",
+          "state": "NV",
+          "telephone_number": "775-284-8650"
+        },
+        {
+          "address_1": "5578 LONGLEY LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895111825",
+          "state": "NV",
+          "telephone_number": "775-284-8650"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-25",
+        "credential": "DO, MBA",
+        "enumeration_date": "2019-03-23",
+        "first_name": "BENJAMIN",
+        "last_name": "GILL",
+        "last_updated": "2025-08-25",
+        "middle_name": "D.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1553370893000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756143510000",
+      "number": "1356801435",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3901 RAINBOW BLVD # MS 2027",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "661608500",
+          "state": "KS",
+          "telephone_number": "913-588-6050"
+        },
+        {
+          "address_1": "615 S ARAPEEN DR STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SALT LAKE CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "841081239",
+          "state": "UT",
+          "telephone_number": "801-581-2121"
+        },
+        {
+          "address_1": "13340 CALIFORNIA ST STE 101",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OMAHA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "681545255",
+          "state": "NE",
+          "telephone_number": "402-614-1999"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207LP2900X",
+          "desc": "Anesthesiology, Pain Medicine",
+          "license": "13268767-1204",
+          "primary": false,
+          "state": "UT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208100000X",
+          "desc": "Physical Medicine & Rehabilitation",
+          "license": "2922",
+          "primary": false,
+          "state": "NE",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208VP0014X",
+          "desc": "Pain Medicine, Interventional Pain Medicine",
+          "license": "2922",
+          "primary": false,
+          "state": "NE",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208VP0014X",
+          "desc": "Pain Medicine, Interventional Pain Medicine",
+          "license": "CL0724",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

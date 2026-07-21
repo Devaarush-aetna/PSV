@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1441 S BEVERLY GLEN BLVD APT 101",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOS ANGELES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "900246139",
+          "state": "CA",
+          "telephone_number": "310-400-0552"
+        },
+        {
+          "address_1": "1441 S BEVERLY GLEN BLVD APT 101",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOS ANGELES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "900246139",
+          "state": "CA"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-01-03",
+        "credential": "LMFT",
+        "enumeration_date": "2020-01-03",
+        "first_name": "SHARON",
+        "last_name": "ARFA",
+        "last_updated": "2020-01-03",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1578083562000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1578085304000",
+      "number": "1477192789",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "106910",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1825 CIVIC CENTER DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890307113",
+          "state": "NV",
+          "telephone_number": "702-642-8313"
+        },
+        {
+          "address_1": "1200 S 4TH ST",
+          "address_2": "STE 111",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-380-2929",
+          "postal_code": "891041046",
+          "state": "NV",
+          "telephone_number": "702-575-0866"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-09-18",
+        "credential": "APNC",
+        "enumeration_date": "2012-10-22",
+        "first_name": "JOSEFINA",
+        "last_name": "ASCANO",
+        "last_updated": "2020-09-18",
+        "middle_name": "ANDRES",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1350928057000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1600459888000",
+      "number": "1083967533",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "APN001437",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

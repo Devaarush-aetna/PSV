@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 5183",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MEMPHIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "901-473-0660",
+          "postal_code": "381015183",
+          "state": "TN",
+          "telephone_number": "901-526-7444"
+        },
+        {
+          "address_1": "3495 HACKS CROSS RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MEMPHIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "901-473-0660",
+          "postal_code": "381258803",
+          "state": "TN",
+          "telephone_number": "901-526-7444"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-09-06",
+        "credential": "MD",
+        "enumeration_date": "2006-06-07",
+        "first_name": "KARIN",
+        "last_name": "BERG",
+        "last_updated": "2023-09-06",
+        "middle_name": "DIANE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1149703023000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1694028673000",
+      "number": "1740220953",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207ZP0101X",
+          "desc": "Pathology, Anatomic Pathology",
+          "license": "DR0055186",
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207ZP0101X",
+          "desc": "Pathology, Anatomic Pathology",
+          "license": "41206",
+          "primary": true,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207ZP0101X",
+          "desc": "Pathology, Anatomic Pathology",
+          "license": "TL2359",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

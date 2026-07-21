@@ -1,0 +1,106 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2800 E DESERT INN RD STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891213609",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        },
+        {
+          "address_1": "8205 W WARM SPRINGS RD STE 250",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891133646",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-07",
+        "credential": "APRN",
+        "enumeration_date": "2026-01-07",
+        "first_name": "LESLEE",
+        "last_name": "GUIAO",
+        "last_updated": "2026-01-07",
+        "middle_name": "CATHERINE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1767816006000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767816006000",
+      "number": "1073470498",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2800 E DESERT INN RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891213609",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        },
+        {
+          "address_1": "2930 W HORIZON RIDGE PKWY STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890525059",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        },
+        {
+          "address_1": "8402 CENTENNIAL PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891494792",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        },
+        {
+          "address_1": "8689 W CHARLESTON BLVD STE 105",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891175485",
+          "state": "NV",
+          "telephone_number": "702-731-1616"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LA2200X",
+          "desc": "Nurse Practitioner, Adult Health",
+          "license": "896595",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

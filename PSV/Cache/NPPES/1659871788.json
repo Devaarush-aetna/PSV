@@ -1,0 +1,92 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "205 CLIFTON HEIGHTS DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-647-2723",
+          "postal_code": "891454127",
+          "state": "NV",
+          "telephone_number": "702-201-6675"
+        },
+        {
+          "address_1": "6725 S EASTERN AVE STE 1",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-647-2723",
+          "postal_code": "891193949",
+          "state": "NV",
+          "telephone_number": "702-646-2722"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2018-02-15",
+        "first_name": "ALEIDIS",
+        "last_name": "SUAREZ",
+        "last_updated": "2018-02-15",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1518716117000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1518716117000",
+      "number": "1659871788",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "372500000X",
+          "desc": "Chore Provider",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "372600000X",
+          "desc": "Adult Companion",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "376J00000X",
+          "desc": "Homemaker",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "3747A0650X",
+          "desc": "Technician, Attendant Care Provider",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "3747P1801X",
+          "desc": "Technician, Personal Care Attendant",
+          "license": null,
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

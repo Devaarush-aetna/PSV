@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3211 LA FOLLETTE CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402991575",
+          "state": "KY",
+          "telephone_number": "502-499-9091"
+        },
+        {
+          "address_1": "2700 VISSING PARK RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JEFFERSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "471305989",
+          "state": "IN",
+          "telephone_number": "812-284-8000"
+        }
+      ],
+      "basic": {
+        "credential": "LCSW, LMFT",
+        "enumeration_date": "2007-02-26",
+        "first_name": "JULIE",
+        "last_name": "METZGER",
+        "last_updated": "2025-09-11",
+        "middle_name": "ANN",
+        "name_prefix": "Mrs.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1172541628000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757623214000",
+      "number": "1487780987",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "KY-3065",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "KY-0649",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

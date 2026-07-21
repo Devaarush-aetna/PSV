@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "204 BEVINS LN STE D",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GEORGETOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-868-6087",
+          "postal_code": "403246145",
+          "state": "KY",
+          "telephone_number": "502-868-6008"
+        },
+        {
+          "address_1": "204 BEVINS LN STE D",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GEORGETOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "40324",
+          "state": "KY",
+          "telephone_number": "715-933-1001"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2012-02-20",
+        "first_name": "COLE",
+        "last_name": "BERGESON",
+        "last_updated": "2012-02-20",
+        "middle_name": "D",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1329774949000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1329774949000",
+      "number": "1386917466",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "5313",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "4812-12",
+          "primary": false,
+          "state": "WI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

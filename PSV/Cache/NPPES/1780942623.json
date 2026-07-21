@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "793 EASTERN BYP STE 201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RICHMOND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-624-6569",
+          "postal_code": "404752440",
+          "state": "KY",
+          "telephone_number": "859-624-6560"
+        },
+        {
+          "address_1": "230 LEXINGTON GREEN CIR STE 600",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-971-4604",
+          "postal_code": "405033326",
+          "state": "KY",
+          "telephone_number": "859-971-4695"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-12-03",
+        "credential": "D.O.",
+        "enumeration_date": "2012-04-29",
+        "first_name": "MEHUL",
+        "last_name": "SUTHAR",
+        "last_updated": "2020-12-03",
+        "middle_name": "AJAY",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1335719854000",
+      "endpoints": [
+        {
+          "address_1": "107 Meridian Way Ste 200",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Richmond",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "msuthar8978@bhkydirect.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "404752878",
+          "state": "KY",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1607011519000",
+      "number": "1780942623",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "03858",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

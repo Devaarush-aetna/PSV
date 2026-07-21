@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6299 NALL AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MISSION",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-562-2819",
+          "postal_code": "662023553",
+          "state": "KS",
+          "telephone_number": "913-535-6225"
+        },
+        {
+          "address_1": "6299 NALL AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MISSION",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-562-2819",
+          "postal_code": "662023553",
+          "state": "KS",
+          "telephone_number": "913-535-6225"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-25",
+        "credential": "LCPC",
+        "enumeration_date": "2018-02-04",
+        "first_name": "DAWN",
+        "last_name": "STILLINGER",
+        "last_updated": "2024-07-25",
+        "middle_name": "ELISABETH",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1517794317000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1721932593000",
+      "number": "1992204010",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "2849",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

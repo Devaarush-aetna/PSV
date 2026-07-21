@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "103 QUARTZ WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MOUND HOUSE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "897067054",
+          "state": "NV",
+          "telephone_number": "775-350-9511"
+        },
+        {
+          "address_1": "2621 NORTHGATE LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CARSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "897061653",
+          "state": "NV",
+          "telephone_number": "775-884-2269"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-27",
+        "enumeration_date": "2024-07-05",
+        "first_name": "MOLLY",
+        "last_name": "MCGREGOR",
+        "last_updated": "2024-07-05",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1720200302000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1720200302000",
+      "number": "1851137129",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1140 W KING ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CARSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "897034555",
+          "state": "NV",
+          "telephone_number": "775-283-2800"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "IC-2428",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041S0200X",
+          "desc": "Social Worker, School",
+          "license": "9389-M",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5 DOVERCREST CT",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GREENSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "434-792-3925",
+          "postal_code": "274078314",
+          "state": "NC",
+          "telephone_number": "434-799-4200"
+        },
+        {
+          "address_1": "125 EXECUTIVE DR",
+          "address_2": "SUITE L",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DANVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "434-792-3925",
+          "postal_code": "245414155",
+          "state": "VA",
+          "telephone_number": "434-799-4200"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-25",
+        "credential": "M.D.",
+        "enumeration_date": "2006-01-18",
+        "first_name": "GEORGE",
+        "last_name": "SPENCER",
+        "last_updated": "2024-07-25",
+        "middle_name": "MICHAEL",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1137609997000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "007207018",
+          "issuer": null,
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "061300",
+          "issuer": "DRI BC",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "180735",
+          "issuer": "DDIC BC",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "790557K",
+          "issuer": "DRI NC MCD",
+          "state": "VA"
+        }
+      ],
+      "last_updated_epoch": "1721931445000",
+      "number": "1184604068",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "142 S MAIN ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DANVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "434-792-3925",
+          "postal_code": "245412922",
+          "state": "VA",
+          "telephone_number": "434-799-4200"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "0101052363",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

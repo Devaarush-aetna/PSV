@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "841 CORPORATE DR",
+          "address_2": "SUITE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-554-5620",
+          "postal_code": "405035421",
+          "state": "KY",
+          "telephone_number": "859-554-5620"
+        },
+        {
+          "address_1": "841 CORPORATE DR",
+          "address_2": "SUITE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-554-5620",
+          "postal_code": "405035421",
+          "state": "KY",
+          "telephone_number": "859-554-5620"
+        }
+      ],
+      "basic": {
+        "credential": "lcsw",
+        "enumeration_date": "2010-09-18",
+        "first_name": "RONALD",
+        "last_name": "SWITZER",
+        "last_updated": "2010-09-18",
+        "middle_name": "CLARK",
+        "name_prefix": "Mr.",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1284839917000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1284839917000",
+      "number": "1063720530",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "3198",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

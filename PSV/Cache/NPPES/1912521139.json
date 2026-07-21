@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "200 W DOUGLAS AVE STE 1040",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-684-3326",
+          "postal_code": "672023017",
+          "state": "KS",
+          "telephone_number": "316-263-0003"
+        },
+        {
+          "address_1": "7111 E 21ST ST N STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "316-269-1588",
+          "postal_code": "672061090",
+          "state": "KS",
+          "telephone_number": "316-269-1311"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-18",
+        "credential": "DPT",
+        "enumeration_date": "2020-06-03",
+        "first_name": "DYLAN",
+        "last_name": "REIMER",
+        "last_updated": "2026-03-18",
+        "middle_name": "J",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1591193494000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1773826713000",
+      "number": "1912521139",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

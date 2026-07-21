@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 358372",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GAINESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-331-8341",
+          "postal_code": "326358372",
+          "state": "FL",
+          "telephone_number": "352-281-8526"
+        },
+        {
+          "address_1": "1601 SW ARCHER RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GAINESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-331-8341",
+          "postal_code": "326081135",
+          "state": "FL",
+          "telephone_number": "352-281-8526"
+        }
+      ],
+      "basic": {
+        "credential": "Ph.D.",
+        "enumeration_date": "2006-06-10",
+        "first_name": "KHALIL",
+        "last_name": "SAKALLA",
+        "last_updated": "2007-07-08",
+        "middle_name": "A",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1149991624000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1811939515",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "PY7142",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

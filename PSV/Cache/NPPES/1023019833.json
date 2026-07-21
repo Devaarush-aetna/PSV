@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3301 SW 34TH CIR STE 101",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-861-1119",
+          "postal_code": "344746619",
+          "state": "FL",
+          "telephone_number": "352-861-0100"
+        },
+        {
+          "address_1": "3301 SW 34TH CIR STE 101",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-861-1119",
+          "postal_code": "344746619",
+          "state": "FL",
+          "telephone_number": "352-861-0100"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-19",
+        "credential": "M.D.",
+        "enumeration_date": "2005-08-02",
+        "first_name": "JUAN",
+        "last_name": "BUSTILLO",
+        "last_updated": "2026-02-19",
+        "middle_name": "C",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1123012964000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771527500000",
+      "number": "1023019833",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "332900000X",
+          "desc": "Non-Pharmacy Dispensing Site",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RR0500X",
+          "desc": "Internal Medicine, Rheumatology",
+          "license": "ME69798",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

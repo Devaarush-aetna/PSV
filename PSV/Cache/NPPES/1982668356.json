@@ -1,0 +1,95 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "404 LEXINGTON RD",
+          "address_2": "SUITE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VERSAILLES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-873-0410",
+          "postal_code": "403831626",
+          "state": "KY",
+          "telephone_number": "859-873-0410"
+        },
+        {
+          "address_1": "404 LEXINGTON RD",
+          "address_2": "SUITE 102",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VERSAILLES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-873-0410",
+          "postal_code": "403831626",
+          "state": "KY",
+          "telephone_number": "859-873-0410"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2006-04-13",
+        "first_name": "SCOTT",
+        "last_name": "GRALHEER",
+        "last_updated": "2013-06-24",
+        "middle_name": "A.",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1144951015000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000075032",
+          "issuer": "Blue Cross & Blue Shield",
+          "state": "KS"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "2037",
+          "issuer": "CHA Health",
+          "state": "KY"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "44-00087",
+          "issuer": "United Healthcare",
+          "state": "KY"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "607551",
+          "issuer": "ACN",
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1372076219000",
+      "number": "1982668356",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "3874",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9000 LAS VEGAS BLVD S UNIT 1286",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891233376",
+          "state": "NV",
+          "telephone_number": "727-348-2719"
+        },
+        {
+          "address_1": "9488 W FLAMINGO RD STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891475717",
+          "state": "NV",
+          "telephone_number": "727-348-2719"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-02-23",
+        "enumeration_date": "2021-02-23",
+        "first_name": "NICHOLAS",
+        "last_name": "ANGELONE",
+        "last_updated": "2021-02-23",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1614123781000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1614123781000",
+      "number": "1811581564",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "3151",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

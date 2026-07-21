@@ -1,0 +1,90 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2470 LONGSTONE LN STE K",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MARRIOTTSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-442-2476",
+          "postal_code": "211041515",
+          "state": "MD",
+          "telephone_number": "410-442-2470"
+        },
+        {
+          "address_1": "7116 TULIP CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ELDERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217845960",
+          "state": "MD",
+          "telephone_number": "443-271-6299"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-04-20",
+        "credential": "P.T.",
+        "enumeration_date": "2006-10-18",
+        "first_name": "JEFFREY",
+        "last_name": "TOROCKIO",
+        "last_updated": "2021-04-20",
+        "middle_name": "ALAN",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1161223751000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1618935567000",
+      "number": "1164503546",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "10030 BALTIMORE NATIONAL PIKE STE D180",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELLICOTT CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210423686",
+          "state": "MD",
+          "telephone_number": "410-644-1880"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2251X0800X",
+          "desc": "Physical Therapist, Orthopedic",
+          "license": "17480",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "17480",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2251S0007X",
+          "desc": "Physical Therapist, Sports",
+          "license": "17480",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

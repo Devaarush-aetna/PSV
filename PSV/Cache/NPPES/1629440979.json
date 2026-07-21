@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3795 HILTON AVE SE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOWELL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "493319527",
+          "state": "MI",
+          "telephone_number": "616-901-9507"
+        },
+        {
+          "address_1": "3795 HILTON AVE SE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOWELL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "493319527",
+          "state": "MI",
+          "telephone_number": "616-901-9507"
+        }
+      ],
+      "basic": {
+        "credential": "PhD, DLLP",
+        "enumeration_date": "2015-10-27",
+        "first_name": "URMINDA",
+        "last_name": "FIRLAN",
+        "last_updated": "2015-10-27",
+        "middle_name": "SUE",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1445953847000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1445953847000",
+      "number": "1629440979",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "6301016514",
+          "primary": true,
+          "state": "MI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1115 20TH ST",
+          "address_2": "SUITE 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "257032071",
+          "state": "WV",
+          "telephone_number": "304-691-1500"
+        },
+        {
+          "address_1": "1115 20TH ST",
+          "address_2": "SUITE 205",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "257032071",
+          "state": "WV",
+          "telephone_number": "304-691-1500"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-03-23",
+        "enumeration_date": "2011-07-11",
+        "first_name": "ALLISSA",
+        "last_name": "CAUDILL",
+        "last_updated": "2023-03-23",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1310398772000",
+      "endpoints": [
+        {
+          "address_1": "1600 Medical Center Dr Ste 3500",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Huntington",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "allissa.caudill@marshall.cernerdirect.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "257013655",
+          "state": "WV",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1679598617000",
+      "number": "1548558695",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "129215",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "1141",
+          "primary": true,
+          "state": "WV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

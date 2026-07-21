@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "154 PAUL JONES LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RUSSELL SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-235-6515",
+          "postal_code": "426429358",
+          "state": "KY",
+          "telephone_number": "606-875-0518"
+        },
+        {
+          "address_1": "154 PAUL JONES LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RUSSELL SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "426429358",
+          "state": "KY",
+          "telephone_number": "606-875-0518"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-27",
+        "credential": "Pharm.D.",
+        "enumeration_date": "2013-12-03",
+        "first_name": "JAMES",
+        "last_name": "BROWN",
+        "last_updated": "2025-06-27",
+        "middle_name": "BAXTER",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1386086061000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751038678000",
+      "number": "1871924712",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1835N1003X",
+          "desc": "Pharmacist, Nutrition Support",
+          "license": "008423",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "494 HUB BLVD APT 2924",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "421038947",
+          "state": "KY",
+          "telephone_number": "606-521-5393"
+        },
+        {
+          "address_1": "421 US 31W BYP",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-793-5688",
+          "postal_code": "421011775",
+          "state": "KY",
+          "telephone_number": "270-782-0151"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-28",
+        "credential": "DO",
+        "enumeration_date": "2018-03-30",
+        "first_name": "BRANDON",
+        "last_name": "NANCE",
+        "last_updated": "2025-05-28",
+        "middle_name": "KEITH",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1522445455000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1748483464000",
+      "number": "1134625148",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "05260",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0200X",
+          "desc": "Internal Medicine, Critical Care Medicine",
+          "license": "05260",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RP1001X",
+          "desc": "Internal Medicine, Pulmonary Disease",
+          "license": "05260",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1233 W ADAMS ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "606072801",
+          "state": "IL",
+          "telephone_number": "312-243-8487"
+        },
+        {
+          "address_1": "1233 W ADAMS ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "606072801",
+          "state": "IL",
+          "telephone_number": "312-243-8487"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-19",
+        "enumeration_date": "2020-08-31",
+        "first_name": "JESSICA",
+        "last_name": "ROTH",
+        "last_updated": "2025-08-19",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1598909093000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1755624751000",
+      "number": "1851905632",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "10435 DOWNSVILLE PIKE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAGERSTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217401732",
+          "state": "MD",
+          "telephone_number": "301-766-2800"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

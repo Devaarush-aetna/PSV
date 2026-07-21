@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7707 PRESTON HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-962-1001",
+          "postal_code": "402193138",
+          "state": "KY",
+          "telephone_number": "502-962-2277"
+        },
+        {
+          "address_1": "7200 W 141ST ST APT 2501",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662233978",
+          "state": "KS",
+          "telephone_number": "231-409-1555"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-12-01",
+        "credential": "DC",
+        "enumeration_date": "2019-05-06",
+        "first_name": "JACK",
+        "last_name": "GALLAGHER",
+        "last_updated": "2020-12-01",
+        "middle_name": "EDWARD",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1557161668000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1606848802000",
+      "number": "1023673068",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "263347",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

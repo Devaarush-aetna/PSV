@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8501 SPLENDID PT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402295522",
+          "state": "KY",
+          "telephone_number": "502-693-4126"
+        },
+        {
+          "address_1": "3900 KRESGE WAY STE 42",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402074681",
+          "state": "KY",
+          "telephone_number": "502-899-3858"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-14",
+        "enumeration_date": "2025-03-14",
+        "first_name": "ALYSSA",
+        "last_name": "SMITH",
+        "last_updated": "2025-03-14",
+        "middle_name": "NICOLE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1741979404000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1741979404000",
+      "number": "1033919519",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "4035999",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7495 W AZURE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891304416",
+          "state": "NV",
+          "telephone_number": "702-608-7290"
+        },
+        {
+          "address_1": "8414 FARM RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-522-6075",
+          "postal_code": "891318170",
+          "state": "NV",
+          "telephone_number": "702-608-7290"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-10-04",
+        "enumeration_date": "2017-08-09",
+        "first_name": "LEAH",
+        "last_name": "GARDNER",
+        "last_updated": "2021-10-04",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1502306223000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1633371782000",
+      "number": "1891210977",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7473 W LAKE MEAD BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-522-6075",
+          "postal_code": "891280265",
+          "state": "NV",
+          "telephone_number": "702-608-7290"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "106S00000X",
+          "desc": "Behavior Technician",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

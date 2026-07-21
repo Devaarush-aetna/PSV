@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2405 ROSSINI PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405094533",
+          "state": "KY",
+          "telephone_number": "859-466-8956"
+        },
+        {
+          "address_1": "234 BRENWOOD ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BEREA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "404031637",
+          "state": "KY",
+          "telephone_number": "859-985-0302"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2007-07-05",
+        "first_name": "NAWAR",
+        "last_name": "SODA",
+        "last_updated": "2013-01-30",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1183671044000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1359596416000",
+      "number": "1083812598",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "41992",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

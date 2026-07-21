@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9321 CERULEAN DR APT 204",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RIVERVIEW",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335784767",
+          "state": "FL",
+          "telephone_number": "713-498-4229"
+        },
+        {
+          "address_1": "410 S WARE BLVD STE 814",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "336194456",
+          "state": "FL",
+          "telephone_number": "813-483-9989"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-02",
+        "credential": "Ph.D.",
+        "enumeration_date": "2022-06-09",
+        "first_name": "PRECIOUS",
+        "last_name": "OGU",
+        "last_updated": "2025-03-02",
+        "middle_name": "NNEDIMMA",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1654831997000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1740926452000",
+      "number": "1942939210",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103G00000X",
+          "desc": "Clinical Neuropsychologist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

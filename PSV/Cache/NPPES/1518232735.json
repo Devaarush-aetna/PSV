@@ -1,0 +1,93 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 784305",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PHILADELPHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "302-733-0854",
+          "postal_code": "191784305",
+          "state": "PA",
+          "telephone_number": "844-565-6473"
+        },
+        {
+          "address_1": "9 PARK CENTER CT STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWINGS MILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-229-5063",
+          "postal_code": "211170358",
+          "state": "MD",
+          "telephone_number": "855-527-7246"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-27",
+        "credential": "CRNA",
+        "enumeration_date": "2012-03-21",
+        "first_name": "JAMES",
+        "last_name": "HAMMOND",
+        "last_updated": "2024-08-27",
+        "middle_name": "M",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1332339334000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "88096",
+          "issuer": "AANA",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1724771701000",
+      "number": "1518232735",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1310 SOUTHERN AVE SE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "202-279-7370",
+          "postal_code": "200324623",
+          "state": "DC",
+          "telephone_number": "202-574-6851"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "R171923",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "RN1010072",
+          "primary": true,
+          "state": "DC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 850001, DEPT 8340",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ORLANDO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "855-830-1722",
+          "postal_code": "328850001",
+          "state": "FL",
+          "telephone_number": "813-536-7277"
+        },
+        {
+          "address_1": "6703 38TH AVE N",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST PETERSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-828-9639",
+          "postal_code": "337101536",
+          "state": "FL",
+          "telephone_number": "727-213-5377"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-27",
+        "credential": "ARNP",
+        "enumeration_date": "2013-11-07",
+        "first_name": "OSVALDO",
+        "last_name": "ALVAREZ",
+        "last_updated": "2025-10-27",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1383845988000",
+      "endpoints": [
+        {
+          "address_1": "6703 38th Ave N",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "St Petersburg",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "osvaldo.alvarez@mcmgfl.eclinicaldirectplus.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "337101536",
+          "state": "FL",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1761574112000",
+      "number": "1295164457",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "ARNP-9345642",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2930 W HORIZON RIDGE PKWY STE 205",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-294-7495",
+          "postal_code": "890525062",
+          "state": "NV",
+          "telephone_number": "702-294-7498"
+        },
+        {
+          "address_1": "2930 W HORIZON RIDGE PKWY STE 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-294-7495",
+          "postal_code": "890525062",
+          "state": "NV",
+          "telephone_number": "702-294-7498"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-06-23",
+        "credential": "DPT",
+        "enumeration_date": "2023-06-23",
+        "first_name": "FRANCIS",
+        "last_name": "LACAP",
+        "last_updated": "2023-06-23",
+        "middle_name": "NINO AQUINO",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1687539568000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1687539568000",
+      "number": "1831875939",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "5162",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

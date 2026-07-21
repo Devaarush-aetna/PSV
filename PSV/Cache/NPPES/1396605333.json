@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "129 W LAKE MEAD PKWY STE 8",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890157055",
+          "state": "NV",
+          "telephone_number": "702-285-8311"
+        },
+        {
+          "address_1": "129 W LAKE MEAD PKWY STE 8",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890157055",
+          "state": "NV",
+          "telephone_number": "702-285-8311"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-12",
+        "enumeration_date": "2025-11-13",
+        "first_name": "KURT VERNON",
+        "last_name": "BEATY",
+        "last_updated": "2025-11-13",
+        "middle_name": "NAGUIAT",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1763031615000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1763031615000",
+      "number": "1396605333",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "862736",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

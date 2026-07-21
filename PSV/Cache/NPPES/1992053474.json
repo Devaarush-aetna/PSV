@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1471 DEWAR DR STE 204",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCK SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-316-0228",
+          "postal_code": "829015826",
+          "state": "WY",
+          "telephone_number": "307-630-3466"
+        },
+        {
+          "address_1": "4000 DEWAR DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ROCK SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-382-6881",
+          "postal_code": "829016218",
+          "state": "WY",
+          "telephone_number": "307-382-3010"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-04-28",
+        "credential": "M.Ed.",
+        "enumeration_date": "2012-08-15",
+        "first_name": "CHRISTOPHER",
+        "last_name": "CLARK",
+        "last_updated": "2020-04-28",
+        "middle_name": "TAD",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1345055606000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1588099015000",
+      "number": "1992053474",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "LPC-1198",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "1198",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

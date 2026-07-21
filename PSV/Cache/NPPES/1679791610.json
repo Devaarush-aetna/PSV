@@ -1,0 +1,90 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1909 KY 3439",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BARBOURVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-546-3903",
+          "postal_code": "409067201",
+          "state": "KY",
+          "telephone_number": "606-546-3805"
+        },
+        {
+          "address_1": "PO BOX 550",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BARBOURVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "409060550",
+          "state": "KY",
+          "telephone_number": "606-546-3805"
+        }
+      ],
+      "basic": {
+        "credential": "LPCC-S",
+        "enumeration_date": "2007-04-23",
+        "first_name": "HOLLY",
+        "last_name": "TAYLOR-WILLIAMS",
+        "last_updated": "2019-06-04",
+        "middle_name": "RAY",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1177371780000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "30613038",
+          "issuer": null,
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1559671701000",
+      "number": "1679791610",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "69 STONY BROOK DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CORBIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "407017457",
+          "state": "KY",
+          "telephone_number": "606-344-3779"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "KY-0982",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "103008",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

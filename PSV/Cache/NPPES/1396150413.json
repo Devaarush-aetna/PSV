@@ -1,0 +1,96 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1625 NASHVILLE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RUSSELLVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "422768853",
+          "state": "KY",
+          "telephone_number": "270-725-4770"
+        },
+        {
+          "address_1": "1625 NASHVILLE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RUSSELLVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "422768853",
+          "state": "KY",
+          "telephone_number": "270-725-4770"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-07-06",
+        "credential": "D.O.",
+        "enumeration_date": "2014-06-26",
+        "first_name": "CARLTON",
+        "last_name": "LEE",
+        "last_updated": "2023-03-07",
+        "middle_name": "ALEXANDER",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1403833954000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "03889",
+          "issuer": "Kentucky Board of Medical Licensure",
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1678238276000",
+      "number": "1396150413",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "D.O.",
+          "first_name": "ZAN",
+          "last_name": "LEE",
+          "prefix": "Dr.",
+          "suffix": "--",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "03889",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "R3258",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "03889",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

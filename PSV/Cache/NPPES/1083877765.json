@@ -1,0 +1,93 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "30 STACY LANE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "IRVINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-723-0680",
+          "postal_code": "403367356",
+          "state": "KY",
+          "telephone_number": "606-723-0665"
+        },
+        {
+          "address_1": "1010 MAIN ST S",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MC KEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-287-4409",
+          "postal_code": "404477089",
+          "state": "KY",
+          "telephone_number": "606-287-7104"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2008-07-03",
+        "first_name": "DAVID",
+        "last_name": "LACHMAN",
+        "last_updated": "2019-06-26",
+        "middle_name": "COREY",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1215089696000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1561563739000",
+      "number": "1083877765",
+      "other_names": [
+        {
+          "code": "5",
+          "credential": "M.D.",
+          "first_name": "COREY",
+          "last_name": "LACHMAN",
+          "prefix": "--",
+          "suffix": "--",
+          "type": "Other Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "865 BEAVER DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DU BOIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "814-371-2922",
+          "postal_code": "158012511",
+          "state": "PA",
+          "telephone_number": "814-371-1510"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "42498",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "R1297",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

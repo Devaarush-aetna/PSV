@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3510 SUGARLOAF PKWY",
+          "address_2": "SUITE G-02",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "URBANA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "301-874-9202",
+          "postal_code": "217047910",
+          "state": "MD",
+          "telephone_number": "301-874-9200"
+        },
+        {
+          "address_1": "3510 SUGARLOAF PKWY",
+          "address_2": "SUITE G-02",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "URBANA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "301-874-9202",
+          "postal_code": "217047910",
+          "state": "MD",
+          "telephone_number": "301-874-9200"
+        }
+      ],
+      "basic": {
+        "credential": "DPT",
+        "enumeration_date": "2008-08-14",
+        "first_name": "SEAN",
+        "last_name": "DUNKER",
+        "last_updated": "2012-02-02",
+        "middle_name": "JEREMY",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1218721862000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1328209908000",
+      "number": "1083860654",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "22638",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1243 MINERAL SPRING AVE UNIT 7",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NORTH PROVIDENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "401-340-1831",
+          "postal_code": "029044636",
+          "state": "RI",
+          "telephone_number": "401-388-3899"
+        },
+        {
+          "address_1": "1243 MINERAL SPRING AVE UNIT 7",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH PROVIDENCE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "029044636",
+          "state": "RI",
+          "telephone_number": "401-388-3899"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-01-02",
+        "credential": "APRN",
+        "enumeration_date": "2020-11-24",
+        "first_name": "ELIZABETH",
+        "last_name": "DA SILVA",
+        "last_updated": "2024-01-02",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1606269366000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "15018818",
+          "issuer": "CAQH",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1704209156000",
+      "number": "1982208484",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "aprn02191",
+          "primary": true,
+          "state": "RI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

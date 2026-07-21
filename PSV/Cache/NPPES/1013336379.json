@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "26133 US HIGHWAY 19 N",
+          "address_2": "SUITE 218",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CLEARWATER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-222-3540",
+          "postal_code": "33763",
+          "state": "FL",
+          "telephone_number": "727-351-2882"
+        },
+        {
+          "address_1": "26133 US HIGHWAY 19 N",
+          "address_2": "SUITE 218",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CLEARWATER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-222-3540",
+          "postal_code": "33763",
+          "state": "FL",
+          "telephone_number": "727-351-2882"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-04-09",
+        "credential": "L.Ac.",
+        "enumeration_date": "2014-04-15",
+        "first_name": "MARK",
+        "last_name": "TAMBURRINO",
+        "last_updated": "2023-04-09",
+        "middle_name": "ROBERT",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1397539051000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1681084757000",
+      "number": "1013336379",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "AP3424",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

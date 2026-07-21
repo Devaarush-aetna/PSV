@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2 SPURS LN STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN ANTONIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "782401761",
+          "state": "TX",
+          "telephone_number": "210-558-1800"
+        },
+        {
+          "address_1": "2 SPURS LN STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN ANTONIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "782401761",
+          "state": "TX",
+          "telephone_number": "210-558-1800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-02-20",
+        "credential": "NP-C",
+        "enumeration_date": "2020-02-20",
+        "first_name": "OLUWATOBI",
+        "last_name": "SONYA",
+        "last_updated": "2020-02-20",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1582220139000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1582220139000",
+      "number": "1649803479",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1807 W SLAUGHTER LN STE 485",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "AUSTIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "787486204",
+          "state": "TX",
+          "telephone_number": "512-297-2100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "AP144284",
+          "primary": true,
+          "state": "TX",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

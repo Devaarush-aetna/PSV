@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 190584",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HAWI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "808-374-4725",
+          "postal_code": "967190541",
+          "state": "HI",
+          "telephone_number": "808-731-9006"
+        },
+        {
+          "address_1": "65-1206 MAMALAHOA HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KAMUELA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "808-374-4725",
+          "postal_code": "967437303",
+          "state": "HI",
+          "telephone_number": "808-731-9006"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-04-21",
+        "credential": "APRN",
+        "enumeration_date": "2009-04-16",
+        "first_name": "ANGIE",
+        "last_name": "STANLEY",
+        "last_updated": "2023-04-21",
+        "middle_name": "N",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1239921959000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1682113774000",
+      "number": "1275776437",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "4041",
+          "primary": true,
+          "state": "HI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

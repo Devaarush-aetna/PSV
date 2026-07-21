@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "101 MANNING DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHAPEL HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "275144220",
+          "state": "NC",
+          "telephone_number": "919-966-1072"
+        },
+        {
+          "address_1": "506 S CAMELLIA ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHAPEL HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "275168418",
+          "state": "NC",
+          "telephone_number": "901-201-0223"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2011-04-16",
+        "first_name": "LEE",
+        "last_name": "BELL",
+        "last_updated": "2016-02-25",
+        "middle_name": "DAVID",
+        "name_prefix": "Dr.",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1302988983000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1456426825000",
+      "number": "1104116730",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "2015-02447",
+          "primary": true,
+          "state": "NC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

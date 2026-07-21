@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10655 PARK RUN DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891444589",
+          "state": "NV",
+          "telephone_number": "702-301-8202"
+        },
+        {
+          "address_1": "10655 PARK RUN DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891444589",
+          "state": "NV",
+          "telephone_number": "702-301-8202"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-05-11",
+        "credential": "MFT-Intern",
+        "enumeration_date": "2022-05-11",
+        "first_name": "GARRETT",
+        "last_name": "ENGLE",
+        "last_updated": "2022-05-11",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1652290110000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1704053355",
+          "issuer": "Nevada Drivers License",
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1652290110000",
+      "number": "1821734971",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "MI4090",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "480 S ROGERS RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-780-3387",
+          "postal_code": "660621706",
+          "state": "KS",
+          "telephone_number": "913-324-3683"
+        },
+        {
+          "address_1": "480 S ROGERS RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-780-3387",
+          "postal_code": "660621706",
+          "state": "KS",
+          "telephone_number": "913-324-3683"
+        }
+      ],
+      "basic": {
+        "credential": "ATR-BC, LPC, LMFT",
+        "enumeration_date": "2006-12-06",
+        "first_name": "BRANDON",
+        "last_name": "MOCK",
+        "last_updated": "2011-09-07",
+        "middle_name": "JAMES",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1165445330000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "684",
+          "issuer": "LMFT",
+          "state": "KS"
+        }
+      ],
+      "last_updated_epoch": "1315428839000",
+      "number": "1730248626",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "2002008097",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "684",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

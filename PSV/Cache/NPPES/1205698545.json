@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9625 SW 24TH ST APT C205",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331658047",
+          "state": "FL",
+          "telephone_number": "786-683-5909"
+        },
+        {
+          "address_1": "9625 SW 24TH ST APT C205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331658047",
+          "state": "FL",
+          "telephone_number": "786-683-5909"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-01-23",
+        "enumeration_date": "2024-01-23",
+        "first_name": "STEPHANY",
+        "last_name": "GONZALEZ",
+        "last_updated": "2024-01-23",
+        "middle_name": "GISSELL",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1706041504000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1706041504000",
+      "number": "1205698545",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "6741 SW 24TH ST STE 59",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331551768",
+          "state": "FL",
+          "telephone_number": "786-622-7801"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SZ11834",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

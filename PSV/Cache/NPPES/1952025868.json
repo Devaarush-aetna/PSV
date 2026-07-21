@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "19623 W 97TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662203349",
+          "state": "KS",
+          "telephone_number": "913-322-3545"
+        },
+        {
+          "address_1": "19623 W 97TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662203349",
+          "state": "KS",
+          "telephone_number": "913-322-3545"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-10-04",
+        "enumeration_date": "2022-10-04",
+        "first_name": "KIMBERLY",
+        "last_name": "BRUNGARDT",
+        "last_updated": "2022-10-04",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1664892133000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1664892133000",
+      "number": "1952025868",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

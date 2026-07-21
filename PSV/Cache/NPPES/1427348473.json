@@ -1,0 +1,82 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2170 SOUTH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SOUTH LAKE TAHOE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "961507026",
+          "state": "CA",
+          "telephone_number": "530-541-3420"
+        },
+        {
+          "address_1": "2175 SOUTH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SOUTH LAKE TAHOE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "530-542-2872",
+          "postal_code": "961507024",
+          "state": "CA",
+          "telephone_number": "530-543-5799"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-23",
+        "enumeration_date": "2011-04-11",
+        "first_name": "KATHLEEN",
+        "last_name": "HOLOYDA",
+        "last_updated": "2025-12-23",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1302576964000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1766515992000",
+      "number": "1427348473",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "925 TAHOE BLVD STE 105",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "INCLINE VILLAGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "530-542-2872",
+          "postal_code": "894517498",
+          "state": "NV",
+          "telephone_number": "530-543-5799"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208200000X",
+          "desc": "Plastic Surgery",
+          "license": "A129448",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208200000X",
+          "desc": "Plastic Surgery",
+          "license": "21257",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

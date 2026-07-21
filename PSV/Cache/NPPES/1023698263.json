@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8122 DATAPOINT DR STE 720",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN ANTONIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "210-495-0242",
+          "postal_code": "782293479",
+          "state": "TX",
+          "telephone_number": "210-899-1026"
+        },
+        {
+          "address_1": "1314 E SONTERRA BLVD STE 302",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN ANTONIO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "782584285",
+          "state": "TX",
+          "telephone_number": "210-899-1026"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-05",
+        "enumeration_date": "2021-04-12",
+        "first_name": "MAKENZIE",
+        "last_name": "KERNS",
+        "last_updated": "2026-02-05",
+        "middle_name": "LYNN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1618257406000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770310563000",
+      "number": "1023698263",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "212 HUNTERS VLG STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEW BRAUNFELS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "781325250",
+          "state": "TX",
+          "telephone_number": "210-899-1026"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "213ES0103X",
+          "desc": "Podiatrist, Foot & Ankle Surgery",
+          "license": "692223",
+          "primary": true,
+          "state": "TX",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

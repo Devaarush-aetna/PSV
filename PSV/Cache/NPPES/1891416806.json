@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2875 CRAIN HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WALDORF",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "206012842",
+          "state": "MD",
+          "telephone_number": "301-859-3304"
+        },
+        {
+          "address_1": "13507 WILLIAM BEANES RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "UPPER MARLBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207724005",
+          "state": "MD",
+          "telephone_number": "124-059-5381"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-05-19",
+        "credential": "DPT",
+        "enumeration_date": "2022-09-07",
+        "first_name": "GRACE",
+        "last_name": "SHODIYA",
+        "last_updated": "2023-05-19",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1662594839000",
+      "endpoints": [
+        {
+          "address_1": "2875 Crain Hwy",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Waldorf",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "grace.shodiya@som.umaryland.edu",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "206012842",
+          "state": "MD",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1684522461000",
+      "number": "1891416806",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "29404",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

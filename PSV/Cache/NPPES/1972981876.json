@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6101 BLUE LAGOON DR STE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "331262051",
+          "state": "FL",
+          "telephone_number": "305-500-2000"
+        },
+        {
+          "address_1": "1648 NE 163RD ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH MIAMI BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "305-957-1166",
+          "postal_code": "331624731",
+          "state": "FL",
+          "telephone_number": "305-949-2000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-24",
+        "credential": "MD",
+        "enumeration_date": "2015-05-12",
+        "first_name": "DANIA",
+        "last_name": "GOMEZ",
+        "last_updated": "2026-02-24",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1431435066000",
+      "endpoints": [
+        {
+          "address_1": "1648 NE 163rd St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "North Miami Beach",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "dania.gomez.1@29601.direct.athenahealth.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "331624731",
+          "state": "FL",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771967774000",
+      "number": "1972981876",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208D00000X",
+          "desc": "General Practice",
+          "license": "ACN657",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

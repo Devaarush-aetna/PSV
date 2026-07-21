@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7140 SMOKE RANCH RD STE 150",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-320-8112",
+          "postal_code": "891283157",
+          "state": "NV",
+          "telephone_number": "702-320-8111"
+        },
+        {
+          "address_1": "7140 SMOKE RANCH RD STE 150",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-320-8112",
+          "postal_code": "891283157",
+          "state": "NV",
+          "telephone_number": "702-320-8111"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-04-24",
+        "credential": "CRNA",
+        "enumeration_date": "2005-08-15",
+        "first_name": "CURTIS",
+        "last_name": "BOARDMAN",
+        "last_updated": "2024-04-24",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1124146956000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "100504172",
+          "issuer": null,
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1713992431000",
+      "number": "1265424428",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "CRNA000256",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

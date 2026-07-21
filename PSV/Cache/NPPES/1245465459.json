@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3125 N BROADWAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOS ANGELES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "323-222-4614",
+          "postal_code": "900312703",
+          "state": "CA",
+          "telephone_number": "323-222-4591"
+        },
+        {
+          "address_1": "3125 N BROADWAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOS ANGELES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "323-222-4614",
+          "postal_code": "900312703",
+          "state": "CA",
+          "telephone_number": "323-222-4591"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2009-05-18",
+        "first_name": "DONN",
+        "last_name": "TAMAKI",
+        "last_updated": "2009-05-18",
+        "middle_name": "KENJI",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1242691032000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1242691032000",
+      "number": "1245465459",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

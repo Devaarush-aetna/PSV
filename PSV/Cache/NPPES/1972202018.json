@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6630 S MCCARRAN BLVD STE A6",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-828-2891",
+          "postal_code": "895096136",
+          "state": "NV",
+          "telephone_number": "775-828-2866"
+        },
+        {
+          "address_1": "1627 SUMMERWIND DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FERNLEY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "894087208",
+          "state": "NV",
+          "telephone_number": "541-589-3469"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-16",
+        "credential": "DPT",
+        "enumeration_date": "2023-02-27",
+        "first_name": "MARIA",
+        "last_name": "ROBERTSON",
+        "last_updated": "2025-01-16",
+        "middle_name": "DOMINIQUE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1677542553000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1737057431000",
+      "number": "1972202018",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": null,
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

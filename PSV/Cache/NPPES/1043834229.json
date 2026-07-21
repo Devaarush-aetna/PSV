@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6401 N FEDERAL HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333081427",
+          "state": "FL",
+          "telephone_number": "954-776-8500"
+        },
+        {
+          "address_1": "1918 N 44TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOLLYWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330214204",
+          "state": "FL"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-06-03",
+        "credential": "CRNA",
+        "enumeration_date": "2020-06-03",
+        "first_name": "KRISTEN",
+        "last_name": "HASTY",
+        "last_updated": "2020-06-03",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1591197338000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1591197338000",
+      "number": "1043834229",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "11007355",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

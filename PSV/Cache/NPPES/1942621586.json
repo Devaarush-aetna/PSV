@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "13534 JULIA MANOR WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEST FRIENDSHIP",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217949219",
+          "state": "MD"
+        },
+        {
+          "address_1": "13534 JULIA MANOR WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WEST FRIENDSHIP",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217949219",
+          "state": "MD",
+          "telephone_number": "703-926-9475"
+        }
+      ],
+      "basic": {
+        "credential": "L. Ac., M. Ac.",
+        "enumeration_date": "2013-12-29",
+        "first_name": "RIZWAN",
+        "last_name": "LAKHANI",
+        "last_updated": "2013-12-29",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1388330939000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1388330939000",
+      "number": "1942621586",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "U02109",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

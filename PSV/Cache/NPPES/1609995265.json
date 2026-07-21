@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "217 ELM TREE LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405072117",
+          "state": "KY",
+          "telephone_number": "859-257-8801"
+        },
+        {
+          "address_1": "217 ELM TREE LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405072117",
+          "state": "KY",
+          "telephone_number": "859-257-8801"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2007-03-28",
+        "first_name": "ATITAYA",
+        "last_name": "TRIMBLE",
+        "last_updated": "2008-08-15",
+        "middle_name": "TAHN",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1175085557000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1218808555000",
+      "number": "1609995265",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "ATITAYA",
+          "last_name": "VEERASETHAKUL",
+          "prefix": "Miss",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "57010610",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

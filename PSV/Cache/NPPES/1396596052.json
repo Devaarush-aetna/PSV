@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7373 PEAK DR STE 130",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "725-780-4339",
+          "postal_code": "891289004",
+          "state": "NV",
+          "telephone_number": "725-780-4351"
+        },
+        {
+          "address_1": "601 EL LORO ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891386031",
+          "state": "NV",
+          "telephone_number": "702-465-3823"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-06",
+        "credential": "FNP",
+        "enumeration_date": "2024-04-01",
+        "first_name": "BHEN",
+        "last_name": "NASOL",
+        "last_updated": "2025-05-06",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1711965928000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1746509865000",
+      "number": "1396596052",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "868850",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

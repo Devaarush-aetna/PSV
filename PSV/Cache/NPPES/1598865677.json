@@ -1,0 +1,127 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "23 WILLOW DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "AUXIER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "416029259",
+          "state": "KY",
+          "telephone_number": "606-886-8997"
+        },
+        {
+          "address_1": "1709 KY ROUTE 321 STE 3",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PRESTONSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-886-8548",
+          "postal_code": "416539097",
+          "state": "KY",
+          "telephone_number": "606-886-8546"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-09-11",
+        "credential": "D.O.",
+        "enumeration_date": "2006-09-25",
+        "first_name": "ROBERT",
+        "last_name": "BURGETT",
+        "last_updated": "2024-09-11",
+        "middle_name": "BEN",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1159218067000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "85001683",
+          "issuer": null,
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1726066728000",
+      "number": "1598865677",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "184 S MAYO TRL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PIKEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "415011518",
+          "state": "KY",
+          "telephone_number": "606-218-3985"
+        },
+        {
+          "address_1": "246 KY ROUTE 979",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAROLD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "416359046",
+          "state": "KY",
+          "telephone_number": "606-637-6377"
+        },
+        {
+          "address_1": "450 S MAYO TRL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PAINTSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "412401220",
+          "state": "KY",
+          "telephone_number": "606-887-6145"
+        },
+        {
+          "address_1": "940 PARKWAY DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SALYERSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "414659251",
+          "state": "KY",
+          "telephone_number": "606-349-5126"
+        },
+        {
+          "address_1": "50 WEDDINGTON BRANCH RD STE B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PIKEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "415013296",
+          "state": "KY",
+          "telephone_number": "606-637-6377"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "04475",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1301 BERTHA HOWE AVE STE 1",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MESQUITE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890277503",
+          "state": "NV"
+        },
+        {
+          "address_1": "1925 WHIPPLE AVE STE 30",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOGANDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890219934",
+          "state": "NV",
+          "telephone_number": "702-398-3621"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-08",
+        "credential": "PA-C",
+        "enumeration_date": "2025-07-07",
+        "first_name": "WADE",
+        "last_name": "LEAVITT",
+        "last_updated": "2025-10-08",
+        "middle_name": "KARL",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1751898904000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759944729000",
+      "number": "1801786454",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA0751",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA3249",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

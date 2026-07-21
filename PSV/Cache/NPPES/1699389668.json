@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1726 WHITEHEAD RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WOODLAWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212074003",
+          "state": "MD",
+          "telephone_number": "410-265-8737"
+        },
+        {
+          "address_1": "2 TOPAZ CT APT 2D",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ROSEDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212371246",
+          "state": "MD",
+          "telephone_number": "443-680-5879"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-12-06",
+        "enumeration_date": "2020-09-07",
+        "first_name": "KYLIE",
+        "last_name": "HALL",
+        "last_updated": "2022-12-06",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1599496184000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1670340157000",
+      "number": "1699389668",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "LGP7784",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "LC10931",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

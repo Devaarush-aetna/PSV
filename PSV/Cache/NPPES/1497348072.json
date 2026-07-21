@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "265 HIGHWAY 15 S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-666-9371",
+          "postal_code": "413397370",
+          "state": "KY",
+          "telephone_number": "606-666-5519"
+        },
+        {
+          "address_1": "377 SNOWDEN BRANCH RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "413397496",
+          "state": "KY",
+          "telephone_number": "606-548-1953"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-02-16",
+        "enumeration_date": "2021-02-16",
+        "first_name": "EVERETT",
+        "last_name": "DUNAWAY",
+        "last_updated": "2021-02-16",
+        "middle_name": "LANE",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1613480783000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1613480783000",
+      "number": "1497348072",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1835P2201X",
+          "desc": "Pharmacist, Ambulatory Care",
+          "license": "10619",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

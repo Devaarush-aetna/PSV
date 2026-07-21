@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6630 S MCCARRAN BLVD",
+          "address_2": "STE B16",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-323-5667",
+          "postal_code": "895096136",
+          "state": "NV",
+          "telephone_number": "775-323-5566"
+        },
+        {
+          "address_1": "6630 S MCCARRAN BLVD STE B16",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895096136",
+          "state": "NV",
+          "telephone_number": "775-323-5566"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-10-08",
+        "credential": "Au.D.",
+        "enumeration_date": "2013-06-10",
+        "first_name": "CHELSEA",
+        "last_name": "PETERSON",
+        "last_updated": "2020-10-08",
+        "middle_name": "CATHLEEN",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1370887691000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1602179516000",
+      "number": "1205274404",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "CHELSEA",
+          "last_name": "COMEAUX",
+          "middle_name": "CATHLEEN",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "231HA2400X",
+          "desc": "Audiologist, Assistive Technology Practitioner",
+          "license": "A-1572",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

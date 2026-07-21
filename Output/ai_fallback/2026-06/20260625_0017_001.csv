@@ -1,4 +1,0 @@
-master_row_id,lic_state,prov_type,first_name,last_name,license_id,outcome,reason,turns_used,tools_used,chosen_source_id,chosen_license,drift_count
-row_0004_Corcoran_257995,KY,SW,Kelsi,Corcoran,257995,gave_up,name_mismatch,4,"inspect_evidence,inspect_evidence,inspect_evidence,try_search,try_search,try_search,give_up",,,0
-row_0005_Brainard_010231,KY,PM,Jay,Brainard,010231,gave_up,give_up:KY_MULTIBOARD portal does not include the Kentucky Board of Pharmacy — pharmacist license 010231 for Jay Brainard (prov_type=PM) cannot be verified through this source. A drift report has been filed to add the KY Board of Pharmacy as a separate source.,4,"inspect_evidence,try_search,inspect_evidence,try_search,report_site_drift,give_up",,,1
-row_0002_Berumen-Oseguera_L-30360,MD,LC,Susana,Berumen-Oseguera,L-30360,gave_up,license_mismatch,2,"inspect_evidence,inspect_evidence,give_up",,,0

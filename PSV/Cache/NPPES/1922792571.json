@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6914 HOLABIRD AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DUNDALK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212221747",
+          "state": "MD",
+          "telephone_number": "410-284-5441"
+        },
+        {
+          "address_1": "23 CROSSROADS DR STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWINGS MILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-998-9155",
+          "postal_code": "211175443",
+          "state": "MD",
+          "telephone_number": "410-998-9133"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-06-06",
+        "credential": "DPT",
+        "enumeration_date": "2023-06-06",
+        "first_name": "YISRAEL",
+        "last_name": "LEVINE",
+        "last_updated": "2023-06-06",
+        "middle_name": "NACHUM",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1686093048000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1686093048000",
+      "number": "1922792571",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "29352",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

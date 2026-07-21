@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2545 NORTH CANYON ROAD",
+          "address_2": "#100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PROVO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-373-4008",
+          "postal_code": "84057",
+          "state": "UT",
+          "telephone_number": "801-373-1108"
+        },
+        {
+          "address_1": "3201 S MARYLAND PKWY",
+          "address_2": "STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-373-4008",
+          "postal_code": "891092425",
+          "state": "NV",
+          "telephone_number": "801-373-1108"
+        }
+      ],
+      "basic": {
+        "credential": "MS",
+        "enumeration_date": "2006-08-31",
+        "first_name": "GARY",
+        "last_name": "DANIELS",
+        "last_updated": "2016-08-15",
+        "middle_name": "CHAD",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1157058403000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1471284577000",
+      "number": "1518079235",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "5293696-4101",
+          "primary": true,
+          "state": "UT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

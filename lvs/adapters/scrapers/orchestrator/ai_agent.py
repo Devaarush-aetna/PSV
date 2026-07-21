@@ -35,6 +35,7 @@ from . import trace as trace_mod
 from .nppes_client import NppesRecord, NpiDiscrepancy
 from .trace import (
     AttemptRecord, RowTrace,
+    OUTCOME_AI_BOARD_HIT, OUTCOME_MATCH_EXACT, OUTCOME_NO_RECORDS,
     REASON_AI_CIRCUIT_BREAKER_OPEN, REASON_AI_GAVE_UP,
     REASON_AI_MAX_TURNS_EXCEEDED, REASON_AI_TOOL_ERROR,
     make_signature, normalize_query_value,
@@ -413,7 +414,7 @@ async def run_ai_agent(
                 "content": json.dumps(tool_result, default=str)[:4000],
             })
 
-            if name in ("pick_candidate", "give_up"):
+            if name in ("pick_candidate", "give_up") or result.outcome == "resolved":
                 terminated = True
                 break
 
@@ -525,17 +526,37 @@ async def _dispatch_tool(
             records = await executor(cfg_obj, sq, trace.run_id)
         except Exception as exc:
             return {"ok": False, "error": str(exc)[:200]}
-        from .trace import AttemptRecord, OUTCOME_NO_RECORDS, OUTCOME_MATCH_EXACT
         seq = len(trace.attempts) + 1
         attempt = AttemptRecord(
             seq=seq, source_id=sid, board_url=cfg_obj.identity.base_url,
             mode=mode, query_repr=sq.query[:80], query_signature=sig,
             used_npi_data=False, record_count=len(records),
-            outcome=OUTCOME_MATCH_EXACT if records else OUTCOME_NO_RECORDS,
+            outcome=OUTCOME_AI_BOARD_HIT if records else OUTCOME_NO_RECORDS,
             evidence_dir="",
         )
         trace.append(attempt)
         candidate_cache.setdefault(sid, []).extend(records or [])
+
+        # If the disambiguator selects exactly one unambiguous match, short-
+        # circuit to Pass immediately — no need for the AI to call pick_candidate.
+        if records:
+            verdict = disamb.evaluate(records, master_row)
+            if verdict.status == "selected" and verdict.best is not None:
+                attempt.outcome = OUTCOME_MATCH_EXACT
+                bd = verdict.best_breakdown
+                result.outcome = "resolved"
+                result.chosen_candidate = verdict.best
+                result.chosen_breakdown = bd
+                result.chosen_source_id = sid
+                result.reason = "ai_try_search_auto_resolved"
+                return {
+                    "ok": True,
+                    "record_count": len(records),
+                    "auto_resolved": True,
+                    "candidates": [_candidate_summary(verdict.best)],
+                    "attempt_seq": seq,
+                }
+
         return {
             "ok": True,
             "record_count": len(records or []),

@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 550",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "VANCEBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-796-6221",
+          "postal_code": "411790550",
+          "state": "KY",
+          "telephone_number": "606-796-3029"
+        },
+        {
+          "address_1": "927 KENTON STATION DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MAYSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-759-5363",
+          "postal_code": "410569617",
+          "state": "KY",
+          "telephone_number": "606-759-5331"
+        }
+      ],
+      "basic": {
+        "credential": "DO",
+        "enumeration_date": "2010-06-03",
+        "first_name": "SAMANTHA",
+        "last_name": "OLZESKI",
+        "last_updated": "2012-07-11",
+        "middle_name": "MARIE",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1275571239000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1342039804000",
+      "number": "1396065207",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "OT012643",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "58-003878",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "03487",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

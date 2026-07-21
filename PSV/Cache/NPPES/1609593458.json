@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "43 RYARBOR DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PALM COAST",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "321643416",
+          "state": "FL",
+          "telephone_number": "904-206-7701"
+        },
+        {
+          "address_1": "43 RYARBOR DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PALM COAST",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "321643416",
+          "state": "FL",
+          "telephone_number": "904-206-7701"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-09-13",
+        "credential": "PsyD",
+        "enumeration_date": "2022-10-24",
+        "first_name": "ANGELA",
+        "last_name": "RYAN",
+        "last_updated": "2023-09-13",
+        "middle_name": "PEARL",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1666609454000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1694618114000",
+      "number": "1609593458",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7301 FOREST AVE STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RICHMOND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "232263792",
+          "state": "VA",
+          "telephone_number": "804-207-6737"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "0810007948",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

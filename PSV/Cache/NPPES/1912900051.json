@@ -1,0 +1,255 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "836 E 65TH ST STE 22",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAVANNAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "314054493",
+          "state": "GA",
+          "telephone_number": "912-819-7171"
+        },
+        {
+          "address_1": "5354 REYNOLDS ST STE 422",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAVANNAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "314056011",
+          "state": "GA",
+          "telephone_number": "912-354-2634"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-04",
+        "credential": "DO",
+        "enumeration_date": "2005-05-23",
+        "first_name": "DEBRA",
+        "last_name": "LARKINS",
+        "last_updated": "2026-06-04",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1116851406000",
+      "endpoints": [
+        {
+          "address_1": "3400 E Racine St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Janesville",
+          "contentOtherDescription": "CCD",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://fhir.ssmhc.com/fhir/api/FHIR/DSTU2/",
+          "endpointType": "FHIR",
+          "endpointTypeDescription": "FHIR URL",
+          "postal_code": "535462344",
+          "state": "WI",
+          "use": "OTHER",
+          "useDescription": "Other",
+          "useOtherDescription": "FHIR API"
+        },
+        {
+          "address_1": "333 E County Line Rd",
+          "address_2": "Suite B",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "Community Physicians of Indiana Inc",
+          "city": "Greenwood",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "dlarkins6187@eCommunityDirect.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "461431046",
+          "state": "IN",
+          "useDescription": ""
+        },
+        {
+          "address_1": "3400 E Racine St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Janesville",
+          "contentOtherDescription": "dlarkins523819@direct-ehr-ssmhc.com",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "dlarkins523819@direct-ehr-ssmhc.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "535462344",
+          "state": "WI",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000647192",
+          "issuer": "Anthem",
+          "state": "IN"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000680952",
+          "issuer": "Anthem",
+          "state": "IN"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "1912900051",
+          "issuer": null,
+          "state": "WI"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "200513100",
+          "issuer": null,
+          "state": "IN"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "2357656",
+          "issuer": null,
+          "state": "WA"
+        }
+      ],
+      "last_updated_epoch": "1780560384000",
+      "number": "1912900051",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2400 S AVENUE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "YUMA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "853647127",
+          "state": "AZ",
+          "telephone_number": "928-783-3050"
+        },
+        {
+          "address_1": "400 S 43RD ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "980555714",
+          "state": "WA",
+          "telephone_number": "425-690-1000"
+        },
+        {
+          "address_1": "3400 E RACINE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JANESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "608-371-8928",
+          "postal_code": "535462344",
+          "state": "WI",
+          "telephone_number": "608-373-8000"
+        },
+        {
+          "address_1": "333 E COUNTY LINE RD",
+          "address_2": "SUITE B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GREENWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "317-497-6334",
+          "postal_code": "461431046",
+          "state": "IN",
+          "telephone_number": "317-497-6333"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "98368",
+          "primary": false,
+          "state": "GA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "C2-0024426",
+          "primary": false,
+          "state": "DE",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "OP70061294",
+          "primary": false,
+          "state": "WA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "2871",
+          "primary": false,
+          "state": "WI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "OP70061294",
+          "primary": true,
+          "state": "WA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "02002908A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "011960",
+          "primary": false,
+          "state": "AZ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "OS23553",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

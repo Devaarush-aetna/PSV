@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4216 HAMILTON AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212063624",
+          "state": "MD",
+          "telephone_number": "443-764-9345"
+        },
+        {
+          "address_1": "9627 PHILADELPHIA RD STE 160",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROSEDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212374157",
+          "state": "MD",
+          "telephone_number": "410-780-4320"
+        }
+      ],
+      "basic": {
+        "credential": "LCPC",
+        "enumeration_date": "2019-03-28",
+        "first_name": "ASHLEY",
+        "last_name": "JENIFER",
+        "last_updated": "2019-03-28",
+        "middle_name": "MEGAN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1553792211000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1553792211000",
+      "number": "1649731019",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

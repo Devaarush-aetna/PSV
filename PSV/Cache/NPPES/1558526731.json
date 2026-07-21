@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "32 MAIN ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PARK RIDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "600684060",
+          "state": "IL",
+          "telephone_number": "847-823-4444"
+        },
+        {
+          "address_1": "32 MAIN ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PARK RIDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "600684060",
+          "state": "IL",
+          "telephone_number": "847-823-4444"
+        }
+      ],
+      "basic": {
+        "credential": "Psy.D.",
+        "enumeration_date": "2008-07-27",
+        "first_name": "JAMIE",
+        "last_name": "CAVALIERO",
+        "last_updated": "2008-07-27",
+        "middle_name": "MARIE",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1217206153000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1217206153000",
+      "number": "1558526731",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "071.007440",
+          "primary": true,
+          "state": "IL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

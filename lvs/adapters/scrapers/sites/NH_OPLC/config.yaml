@@ -121,3 +121,5 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
+  skip: true
+  skip_reason: "akamai_corporate_block: forms.nh.gov returns Akamai 'Access Denied' for headless Chromium requests from corporate IP. proxy:false required (Akamai also blocks proxy). Passes intermittently / from non-corporate IPs. Confirmed 2026-07-01."

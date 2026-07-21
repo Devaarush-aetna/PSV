@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "135 N PARKE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ABERDEEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "443-625-1520",
+          "postal_code": "210012428",
+          "state": "MD",
+          "telephone_number": "443-625-1600"
+        },
+        {
+          "address_1": "135 N PARKE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ABERDEEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "443-625-1520",
+          "postal_code": "210012428",
+          "state": "MD",
+          "telephone_number": "443-625-1600"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2014-08-21",
+        "first_name": "COURTNIE",
+        "last_name": "MARVEL MASSEY",
+        "last_updated": "2018-02-12",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1408625942000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1518471807000",
+      "number": "1689073124",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "251S00000X",
+          "desc": "Community/Behavioral Health",
+          "license": "18715",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

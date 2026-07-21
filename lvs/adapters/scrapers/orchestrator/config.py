@@ -17,12 +17,14 @@ TRACE_ROOT: Path = OUTPUT_ROOT / "_traces"
 DRIFT_ROOT: Path = OUTPUT_ROOT / "_drift"
 NPPES_CACHE_ROOT: Path = PROJECT_ROOT / "PSV" / "Cache" / "NPPES"
 
-# Channel subfolders (year/month-partitioned at write time)
-STANDARD_DIR: Path = OUTPUT_ROOT / "standard"
-NPPES_DIR: Path = OUTPUT_ROOT / "nppes"
-AI_FALLBACK_DIR: Path = OUTPUT_ROOT / "ai_fallback"
-MANUAL_DIR: Path = OUTPUT_ROOT / "manual"
-ADD_LICENSE_DIR: Path = OUTPUT_ROOT / "add_license"
+# Channel folder names (nested under Output/{YYYYMM}/ at write time)
+_CH_STANDARD    = "Standard"
+_CH_NPPES       = "NPPES"
+_CH_AI_FALLBACK = "AIFallback"
+_CH_MANUAL      = "Manual"
+_CH_ADD_LICENSE = "AddLicense"
+_CH_RUN_SUMMARY = "RunSummary"
+_CH_TRACES      = "Traces"
 
 # NPPES Registry API
 NPPES_API_URL: str = "https://npiregistry.cms.hhs.gov/api/"
@@ -45,23 +47,25 @@ TELEMETRY_DB_PATH: Path = PROJECT_ROOT / "lvs" / "adapters" / "scrapers" / "lvs_
 
 
 def yyyy_mm_from_run_id(run_id: str) -> str:
-    """20260623_1402... -> 2026-06.  Falls back to current month if malformed."""
+    """20260623_1402... -> 202606.  Falls back to current month if malformed."""
     if len(run_id) >= 6 and run_id[:8].isdigit():
-        return f"{run_id[:4]}-{run_id[4:6]}"
+        return f"{run_id[:4]}{run_id[4:6]}"
     from datetime import datetime
-    return datetime.now().strftime("%Y-%m")
+    return datetime.now().strftime("%Y%m")
 
 
 def ensure_channel_dirs(run_id: str) -> dict[str, Path]:
-    """Create channel/{YYYY-MM}/ folders for this run; return them as a dict."""
+    """Create Output/{YYYYMM}/{Channel}/ folders for this run; return them as a dict."""
     ym = yyyy_mm_from_run_id(run_id)
+    base = OUTPUT_ROOT / ym
     dirs = {
-        "standard": STANDARD_DIR / ym,
-        "nppes": NPPES_DIR / ym,
-        "ai_fallback": AI_FALLBACK_DIR / ym,
-        "manual": MANUAL_DIR / ym,
-        "add_license": ADD_LICENSE_DIR / ym,
-        "trace": TRACE_ROOT / ym / run_id,
+        "standard":    base / _CH_STANDARD,
+        "nppes":       base / _CH_NPPES,
+        "ai_fallback": base / _CH_AI_FALLBACK,
+        "manual":      base / _CH_MANUAL,
+        "add_license": base / _CH_ADD_LICENSE,
+        "run_summary": base / _CH_RUN_SUMMARY,
+        "trace":       base / _CH_TRACES / run_id,
     }
     for p in dirs.values():
         p.mkdir(parents=True, exist_ok=True)

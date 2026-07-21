@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 407",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RANCHESTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "828390407",
+          "state": "WY",
+          "telephone_number": "307-209-4875"
+        },
+        {
+          "address_1": "150 GILLETTE STREET",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RANCHESTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "82839",
+          "state": "WY",
+          "telephone_number": "307-209-4875"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "LPC, LCPC",
+        "authorized_official_first_name": "KERI",
+        "authorized_official_last_name": "BRAUNBERGER",
+        "authorized_official_telephone_number": "3072094875",
+        "authorized_official_title_or_position": "Owner",
+        "certification_date": "2025-05-09",
+        "enumeration_date": "2025-03-06",
+        "last_updated": "2025-05-21",
+        "organization_name": "COMPASS COUNSELING AND CONSULTING LLC",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1741293302000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1747837112000",
+      "number": "1912705674",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

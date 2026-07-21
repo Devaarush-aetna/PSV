@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "25241 ELEMENTARY WAY STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BONITA SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-947-4171",
+          "postal_code": "341357883",
+          "state": "FL",
+          "telephone_number": "239-947-4184"
+        },
+        {
+          "address_1": "16251 N CLEVELAND AVE STE 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-731-6555",
+          "postal_code": "339032176",
+          "state": "FL",
+          "telephone_number": "239-731-6222"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-12-05",
+        "credential": "DPT",
+        "enumeration_date": "2024-12-05",
+        "first_name": "TYLER",
+        "last_name": "PHAN",
+        "last_updated": "2024-12-05",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1733423105000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1733423105000",
+      "number": "1700692613",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": null,
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

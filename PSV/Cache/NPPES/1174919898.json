@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8383 N DAVIS HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PENSACOLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "32514",
+          "state": "FL",
+          "telephone_number": "850-494-3212"
+        },
+        {
+          "address_1": "8383 N DAVIS HWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PENSACOLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "325146039",
+          "state": "FL",
+          "telephone_number": "850-494-3212"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2015-04-09",
+        "first_name": "JULIO",
+        "last_name": "CRUZ",
+        "last_updated": "2018-07-05",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1428591974000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1530806359000",
+      "number": "1174919898",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "me136368",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

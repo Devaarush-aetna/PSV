@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1534 CARSWELL ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212184903",
+          "state": "MD",
+          "telephone_number": "718-600-1732"
+        },
+        {
+          "address_1": "1534 CARSWELL ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "212184903",
+          "state": "MD",
+          "telephone_number": "718-600-1732"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "BCBA",
+        "authorized_official_first_name": "GINA",
+        "authorized_official_last_name": "HENRIQUES",
+        "authorized_official_middle_name": "NICKISHA",
+        "authorized_official_telephone_number": "7186001732",
+        "authorized_official_title_or_position": "Owner",
+        "certification_date": "2024-11-14",
+        "enumeration_date": "2024-11-14",
+        "last_updated": "2024-11-14",
+        "organization_name": "CULTURAL AUTISM LEARNING & MOTIVATION (CALM)",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1731604507000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1731604507000",
+      "number": "1386468478",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

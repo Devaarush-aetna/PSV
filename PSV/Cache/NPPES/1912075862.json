@@ -1,0 +1,148 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4201 W MEDICAL CENTER DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MCHENRY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "815-759-4008",
+          "postal_code": "600508409",
+          "state": "IL",
+          "telephone_number": "815-334-5566"
+        },
+        {
+          "address_1": "4201 W MEDICAL CENTER DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MCHENRY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "815-759-4008",
+          "postal_code": "600508409",
+          "state": "IL",
+          "telephone_number": "815-334-5566"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-30",
+        "credential": "MD",
+        "enumeration_date": "2006-11-30",
+        "first_name": "LAURIE",
+        "last_name": "VEILLEUX",
+        "last_updated": "2026-04-30",
+        "middle_name": "W",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1164923272000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "126135100",
+          "issuer": null,
+          "state": "FL"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "3075111",
+          "issuer": null,
+          "state": "NH"
+        }
+      ],
+      "last_updated_epoch": "1777554317000",
+      "number": "1912075862",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2300 SOUTHWOOD DR",
+          "address_2": "DH - RADIOLOGY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NASHUA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "030631818",
+          "state": "NH",
+          "telephone_number": "603-577-4000"
+        },
+        {
+          "address_1": "1700 OLD GATESBURG RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "STATE COLLEGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "814-231-7098",
+          "postal_code": "168032276",
+          "state": "PA",
+          "telephone_number": "814-278-3280"
+        },
+        {
+          "address_1": "1800 E PARK AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "STATE COLLEGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "814-231-7098",
+          "postal_code": "168036701",
+          "state": "PA",
+          "telephone_number": "814-231-7000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2085B0100X",
+          "desc": "Radiology, Body Imaging",
+          "license": "14212",
+          "primary": false,
+          "state": "NH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "ME160191",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085B0100X",
+          "desc": "Radiology, Body Imaging",
+          "license": "EC-05-165",
+          "primary": false,
+          "state": "ME",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "MD487239",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085B0100X",
+          "desc": "Radiology, Body Imaging",
+          "license": "2085B0100X",
+          "primary": true,
+          "state": "IL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

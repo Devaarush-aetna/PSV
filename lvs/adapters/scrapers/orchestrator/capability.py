@@ -86,10 +86,10 @@ def applicable_modes(config: SiteConfig, master_row: dict) -> list[str]:
 
 
 def is_combo_mode(mode: str) -> bool:
-    return mode in COMBO_MODES or mode == "license_numeric_only"
+    return mode in COMBO_MODES or mode in ("license_numeric_only", "license_formatted")
 
 
 def license_modes() -> Iterable[str]:
     """Iterate over modes that are 'license-based' for the dual-profile
     disambiguator (used to decide whether name_only profile applies)."""
-    return ("license_number", "license_numeric_only")
+    return ("license_number", "license_numeric_only", "license_formatted")

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1718 SHARKEY WAY STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405112028",
+          "state": "KY",
+          "telephone_number": "859-490-9611"
+        },
+        {
+          "address_1": "1718 SHARKEY WAY STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405112028",
+          "state": "KY",
+          "telephone_number": "727-479-4887"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-30",
+        "credential": "PMHNP",
+        "enumeration_date": "2025-05-27",
+        "first_name": "JAZMENE",
+        "last_name": "LANDING",
+        "last_updated": "2025-05-30",
+        "middle_name": "DESHA",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1748389803000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1748653536000",
+      "number": "1083407449",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "4033698",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

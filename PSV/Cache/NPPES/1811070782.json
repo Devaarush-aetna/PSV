@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6141 BRAET RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WESTERVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "430818062",
+          "state": "OH",
+          "telephone_number": "307-338-0274"
+        },
+        {
+          "address_1": "6141 BRAET RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WESTERVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "430818062",
+          "state": "OH",
+          "telephone_number": "307-338-0274"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-19",
+        "credential": "LPCC-S",
+        "enumeration_date": "2006-10-23",
+        "first_name": "CHARLES",
+        "last_name": "JUNKIN",
+        "last_updated": "2026-03-19",
+        "middle_name": "E",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1161622111000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1773953316000",
+      "number": "1811070782",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "E.1800877",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "901 WATERSIDE LN APT 107",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CELEBRATION",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "347474870",
+          "state": "FL",
+          "telephone_number": "407-566-8847"
+        },
+        {
+          "address_1": "335 W OAK ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KISSIMMEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "407-846-9942",
+          "postal_code": "347414421",
+          "state": "FL",
+          "telephone_number": "407-870-1959"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2006-12-29",
+        "first_name": "LOUIS",
+        "last_name": "GRASSO",
+        "last_updated": "2007-07-08",
+        "middle_name": "ANTHONY",
+        "name_prefix": "Dr.",
+        "name_suffix": "IV",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1167426674000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1700942059",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "ch9277",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

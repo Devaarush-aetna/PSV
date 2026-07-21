@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "110 HOSPITAL LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "AFTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "831109409",
+          "state": "WY"
+        },
+        {
+          "address_1": "110 HOSPITAL LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "AFTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "831109409",
+          "state": "WY",
+          "telephone_number": "307-885-5852"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2006-12-14",
+        "first_name": "JONAH",
+        "last_name": "GREEN",
+        "last_updated": "2016-07-14",
+        "middle_name": "JESS",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1166114512000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1468522391000",
+      "number": "1013079524",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "9859A",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

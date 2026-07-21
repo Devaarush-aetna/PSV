@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8850 COLUMBIA 100 PKWY",
+          "address_2": "203",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "443-546-4473",
+          "postal_code": "210452374",
+          "state": "MD",
+          "telephone_number": "443-546-4476"
+        },
+        {
+          "address_1": "8850 COLUMBIA 100 PKWY",
+          "address_2": "203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "443-546-4473",
+          "postal_code": "210452374",
+          "state": "MD",
+          "telephone_number": "443-546-4476"
+        }
+      ],
+      "basic": {
+        "credential": "LCSW-C",
+        "enumeration_date": "2007-11-12",
+        "first_name": "SHERYL",
+        "last_name": "JEFFERSON",
+        "last_updated": "2012-06-11",
+        "middle_name": "DENISE",
+        "name_prefix": "Ms.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1194879417000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "407958200",
+          "issuer": null,
+          "state": "MD"
+        }
+      ],
+      "last_updated_epoch": "1339447416000",
+      "number": "1811177488",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "11957",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

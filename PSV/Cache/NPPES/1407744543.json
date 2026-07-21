@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "111 E KENTUCKY ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-515-3325",
+          "postal_code": "402032793",
+          "state": "KY",
+          "telephone_number": "502-584-3573"
+        },
+        {
+          "address_1": "117 E KENTUCKY ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-515-3325",
+          "postal_code": "402032793",
+          "state": "KY",
+          "telephone_number": "502-584-3573"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-26",
+        "credential": "Au.D CCC-A",
+        "enumeration_date": "2025-06-26",
+        "first_name": "MICHELE",
+        "last_name": "TISDALE",
+        "last_updated": "2025-06-26",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1750962902000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750962902000",
+      "number": "1407744543",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "300505",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

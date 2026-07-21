@@ -1,0 +1,108 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "903 S ADAMS ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RITZVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "991692227",
+          "state": "WA",
+          "telephone_number": "509-659-1200"
+        },
+        {
+          "address_1": "903 S ADAMS ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RITZVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "991692227",
+          "state": "WA",
+          "telephone_number": "509-659-1200"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-05",
+        "credential": "CRNA, DNAP",
+        "enumeration_date": "2017-05-10",
+        "first_name": "TRENT",
+        "last_name": "BLACKWILL",
+        "last_updated": "2026-02-05",
+        "middle_name": "COLIN",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1494473781000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "14033145",
+          "issuer": "CAQH",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1770322677000",
+      "number": "1922534056",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3550 S 4TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEAVENWORTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660485071",
+          "state": "KS",
+          "telephone_number": "913-596-3940"
+        },
+        {
+          "address_1": "3550 S 4TH ST STE 115",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEAVENWORTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660485061",
+          "state": "KS",
+          "telephone_number": "913-596-3940"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "13119182",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "43-557501-011",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "AP61555786",
+          "primary": true,
+          "state": "WA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

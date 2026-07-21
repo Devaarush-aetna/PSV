@@ -1,0 +1,156 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1800 GLENSIDE DR STE 105",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RICHMOND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "804-285-0088",
+          "postal_code": "232263769",
+          "state": "VA",
+          "telephone_number": "804-288-0399"
+        },
+        {
+          "address_1": "1800 GLENSIDE DR STE 105",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RICHMOND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "804-285-0088",
+          "postal_code": "232263769",
+          "state": "VA",
+          "telephone_number": "804-288-0399"
+        }
+      ],
+      "basic": {
+        "authorized_official_first_name": "ERIKA",
+        "authorized_official_last_name": "PARRISH",
+        "authorized_official_name_prefix": "Ms.",
+        "authorized_official_name_suffix": "--",
+        "authorized_official_telephone_number": "8042880399",
+        "authorized_official_title_or_position": "Billing Administrator",
+        "enumeration_date": "2007-07-31",
+        "last_updated": "2011-09-15",
+        "organization_name": "COMMONWEALTH PRIMARY CARE",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1185908115000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1141467",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "141464",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "141465",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "141466",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "141468",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "141469",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "292413",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "303278",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "304078",
+          "issuer": "ANTHEM",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CC6597",
+          "issuer": "MEDICARE RAILROAD",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CJ7063",
+          "issuer": "MEDICARE RAILROAD",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CK5367",
+          "issuer": "MEDICARE RAILROAD",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CL1914",
+          "issuer": "MEDICARE RAILROAD",
+          "state": "VA"
+        }
+      ],
+      "last_updated_epoch": "1316114617000",
+      "number": "1750571287",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

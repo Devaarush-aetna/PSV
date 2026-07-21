@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2716 SAGEBRUSH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHEYENNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "820094437",
+          "state": "WY",
+          "telephone_number": "307-287-5141"
+        },
+        {
+          "address_1": "400 S KENDRICK AVE",
+          "address_2": "SUITE 204",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GILLETTE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "827163848",
+          "state": "WY",
+          "telephone_number": "307-685-7115"
+        }
+      ],
+      "basic": {
+        "credential": "PPC",
+        "enumeration_date": "2011-01-12",
+        "first_name": "CLAY",
+        "last_name": "DOKKEN",
+        "last_updated": "2014-08-07",
+        "middle_name": "WILLIAM",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1294869037000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1407444682000",
+      "number": "1154626711",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "1336",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

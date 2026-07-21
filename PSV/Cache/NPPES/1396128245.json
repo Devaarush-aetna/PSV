@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "580 HOWARD AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SOMERSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "088731113",
+          "state": "NJ"
+        },
+        {
+          "address_1": "128 LUBRANO DR STE 202",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ANNAPOLIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "214017028",
+          "state": "MD",
+          "telephone_number": "410-224-6561"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-17",
+        "credential": "Au.D.",
+        "enumeration_date": "2015-07-09",
+        "first_name": "MEGAN",
+        "last_name": "JAIN",
+        "last_updated": "2026-06-17",
+        "middle_name": "ESPINOSA",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1436425583000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1781696977000",
+      "number": "1396128245",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "Au",
+          "first_name": "MEGAN",
+          "last_name": "ESPINOSA",
+          "middle_name": "M",
+          "prefix": "Dr.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "9139 REISTERSTOWN RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWINGS MILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "211174503",
+          "state": "MD",
+          "telephone_number": "410-902-0100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "01355",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

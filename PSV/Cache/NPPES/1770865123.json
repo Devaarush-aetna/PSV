@@ -1,0 +1,77 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1325 AIRMOTIVE WAY STE 240",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-870-1628",
+          "postal_code": "895023284",
+          "state": "NV",
+          "telephone_number": "775-737-9001"
+        },
+        {
+          "address_1": "2965 E 4TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SILVER SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "894297477",
+          "state": "NV",
+          "telephone_number": "775-846-6916"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-12-16",
+        "credential": "LMFT, LCADC",
+        "enumeration_date": "2011-09-12",
+        "first_name": "KATIE",
+        "last_name": "NOLIN",
+        "last_updated": "2021-12-16",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1315863343000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1639690461000",
+      "number": "1770865123",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YA0400X",
+          "desc": "Counselor, Addiction (Substance Use Disorder)",
+          "license": "00509-LC",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "01501",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "0573",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

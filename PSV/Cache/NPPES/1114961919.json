@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7951 LINGLE LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662156100",
+          "state": "KS",
+          "telephone_number": "660-238-6885"
+        },
+        {
+          "address_1": "10890 W 86TH ST.",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LENEXA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "66214",
+          "state": "KS",
+          "telephone_number": "913-308-5007"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-05",
+        "credential": "OT, CHT",
+        "enumeration_date": "2006-06-15",
+        "first_name": "SHEILA",
+        "last_name": "GRUNEWALD",
+        "last_updated": "2025-12-05",
+        "middle_name": "S",
+        "name_prefix": "Mrs.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1150377644000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1764966791000",
+      "number": "1114961919",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "OT",
+          "first_name": "SHEILA",
+          "last_name": "KUESTER",
+          "middle_name": "S",
+          "prefix": "Miss",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225XH1200X",
+          "desc": "Occupational Therapist, Hand",
+          "license": "17-04050",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "404 STEVE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RUSSELL SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-858-4027",
+          "postal_code": "426424622",
+          "state": "KY",
+          "telephone_number": "270-866-3161"
+        },
+        {
+          "address_1": "PO BOX 1080",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BURKESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-858-4027",
+          "postal_code": "427171080",
+          "state": "KY",
+          "telephone_number": "270-585-6655"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-04-17",
+        "credential": "APRN",
+        "enumeration_date": "2025-04-17",
+        "first_name": "SAMANTHA",
+        "last_name": "WESLEY",
+        "last_updated": "2025-04-17",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1744906204000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1744907162000",
+      "number": "1831985704",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "4035410",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

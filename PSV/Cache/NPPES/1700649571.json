@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1346 S DECATUR BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "559-239-0180",
+          "postal_code": "891028510",
+          "state": "NV",
+          "telephone_number": "702-889-8355"
+        },
+        {
+          "address_1": "1346 S DECATUR BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "559-239-0180",
+          "postal_code": "891028510",
+          "state": "NV",
+          "telephone_number": "702-889-8355"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-12-18",
+        "credential": "Nurse Practitioner",
+        "enumeration_date": "2024-02-05",
+        "first_name": "MICHAELE",
+        "last_name": "SULLIVAN",
+        "last_updated": "2024-02-05",
+        "middle_name": "ANNE",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1707131427000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1707131427000",
+      "number": "1700649571",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "810073",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

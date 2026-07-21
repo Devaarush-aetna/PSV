@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1405 NW 2ND ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333118979",
+          "state": "FL",
+          "telephone_number": "954-812-3620"
+        },
+        {
+          "address_1": "1405 NW 2ND ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333118979",
+          "state": "FL",
+          "telephone_number": "954-812-3620"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-08",
+        "enumeration_date": "2026-03-09",
+        "first_name": "CHARMAINE",
+        "last_name": "CAMPBELL",
+        "last_updated": "2026-03-09",
+        "middle_name": "ELIZABETH",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1773051782000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1773051782000",
+      "number": "1780530113",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163WL0100X",
+          "desc": "Registered Nurse, Lactation Consultant",
+          "license": "L-318621",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5833 ARANDAS CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891031224",
+          "state": "NV",
+          "telephone_number": "702-498-5752"
+        },
+        {
+          "address_1": "3900 CAMBRIDGE ST STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-888-4966",
+          "postal_code": "891197440",
+          "state": "NV",
+          "telephone_number": "800-787-2568"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-24",
+        "credential": "APRN",
+        "enumeration_date": "2022-10-10",
+        "first_name": "STEVEN",
+        "last_name": "CERNA",
+        "last_updated": "2026-02-24",
+        "middle_name": "H",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1665418979000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771969193000",
+      "number": "1235854597",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "858224",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP2300X",
+          "desc": "Nurse Practitioner, Primary Care",
+          "license": "858224",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

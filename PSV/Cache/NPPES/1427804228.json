@@ -1,0 +1,90 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1401 MADISON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COVINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-655-6179",
+          "postal_code": "410113313",
+          "state": "KY",
+          "telephone_number": "859-655-6100"
+        },
+        {
+          "address_1": "215 E 11TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NEWPORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "410712203",
+          "state": "KY",
+          "telephone_number": "859-655-6100"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-21",
+        "credential": "PMHNP",
+        "enumeration_date": "2024-04-24",
+        "first_name": "ADAM",
+        "last_name": "BARSTOW",
+        "last_updated": "2025-07-21",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1713978302000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753122408000",
+      "number": "1427804228",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "215 E 11TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEWPORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-655-6186",
+          "postal_code": "410712203",
+          "state": "KY",
+          "telephone_number": "859-655-6100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "163W00000X",
+          "desc": "Registered Nurse",
+          "license": "RN.530441",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "APRN.CNP.0039455",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "4044126",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

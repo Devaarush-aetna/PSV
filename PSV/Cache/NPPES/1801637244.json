@@ -1,0 +1,77 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2301 10TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEAVENWORTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660484214",
+          "state": "KS",
+          "telephone_number": "913-682-2929"
+        },
+        {
+          "address_1": "2301 10TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEAVENWORTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660484214",
+          "state": "KS",
+          "telephone_number": "913-682-2929"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-24",
+        "credential": "OD",
+        "enumeration_date": "2024-05-31",
+        "first_name": "JOSHUA",
+        "last_name": "RUSSELL",
+        "last_updated": "2025-07-28",
+        "middle_name": "ALLAN",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1717196403000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753737873000",
+      "number": "1801637244",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "3277",
+          "primary": false,
+          "state": "OK",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "2025000170",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "2254",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

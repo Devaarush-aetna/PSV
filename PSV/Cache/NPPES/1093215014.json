@@ -1,0 +1,120 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1 EMBARCADERO CTR STE 1900",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN FRANCISCO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "941113723",
+          "state": "CA",
+          "telephone_number": "888-663-6331"
+        },
+        {
+          "address_1": "1 EMBARCADERO CTR STE 1900",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN FRANCISCO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "941113723",
+          "state": "CA",
+          "telephone_number": "888-663-6331"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-25",
+        "credential": "LICSW",
+        "enumeration_date": "2018-02-16",
+        "first_name": "CATHY",
+        "last_name": "RUFFIN",
+        "last_updated": "2026-06-25",
+        "middle_name": "ALICIA",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1518776081000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1782398537000",
+      "number": "1093215014",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "LCSW",
+          "first_name": "CATHY",
+          "last_name": "RUFFIN",
+          "middle_name": "ALICIA",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "53 STATE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOSTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "021092820",
+          "state": "MA",
+          "telephone_number": "888-663-6331"
+        },
+        {
+          "address_1": "14909 HEALTH CENTER DR APT 158",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOWIE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207161094",
+          "state": "MD",
+          "telephone_number": "202-487-7883"
+        },
+        {
+          "address_1": "1350 CONNECTICUT AVE NW STE 1250",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "200361728",
+          "state": "DC",
+          "telephone_number": "888-663-6331"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "92847",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "LC50078839",
+          "primary": false,
+          "state": "DC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "LICSW1141933",
+          "primary": false,
+          "state": "MA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

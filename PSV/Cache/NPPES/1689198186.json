@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "301 MED TECH PKWY STE 240",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JOHNSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "423-282-6940",
+          "postal_code": "37604",
+          "state": "TN",
+          "telephone_number": "423-794-5520"
+        },
+        {
+          "address_1": "215 E SPRINGBROOK DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JOHNSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "423-282-6940",
+          "postal_code": "376011761",
+          "state": "TN",
+          "telephone_number": "423-794-5520"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-04-13",
+        "credential": "PharmD",
+        "enumeration_date": "2017-07-27",
+        "first_name": "ANDREA",
+        "last_name": "LONG",
+        "last_updated": "2020-04-13",
+        "middle_name": "C",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1501168552000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1586812150000",
+      "number": "1689198186",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1835P2201X",
+          "desc": "Pharmacist, Ambulatory Care",
+          "license": "019174",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1835P2201X",
+          "desc": "Pharmacist, Ambulatory Care",
+          "license": "39179",
+          "primary": true,
+          "state": "TN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

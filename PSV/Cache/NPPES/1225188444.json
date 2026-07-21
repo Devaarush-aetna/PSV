@@ -1,0 +1,78 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "507 TROJAN TRL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GLASGOW",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-858-4029",
+          "postal_code": "421412214",
+          "state": "KY",
+          "telephone_number": "844-435-0900"
+        },
+        {
+          "address_1": "PO BOX 1080",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BURKESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-858-4607",
+          "postal_code": "427171080",
+          "state": "KY",
+          "telephone_number": "270-858-6655"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-07-13",
+        "credential": "LPCC",
+        "enumeration_date": "2007-01-11",
+        "first_name": "SUMMER",
+        "last_name": "WATSON",
+        "last_updated": "2023-07-13",
+        "middle_name": "WRENN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1168536453000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "11692008",
+          "issuer": "CAQH",
+          "state": null
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "7100649810",
+          "issuer": null,
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1689270158000",
+      "number": "1225188444",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "0830",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

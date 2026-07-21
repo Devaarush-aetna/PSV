@@ -25,6 +25,8 @@ import csv
 import logging
 import re
 import sys
+import types
+from datetime import datetime as _dt
 from pathlib import Path
 from typing import Optional
 
@@ -62,6 +64,7 @@ C_MAINTAINED_BY = 7 # Maintained By — used by AddLicense output channel
 C_LIC_STATE = 9
 C_LIC_TYPE = 10
 C_LIC_ID = 11
+C_LIC_EXPIRY = 12  # LIC_EXPRTN_DT — input expiry date used for same-expiry comparison
 
 # NPI_NO is looked up DYNAMICALLY by header name — Input.xlsx may not always
 # include it. If a header cell matches one of these names, that column index
@@ -71,9 +74,138 @@ _NPI_HEADER_ALIASES = ("NPI_NO", "NPI", "NPI ID", "NPI_ID", "NPI Number")
 # Browser-based archetypes (share one Playwright browser per board)
 _BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa"}
 
+# Per-(state, prov_type) combos where the board site blocks automated access.
+# Rows matching these are written as Fail immediately without launching a browser.
+CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
+    ("KY", "NP"):  "KY Board of Nursing requires CAPTCHA — automated access blocked",
+    ("KY", "PN"):  "KY Board of Nursing requires CAPTCHA — automated access blocked",
+    ("KY", "RNA"): "KY Board of Nursing requires CAPTCHA — automated access blocked",
+    # McAfee Web Gateway blocks both proxy and direct access (502 both routes 2026-06-29)
+    ("NV", "OT"):  "NV OT board (occupationaltherapy.nv.gov) blocked by McAfee Web Gateway",
+    ("NV", "DAC"): "NV DAC board (bsacp.nv.gov) blocked by McAfee Web Gateway",
+    # Nevada State Board of Nursing (nevadanursingboard.org) — connection forcibly closed
+    # by McAfee Web Gateway from corporate network (WinError 10054, 2026-06-29).
+    ("NV", "NP"):  "NV Board of Nursing (nevadanursingboard.org) blocked by McAfee Web Gateway",
+    ("NV", "PN"):  "NV Board of Nursing (nevadanursingboard.org) blocked by McAfee Web Gateway",
+    ("NV", "RNA"): "NV Board of Nursing (nevadanursingboard.org) blocked by McAfee Web Gateway",
+    # Nevada Board of Examiners for Social Workers — DNS resolution fails from corporate
+    # network (getaddrinfo failed on all known nv.gov/swbn variants, 2026-06-29).
+    ("NV", "SW"):  "NV Social Work board (swbn.nv.gov) — DNS blocked at corporate network layer",
+    # NV_DIETITIAN (nvdpbh.aithent.com) — Aithent portal navigates but Generate Excel stalls;
+    # every attempt times out after 60s (confirmed 2026-06-30, multiple consecutive attempts).
+    ("NV", "DT"):  "NV Dietitian board (nvdpbh.aithent.com) — Aithent XLS export consistently times out; manual verification required",
+    # KY Board of Pharmacy (kybopp.aithent.com) — McAfee Web Gateway returns 502 from
+    # corporate network; pharmacy.ky.gov also returns 403 (confirmed 2026-06-30).
+    ("KY", "PH"):  "KY Board of Pharmacy (kybopp.aithent.com) blocked by McAfee Web Gateway",
+    ("KY", "PM"):  "KY Board of Pharmacy (kybopp.aithent.com) blocked by McAfee Web Gateway",
+    # KY Board of Dentistry (kybde.ky.gov) — McAfee Web Gateway returns 502 from corporate
+    # network (confirmed 2026-06-30).
+    ("KY", "DN"):  "KY Board of Dentistry (kybde.ky.gov) blocked by McAfee Web Gateway",
+    # NV Board of Nursing (nvbn.boardsofnursing.org) — same block as NV/PN/RNA/NP.
+    # MW (midwife/CNM) licenses carry RN-prefix numbers issued by the nursing board.
+    ("NV", "MW"):  "NV Board of Nursing (nvbn.boardsofnursing.org) blocked — connection times out from corporate network",
+}
+
+# Maps (board_source_id, license_prefix_uppercase) → skip_reason.
+# When a license starts with the given prefix, that board is bypassed entirely.
+BOARD_LICENSE_PREFIX_SKIP: dict[tuple[str, str], str] = {
+    # TSA = Temporary Surgical Assistant — different credential class from permanent KCSA.
+    ("KY_SA", "TSA"): (
+        "TSA (Temporary Surgical Assistant) is a different credential class — "
+        "KY_SA tracks permanent KCSA credentials only"
+    ),
+    # PSYPACT is a multistate compact credential, not a state-issued license.
+    ("NV_BOP", "PSYPACT"): (
+        "PSYPACT is a multistate compact license — not issued by NV state board (NV_BOP not applicable)"
+    ),
+    ("KS_BSRB", "PSYPACT"): (
+        "PSYPACT is a multistate compact license — not issued by KS state board (KS_BSRB not applicable)"
+    ),
+}
+
+# Project root — used for PSYPACT evidence paths and psypact_scraper import
+_PSV_DEV = Path(__file__).parents[3]
+
 # Routing table: (state_abbr, psv_prov_type) -> [source_id, ...]
 _ROUTING: dict[tuple[str, str], list[str]] = {}
 _ROUTING_CSV = Path(__file__).parent / "board_routing_master.csv"
+
+
+def _parse_psypact_expiry(date_str: str):
+    """Parse PSYPACT expiry string ('April 16, 2027') to datetime.date."""
+    if not date_str:
+        return None
+    for fmt in ("%B %d, %Y", "%b %d, %Y", "%b. %d, %Y", "%m/%d/%Y", "%Y-%m-%d"):
+        try:
+            return _dt.strptime(date_str.strip(), fmt).date()
+        except (ValueError, AttributeError):
+            continue
+    return date_str  # fall back to raw string
+
+
+async def _verify_psypact_row(row: dict, trace, run_id: str = "") -> "LadderResult":
+    """Verify a PSYPACT E.Passport license via directory.psypact.gov.
+
+    Calls the standalone psypact_scraper at PSV_DEV root, matches the
+    returned Mobility Number against the numeric portion of the license_id
+    (e.g. "PSYPACT18696" → expected "18696").
+    """
+    from orchestrator.ladder import LadderResult  # noqa: PLC0415
+    from orchestrator.disambiguator import ScoreBreakdown  # noqa: PLC0415
+    from orchestrator.config import yyyy_mm_from_run_id  # noqa: PLC0415
+
+    first = (row.get("first_name") or "").strip()
+    middle = (row.get("middle_name") or "").strip()
+    last = (row.get("last_name") or "").strip()
+    license_id = (row.get("license_id") or "").strip()
+
+    expected_num = re.sub(r"[^\d]", "", license_id.upper().replace("PSYPACT", ""))
+    ym = yyyy_mm_from_run_id(run_id) if run_id else ""
+    evidence_dir = str(_PSV_DEV / "Evidence" / ym / run_id)
+
+    if str(_PSV_DEV) not in sys.path:
+        sys.path.insert(0, str(_PSV_DEV))
+
+    try:
+        from psypact_scraper import run_scraper as _run_psypact  # noqa: PLC0415
+
+        results = await _run_psypact(
+            first, middle, last, output_dir=evidence_dir, headless=True
+        )
+
+        for result in results:
+            ld = result.get("license_data")
+            if not ld:
+                continue
+            mobility = (ld.get("mobility_number") or "").strip()
+            if not mobility or mobility != expected_num:
+                continue
+
+            expiry = _parse_psypact_expiry(ld.get("expiration_date", ""))
+            rec = types.SimpleNamespace(
+                license_number=license_id,
+                expiration_date=expiry,
+                licensee_first_name=first,
+                licensee_last_name=last,
+                source_id="PSYPACT_DIRECTORY",
+            )
+            bd = ScoreBreakdown(
+                license_numerics=1.0, first_name=1.0, last_name=1.0,
+                gate_passed=True, total=1.0,
+            )
+            trace.final_outcome = "Pass"
+            return LadderResult(status="Pass", best_record=rec, best_breakdown=bd)
+
+        trace.final_outcome = "Fail"
+        trace.final_reason = "no_records"
+        return LadderResult(status="Fail", reason="no_records")
+
+    except Exception as exc:
+        log.warning("[PSYPACT] Error for %s %s (%s): %s", first, last, license_id, exc,
+                    exc_info=True)
+        trace.final_outcome = "Fail"
+        trace.final_reason = "no_records"
+        return LadderResult(status="Fail", reason="no_records")
 
 
 def _load_routing() -> None:
@@ -782,6 +914,26 @@ def write_results(results: list[dict], output_path: Path, append: bool) -> None:
     wb.save(str(output_path))
 
 
+def _cell_to_iso_date(val) -> str:
+    """Convert an openpyxl cell value (datetime, date, or string) to YYYY-MM-DD, or ''."""
+    if val is None:
+        return ""
+    if hasattr(val, "date"):          # datetime.datetime
+        return val.date().isoformat()
+    if hasattr(val, "isoformat"):     # datetime.date
+        return val.isoformat()
+    s = str(val).strip()
+    if not s or s.lower() == "none":
+        return ""
+    for fmt in ("%m/%d/%Y", "%Y-%m-%d", "%m-%d-%Y", "%Y/%m/%d"):
+        try:
+            from datetime import datetime as _dt
+            return _dt.strptime(s, fmt).date().isoformat()
+        except ValueError:
+            continue
+    return ""   # unparseable — treat as absent
+
+
 def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") -> list[dict]:
     wb = openpyxl.load_workbook(input_path, read_only=True, data_only=True)
     if sheet_name and sheet_name in wb.sheetnames:
@@ -846,8 +998,20 @@ def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") ->
             "lic_state": lic_state,
             "lic_type": c(C_LIC_TYPE),
             "license_id": c(C_LIC_ID),
+            "input_expiry": _cell_to_iso_date(
+                row[C_LIC_EXPIRY] if C_LIC_EXPIRY < len(row) else None
+            ),
         })
     return rows_data
+
+
+_SKIP_REASON_BY_SID: dict[str, str] = {}
+
+_CAPTCHA_SKIP_KEYWORDS = ("captcha", "mcafee", "datadome", "cloudflare", "recaptcha", "waf", "blocked")
+
+
+def _is_captcha_skip(reason: str) -> bool:
+    return any(kw in reason.lower() for kw in _CAPTCHA_SKIP_KEYWORDS)
 
 
 def load_configs_by_source_ids(source_ids: set[str]) -> list:
@@ -863,6 +1027,7 @@ def load_configs_by_source_ids(source_ids: set[str]) -> list:
             cfg = load_config(str(config_path))
             if getattr(cfg.identity, "skip", False):
                 reason = getattr(cfg.identity, "skip_reason", "skip=true in config")
+                _SKIP_REASON_BY_SID[sid] = reason
                 log.info("Skipping board %s (skip=true): %s", sid, reason)
                 continue
             configs.append(cfg)
@@ -935,6 +1100,28 @@ async def run_state(
     Caller must have already called _load_routing() before invoking this.
     The routing table (_ROUTING) must be populated.
     """
+    # --- Fail CAPTCHA-blocked prov_type rows immediately ---
+    captcha_rows = [r for r in rows if (state, r["prov_type"].upper()) in CAPTCHA_PROV_TYPES]
+    rows = [r for r in rows if (state, r["prov_type"].upper()) not in CAPTCHA_PROV_TYPES]
+    fails = 0
+    if captcha_rows:
+        log.warning(
+            "[%s] %d row(s) with CAPTCHA-blocked prov_types written as Fail: %s",
+            state, len(captcha_rows),
+            sorted({r["prov_type"] for r in captcha_rows}),
+        )
+        captcha_results = [
+            {**r, "status": "Fail",
+             "reason": CAPTCHA_PROV_TYPES[(state, r["prov_type"].upper())],
+             "expiry_date": ""}
+            for r in captcha_rows
+        ]
+        write_results(captcha_results, output_path, append)
+        append = True
+        fails += len(captcha_rows)
+    if not rows:
+        return 0, fails
+
     # Determine which boards are needed for the prov_types in this batch
     needed_sids: set[str] = set()
     no_routing_combos: set[tuple[str, str]] = set()
@@ -1068,7 +1255,7 @@ async def run_state_orchestrated(
     from orchestrator import nppes_client as nppes_mod
     from orchestrator import ai_agent as ai_mod
     from orchestrator.output_emitter import RowOutcome
-    from orchestrator.trace import RowTrace, make_master_row_id
+    from orchestrator.trace import RowTrace, make_master_row_id, REASON_PROVIDER_TYPE_MISMATCH
 
     if not _ROUTING:
         _load_routing()
@@ -1141,6 +1328,29 @@ async def run_state_orchestrated(
                         discrepancy = nppes_mod.diff_master_vs_nppes(row, nppes)
                         trace.nppes_discrepancy = discrepancy.to_dict()
 
+                # --- PSYPACT E.Passport: verify via directory.psypact.gov ---
+                if (row.get("license_id") or "").upper().startswith("PSYPACT"):
+                    ladder_result = await _verify_psypact_row(row, trace, run_id=run_id)
+                    ai_result = None
+                    outcome = RowOutcome(
+                        master_row=row,
+                        master_row_id=master_row_id,
+                        trace=trace,
+                        nppes=nppes,
+                        discrepancy=discrepancy,
+                        ladder_result=ladder_result,
+                        ai_result=ai_result,
+                    )
+                    emitter.collect(outcome)
+                    if outcome.status == "Pass":
+                        passes += 1
+                    else:
+                        fails += 1
+                    log.info("[%s] %s %s %s %s -> %s | psypact_directory",
+                             state, row["prov_type"], row["last_name"],
+                             row["first_name"], row["license_id"], outcome.status)
+                    continue
+
                 # --- Resolve routing for this row ---
                 prov_type_upper = row.get("prov_type", "").upper()
                 key = (row["lic_state"].upper(), prov_type_upper)
@@ -1158,9 +1368,30 @@ async def run_state_orchestrated(
                 ladder_result = None
                 ai_result = None
 
-                if not routed_configs:
+                # CAPTCHA-blocked prov_type: fail immediately, skip all board calls
+                _captcha_reason = CAPTCHA_PROV_TYPES.get((state, prov_type_upper))
+                # NV/PH with DO-prefix license = osteopathic physician miscategorized
+                # in EPDB as pharmacist (LIC_TYPE_NM="STATE MEDICAL", license=DO####).
+                # Confirmed systemic in 2026-06-30 run (17/24 NV/PH had DO-prefix).
+                _do_prefix_mismatch = (
+                    state == "NV" and prov_type_upper == "PH"
+                    and str(row.get("license_id", "")).upper().startswith("DO")
+                )
+                if _captcha_reason:
                     trace.final_outcome = "Fail"
-                    trace.final_reason = "no_routing"
+                    trace.final_reason = "prov_type_captcha_blocked"
+                elif _do_prefix_mismatch:
+                    trace.final_outcome = "Fail"
+                    trace.final_reason = REASON_PROVIDER_TYPE_MISMATCH
+                elif not routed_configs:
+                    trace.final_outcome = "Fail"
+                    # Distinguish captcha-skipped boards from truly unconfigured routing
+                    _skip_captcha = any(
+                        _is_captcha_skip(_SKIP_REASON_BY_SID.get(s, ""))
+                        for s in routed_sids
+                        if s in _SKIP_REASON_BY_SID
+                    )
+                    trace.final_reason = "board_skip_captcha" if _skip_captcha else "no_routing"
                 else:
                     # --- Run rule-based ladder ---
                     ladder_result = await ladder_mod.run_ladder(

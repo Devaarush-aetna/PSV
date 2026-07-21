@@ -61,6 +61,7 @@ search:
       - "no records found"
       - "no results found"
       - "no matching registrant"
+      - "total 0 records"
 
 results:
   type: "table"

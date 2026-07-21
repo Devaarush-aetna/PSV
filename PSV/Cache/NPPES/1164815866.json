@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1608 SE 3RD AVE",
+          "address_2": "THIRD FLOOR PBO",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333162564",
+          "state": "FL"
+        },
+        {
+          "address_1": "1600 S ANDREWS AVE",
+          "address_2": "THIRD FLOOR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT LAUDERDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "333162510",
+          "state": "FL",
+          "telephone_number": "954-355-5276"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2015-03-05",
+        "first_name": "KELLY",
+        "last_name": "TUCKER",
+        "last_updated": "2015-03-05",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1425588048000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1425588048000",
+      "number": "1164815866",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163WL0100X",
+          "desc": "Registered Nurse, Lactation Consultant",
+          "license": "RN 9309630",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

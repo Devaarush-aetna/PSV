@@ -1,0 +1,76 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "220 LAGO CIR APT 203",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEST MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329043360",
+          "state": "FL",
+          "telephone_number": "407-818-3550"
+        },
+        {
+          "address_1": "220 LAGO CIR APT 203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WEST MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329043360",
+          "state": "FL",
+          "telephone_number": "407-818-3550"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-05-15",
+        "credential": "PsyD",
+        "enumeration_date": "2024-05-15",
+        "first_name": "ANA PAULA",
+        "last_name": "LEAO DE CAMARGO",
+        "last_updated": "2024-05-15",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1715820002000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1715820002000",
+      "number": "1437908050",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103TF0200X",
+          "desc": "Psychologist, Forensic",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "400 SW LONGVIEW BLVD STE 280",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEES SUMMIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "640812157",
+          "state": "MO",
+          "telephone_number": "816-477-7200"
+        },
+        {
+          "address_1": "400 SW LONGVIEW BLVD STE 280",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEES SUMMIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "640812157",
+          "state": "MO",
+          "telephone_number": "816-585-4727"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-05",
+        "enumeration_date": "2023-07-24",
+        "first_name": "ALLYSON",
+        "last_name": "BRAYMER",
+        "last_updated": "2026-03-05",
+        "middle_name": "VICTORIA LYNN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1690231298000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772715665000",
+      "number": "1497435432",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "53-84072",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "2023024461",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

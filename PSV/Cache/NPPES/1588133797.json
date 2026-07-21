@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6422 BEECHFIELD AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ELKRIDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210755618",
+          "state": "MD",
+          "telephone_number": "443-445-3344"
+        },
+        {
+          "address_1": "10910 CLARKSVILLE PIKE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELLICOTT CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210426106",
+          "state": "MD",
+          "telephone_number": "410-313-6600"
+        }
+      ],
+      "basic": {
+        "credential": "M.A. CCC-SLP",
+        "enumeration_date": "2018-11-16",
+        "first_name": "VANESSA",
+        "last_name": "THORNTON",
+        "last_updated": "2018-11-16",
+        "middle_name": "W.",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1542395077000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1542395077000",
+      "number": "1588133797",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

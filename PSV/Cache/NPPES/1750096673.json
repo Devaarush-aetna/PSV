@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12309 PEMBROKE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PEMBROKE PINES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330251723",
+          "state": "FL",
+          "telephone_number": "954-432-6595"
+        },
+        {
+          "address_1": "6719 NW 81ST CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PARKLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330672496",
+          "state": "FL",
+          "telephone_number": "954-263-6319"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-12-19",
+        "enumeration_date": "2023-01-16",
+        "first_name": "DANIEL",
+        "last_name": "MENDES",
+        "last_updated": "2024-12-19",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1673866984000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1734640484000",
+      "number": "1750096673",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207RH0003X",
+          "desc": "Internal Medicine, Hematology & Oncology",
+          "license": "9119457",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

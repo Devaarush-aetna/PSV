@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1664 N VIRGINIA ST",
+          "address_2": "REDFIELD BLDG",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-982-8020",
+          "postal_code": "895570152",
+          "state": "NV",
+          "telephone_number": "775-982-3300"
+        },
+        {
+          "address_1": "1155 MILL STREET",
+          "address_2": "MS M-14",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-982-8020",
+          "postal_code": "895021576",
+          "state": "NV",
+          "telephone_number": "775-982-5262"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-09",
+        "credential": "M.S., CCC-SLP",
+        "enumeration_date": "2018-05-16",
+        "first_name": "CHARLES",
+        "last_name": "FRANCIS",
+        "last_updated": "2025-10-09",
+        "middle_name": "C",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1526497037000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760058288000",
+      "number": "1609366566",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SP-1517",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

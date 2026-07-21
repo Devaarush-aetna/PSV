@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2129 TYLER DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890740630",
+          "state": "NV",
+          "telephone_number": "702-204-8089"
+        },
+        {
+          "address_1": "6284 S RAINBOW BLVD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-257-0139",
+          "postal_code": "89118",
+          "state": "NV",
+          "telephone_number": "702-257-0140"
+        }
+      ],
+      "basic": {
+        "credential": "PhD, MFT",
+        "enumeration_date": "2007-06-27",
+        "first_name": "LOURDES",
+        "last_name": "VIADO",
+        "last_updated": "2019-10-14",
+        "middle_name": "A.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1182961663000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1571106887000",
+      "number": "1063619831",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2340 PASEO DEL PRADO",
+          "address_2": "D 307",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-222-1786",
+          "postal_code": "891024360",
+          "state": "NV",
+          "telephone_number": "702-222-1784"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "RO4347",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

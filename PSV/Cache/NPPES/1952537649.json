@@ -1,0 +1,104 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2620 REGATTA DR STE 246",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "725-246-2458",
+          "postal_code": "891286891",
+          "state": "NV",
+          "telephone_number": "702-901-5804"
+        },
+        {
+          "address_1": "2432 OCEAN FRONT DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "725-246-2458",
+          "postal_code": "891287483",
+          "state": "NV",
+          "telephone_number": "725-221-4340"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-02-07",
+        "credential": "NP, PhD",
+        "enumeration_date": "2009-06-08",
+        "first_name": "DEBORAH",
+        "last_name": "PERKINS",
+        "last_updated": "2023-02-07",
+        "middle_name": "LOUISE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1244502885000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "1952537649",
+          "issuer": null,
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1675810463000",
+      "number": "1952537649",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225400000X",
+          "desc": "Rehabilitation Practitioner",
+          "license": "18946",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "18946",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "814887",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "18946",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "814887",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2733 QUARRY HEIGHTS WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "815-301-8671",
+          "postal_code": "212091080",
+          "state": "MD",
+          "telephone_number": "443-386-1882"
+        },
+        {
+          "address_1": "2733 QUARRY HEIGHTS WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "815-301-8671",
+          "postal_code": "212091080",
+          "state": "MD",
+          "telephone_number": "443-386-1882"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2019-03-25",
+        "first_name": "COURTNEY",
+        "last_name": "TOMPAKOV",
+        "last_updated": "2019-03-25",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1553513635000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1553513635000",
+      "number": "1841750817",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "LBA530",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

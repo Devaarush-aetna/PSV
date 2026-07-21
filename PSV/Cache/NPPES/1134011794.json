@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7135 NW 11TH PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GAINESVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "326053159",
+          "state": "FL",
+          "telephone_number": "352-331-0090"
+        },
+        {
+          "address_1": "2020 N 55TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOLLYWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330213940",
+          "state": "FL",
+          "telephone_number": "954-558-5614"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-25",
+        "credential": "Au.D.",
+        "enumeration_date": "2025-07-17",
+        "first_name": "AMBER",
+        "last_name": "GERASIMCHIK",
+        "last_updated": "2025-07-25",
+        "middle_name": "NICOLE",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1752791703000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753455209000",
+      "number": "1134011794",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "AY2945",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

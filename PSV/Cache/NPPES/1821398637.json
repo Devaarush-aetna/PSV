@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1000 LOCUST ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895022597",
+          "state": "NV",
+          "telephone_number": "775-786-7200"
+        },
+        {
+          "address_1": "10405 DOUBLE R BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895218905",
+          "state": "NV",
+          "telephone_number": "775-827-2400"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-04-27",
+        "enumeration_date": "2010-10-26",
+        "first_name": "TIFFANY",
+        "last_name": "JOHNSON",
+        "last_updated": "2023-04-27",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1288134633000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1682644034000",
+      "number": "1821398637",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "7362",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "5639-S",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "8297-C",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "101 UHLAND RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN MARCOS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "786666630",
+          "state": "TX",
+          "telephone_number": "512-396-0872"
+        },
+        {
+          "address_1": "2862 ALDEBARAN WAY W",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MOBILE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "366934200",
+          "state": "AL"
+        }
+      ],
+      "basic": {
+        "credential": "M.S., CCC-SLP",
+        "enumeration_date": "2017-10-30",
+        "first_name": "TAYLOR",
+        "last_name": "WALLACE",
+        "last_updated": "2017-10-30",
+        "middle_name": "KIANA",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1509385207000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1509385207000",
+      "number": "1689186728",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

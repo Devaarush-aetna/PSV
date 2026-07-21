@@ -1,0 +1,109 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5770 SW ELM AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BEAVERTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "970054223",
+          "state": "OR",
+          "telephone_number": "503-782-9690"
+        },
+        {
+          "address_1": "5770 SW ELM AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BEAVERTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "970054223",
+          "state": "OR",
+          "telephone_number": "503-782-9690"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-09",
+        "credential": "MD",
+        "enumeration_date": "2005-11-04",
+        "first_name": "MICHAEL",
+        "last_name": "STONE",
+        "last_updated": "2025-07-09",
+        "middle_name": "BENJAMIN",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1131148810000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752099336000",
+      "number": "1043201262",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1411 E 31ST ST",
+          "address_2": "DEPARTMENT OF EMERGENCY MEDICINE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OAKLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "946021018",
+          "state": "CA",
+          "telephone_number": "510-437-4564"
+        },
+        {
+          "address_1": "535 WELLINGTON WAY STE 330",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405031331",
+          "state": "KY",
+          "telephone_number": "859-439-0400"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "56485",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "242879",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "A82073",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "MD176863",
+          "primary": true,
+          "state": "OR",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

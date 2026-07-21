@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "24624 I-45 N",
+          "address_2": "SUITE 125",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SPRING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "77386",
+          "state": "TX",
+          "telephone_number": "832-688-6111"
+        },
+        {
+          "address_1": "11419 PATRIOT LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "POTOMAC",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "208543749",
+          "state": "MD",
+          "telephone_number": "301-983-2599"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-05-01",
+        "credential": "MD",
+        "enumeration_date": "2006-06-22",
+        "first_name": "JOHN",
+        "last_name": "RUSH",
+        "last_updated": "2022-07-21",
+        "middle_name": "J",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1150987978000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1658438332000",
+      "number": "1851337281",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "D63866",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

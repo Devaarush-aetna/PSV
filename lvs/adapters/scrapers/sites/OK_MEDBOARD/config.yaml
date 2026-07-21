@@ -10,6 +10,11 @@ identity:
   #   Profession dropdown: select#lictype (required when searching by license number).
   #   Submit: input[name='show_details'] ("Show Detailed list").
   #   Results: one table.licensee-info per provider on the same page (no detail navigation).
+  # NOTE 2026-07-01: The okmedicalboard.org/search page has been redesigned. The old
+  # search form (lname/fname/licensenbr inputs + show_details submit) is now HTML-commented
+  # out. The board migrated licensee lookup to a Salesforce Experience Cloud portal at
+  # https://www.medicalboard.ok.gov/s/license-lookup — no classic-form archetype available.
+  # Marking SKIP until a Salesforce Experience Cloud archetype is built.
   base_url: "https://www.okmedicalboard.org/search"
   archetype: classic_html_form
 
@@ -138,3 +143,5 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
+  skip: true
+  skip_reason: "salesforce_migration: okmedicalboard.org/search redesigned 2026-07-01; old lname/fname form is HTML-commented out. Board now uses Salesforce Experience Cloud portal at medicalboard.ok.gov/s/license-lookup — requires Salesforce archetype support."

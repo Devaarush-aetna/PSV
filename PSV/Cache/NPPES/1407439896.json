@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1800 W. CHARLESTON BLVD.",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "89102",
+          "state": "NV",
+          "telephone_number": "702-383-2000"
+        },
+        {
+          "address_1": "1800 W CHARLESTON BLVD.",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "89102",
+          "state": "NV",
+          "telephone_number": "702-383-2000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-12-16",
+        "enumeration_date": "2021-05-03",
+        "first_name": "TAMARA",
+        "last_name": "BARENG",
+        "last_updated": "2022-12-16",
+        "middle_name": "N",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1620077870000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1671209321000",
+      "number": "1407439896",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "134753",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "846327",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

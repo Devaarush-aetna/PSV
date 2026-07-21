@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "16000 GRANDVIEW ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "660857829",
+          "state": "KS",
+          "telephone_number": "913-617-5340"
+        },
+        {
+          "address_1": "6540 W 95TH ST STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "662121491",
+          "state": "KS",
+          "telephone_number": "913-286-4968"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-09",
+        "credential": "DC",
+        "enumeration_date": "2025-07-09",
+        "first_name": "HANNAH",
+        "last_name": "STYCZYKOWSKI",
+        "last_updated": "2025-07-09",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1752096002000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752096002000",
+      "number": "1114818184",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "01-06401",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1404 BEECHWOOD TER STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MANHATTAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-320-5428",
+          "postal_code": "665027481",
+          "state": "KS",
+          "telephone_number": "785-320-7576"
+        },
+        {
+          "address_1": "1404 BEECHWOOD TER STE C",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MANHATTAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-320-5428",
+          "postal_code": "665027481",
+          "state": "KS",
+          "telephone_number": "785-320-7576"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-14",
+        "credential": "CRNA NSPM-C",
+        "enumeration_date": "2006-02-22",
+        "first_name": "SCOTT",
+        "last_name": "HUSTED",
+        "last_updated": "2025-05-14",
+        "middle_name": "ROBERT",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1140639967000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1747228665000",
+      "number": "1528033412",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "617 LIBERTY ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CLAY CENTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "674321564",
+          "state": "KS",
+          "telephone_number": "785-632-2144"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "163WP0000X",
+          "desc": "Registered Nurse, Pain Management",
+          "license": "39214",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "54115",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

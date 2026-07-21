@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2001 ERRECART BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELKO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "898018333",
+          "state": "NV",
+          "telephone_number": "702-780-7587"
+        },
+        {
+          "address_1": "1524 PINTO LN FL 2",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891064195",
+          "state": "NV"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-17",
+        "credential": "DO",
+        "enumeration_date": "2019-04-11",
+        "first_name": "ZACHARY",
+        "last_name": "FEATHERSTONE",
+        "last_updated": "2024-06-17",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1554999269000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1718650737000",
+      "number": "1306309844",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "DO3227",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

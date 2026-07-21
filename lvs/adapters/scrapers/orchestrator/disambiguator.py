@@ -280,8 +280,8 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "PM": ("PHARMACY",),
         "DT": ("DIETITIAN", "DIETETICS", "NUTRITIONIST", "NUTRITION"),
         "NUT": ("NUTRITIONIST", "NUTRITION"),
-        "MT": ("MASSAGE",),
-        "MW": ("MIDWIFE", "MIDWIFERY"),
+        "MT": ("MASSAGE", "MARRIAGE", "FAMILY THERAPIST", "MFT"),
+        "MW": ("MIDWIFE", "MIDWIFERY", "ADV PRACTICE", "APRN", "CNM", "NMW"),
         "MST": ("MASSAGE",),
         "ABA": ("APPLIED BEHAVIOR", "BEHAVIOR ANALYST", "BEHAVIORAL ANALYST"),
         "OP": ("OPTICIAN",),
@@ -563,6 +563,29 @@ def apply_narrowing(candidates: list[Any], master_row: dict
     m_pt = (master_row.get("prov_type") or "").upper()
 
     pool = list(candidates)
+
+    # Step 0: exact full license string match (prefix + digits).
+    # FL_MQA returns dual entries for the same person (e.g. APRN9245838 + RN9245838).
+    # Digit-only match selects both; exact string match selects exactly one.
+    if m_lic:
+        m_lic_norm = m_lic.upper().replace(" ", "")
+        step0 = [c for c in pool
+                 if (getattr(c, "license_number", "") or "").upper().replace(" ", "") == m_lic_norm]
+        if len(step0) == 1:
+            return step0, "selected"
+        if step0:
+            pool = step0
+        else:
+            # Step 0b: digit-normalized fallback. Handles prefix variants where the board
+            # strips a non-numeric prefix that PSV retains (e.g. "TMP-163007" vs "163007").
+            m_digits = _numeric_only(m_lic)
+            if len(m_digits) >= 4:
+                step0b = [c for c in pool
+                          if _numeric_only(getattr(c, "license_number", "") or "") == m_digits]
+                if len(step0b) == 1:
+                    return step0b, "selected"
+                if step0b:
+                    pool = step0b
 
     # Step 1: numeric license + first name
     if m_lic and m_first:

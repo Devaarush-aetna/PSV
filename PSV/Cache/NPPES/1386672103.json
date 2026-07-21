@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1500 N DIXIE HWY",
+          "address_2": "SUITE #201",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEST PALM BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-659-2486",
+          "postal_code": "334012712",
+          "state": "FL",
+          "telephone_number": "561-659-6535"
+        },
+        {
+          "address_1": "1500 N DIXIE HWY",
+          "address_2": "SUITE #201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WEST PALM BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-659-2486",
+          "postal_code": "334012712",
+          "state": "FL",
+          "telephone_number": "561-659-6535"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2006-06-29",
+        "first_name": "GEORGE",
+        "last_name": "WONG",
+        "last_updated": "2010-01-29",
+        "middle_name": "C.",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1151615472000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "052595200",
+          "issuer": null,
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1264812308000",
+      "number": "1386672103",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207W00000X",
+          "desc": "Ophthalmology",
+          "license": "ME0054235",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

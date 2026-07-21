@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "258 WILLIAM WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WILLIAMSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "231858601",
+          "state": "VA",
+          "telephone_number": "617-631-4494"
+        },
+        {
+          "address_1": "5631 S PECOS RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891201961",
+          "state": "NV",
+          "telephone_number": "702-685-0877"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-11-05",
+        "enumeration_date": "2021-11-09",
+        "first_name": "NICOLE",
+        "last_name": "PARKES",
+        "last_updated": "2021-11-09",
+        "middle_name": "THERON",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1636473065000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1636473065000",
+      "number": "1326704974",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "0810006375",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

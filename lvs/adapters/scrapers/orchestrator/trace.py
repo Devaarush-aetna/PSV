@@ -24,6 +24,10 @@ OUTCOME_LICENSE_MISMATCH = "license_mismatch"
 OUTCOME_PROVIDER_TYPE_MISMATCH = "provider_type_mismatch"
 OUTCOME_ERROR = "error"
 OUTCOME_SKIPPED_DUPLICATE = "skipped_duplicate"
+# Set by the AI agent's try_search when records are returned but not yet
+# evaluated — distinct from OUTCOME_MATCH_EXACT, which requires disambiguator
+# confirmation.
+OUTCOME_AI_BOARD_HIT = "ai_board_hit"
 
 # Final-outcome / failure-reason taxonomy (the structured codes the user
 # clarified must always populate the `reason` column).
@@ -117,7 +121,7 @@ class RowTrace:
         """Used to pick the disambiguator weight profile.
         Returns True if any license-based rung returned >0 records."""
         for a in self.attempts:
-            if a.mode in ("license_number", "license_numeric_only",
+            if a.mode in ("license_number", "license_numeric_only", "license_formatted",
                           "license_first_last", "license_and_last",
                           "license_and_first") and a.record_count > 0:
                 return True

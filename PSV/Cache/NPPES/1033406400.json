@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "175 CEDAR LN STE 5",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TEANECK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "076664315",
+          "state": "NJ",
+          "telephone_number": "201-509-2932"
+        },
+        {
+          "address_1": "501 RUTLAND AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TEANECK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "076662925",
+          "state": "NJ",
+          "telephone_number": "917-952-2605"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-06-02",
+        "credential": "MD",
+        "enumeration_date": "2011-07-06",
+        "first_name": "MOSHE",
+        "last_name": "COHN",
+        "last_updated": "2022-06-02",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1309969347000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1654225533000",
+      "number": "1033406400",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2080H0002X",
+          "desc": "Pediatrics, Hospice and Palliative Medicine",
+          "license": "25MA09721900",
+          "primary": true,
+          "state": "NJ",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

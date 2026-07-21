@@ -1,0 +1,100 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4801 E MCDOWELL RD STE 175",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHOENIX",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "602-854-7422",
+          "postal_code": "850087725",
+          "state": "AZ",
+          "telephone_number": "480-478-0444"
+        },
+        {
+          "address_1": "3303 N 44TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PHOENIX",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "602-854-7422",
+          "postal_code": "85018",
+          "state": "AZ",
+          "telephone_number": "480-478-0444"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-13",
+        "credential": "MS, BCBA",
+        "enumeration_date": "2018-02-18",
+        "first_name": "DEIDRE",
+        "last_name": "BOWIE",
+        "last_updated": "2025-05-22",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1519013085000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1747933075000",
+      "number": "1366942153",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "4560 N 19TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHOENIX",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "602-854-7422",
+          "postal_code": "850154133",
+          "state": "AZ",
+          "telephone_number": "480-478-0444"
+        },
+        {
+          "address_1": "13934 N 59TH AVE STE 160",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GLENDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "602-854-7422",
+          "postal_code": "853064168",
+          "state": "AZ",
+          "telephone_number": "480-478-0444"
+        },
+        {
+          "address_1": "3303 NORTH 44TH STREET",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHOENIX",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "602-854-7422",
+          "postal_code": "85018",
+          "state": "AZ",
+          "telephone_number": "480-478-0444"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-20-45886",
+          "primary": true,
+          "state": "IL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

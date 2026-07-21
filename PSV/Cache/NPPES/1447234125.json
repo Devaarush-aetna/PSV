@@ -1,0 +1,93 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "801 NE 25TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-732-2623",
+          "postal_code": "344706319",
+          "state": "FL",
+          "telephone_number": "352-732-0200"
+        },
+        {
+          "address_1": "4410 SW 65TH PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-732-2623",
+          "postal_code": "344749544",
+          "state": "FL",
+          "telephone_number": "342-843-7950"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-02-06",
+        "credential": "D.C.",
+        "enumeration_date": "2005-12-06",
+        "first_name": "JAMES",
+        "last_name": "GAREMORE",
+        "last_updated": "2020-02-06",
+        "middle_name": "VINCENT",
+        "name_prefix": "Dr.",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1133878366000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "350042600",
+          "issuer": "Railroad Medicare Number",
+          "state": "FL"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CH5598",
+          "issuer": "FL State License number",
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1581005127000",
+      "number": "1447234125",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3309 SW 34TH CIR STE 101",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-843-0825",
+          "postal_code": "344743311",
+          "state": "FL",
+          "telephone_number": "352-843-7950"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "CH5598",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

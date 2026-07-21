@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11700 W CHARLESTON BLVD # 170-597",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "701-203-9648",
+          "postal_code": "891351573",
+          "state": "NV",
+          "telephone_number": "702-660-2024"
+        },
+        {
+          "address_1": "8905 W POST RD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "701-203-9648",
+          "postal_code": "891482429",
+          "state": "NV",
+          "telephone_number": "702-660-2024"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-16",
+        "credential": "D.O.",
+        "enumeration_date": "2006-01-04",
+        "first_name": "ANDRA",
+        "last_name": "PRUM",
+        "last_updated": "2025-09-16",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1136411358000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CS11196",
+          "issuer": "Pharmacy/CDS",
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1758048199000",
+      "number": "1326026824",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "4750 W OAKEY BLVD STE 4A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891021535",
+          "state": "NV",
+          "telephone_number": "702-877-5199"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "1123",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

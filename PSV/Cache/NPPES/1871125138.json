@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9030 RED BRANCH RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210452003",
+          "state": "MD",
+          "telephone_number": "443-863-6993"
+        },
+        {
+          "address_1": "881 CONCORDE CIR UNIT 32302",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LINTHICUM HEIGHTS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210902873",
+          "state": "MD",
+          "telephone_number": "301-707-9941"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-10-12",
+        "enumeration_date": "2020-02-05",
+        "first_name": "BAILEY",
+        "last_name": "JONES",
+        "last_updated": "2022-10-12",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1580925668000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1665593572000",
+      "number": "1871125138",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106S00000X",
+          "desc": "Behavior Technician",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

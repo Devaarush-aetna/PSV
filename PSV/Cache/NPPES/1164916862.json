@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 120",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WINCHESTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-901-0015",
+          "postal_code": "403920120",
+          "state": "KY",
+          "telephone_number": "859-901-0012"
+        },
+        {
+          "address_1": "2050 VERSAILLES RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-367-7172",
+          "postal_code": "40504",
+          "state": "KY",
+          "telephone_number": "859-254-5701"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "DO",
+        "authorized_official_first_name": "CHRIS",
+        "authorized_official_last_name": "COVINGTON",
+        "authorized_official_telephone_number": "8592545701",
+        "authorized_official_title_or_position": "Member Manager",
+        "enumeration_date": "2018-06-18",
+        "last_updated": "2018-10-04",
+        "organization_name": "CHRIS COVINGTON, DO, PLLC",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1529334522000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1538671625000",
+      "number": "1164916862",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208100000X",
+          "desc": "Physical Medicine & Rehabilitation",
+          "license": "02403",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

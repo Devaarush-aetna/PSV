@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10624 S EASTERN AVE STE A-873",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-602-9012",
+          "postal_code": "890522982",
+          "state": "NV",
+          "telephone_number": "702-478-5111"
+        },
+        {
+          "address_1": "3039 W HORIZON RIDGE PKWY STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-602-9012",
+          "postal_code": "890524193",
+          "state": "NV",
+          "telephone_number": "702-478-5111"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-15",
+        "credential": "APRN-CNM",
+        "enumeration_date": "2016-10-20",
+        "first_name": "KAM-LIN",
+        "last_name": "GREGORY",
+        "last_updated": "2025-10-15",
+        "middle_name": "D",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1476993762000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760568810000",
+      "number": "1780135145",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "APRN-CNM",
+          "first_name": "KAM-LIN",
+          "last_name": "FANSLER",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "870 SEVEN HILLS DR STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-565-5027",
+          "postal_code": "890524378",
+          "state": "NV",
+          "telephone_number": "725-777-0414"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "367A00000X",
+          "desc": "Advanced Practice Midwife",
+          "license": "852141",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

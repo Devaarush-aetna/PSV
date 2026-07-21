@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9 TRAYLOR DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEST CHESTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "610-793-1999",
+          "postal_code": "193826791",
+          "state": "PA",
+          "telephone_number": "410-581-1777"
+        },
+        {
+          "address_1": "20 CROSSROADS DR",
+          "address_2": "SUITE 11",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWINGS MILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "610-793-1999",
+          "postal_code": "211175419",
+          "state": "MD",
+          "telephone_number": "410-581-1777"
+        }
+      ],
+      "basic": {
+        "credential": "OMD(MD inChina)",
+        "enumeration_date": "2006-11-14",
+        "first_name": "WANYING",
+        "last_name": "HOU",
+        "last_updated": "2007-07-08",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1163521869000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183948576000",
+      "number": "1821160227",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "U643",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "AK739",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

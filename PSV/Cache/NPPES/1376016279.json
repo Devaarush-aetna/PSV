@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "989 GOVERNORS LN STE 240",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405131175",
+          "state": "KY",
+          "telephone_number": "859-457-7505"
+        },
+        {
+          "address_1": "665 EMMETT CREEK LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405156070",
+          "state": "KY",
+          "telephone_number": "859-948-7484"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-04-16",
+        "credential": "LPCC",
+        "enumeration_date": "2019-01-03",
+        "first_name": "ANNA",
+        "last_name": "MERRITT",
+        "last_updated": "2024-04-16",
+        "middle_name": "B",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1546549781000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1713275806000",
+      "number": "1376016279",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "242634",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "273618",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

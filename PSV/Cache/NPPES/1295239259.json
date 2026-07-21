@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "103 C MICHAEL DAVENPORT BLVD STE 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FRANKFORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "406014492",
+          "state": "KY",
+          "telephone_number": "502-352-2510"
+        },
+        {
+          "address_1": "2121 NICHOLASVILLE RD APT 1006",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405032511",
+          "state": "KY",
+          "telephone_number": "951-318-5581"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-01",
+        "credential": "DDS",
+        "enumeration_date": "2018-03-22",
+        "first_name": "KABIR",
+        "last_name": "SINGH",
+        "last_updated": "2025-10-01",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1521763045000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759355802000",
+      "number": "1295239259",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1500 S MAIN ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT WORTH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "761044917",
+          "state": "TX",
+          "telephone_number": "817-702-1173"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "122300000X",
+          "desc": "Dentist",
+          "license": "10234",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "204E00000X",
+          "desc": "Oral & Maxillofacial Surgery",
+          "license": "10234",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

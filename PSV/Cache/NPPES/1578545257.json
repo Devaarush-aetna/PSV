@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 618347",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ORLANDO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "407-445-9365",
+          "postal_code": "328618347",
+          "state": "FL",
+          "telephone_number": "407-445-9545"
+        },
+        {
+          "address_1": "1507 S HIAWASSEE RD",
+          "address_2": "SUITE 107",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ORLANDO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "407-445-9365",
+          "postal_code": "328355718",
+          "state": "FL",
+          "telephone_number": "407-445-9545"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2005-11-17",
+        "first_name": "KRINA",
+        "last_name": "SHAH",
+        "last_updated": "2012-02-22",
+        "middle_name": "A",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1132255575000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "265365100",
+          "issuer": null,
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1329939303000",
+      "number": "1578545257",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "KRINA",
+          "last_name": "SHAH",
+          "middle_name": "ARUNKUMAR",
+          "prefix": "--",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "ME84131",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

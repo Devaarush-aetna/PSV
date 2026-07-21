@@ -56,6 +56,38 @@ class PlannedAttempt:
     driving_field: Optional[str] = None  # set for NPPES retry rungs
 
 
+def _is_temp_permit(license_id: str) -> bool:
+    """True when the license ID is a known temporary permit that will never match
+    the board's permanent license number.
+
+    KY Medical Board: "TP" prefix (e.g. TP318, TP768) = Kentucky Temporary Permit.
+    The board stores permanent license numbers (e.g. 59975); TP numbers only appear
+    in the issuing agency's internal records, not in the public verification database.
+    For these, name-match alone is sufficient to verify.
+    """
+    return bool(license_id) and license_id.upper().startswith("TP") and license_id[2:].isdigit()
+
+
+def _apply_dash_format(digits: str, fmt: str) -> str:
+    """Apply dash-format spec to a digit string.
+
+    fmt is "N1-N2-N3..." where Ni are group lengths summing to len(digits).
+    Example: _apply_dash_format("5383371052", "2-5-3") → "53-83371-052".
+    Returns empty string if digits length doesn't match the spec.
+    """
+    try:
+        groups = [int(n) for n in fmt.split("-")]
+    except ValueError:
+        return ""
+    if sum(groups) != len(digits):
+        return ""
+    parts, pos = [], 0
+    for g in groups:
+        parts.append(digits[pos: pos + g])
+        pos += g
+    return "-".join(parts)
+
+
 @dataclass
 class LadderResult:
     status: str             # "Pass" | "EscalateAi" | "Fail"
@@ -82,6 +114,9 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         query_str = lic or ""
     elif mode == "license_numeric_only":
         query_str = re.sub(r"\D", "", lic or "")
+    elif mode == "license_formatted":
+        # query_str is set by caller via override_fields["license_id"] already reformatted
+        query_str = lic or ""
     elif mode == "first_name":
         query_str = first or ""
     elif mode == "last_name":
@@ -92,7 +127,7 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         query_str = lic or last or first or ""
 
     # Synthetic modes — engine sees canonical mode name
-    if mode == "license_numeric_only":
+    if mode in ("license_numeric_only", "license_formatted"):
         actual_mode = "license_number"
     elif mode == "first_and_last_typed":
         actual_mode = "first_and_last"
@@ -135,6 +170,15 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
             if not pt_override:
                 continue  # mapping missing at runtime — skip gracefully
 
+        # Temp-permit licenses (e.g. TP318) must NOT be stripped to bare digits ("318")
+        # for license_numeric_only — that produces hundreds of unrelated hits on large boards
+        # (e.g. KY_MEDBOARD returns 73 records for "318"), which contaminates the weight profile
+        # and makes the disambiguator treat this as a license-present context.
+        if mode == "license_numeric_only" and _is_temp_permit(
+            master_row.get("license_id") or ""
+        ):
+            continue
+
         query, norm = _build_query(mode, master_row, provider_type_override=pt_override,
                                    license_type_override=license_type)
         if not norm:
@@ -146,6 +190,34 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
             continue
         seen_norms.add(key)
         plans.append(PlannedAttempt(mode=mode, query=query, normalized_query=norm))
+
+    # Synthetic: license_formatted — try dashed format when board specifies license_dash_format
+    # and the raw license is all-digits (e.g. "5383371052" → "53-83371-052" for KSBN).
+    # Inserted right after license_numeric_only (before name-based modes) so that all
+    # license attempts precede the name fallback.
+    dash_fmt = getattr(config.search, "license_dash_format", None)
+    if dash_fmt and "license_number" in capability.supported_modes(config):
+        raw_lic = master_row.get("license_id") or ""
+        digits = re.sub(r"\D", "", raw_lic)
+        if digits and digits == raw_lic:  # only for pure-digit inputs (no prefix/dashes already)
+            formatted = _apply_dash_format(digits, dash_fmt)
+            if formatted and formatted != raw_lic:
+                override = {"license_id": formatted}
+                fq, fnorm = _build_query("license_formatted", master_row, override,
+                                         license_type_override=license_type)
+                fkey = ("license_formatted", fnorm)
+                if fkey not in seen_norms:
+                    seen_norms.add(fkey)
+                    # Insert after the last license mode, before the first name mode
+                    last_lic_idx = max(
+                        (i for i, p in enumerate(plans)
+                         if p.mode in ("license_number", "license_numeric_only")),
+                        default=-1,
+                    )
+                    plans.insert(last_lic_idx + 1,
+                                 PlannedAttempt(mode="license_formatted", query=fq,
+                                                normalized_query=fnorm))
+
     return plans
 
 
@@ -315,7 +387,7 @@ async def run_ladder(
                         )
                     bd = disamb.score_candidate(
                         chosen, master_row,
-                        weight_profile=_pick_profile(trace),
+                        weight_profile=_pick_profile(trace, master_row),
                     )
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                     trace.final_outcome = "Pass"
@@ -398,7 +470,7 @@ async def run_ladder(
                         chosen = narrowed_pool[0]
                         bd = disamb.score_candidate(
                             chosen, master_row,
-                            weight_profile=_pick_profile(trace),
+                            weight_profile=_pick_profile(trace, master_row),
                         )
                         attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                         trace.final_outcome = "Pass"
@@ -502,9 +574,15 @@ def _skipped_attempt(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
     )
 
 
-def _pick_profile(trace: RowTrace) -> str:
+def _pick_profile(trace: RowTrace, master_row: Optional[dict] = None) -> str:
     """Choose disambiguator weight profile based on whether license-based
-    attempts have returned any records yet."""
+    attempts have returned any records yet.
+
+    Temp-permit licenses (TP prefix) always use name_only: the board only
+    stores the permanent license number, so license matching is meaningless.
+    """
+    if master_row and _is_temp_permit(master_row.get("license_id") or ""):
+        return "name_only"
     return "license_present" if trace.license_attempts_returned_records() else "name_only"
 
 
@@ -512,7 +590,7 @@ async def _evaluate_records(records: list, master_row: dict, trace: RowTrace
                             ) -> disamb.DisambiguationVerdict:
     if not records:
         return disamb.DisambiguationVerdict(status="no_gate_pass")
-    profile = _pick_profile(trace)
+    profile = _pick_profile(trace, master_row)
     return disamb.evaluate(records, master_row, weight_profile=profile)
 
 

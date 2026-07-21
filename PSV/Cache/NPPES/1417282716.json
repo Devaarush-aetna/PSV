@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "187 THOMAS JOHNSON DR",
+          "address_2": "SUITE 6",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "301-663-1229",
+          "postal_code": "217024503",
+          "state": "MD",
+          "telephone_number": "301-663-1157"
+        },
+        {
+          "address_1": "187 THOMAS JOHNSON DR",
+          "address_2": "SUITE 6",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "301-663-1229",
+          "postal_code": "217024503",
+          "state": "MD",
+          "telephone_number": "301-663-1157"
+        }
+      ],
+      "basic": {
+        "credential": "PT",
+        "enumeration_date": "2009-10-05",
+        "first_name": "KATHLEEN",
+        "last_name": "KOBER",
+        "last_updated": "2012-02-24",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1254777515000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1330134573000",
+      "number": "1417282716",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "KATHLEEN",
+          "last_name": "CHILDS",
+          "prefix": "--",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "23078",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

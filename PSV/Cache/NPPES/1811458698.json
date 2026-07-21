@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "427 US 31W BYP STE 204",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-796-6860",
+          "postal_code": "421011703",
+          "state": "KY",
+          "telephone_number": "270-721-7166"
+        },
+        {
+          "address_1": "PO BOX 2697",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BOWLING GREEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-745-1156",
+          "postal_code": "421027697",
+          "state": "KY",
+          "telephone_number": "270-745-1000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-09-21",
+        "credential": "DO",
+        "enumeration_date": "2019-03-26",
+        "first_name": "LAIKEN",
+        "last_name": "HAYES",
+        "last_updated": "2022-09-21",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1553622389000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1663797851000",
+      "number": "1811458698",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "05341",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

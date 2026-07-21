@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 1680",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HUNTINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "257171680",
+          "state": "WV"
+        },
+        {
+          "address_1": "112 S VINSON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "304-638-3523",
+          "postal_code": "412301155",
+          "state": "KY",
+          "telephone_number": "606-638-4731"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-24",
+        "credential": "OD",
+        "enumeration_date": "2025-07-08",
+        "first_name": "HANNAH",
+        "last_name": "STACY",
+        "last_updated": "2025-07-08",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1752012002000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752012002000",
+      "number": "1629968870",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "PENDING",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

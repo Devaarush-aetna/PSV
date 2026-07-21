@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "71 MEDICAL LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WHITLEY CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-376-7216",
+          "postal_code": "426534216",
+          "state": "KY",
+          "telephone_number": "606-376-7212"
+        },
+        {
+          "address_1": "71 MEDICAL LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WHITLEY CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-376-7216",
+          "postal_code": "426534216",
+          "state": "KY",
+          "telephone_number": "606-376-7212"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-06",
+        "enumeration_date": "2025-05-06",
+        "first_name": "TABITHA",
+        "last_name": "COX",
+        "last_updated": "2025-05-06",
+        "middle_name": "LAUREN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1746571202000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1746571202000",
+      "number": "1386433100",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "4038836",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

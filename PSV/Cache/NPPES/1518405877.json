@@ -1,0 +1,160 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1449 S MICHIGAN AVE STE 13127",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-604-6506",
+          "postal_code": "606052810",
+          "state": "IL",
+          "telephone_number": "954-686-2020"
+        },
+        {
+          "address_1": "1449 S MICHIGAN AVE STE 13127",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-604-6506",
+          "postal_code": "606052810",
+          "state": "IL",
+          "telephone_number": "954-686-2020"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-23",
+        "credential": "PhD, NCC, LPCC, LSOE",
+        "enumeration_date": "2017-02-07",
+        "first_name": "CARNELL",
+        "last_name": "COLEBROOK-CLAUDE",
+        "last_updated": "2025-07-23",
+        "middle_name": "A.",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1486499951000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753277271000",
+      "number": "1518405877",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103TF0000X",
+          "desc": "Psychologist, Family",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TF0200X",
+          "desc": "Psychologist, Forensic",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TH0004X",
+          "desc": "Psychologist, Health",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TM1800X",
+          "desc": "Psychologist, Intellectual & Developmental Disabilities",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TP0814X",
+          "desc": "Psychologist, Psychoanalysis",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TP2701X",
+          "desc": "Psychologist, Group Psychotherapy",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TA0700X",
+          "desc": "Psychologist, Adult Development & Aging",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TB0200X",
+          "desc": "Psychologist, Cognitive & Behavioral",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TC2200X",
+          "desc": "Psychologist, Clinical Child & Adolescent",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103TE1100X",
+          "desc": "Psychologist, Exercise & Sports",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        },
+        {
+          "code": "103G00000X",
+          "desc": "Clinical Neuropsychologist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

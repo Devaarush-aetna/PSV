@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "302 US HIGHWAY 68 W",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BENTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "42025",
+          "state": "KY",
+          "telephone_number": "270-252-7600"
+        },
+        {
+          "address_1": "302 US HIGHWAY 68 W",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BENTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "42025",
+          "state": "KY",
+          "telephone_number": "270-252-7600"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-08",
+        "credential": "MSOT, OTR/L",
+        "enumeration_date": "2022-08-11",
+        "first_name": "LEVI",
+        "last_name": "CROSSLEY",
+        "last_updated": "2022-08-11",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1660252037000",
+      "endpoints": [
+        {
+          "address_1": "302 US Highway 68 W",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Benton",
+          "contentType": "CSV",
+          "contentTypeDescription": "CSV",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "jbrewer@proptky.com",
+          "endpointDescription": "email",
+          "endpointType": "OTHERS",
+          "endpointTypeDescription": "Other URL",
+          "postal_code": "42025",
+          "state": "KY",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1660252037000",
+      "number": "1144958661",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": "273391",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

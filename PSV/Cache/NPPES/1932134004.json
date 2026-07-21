@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 911148",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-276-2795",
+          "postal_code": "405911148",
+          "state": "KY",
+          "telephone_number": "859-278-2121"
+        },
+        {
+          "address_1": "118 S MAIN ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DRY RIDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-824-7077",
+          "postal_code": "410359438",
+          "state": "KY",
+          "telephone_number": "859-824-7007"
+        }
+      ],
+      "basic": {
+        "credential": "ST",
+        "enumeration_date": "2006-07-11",
+        "first_name": "KELLY",
+        "last_name": "TAYLOR",
+        "last_updated": "2007-07-08",
+        "middle_name": "JOHNS",
+        "name_prefix": "Ms.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1152634114000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1932134004",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "2477",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10777 BARKLEY ST STE 120",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-284-0422",
+          "postal_code": "662111162",
+          "state": "KS",
+          "telephone_number": "913-204-0582"
+        },
+        {
+          "address_1": "10777 BARKLEY ST STE 120",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-284-0422",
+          "postal_code": "662111162",
+          "state": "KS",
+          "telephone_number": "913-204-0582"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-31",
+        "enumeration_date": "2014-10-01",
+        "first_name": "MATTHEW",
+        "last_name": "ARMSTRONG",
+        "last_updated": "2025-12-31",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1412182854000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767216583000",
+      "number": "1487057741",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "110 NW BARRY RD STE 210",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-284-0422",
+          "postal_code": "641552765",
+          "state": "MO",
+          "telephone_number": "913-204-0582"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "2567",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

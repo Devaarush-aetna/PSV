@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "100 TECHNOLOGY DR STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BROOMFIELD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "800213414",
+          "state": "CO",
+          "telephone_number": "720-432-4419"
+        },
+        {
+          "address_1": "4401 COLLEGE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCK SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "829013507",
+          "state": "WY",
+          "telephone_number": "307-352-8900"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-02",
+        "credential": "M.D.",
+        "enumeration_date": "2006-09-01",
+        "first_name": "BRYAN",
+        "last_name": "SCHEER",
+        "last_updated": "2026-06-02",
+        "middle_name": "ERIC",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1157089813000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "118442300",
+          "issuer": null,
+          "state": "WY"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "P00269170",
+          "issuer": "RR Medicare",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1780408756000",
+      "number": "1457463655",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "21200",
+          "primary": false,
+          "state": "OK",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "22469",
+          "primary": false,
+          "state": "NE",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207X00000X",
+          "desc": "Orthopaedic Surgery",
+          "license": "8173A",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

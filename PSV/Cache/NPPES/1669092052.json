@@ -1,0 +1,67 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4170 S DECATUR BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891035861",
+          "state": "NV",
+          "telephone_number": "702-659-8827"
+        },
+        {
+          "address_1": "4170 S DECATUR BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891035861",
+          "state": "NV",
+          "telephone_number": "702-659-8827"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-03-02",
+        "enumeration_date": "2020-04-26",
+        "first_name": "JARITZA",
+        "last_name": "SIERRA",
+        "last_updated": "2021-03-02",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1587894584000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1614717394000",
+      "number": "1669092052",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "102L00000X",
+          "desc": "Psychoanalyst",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

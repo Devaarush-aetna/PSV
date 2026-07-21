@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "236 W MAIN ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MOUNT STERLING",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-274-4312",
+          "postal_code": "403531348",
+          "state": "KY",
+          "telephone_number": "859-404-7686"
+        },
+        {
+          "address_1": "103 COMMONWEALTH DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MOUNT STERLING",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-497-0044",
+          "postal_code": "403539644",
+          "state": "KY",
+          "telephone_number": "859-498-7716"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-22",
+        "credential": "LCSW",
+        "enumeration_date": "2023-06-01",
+        "first_name": "JENNIFER",
+        "last_name": "TRIMBLE",
+        "last_updated": "2025-07-22",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1685642438000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753193157000",
+      "number": "1558054809",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "LCSW00001052",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

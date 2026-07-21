@@ -1,0 +1,123 @@
+identity:
+  source_id: KY_PHARMACY
+  board_name: Kentucky Board of Pharmacy
+  state: KY
+  country: US
+  profession_codes: [RPh, PharmD, PH, PM]
+  # Aithent portal at kybopp.aithent.com.
+  # BLOCKED: McAfee Web Gateway returns 502 from corporate network without proxy.
+  # With PROXY=proxy:9119, the proxy bypasses McAfee and the portal loads.
+  # Aithent portal pattern: see NV_DIETITIAN for reference implementation.
+  # Search inputs: Last Name / License Number (text inputs).
+  # Results: table with licensee name, license number, type, status, expiry.
+  base_url: "https://kybopp.aithent.com/"
+  archetype: classic_html_form
+
+# Routing: KY,PH,KY_PHARMACY and KY,PM,KY_PHARMACY in board_routing_master.csv.
+# pharmacy.ky.gov also returns 403 from corporate — use kybopp.aithent.com only.
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name*='License'], input[id*='License'], input[placeholder*='license' i]"
+      button_selector: "input[type='submit'], button[type='submit']"
+    - mode: last_name
+      input_selector: "input[name*='LastName'], input[name*='last'], input[id*='last' i], input[placeholder*='last' i]"
+      button_selector: "input[type='submit'], button[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name*='LastName'], input[id*='last' i]"
+    search_button:
+      selector: "input[type='submit'], button[type='submit']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "no matching"
+      - "0 result"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Name": full_name
+    "License Number": license_number
+    "License Type": license_type
+    "Status": status
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/KY_PHARMACY/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-06-30"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  skip_reason: "selectors_unverified: proxy bypasses McAfee (portal loads with PROXY=proxy:9119) but Aithent form selectors need live verification — input names on kybopp.aithent.com differ from generic guesses. Run headed with --force-skip to inspect actual form. Confirmed 2026-07-01."

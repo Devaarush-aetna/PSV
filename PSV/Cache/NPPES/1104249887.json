@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9183 W FLAMINGO RD STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891476464",
+          "state": "NV"
+        },
+        {
+          "address_1": "9183 W FLAMINGO RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891476464",
+          "state": "NV",
+          "telephone_number": "702-650-6508"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-07",
+        "enumeration_date": "2014-01-30",
+        "first_name": "AMBER",
+        "last_name": "HASTINGS",
+        "last_updated": "2025-10-07",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1391121301000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759886790000",
+      "number": "1104249887",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "AMBER",
+          "last_name": "YOUNG",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "206151",
+          "primary": false,
+          "state": "TX",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "01358",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

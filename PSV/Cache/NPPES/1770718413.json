@@ -1,0 +1,76 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "601 W MOANA LN STE 9",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-201-9205",
+          "postal_code": "895094959",
+          "state": "NV",
+          "telephone_number": "775-287-8270"
+        },
+        {
+          "address_1": "601 W MOANA LN STE 9",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-201-9205",
+          "postal_code": "895094959",
+          "state": "NV",
+          "telephone_number": "775-287-8270"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-05-19",
+        "credential": "LCSW",
+        "enumeration_date": "2009-05-26",
+        "first_name": "CATINA",
+        "last_name": "CAMPBELL",
+        "last_updated": "2021-05-19",
+        "middle_name": "A.",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1243356183000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1621437321000",
+      "number": "1770718413",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "975 KIRMAN AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895020993",
+          "state": "NV",
+          "telephone_number": "775-786-7200"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "7982-C",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

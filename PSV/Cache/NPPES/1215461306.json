@@ -1,0 +1,107 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6050 W 20TH AVE FL 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HIALEAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "786-584-5050",
+          "postal_code": "330162605",
+          "state": "FL",
+          "telephone_number": "786-584-5555"
+        },
+        {
+          "address_1": "6050 W 20TH AVE FL 3",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HIALEAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "786-584-5050",
+          "postal_code": "330162605",
+          "state": "FL",
+          "telephone_number": "786-584-5555"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-05",
+        "enumeration_date": "2017-04-14",
+        "first_name": "NAYMA",
+        "last_name": "CASAMAYOR",
+        "last_updated": "2024-06-05",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1492198084000",
+      "endpoints": [
+        {
+          "address_1": "6050 W 20th Ave Fl 3",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Hialeah",
+          "contentType": "CSV",
+          "contentTypeDescription": "CSV",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "nayma.casamayorcastillo@msmc.com",
+          "endpointDescription": "bussiness email address",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "330162605",
+          "state": "FL",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        },
+        {
+          "address_1": "6050 W 20th Ave Fl 3",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Hialeah",
+          "contentType": "CSV",
+          "contentTypeDescription": "CSV",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "nayma.casamayorcastillo@msmc.com",
+          "endpointDescription": "email",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "330162605",
+          "state": "FL",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1717617687000",
+      "number": "1215461306",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "ME145662",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

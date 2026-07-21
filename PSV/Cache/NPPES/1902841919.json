@@ -1,0 +1,271 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 844658",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DALLAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "752844658",
+          "state": "TX",
+          "telephone_number": "254-724-2111"
+        },
+        {
+          "address_1": "2401 S 31ST ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TEMPLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "765088679",
+          "state": "TX",
+          "telephone_number": "254-724-2111"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-15",
+        "credential": "PA-C",
+        "enumeration_date": "2006-06-16",
+        "first_name": "THERESA",
+        "last_name": "RAND",
+        "last_updated": "2026-04-15",
+        "middle_name": "ELAINE",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1150505658000",
+      "endpoints": [
+        {
+          "address_1": "2401 S 31st St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Temple",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "trand587899@direct.sw.org",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "765088679",
+          "state": "TX",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "0110004634",
+          "issuer": "Licence",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1902841919",
+          "issuer": "NPI",
+          "state": "VA"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1902841919",
+          "issuer": "Blue Cross Blue Shield",
+          "state": "TX"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "196968",
+          "issuer": "ANTHEM",
+          "state": "MO"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "200043740A",
+          "issuer": null,
+          "state": "OK"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "200301770A",
+          "issuer": null,
+          "state": "KS"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "217157101",
+          "issuer": null,
+          "state": "TX"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "217157102",
+          "issuer": null,
+          "state": "TX"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "P00175628",
+          "issuer": "RR MEDICARE",
+          "state": null
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "P01078448",
+          "issuer": "RR Medicare",
+          "state": "TX"
+        }
+      ],
+      "last_updated_epoch": "1776264692000",
+      "number": "1902841919",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2006 HEALTH CAMPUS DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HARRISONBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "540-689-5556",
+          "postal_code": "228018679",
+          "state": "VA",
+          "telephone_number": "540-689-5555"
+        },
+        {
+          "address_1": "2604 SAINT MICHAEL DR STE 425",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TEXARKANA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "755032378",
+          "state": "TX",
+          "telephone_number": "903-614-5600"
+        },
+        {
+          "address_1": "1300 28TH ST S FL 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GREAT FALLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "594055296",
+          "state": "MT",
+          "telephone_number": "406-455-5000"
+        },
+        {
+          "address_1": "611 E DOUGLAS RD STE 208",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MISHAWAKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "465451465",
+          "state": "IN",
+          "telephone_number": "574-335-6000"
+        },
+        {
+          "address_1": "600 GRESHAM DR STE 8600",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORFOLK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "757-388-6006",
+          "postal_code": "235071904",
+          "state": "VA",
+          "telephone_number": "757-388-6005"
+        },
+        {
+          "address_1": "600 GRESHAM DR STE 8630B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORFOLK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "757-275-9998",
+          "postal_code": "235071904",
+          "state": "VA",
+          "telephone_number": "757-388-6115"
+        },
+        {
+          "address_1": "844 KEMPSVILLE RD STE 212",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORFOLK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "757-275-9913",
+          "postal_code": "235023927",
+          "state": "VA",
+          "telephone_number": "757-261-5977"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "49494",
+          "primary": false,
+          "state": "MT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA2364",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "TL469",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "0110004634",
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA00448",
+          "primary": true,
+          "state": "TX",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "10002369A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

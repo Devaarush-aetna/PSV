@@ -1,0 +1,76 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1890 STAR SHOOT PKWY STE 190",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-263-2787",
+          "postal_code": "405094569",
+          "state": "KY",
+          "telephone_number": "859-263-2774"
+        },
+        {
+          "address_1": "1890 STAR SHOOT PKWY STE 190",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-263-2787",
+          "postal_code": "405094569",
+          "state": "KY",
+          "telephone_number": "859-263-2774"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-04-19",
+        "credential": "DC",
+        "enumeration_date": "2022-12-28",
+        "first_name": "JONNA",
+        "last_name": "ISAAC",
+        "last_updated": "2023-04-19",
+        "middle_name": "DAYNE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1672272706000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1681906847000",
+      "number": "1124731799",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1618 MIDLAND TRL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SHELBYVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-520-4446",
+          "postal_code": "400651639",
+          "state": "KY",
+          "telephone_number": "502-520-4445"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "282073",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

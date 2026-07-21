@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "900 VILLAGE SQUARE XING STE 290",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PALM BEACH GARDENS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334104552",
+          "state": "FL"
+        },
+        {
+          "address_1": "21550 ANGELA LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VENICE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "941-493-1490",
+          "postal_code": "342932017",
+          "state": "FL",
+          "telephone_number": "941-493-7400"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-11-30",
+        "credential": "M.D.",
+        "enumeration_date": "2016-06-23",
+        "first_name": "GABRIEL",
+        "last_name": "YOUSSEF",
+        "last_updated": "2023-11-30",
+        "middle_name": "M.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1466696292000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1701358393000",
+      "number": "1174974950",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "ME146577",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1500 E TROPICANA AVE STE 118",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-995-6509",
+          "postal_code": "891196516",
+          "state": "NV",
+          "telephone_number": "775-682-0020"
+        },
+        {
+          "address_1": "298 CAPE SEVILLE PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890155453",
+          "state": "NV",
+          "telephone_number": "702-708-0535"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-05-12",
+        "credential": "APRN, FNP-BC",
+        "enumeration_date": "2025-03-17",
+        "first_name": "LEE NEIL",
+        "last_name": "DE LA CRUZ",
+        "last_updated": "2026-05-12",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1742191513000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1778592466000",
+      "number": "1972303287",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "888083",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

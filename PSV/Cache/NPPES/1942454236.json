@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2 UTOPIAN PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "AIRMONT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "109017715",
+          "state": "NY",
+          "telephone_number": "845-357-2106"
+        },
+        {
+          "address_1": "2 UTOPIAN PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "AIRMONT",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "109017715",
+          "state": "NY",
+          "telephone_number": "845-357-2106"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-05",
+        "credential": "PT",
+        "enumeration_date": "2008-11-12",
+        "first_name": "TAMMY",
+        "last_name": "KANTROWITZ",
+        "last_updated": "2026-01-05",
+        "middle_name": "LIBOWSKY",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1226542726000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767645291000",
+      "number": "1942454236",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2251P0200X",
+          "desc": "Physical Therapist, Pediatrics",
+          "license": "PT39324",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "222Q00000X",
+          "desc": "Developmental Therapist",
+          "license": null,
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

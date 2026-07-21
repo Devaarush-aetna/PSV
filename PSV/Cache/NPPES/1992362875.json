@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1293 PAGE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RALEIGH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "276037334",
+          "state": "NC",
+          "telephone_number": "919-801-8965"
+        },
+        {
+          "address_1": "1293 PAGE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RALEIGH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "276037334",
+          "state": "NC",
+          "telephone_number": "919-801-8965"
+        }
+      ],
+      "basic": {
+        "credential": "MSW, CSOTP",
+        "enumeration_date": "2019-05-25",
+        "first_name": "KEVIN",
+        "last_name": "SMITH",
+        "last_updated": "2019-05-25",
+        "middle_name": "GENE",
+        "name_prefix": "Mr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1558807597000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1558807597000",
+      "number": "1992362875",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "P013478",
+          "primary": true,
+          "state": "NC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

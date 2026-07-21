@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "91-2141 FORT WEAVER RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "EWA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "967061993",
+          "state": "HI",
+          "telephone_number": "401-684-2564"
+        },
+        {
+          "address_1": "91-2141 FORT WEAVER RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EWA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "967061993",
+          "state": "HI",
+          "telephone_number": "401-684-2564"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-06",
+        "credential": "D.O.",
+        "enumeration_date": "2015-04-07",
+        "first_name": "CHIHUI",
+        "last_name": "YUAN",
+        "last_updated": "2026-03-06",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1428437148000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772830986000",
+      "number": "1922494848",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "UO5175",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "DOS-1964",
+          "primary": true,
+          "state": "HI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

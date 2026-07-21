@@ -134,7 +134,7 @@ transport:
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
   proxy:
-    enabled: false
+    enabled: true
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0"
 
 evidence:
@@ -157,4 +157,4 @@ smoke_test:
     min_records: 1
     full_name_contains: "Smith"
   skip: true
-  skip_reason: "thentiacloud_api_blocked_corporate: odohcs.portalus.thentiacloud.net page loads without proxy but Thentia search XHR API calls time out from corporate network. Works from residential/non-corporate network. Confirmed 2026-06-18."
+  skip_reason: "thentiacloud_api_blocked_corporate: odohcs.portalus.thentiacloud.net Thentia search XHR API calls timeout from corporate network even with proxy (confirmed 2026-07-01 with PROXY=proxy:9119, 120s timeout). Works from residential/non-corporate network only."

@@ -1,0 +1,114 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8150 SW HIGHWAY 200",
+          "address_2": "SUITE 400",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-861-1659",
+          "postal_code": "344819685",
+          "state": "FL",
+          "telephone_number": "352-861-1667"
+        },
+        {
+          "address_1": "8150 SW HIGHWAY 200",
+          "address_2": "SUITE 400",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-861-1659",
+          "postal_code": "344819685",
+          "state": "FL",
+          "telephone_number": "352-861-1667"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-10-22",
+        "credential": "MD",
+        "enumeration_date": "2009-12-03",
+        "first_name": "NIDHI",
+        "last_name": "KAUL",
+        "last_updated": "2022-01-27",
+        "name_prefix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1259855023000",
+      "endpoints": [
+        {
+          "address_1": "8150 SW Highway 200",
+          "address_2": "SUITE 400",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Ocala",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "NIDHI.KAUL@hca5.eclinicaldirectplus.com",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "344819685",
+          "state": "FL",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "004236130",
+          "issuer": null,
+          "state": "CT"
+        }
+      ],
+      "last_updated_epoch": "1643315584000",
+      "number": "1073841029",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "48845",
+          "primary": false,
+          "state": "CT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207QA0000X",
+          "desc": "Family Medicine, Adolescent Medicine",
+          "license": "48845",
+          "primary": false,
+          "state": "CT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207QA0505X",
+          "desc": "Family Medicine, Adult Medicine",
+          "license": "48845",
+          "primary": false,
+          "state": "CT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "ME117798",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

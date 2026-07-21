@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2400 N TENAYA WAY STE 301",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891280645",
+          "state": "NV",
+          "telephone_number": "725-222-0263"
+        },
+        {
+          "address_1": "2400 N TENAYA WAY STE 301",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "725-262-5630",
+          "postal_code": "891280645",
+          "state": "NV",
+          "telephone_number": "725-222-0263"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-24",
+        "credential": "LCSW",
+        "enumeration_date": "2019-07-24",
+        "first_name": "ALICIA",
+        "last_name": "RUNYAN",
+        "last_updated": "2025-06-24",
+        "middle_name": "ANTOINETTE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1563990324000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750785369000",
+      "number": "1821641242",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "9752-C",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

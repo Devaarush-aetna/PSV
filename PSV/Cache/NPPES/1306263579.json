@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1294 S JONES BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-877-4536",
+          "postal_code": "891464852",
+          "state": "NV",
+          "telephone_number": "702-877-1887"
+        },
+        {
+          "address_1": "1294 S JONES BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-877-4536",
+          "postal_code": "891464852",
+          "state": "NV",
+          "telephone_number": "702-877-1887"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-02-02",
+        "credential": "DO",
+        "enumeration_date": "2014-03-25",
+        "first_name": "JAMES",
+        "last_name": "WELTMAN",
+        "last_updated": "2024-02-05",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1395786260000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1707149101000",
+      "number": "1306263579",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "620 SHADOW LANE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-388-8431",
+          "postal_code": "891064194",
+          "state": "NV",
+          "telephone_number": "702-388-8436"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "SL1091",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+identity:
+  source_id: IBCLC_COMMISSION
+  board_name: International Board of Lactation Consultant Examiners — Public Registry
+  state: ALL
+  country: US
+  profession_codes: [IBCLC, LC]
+  # 2026-07-01: The ibclc-commission.org/public-registry/ page embeds the actual
+  # verification form in an iframe from iblce.useclarus.com (Clarus credential mgmt platform).
+  # Pointing directly to the iFrame URL so the engine interacts with the form natively.
+  # Credential Number format: L-##### (case sensitive, exact match required).
+  base_url: "https://iblce.useclarus.com/view/anonpages/c/credential_results"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='name'], input[placeholder*='name' i], input[id*='name' i]"
+      fallback_selectors:
+        - "input[type='text']"
+    search_button:
+      selector: "button[type='submit'], input[type='submit'], button:has-text('Search'), button:has-text('Find')"
+      fallback_selectors:
+        - "button[type='button']:has-text('Search')"
+        - "input[value='Search']"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no matching records"
+      - "no records found"
+      - "0 records"
+      - "no results"
+      - "no results found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: full_name
+      1: license_number
+      2: status
+      3: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "Name": full_name
+    "Certification Number": license_number
+    "Credential Number": license_number
+    "Status": status
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "Current": active
+    "current": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/IBCLC_COMMISSION/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-01"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  skip_reason: "clarus_iframe_selector_unverified: Verification form is in an iframe at iblce.useclarus.com/view/anonpages/c/credential_results. base_url updated to point directly to the Clarus URL but selectors need live-run verification before unblocking."

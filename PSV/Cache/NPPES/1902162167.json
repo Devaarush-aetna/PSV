@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3504 W CUMBERLAND AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MIDDLESBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "40965",
+          "state": "KY",
+          "telephone_number": "606-248-0737"
+        },
+        {
+          "address_1": "2333 BIDDLE AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WYANDOTTE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "481924668",
+          "state": "MI",
+          "telephone_number": "606-269-7525"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-09-28",
+        "credential": "DO",
+        "enumeration_date": "2012-04-02",
+        "first_name": "AMBER",
+        "last_name": "PEACE",
+        "last_updated": "2022-09-28",
+        "middle_name": "CRAIG",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1333393544000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1664376453000",
+      "number": "1902162167",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2333 BIDDLE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WYANDOTTE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "481924668",
+          "state": "MI",
+          "telephone_number": "606-269-7525"
+        },
+        {
+          "address_1": "80 HOSPITAL DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BARBOURVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-545-4469",
+          "postal_code": "409067363",
+          "state": "KY",
+          "telephone_number": "606-545-4460"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "TP159",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "04227",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

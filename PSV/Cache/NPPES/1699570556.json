@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1555 NE RICE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LEES SUMMIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-347-3069",
+          "postal_code": "640865849",
+          "state": "MO",
+          "telephone_number": "816-966-0900"
+        },
+        {
+          "address_1": "7001 BLUE RIDGE BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RAYTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-347-3029",
+          "postal_code": "641335629",
+          "state": "MO",
+          "telephone_number": "816-966-0900"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-18",
+        "credential": "APRN",
+        "enumeration_date": "2025-02-14",
+        "first_name": "CASEY",
+        "last_name": "COOPER",
+        "last_updated": "2025-06-18",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1739585402000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750297442000",
+      "number": "1699570556",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "53-84291-042",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "2025000991",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

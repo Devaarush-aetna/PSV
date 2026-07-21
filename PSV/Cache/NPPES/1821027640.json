@@ -1,0 +1,86 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "877 JEFFERSON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MEMPHIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "901-302-2067",
+          "postal_code": "381032807",
+          "state": "TN",
+          "telephone_number": "901-545-7514"
+        },
+        {
+          "address_1": "PO BOX 64592",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-328-0929",
+          "postal_code": "212644592",
+          "state": "MD",
+          "telephone_number": "410-328-5555"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-12-13",
+        "credential": "M.D.",
+        "enumeration_date": "2006-07-02",
+        "first_name": "XIANFENG",
+        "last_name": "ZHAO",
+        "last_updated": "2023-12-13",
+        "middle_name": "F",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1151887508000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1702504133000",
+      "number": "1821027640",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "22 S GREENE ST",
+          "address_2": "NBW73",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BALTIMORE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-328-0929",
+          "postal_code": "212011544",
+          "state": "MD",
+          "telephone_number": "410-328-5514"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207ZP0101X",
+          "desc": "Pathology, Anatomic Pathology",
+          "license": "D0063352",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207ZP0102X",
+          "desc": "Pathology, Anatomic Pathology & Clinical Pathology",
+          "license": "68660",
+          "primary": true,
+          "state": "TN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1901 CAMPUS PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-489-5750",
+          "postal_code": "402992308",
+          "state": "KY",
+          "telephone_number": "502-253-4924"
+        },
+        {
+          "address_1": "10216 TAYLORSVILLE RD STE 500",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-928-1051",
+          "postal_code": "402993617",
+          "state": "KY",
+          "telephone_number": "502-928-1050"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-02",
+        "credential": "DO",
+        "enumeration_date": "2022-03-28",
+        "first_name": "ALISON",
+        "last_name": "SHUFF BOSWELL",
+        "last_updated": "2025-07-02",
+        "middle_name": "FAYTHE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1648510962000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751463678000",
+      "number": "1134879398",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "201 ABRAHAM FLEXNER WAY STE 690",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402023841",
+          "state": "KY",
+          "telephone_number": "502-852-0132"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "06126",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

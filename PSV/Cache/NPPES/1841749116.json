@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "800 STONE CREEK PKWY STE 7",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-245-2034",
+          "postal_code": "402235366",
+          "state": "KY",
+          "telephone_number": "502-253-1293"
+        },
+        {
+          "address_1": "800 STONE CREEK PKWY STE 7",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-245-2034",
+          "postal_code": "402235366",
+          "state": "KY",
+          "telephone_number": "502-253-1293"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-12",
+        "enumeration_date": "2016-09-28",
+        "first_name": "HOLLY",
+        "last_name": "PAHLER",
+        "last_updated": "2025-06-24",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1475088159000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750787923000",
+      "number": "1841749116",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-17-28927",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

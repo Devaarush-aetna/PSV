@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "25350 MAGIC MOUNTAIN PKWY STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VALENCIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "913551356",
+          "state": "CA",
+          "telephone_number": "661-839-9554"
+        },
+        {
+          "address_1": "21125 CENTRE POINTE PKWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SANTA CLARITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "913502994",
+          "state": "CA",
+          "telephone_number": "661-839-9554"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-11-21",
+        "credential": "M.A., LMFT",
+        "enumeration_date": "2008-06-25",
+        "first_name": "KASEY",
+        "last_name": "BOGOJE",
+        "last_updated": "2023-11-21",
+        "middle_name": "MARIE",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1214452233000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1700602642000",
+      "number": "1053573642",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "M.A., LMFT",
+          "first_name": "KASEY",
+          "last_name": "REMY",
+          "middle_name": "MARIE",
+          "prefix": "Ms.",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "MFC50070",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

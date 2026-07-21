@@ -1,0 +1,78 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2535 16TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BAKERSFIELD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "933013417",
+          "state": "CA",
+          "telephone_number": "661-869-1074"
+        },
+        {
+          "address_1": "2535 16TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BAKERSFIELD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "933013417",
+          "state": "CA",
+          "telephone_number": "661-869-1074"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-24",
+        "enumeration_date": "2010-12-14",
+        "first_name": "SARAH",
+        "last_name": "THOMAS",
+        "last_updated": "2026-03-24",
+        "middle_name": "MICHELLE",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1292349931000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774391078000",
+      "number": "1659674539",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "2814-R",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "LMFT91094",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-26-88337",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

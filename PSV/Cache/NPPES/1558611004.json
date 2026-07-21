@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4644 MAPLETREE LOOP",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WESLEY CHAPEL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335448117",
+          "state": "FL",
+          "telephone_number": "813-994-4499"
+        },
+        {
+          "address_1": "4644 MAPLETREE LOOP",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WESLEY CHAPEL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "335448117",
+          "state": "FL",
+          "telephone_number": "813-994-4499"
+        }
+      ],
+      "basic": {
+        "credential": "CSFA",
+        "enumeration_date": "2012-09-12",
+        "first_name": "CHRISTOPHER",
+        "last_name": "ROBINSON",
+        "last_updated": "2012-09-12",
+        "middle_name": "WILLIAM",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1347474410000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1347474410000",
+      "number": "1558611004",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "246ZC0007X",
+          "desc": "Specialist/Technologist, Other, Surgical Assistant",
+          "license": "136985",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

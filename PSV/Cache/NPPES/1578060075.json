@@ -1,0 +1,209 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "11215 METRO PKWY STE 3",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "339661206",
+          "state": "FL",
+          "telephone_number": "239-208-2212"
+        },
+        {
+          "address_1": "1422 EDINGER AVE STE 130",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TUSTIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-807-2157",
+          "postal_code": "927806298",
+          "state": "CA",
+          "telephone_number": "888-820-2424"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-19",
+        "enumeration_date": "2018-04-11",
+        "first_name": "HAMIDREZA",
+        "last_name": "ABBASI",
+        "last_updated": "2025-11-19",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1523420379000",
+      "endpoints": [
+        {
+          "address_1": "630 Eaton Ave",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Hamilton",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "ahamidreza913677@direct.ketteringhealth.org",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "450132767",
+          "state": "OH",
+          "useDescription": ""
+        },
+        {
+          "address_1": "630 Eaton Ave",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Hamilton",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https:/khnarr.ketthealth.com/FHIR-PROD/api/FHIR/R4/",
+          "endpointType": "FHIR",
+          "endpointTypeDescription": "FHIR URL",
+          "postal_code": "450132767",
+          "state": "OH",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1763582820000",
+      "number": "1578060075",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "65 JAMES ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EDISON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "088203947",
+          "state": "NJ",
+          "telephone_number": "949-226-1243"
+        },
+        {
+          "address_1": "26691 PLAZA",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MISSION VIEJO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "926916329",
+          "state": "CA",
+          "telephone_number": "949-364-9054"
+        },
+        {
+          "address_1": "2790 CLAY EDWARDS DR STE 1235",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-472-7201",
+          "postal_code": "641163276",
+          "state": "MO",
+          "telephone_number": "816-472-5157"
+        },
+        {
+          "address_1": "1422 EDINGER AVE STE 130",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TUSTIN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "888-807-2157",
+          "postal_code": "927806298",
+          "state": "CA",
+          "telephone_number": "888-820-2424"
+        },
+        {
+          "address_1": "630 EATON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAMILTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "450132767",
+          "state": "OH",
+          "telephone_number": "513-867-2000"
+        },
+        {
+          "address_1": "79-01 BROADWAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELMHURST",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "11373",
+          "state": "NY",
+          "telephone_number": "949-226-1243"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "35.151012",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "ME168554",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "321982",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "MD221303",
+          "primary": false,
+          "state": "OR",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "ME168554",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "2024036302",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "FA4268062",
+          "primary": false,
+          "state": "WA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

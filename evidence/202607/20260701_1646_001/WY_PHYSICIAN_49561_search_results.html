@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en-us"><head><meta charset="utf-8"><meta content="IE=edge, chrome = 1"><meta name="viewport" content="width=device-width, initial-scale=1"><title>
+	WYBOM
+</title>
+
+		<link rel="stylesheet" type="text/css" href="/GLSuiteWeb/Clients/WYBOM/CSS/WYBOM.css?ver=2024052401" media="all">
+	
+		<link rel="stylesheet" type="text/css" href="/GLSuiteWeb/Clients/WYBOM/CSS/jquery-ui.css">
+
+		<link rel="stylesheet" type="text/css" href="/GLSuiteWeb/Clients/WYBOM/CSS/JQueryUICalendar/jquery-ui-1.10.3.custom.min.css">
+
+		<script type="text/javascript" src="/GLSuiteWeb/Clients/WYBOM/JS/jquery-3.5.1.min.js"></script>
+		<script type="text/javascript" src="/GLSuiteWeb/Clients/WYBOM/JS/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="/GLSuiteWeb/Clients/WYBOM/JS/jquery-ui-timepicker-addon.js"></script>
+		<script type="text/javascript" src="/GLSuiteWeb/Clients/WYBOM/JS/Master.js?ver=2024102901"></script>
+		<script type="text/javascript" src="/GLSuiteWeb/Clients/WYBOM/JS/jquery-ui-1.10.3.custom.min.js"></script>
+		
+</head>
+	<body>
+		<form method="post" action="./LicenseeResults.aspx?SearchType=Physician" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BC79603F">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAi+qSUIogS8bHuMqNLNdn/d55jwL7bKhoHvfFrB+rKbRLh+HLEHW3NRS01QvuZPDxgPvahtqKip2qVdeBeqQcFzirlNceqp/sbcpQznLIsPp6alz4A9KVWN1XBgZYq3YqCLOjBJ2W6iUaYCfhGjoFc5xG8uQhmX99+Ji5bVxhYxqmKKDnXK8JQtSE1oorBQRgA14Zd6fOV4TEfQpkEJjuZb">
+</div>
+			<div id="header_main" class="w1000px">
+				<div class="centered">
+					<img src="../Images/googleheader4-1.png" id="Image1" class="imgResponsive" alt="Wyoming Board of Medicine Logo">
+				</div>
+			</div>
+			<br>
+			<div id="body" class="w1000px">
+				
+	<br>
+	<div class="Georgia18CenterBold">
+		Physician Search Results
+	</div>
+	<div class="centered">
+		<div id="ContentPlaceHolder1_divExportToExcel" class="wide100Percent Georgia10">
+			
+			<input type="submit" name="ctl00$ContentPlaceHolder1$btnExport" value="Export to Excel" id="ContentPlaceHolder1_btnExport" class="buttonShape wide120px floatRight">
+		</div>
+		<table class="wide100Percent" cellspacing="1" cellpadding="3" rules="rows" border="1" id="ContentPlaceHolder1_dtgResults">
+	<tbody><tr class="Georgia10Bold">
+		<td class="th">Licensee Name</td><td class="th">Office Address</td><td class="th">Phone Number</td><td class="th">License Number</td><td class="th">Date Licensed</td><td class="th">Reactivation Date</td><td class="th">License Status</td><td class="th">Board Certification</td><td class="th">Specialty</td><td class="th">Sub-Specialty</td><td class="th">Disciplinary Action</td><td>Disciplinary Action Details</td>
+	</tr><tr class="Georgia11">
+		<td>Sikes, Kristi Ann, MD</td><td><br><br>26400 Kuykendahl Rd.  Ste A220 <br>The woodlands, TX 77375 (281) 907-9012</td><td>(281) 907-9012</td><td>18973C</td><td>10/13/2025</td><td>&nbsp;</td><td>Expires 06/30/2027; Active</td><td>&nbsp;</td><td> Psychiatry</td><td>&nbsp;</td><td>No</td><td>
+						<input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl02$btnDetails" value="" id="ContentPlaceHolder1_dtgResults_btnDetails_0" class="linkButton">
+						
+						
+					</td>
+	</tr><tr class="BackgroundAzure Georgia11">
+		<td>Glotzbach, Kristi L, MD</td><td><br><br>295 Chipeta Way <br>Salt Lake City, UT 84113 (801) 662-1000</td><td>(801) 662-1000</td><td>15004C</td><td>08/29/2022</td><td>&nbsp;</td><td>Expires 06/30/2027; Active</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>No</td><td>
+						<input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl03$btnDetails" value="" id="ContentPlaceHolder1_dtgResults_btnDetails_1" class="linkButton">
+						
+						
+					</td>
+	</tr><tr class="Georgia11">
+		<td>Mizelle, Kristi Vergena, MD</td><td>&nbsp;</td><td>&nbsp;</td><td>19050A</td><td>10/23/2025</td><td>&nbsp;</td><td>Expires 06/30/2027; Active</td><td>&nbsp;</td><td> Internal Medicine</td><td> Rheumatology</td><td>No</td><td>
+						<input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl04$btnDetails" value="" id="ContentPlaceHolder1_dtgResults_btnDetails_2" class="linkButton">
+						
+						
+					</td>
+	</tr><tr class="BackgroundAzure Georgia11">
+		<td>Sobota, Kristi Dee, MD</td><td><br><br>3600 Minnesota Drive, Suite 800 <br>Edina, MN 55435 (952) 595-1100</td><td>(952) 595-1100</td><td>9592A</td><td>01/24/2014</td><td>&nbsp;</td><td>Expires 06/30/2027; Active <br>Board Certified</td><td>Board Certified:  Radiology</td><td> Radiology</td><td>&nbsp;</td><td>No</td><td>
+						<input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl05$btnDetails" value="" id="ContentPlaceHolder1_dtgResults_btnDetails_3" class="linkButton">
+						
+						
+					</td>
+	</tr><tr class="Georgia11">
+		<td>St Clair, Kristi Lynn, MD</td><td><br><br>1405 Howell Ave <br>Worland, WY 82401 (307) 347-2555</td><td>(307) 347-2555</td><td>17595A</td><td>10/11/2024</td><td>&nbsp;</td><td>Expires 06/30/2027; Active <br>Board Certified</td><td>Board Certified:  Family Medicine</td><td> Family Medicine</td><td>&nbsp;</td><td>No</td><td>
+						<input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl06$btnDetails" value="" id="ContentPlaceHolder1_dtgResults_btnDetails_4" class="linkButton">
+						
+						
+					</td>
+	</tr>
+</tbody></table>
+		
+	</div>
+	
+	<input type="submit" name="ctl00$ContentPlaceHolder1$btnGoBack" value="Go Back" id="ContentPlaceHolder1_btnGoBack" class="buttonShape wide100px">
+
+			</div>
+		</form>
+	
+</body></html>

@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1300 GASTON CAPERTON DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOLDEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "256259401",
+          "state": "WV"
+        },
+        {
+          "address_1": "8001 STATE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHILADELPHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "191362908",
+          "state": "PA",
+          "telephone_number": "215-685-8215"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-16",
+        "credential": "CRNP, PMHNP-BC",
+        "enumeration_date": "2018-08-28",
+        "first_name": "MATTHEW",
+        "last_name": "KRISTOFOR",
+        "last_updated": "2025-06-16",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1535493609000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750117699000",
+      "number": "1306327176",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "SP019152",
+          "primary": true,
+          "state": "PA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

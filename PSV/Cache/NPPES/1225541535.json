@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1795 ALYSHEBA WAY STE 7202",
+          "address_2": "PMB 50499",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEXINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "405092481",
+          "state": "KY",
+          "telephone_number": "270-314-5866"
+        },
+        {
+          "address_1": "231 CECIL AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402122525",
+          "state": "KY",
+          "telephone_number": "270-314-5866"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-16",
+        "credential": "CSW",
+        "enumeration_date": "2017-11-08",
+        "first_name": "LIBERTY",
+        "last_name": "POWELL",
+        "last_updated": "2025-09-16",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1510173719000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758002809000",
+      "number": "1225541535",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "252948",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "LCSW00001135",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "33011934A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

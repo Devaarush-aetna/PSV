@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "111 WILDFLOWER DR STE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CAMPBELLSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "855-656-7325",
+          "postal_code": "427183362",
+          "state": "KY",
+          "telephone_number": "800-999-1249"
+        },
+        {
+          "address_1": "9800 SHELBYVILLE RD STE 220",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "855-656-7325",
+          "postal_code": "402232992",
+          "state": "KY",
+          "telephone_number": "800-999-1249"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-02",
+        "credential": "APRN",
+        "enumeration_date": "2025-07-02",
+        "first_name": "DEBORAH",
+        "last_name": "COX",
+        "last_updated": "2025-07-02",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1751458803000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1751458803000",
+      "number": "1508755695",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "4037921",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2311 ENERGY DR BLDG 9",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "APEX",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "317-520-8200",
+          "postal_code": "275024343",
+          "state": "NC",
+          "telephone_number": "984-254-5635"
+        },
+        {
+          "address_1": "3500 DEPAUW BLVD STE 3070",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "INDIANAPOLIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "317-520-8200",
+          "postal_code": "462686135",
+          "state": "IN",
+          "telephone_number": "855-324-0885"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-03-01",
+        "credential": "PhD",
+        "enumeration_date": "2014-08-21",
+        "first_name": "JESSICA",
+        "last_name": "LORENZO-GAIER",
+        "last_updated": "2023-03-01",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1408635884000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1677683355000",
+      "number": "1992104350",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "M.A.",
+          "first_name": "JESSICA",
+          "last_name": "LORENZO",
+          "middle_name": "ANNE",
+          "prefix": "--",
+          "suffix": "--",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "3325 SILAS CREEK PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WINSTON SALEM",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "336-713-7842",
+          "postal_code": "271033013",
+          "state": "NC",
+          "telephone_number": "336-713-7429"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "4816",
+          "primary": false,
+          "state": "NC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103T00000X",
+          "desc": "Psychologist",
+          "license": "5848",
+          "primary": true,
+          "state": "NC",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

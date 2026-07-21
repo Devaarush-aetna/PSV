@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7251 W LAKE MEAD BLVD STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891288380",
+          "state": "NV",
+          "telephone_number": "702-629-6992"
+        },
+        {
+          "address_1": "9030 W SAHARA AVE STE 249",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891175744",
+          "state": "NV"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-10",
+        "enumeration_date": "2018-04-02",
+        "first_name": "MARIE",
+        "last_name": "HEWETT",
+        "last_updated": "2022-08-10",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1522705933000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1660162644000",
+      "number": "1710483474",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208100000X",
+          "desc": "Physical Medicine & Rehabilitation",
+          "license": "DO3157",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10550 QUIVIRA RD",
+          "address_2": "SUITE 530",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-599-3451",
+          "postal_code": "662152306",
+          "state": "KS",
+          "telephone_number": "913-599-3828"
+        },
+        {
+          "address_1": "5600 MISSION DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MISSION HILLS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-599-3451",
+          "postal_code": "662081134",
+          "state": "KS",
+          "telephone_number": "913-599-3828"
+        }
+      ],
+      "basic": {
+        "credential": "MSN, ARNP",
+        "enumeration_date": "2011-01-06",
+        "first_name": "AMANDA",
+        "last_name": "PARKS",
+        "last_updated": "2017-06-30",
+        "middle_name": "B",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1294343951000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1498842493000",
+      "number": "1922302827",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LA2200X",
+          "desc": "Nurse Practitioner, Adult Health",
+          "license": "5375179012",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

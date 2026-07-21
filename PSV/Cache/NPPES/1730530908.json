@@ -1,0 +1,158 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "84 W BROADWAY STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DERRY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "534-429-4463",
+          "postal_code": "030382323",
+          "state": "NH"
+        },
+        {
+          "address_1": "85 W BROADWAY STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DERRY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "030382370",
+          "state": "NH",
+          "telephone_number": "603-475-3435"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-01-06",
+        "credential": "FNP-BC",
+        "enumeration_date": "2016-06-28",
+        "first_name": "KRISTINA",
+        "last_name": "BROWN",
+        "last_updated": "2026-01-06",
+        "middle_name": "JEAN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1467158000000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1767714308000",
+      "number": "1730530908",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "80673",
+          "primary": false,
+          "state": "NM",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "RN2265833",
+          "primary": true,
+          "state": "MA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "C-APN.0102558-C-NP",
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "24191905",
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "RN806181",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "880757",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "072853-23",
+          "primary": false,
+          "state": "NH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "LG0011791",
+          "primary": false,
+          "state": "DE",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "14061927-4405",
+          "primary": false,
+          "state": "UT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "101.0136817",
+          "primary": false,
+          "state": "VT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "CNP231706",
+          "primary": false,
+          "state": "ME",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "A180646",
+          "primary": false,
+          "state": "IA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "12.014073",
+          "primary": false,
+          "state": "CT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

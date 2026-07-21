@@ -1,0 +1,98 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "401 W. 2ND ST.",
+          "address_2": "#235D",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-327-2006",
+          "postal_code": "89503",
+          "state": "NV",
+          "telephone_number": "775-682-8175"
+        },
+        {
+          "address_1": "5190 NEIL RD",
+          "address_2": "#215",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-784-1428",
+          "postal_code": "895026599",
+          "state": "NV",
+          "telephone_number": "775-784-4917"
+        }
+      ],
+      "basic": {
+        "credential": "LCSW",
+        "enumeration_date": "2007-09-14",
+        "first_name": "EMILY",
+        "last_name": "POWERS",
+        "last_updated": "2016-06-15",
+        "middle_name": "M.",
+        "name_prefix": "Ms.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1189794808000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "ICAN775",
+          "issuer": "LA County DMH",
+          "state": "CA"
+        }
+      ],
+      "last_updated_epoch": "1466021286000",
+      "number": "1538355383",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "ASW22270",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "LCS26470",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "6216-C",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YA0400X",
+          "desc": "Counselor, Addiction (Substance Use Disorder)",
+          "license": "00366-LC",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

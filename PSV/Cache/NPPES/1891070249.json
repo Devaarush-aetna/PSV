@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1426 MARBLE CREST WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WINTER GARDEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-766-3654",
+          "postal_code": "347874656",
+          "state": "FL",
+          "telephone_number": "949-302-3654"
+        },
+        {
+          "address_1": "1201 WINTER GARDEN VINELAND RD STE 10",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WINTER GARDEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "407-654-5455",
+          "postal_code": "347874380",
+          "state": "FL",
+          "telephone_number": "407-654-5455"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-05",
+        "credential": "M.A. CCC-SLP",
+        "enumeration_date": "2011-10-17",
+        "first_name": "JILL",
+        "last_name": "BARKER",
+        "last_updated": "2025-03-05",
+        "middle_name": "ERIN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1318906642000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1741207599000",
+      "number": "1891070249",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "12718",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

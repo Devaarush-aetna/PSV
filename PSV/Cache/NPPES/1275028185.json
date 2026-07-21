@@ -1,0 +1,97 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5301 BUCKEYSTOWN PIKE STE 170",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "21704",
+          "state": "MD",
+          "telephone_number": "301-733-0330"
+        },
+        {
+          "address_1": "12345 PARKLAWN DR STE 200",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "208521725",
+          "state": "MD",
+          "telephone_number": "443-800-1505"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-13",
+        "credential": "LCPC",
+        "enumeration_date": "2018-06-25",
+        "first_name": "LEAH",
+        "last_name": "SANDERS",
+        "last_updated": "2026-02-13",
+        "middle_name": "LEWIS",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1529937394000",
+      "endpoints": [
+        {
+          "address_1": "5301 Buckeystown Pike Ste 170",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Frederick",
+          "contentOtherDescription": "C-CDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://careepiceast.kp.org:14430/Interconnect-prodmam/wcf/epic.community.hie/xcpdrespondinggateways",
+          "endpointDescription": "Carequality",
+          "endpointType": "SOAP",
+          "endpointTypeDescription": "SOAP URL",
+          "postal_code": "21704",
+          "state": "MD",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1771003418000",
+      "number": "1275028185",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "PRC200001340",
+          "primary": false,
+          "state": "DC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "LC8875",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "0701010952",
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

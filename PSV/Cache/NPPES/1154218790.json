@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1100 E MARKET ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402061838",
+          "state": "KY",
+          "telephone_number": "502-596-1000"
+        },
+        {
+          "address_1": "1100 E MARKET ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402061838",
+          "state": "KY",
+          "telephone_number": "502-596-1000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-18",
+        "credential": "LMFT",
+        "enumeration_date": "2025-06-18",
+        "first_name": "HALEY",
+        "last_name": "GARRISON",
+        "last_updated": "2025-06-18",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1750262404000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1750262404000",
+      "number": "1154218790",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "297743",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

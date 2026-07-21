@@ -1,0 +1,194 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 777447",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890777447",
+          "state": "NV",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "8480 S EASTERN AVE STE F",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-486-3561",
+          "postal_code": "891232822",
+          "state": "NV",
+          "telephone_number": "833-759-8720"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-20",
+        "credential": "RD",
+        "enumeration_date": "2024-08-21",
+        "first_name": "KELLY",
+        "last_name": "DOUGLASS",
+        "last_updated": "2025-07-20",
+        "middle_name": "ANA",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1724234432000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1753065738000",
+      "number": "1396578985",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7321 SHADELAND STA STE 275",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "INDIANAPOLIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "462563964",
+          "state": "IN",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "2741 W FOND DU LAC AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MILWAUKEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-864-3198",
+          "postal_code": "532102624",
+          "state": "WI",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "6830 MONTGOMERY BLVD NE STE B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ALBUQUERQUE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-864-3527",
+          "postal_code": "871091455",
+          "state": "NM",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "991 SOUTHPARK DR STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LITTLETON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-864-3196",
+          "postal_code": "801205689",
+          "state": "CO",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "1695 43RD ST S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FARGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-864-3528",
+          "postal_code": "581033317",
+          "state": "ND",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "8905 W POST RD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-973-4752",
+          "postal_code": "891482429",
+          "state": "NV",
+          "telephone_number": "833-759-8720"
+        },
+        {
+          "address_1": "9700 N 91ST ST STE A115",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SCOTTSDALE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "949-864-3199",
+          "postal_code": "852585036",
+          "state": "AZ",
+          "telephone_number": "833-759-8720"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": "AZ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": null,
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "1733",
+          "primary": false,
+          "state": "ND",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "40902-DI-0",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

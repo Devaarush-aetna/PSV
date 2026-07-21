@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "200 TOWER CIR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SOMERSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "425033480",
+          "state": "KY",
+          "telephone_number": "606-416-5139"
+        },
+        {
+          "address_1": "107 FINANCIAL PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ELIZABETHTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "427018450",
+          "state": "KY"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-06-02",
+        "enumeration_date": "2021-05-25",
+        "first_name": "AMBER",
+        "last_name": "POYNTER",
+        "last_updated": "2021-06-02",
+        "middle_name": "PAIGE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1621958792000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1622658103000",
+      "number": "1912572629",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "269921",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

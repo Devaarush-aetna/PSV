@@ -1,0 +1,113 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2501 KENTUCKY AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PADUCAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "420033813",
+          "state": "KY",
+          "telephone_number": "270-575-2100"
+        },
+        {
+          "address_1": "117 S LEXINGTON ST STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HARRISONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "647012444",
+          "state": "MO"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-10",
+        "credential": "DO",
+        "enumeration_date": "2012-06-25",
+        "first_name": "MICHAEL",
+        "last_name": "HOLLAND",
+        "last_updated": "2025-01-10",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1340643212000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "2016009496",
+          "issuer": "Medical License",
+          "state": "MO"
+        }
+      ],
+      "last_updated_epoch": "1736522320000",
+      "number": "1538423561",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "650 S MT AUBURN",
+          "address_2": "SUITE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CAPE GIRARDEAU",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "573-339-1737",
+          "postal_code": "63703",
+          "state": "MO",
+          "telephone_number": "573-339-1101"
+        },
+        {
+          "address_1": "1000 W 10TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROLLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "573-202-2484",
+          "postal_code": "654012905",
+          "state": "MO",
+          "telephone_number": "573-364-9000"
+        },
+        {
+          "address_1": "1000 W 10TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROLLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "573-341-5611",
+          "postal_code": "654012905",
+          "state": "MO",
+          "telephone_number": "573-458-8899"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "2016009496",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207VG0400X",
+          "desc": "Obstetrics & Gynecology, Gynecology",
+          "license": "2016009496",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

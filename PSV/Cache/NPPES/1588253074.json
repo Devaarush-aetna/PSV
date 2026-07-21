@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "104 S FRONT AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PRESTONSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-886-4433",
+          "postal_code": "416531614",
+          "state": "KY",
+          "telephone_number": "606-886-8572"
+        },
+        {
+          "address_1": "104 S FRONT AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PRESTONSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-886-4433",
+          "postal_code": "416531614",
+          "state": "KY",
+          "telephone_number": "606-886-8572"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-01-11",
+        "enumeration_date": "2021-01-11",
+        "first_name": "MONICA",
+        "last_name": "SEWELL",
+        "last_updated": "2021-01-11",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1610391894000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1610391894000",
+      "number": "1588253074",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

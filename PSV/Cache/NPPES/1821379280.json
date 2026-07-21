@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "103 TWIN OAKS CIR",
+          "address_2": "#2",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FRANKFORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-875-2425",
+          "postal_code": "406018447",
+          "state": "KY",
+          "telephone_number": "502-875-3200"
+        },
+        {
+          "address_1": "103 TWIN OAKS CIR",
+          "address_2": "#2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FRANKFORT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-875-2425",
+          "postal_code": "406018447",
+          "state": "KY",
+          "telephone_number": "502-875-3200"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2011-08-30",
+        "first_name": "NATHANIEL",
+        "last_name": "RITCHIE",
+        "last_updated": "2012-11-25",
+        "middle_name": "KEITH",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1314732406000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1353889085000",
+      "number": "1821379280",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "5303",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6460 MEDICAL CENTER ST STE 140",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-888-1342",
+          "postal_code": "891482420",
+          "state": "NV",
+          "telephone_number": "702-888-1340"
+        },
+        {
+          "address_1": "6460 MEDICAL CENTER ST STE 140",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-888-1342",
+          "postal_code": "891482420",
+          "state": "NV",
+          "telephone_number": "702-888-1340"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-29",
+        "credential": "PLP",
+        "enumeration_date": "2024-07-08",
+        "first_name": "SHOSHANA",
+        "last_name": "SHUMAKER",
+        "last_updated": "2025-08-29",
+        "middle_name": "KATZ",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1720452303000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756491450000",
+      "number": "1205672458",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "8390 W WINDMILL LN STE 102&103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-888-1342",
+          "postal_code": "891134420",
+          "state": "NV",
+          "telephone_number": "702-888-1340"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "PY1282",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

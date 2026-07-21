@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1811 S ST NW APT 204",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "200096149",
+          "state": "DC"
+        },
+        {
+          "address_1": "230 N WASHINGTON ST STE 402",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "208501780",
+          "state": "MD",
+          "telephone_number": "301-944-5759"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-02-17",
+        "enumeration_date": "2020-02-17",
+        "first_name": "RACHEL",
+        "last_name": "KLEBANOV",
+        "last_updated": "2020-02-17",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1581955826000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1581955826000",
+      "number": "1619500840",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": null,
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

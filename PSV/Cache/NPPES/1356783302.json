@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1212 SYCAMORE ST STE 26",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "452027355",
+          "state": "OH",
+          "telephone_number": "513-201-8616"
+        },
+        {
+          "address_1": "1212 SYCAMORE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "452027355",
+          "state": "OH",
+          "telephone_number": "215-594-3368"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-17",
+        "credential": "Ph.D., IBCLC",
+        "enumeration_date": "2013-07-18",
+        "first_name": "NATASHIA",
+        "last_name": "CONNER",
+        "last_updated": "2026-06-17",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1374178916000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1781720885000",
+      "number": "1356783302",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "172V00000X",
+          "desc": "Community Health Worker",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "174N00000X",
+          "desc": "Lactation Consultant, Non-RN",
+          "license": "L-56274",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "174H00000X",
+          "desc": "Health Educator",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        },
+        {
+          "code": "251B00000X",
+          "desc": "Case Management",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "374J00000X",
+          "desc": "Doula",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

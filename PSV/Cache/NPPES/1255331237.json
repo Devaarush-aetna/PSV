@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "13400 SUTTON PARK DR S",
+          "address_2": "SUITE 1504",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-223-5074",
+          "postal_code": "322240236",
+          "state": "FL",
+          "telephone_number": "904-223-5007"
+        },
+        {
+          "address_1": "13400 SUTTON PARK DR S",
+          "address_2": "SUITE 1504",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-223-5074",
+          "postal_code": "322240236",
+          "state": "FL",
+          "telephone_number": "904-223-5007"
+        }
+      ],
+      "basic": {
+        "credential": "Ph.D.",
+        "enumeration_date": "2005-07-30",
+        "first_name": "RANDI",
+        "last_name": "MOST",
+        "last_updated": "2008-06-19",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1122734781000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1213908421000",
+      "number": "1255331237",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103G00000X",
+          "desc": "Clinical Neuropsychologist",
+          "license": "PY0004903",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103TC0700X",
+          "desc": "Psychologist, Clinical",
+          "license": "PY4903",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

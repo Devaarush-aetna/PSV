@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9620 BRIGHTRIDGE DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895067579",
+          "state": "NV"
+        },
+        {
+          "address_1": "9620 BRIGHTRIDGE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895067579",
+          "state": "NV",
+          "telephone_number": "775-741-9436"
+        }
+      ],
+      "basic": {
+        "credential": "MSW, LSW",
+        "enumeration_date": "2015-12-22",
+        "first_name": "JOHANN",
+        "last_name": "SPRENGER",
+        "last_updated": "2015-12-22",
+        "name_prefix": "--",
+        "name_suffix": "Jr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1450808260000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1450808260000",
+      "number": "1255796934",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "104100000X",
+          "desc": "Social Worker",
+          "license": "6561-S",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

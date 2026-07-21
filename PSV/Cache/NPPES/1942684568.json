@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "20 WATERWAY RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TEQUESTA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-264-3500",
+          "postal_code": "334692418",
+          "state": "FL",
+          "telephone_number": "561-926-6150"
+        },
+        {
+          "address_1": "20 WATERWAY RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TEQUESTA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-264-3500",
+          "postal_code": "334692418",
+          "state": "FL",
+          "telephone_number": "561-926-6150"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-05",
+        "credential": "D.O.",
+        "enumeration_date": "2015-07-14",
+        "first_name": "RYAN",
+        "last_name": "SCHUERING",
+        "last_updated": "2024-06-05",
+        "middle_name": "ALAN",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1436872010000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "1932720372",
+          "issuer": "Waterway Dermatology",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1717605361000",
+      "number": "1942684568",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1050 SE MONTEREY RD STE 302",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "STUART",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "561-264-3500",
+          "postal_code": "349944512",
+          "state": "FL",
+          "telephone_number": "561-926-6150"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207N00000X",
+          "desc": "Dermatology",
+          "license": "OS14941",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "609 VIRGINIA AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MOUNT STERLING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "403539339",
+          "state": "KY",
+          "telephone_number": "859-556-2827"
+        },
+        {
+          "address_1": "609 VIRGINIA AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MOUNT STERLING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "403539339",
+          "state": "KY",
+          "telephone_number": "859-556-2827"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-05-22",
+        "credential": "CCC-SLP",
+        "enumeration_date": "2024-05-22",
+        "first_name": "KATELYN",
+        "last_name": "DYER",
+        "last_updated": "2024-05-22",
+        "middle_name": "THOMAS",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1716426002000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1716426002000",
+      "number": "1831938471",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "292120",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

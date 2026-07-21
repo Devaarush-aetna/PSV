@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "330 S RAMPART BLVD STE 360",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-724-2800",
+          "postal_code": "891455754",
+          "state": "NV",
+          "telephone_number": "702-724-2020"
+        },
+        {
+          "address_1": "5840 W. CRAIG RD.",
+          "address_2": "SUITE 120, PMB 254",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-724-2800",
+          "postal_code": "89130",
+          "state": "NV",
+          "telephone_number": "702-724-2020"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-08-04",
+        "credential": "O.D.",
+        "enumeration_date": "2006-10-12",
+        "first_name": "ADAM",
+        "last_name": "SCHWARTZ",
+        "last_updated": "2021-08-04",
+        "middle_name": "A",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1160677681000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "15075",
+          "issuer": "Medical Eye Services",
+          "state": "NV"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "CC9736",
+          "issuer": "Anthem BCBS",
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1628110136000",
+      "number": "1548359920",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "382",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

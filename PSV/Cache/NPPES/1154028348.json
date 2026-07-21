@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5310 KIETZKE LN STE 104",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895112043",
+          "state": "NV",
+          "telephone_number": "775-348-8800"
+        },
+        {
+          "address_1": "9480 DOUBLE DIAMOND PKWY STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-687-1419",
+          "postal_code": "895215842",
+          "state": "NV",
+          "telephone_number": "775-348-8800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-31",
+        "credential": "PT, DPT",
+        "enumeration_date": "2023-02-08",
+        "first_name": "JAKE",
+        "last_name": "BREWER",
+        "last_updated": "2025-03-31",
+        "middle_name": "PAUL LELAND",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1675896652000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1743435948000",
+      "number": "1154028348",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "4051",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

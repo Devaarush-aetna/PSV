@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9909 MEDICAL CENTER DRIVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "240-864-6049",
+          "postal_code": "20850",
+          "state": "MD",
+          "telephone_number": "240-864-6000"
+        },
+        {
+          "address_1": "9909 MEDICAL CENTER DRIVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCKVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "240-864-6049",
+          "postal_code": "20850",
+          "state": "MD",
+          "telephone_number": "240-864-6000"
+        }
+      ],
+      "basic": {
+        "credential": "MA CCCSLP NPH",
+        "enumeration_date": "2007-03-22",
+        "first_name": "MICHAEL",
+        "last_name": "REGNELL",
+        "last_updated": "2007-07-08",
+        "middle_name": "E",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1174595022000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183948551000",
+      "number": "1386760858",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "03163",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "2202002527",
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

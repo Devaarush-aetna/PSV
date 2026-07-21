@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "236 BURDINE SCHOOL RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SOMERSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "425015526",
+          "state": "KY",
+          "telephone_number": "606-219-6137"
+        },
+        {
+          "address_1": "200 TOWER CIR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SOMERSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "425033480",
+          "state": "KY",
+          "telephone_number": "606-416-5139"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-06-09",
+        "credential": "COTA/L, OTR/L",
+        "enumeration_date": "2025-06-09",
+        "first_name": "AMANDA",
+        "last_name": "HANSFORD",
+        "last_updated": "2025-06-09",
+        "middle_name": "SUZANNE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1749480606000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1749517749000",
+      "number": "1194619502",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "AMANDA",
+          "last_name": "GIRDLER",
+          "middle_name": "SUZANNE",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

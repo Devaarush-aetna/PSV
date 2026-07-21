@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "50 IRVING ST NW",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "204220001",
+          "state": "DC",
+          "telephone_number": "202-285-3772"
+        },
+        {
+          "address_1": "10121 ELLARD DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LANHAM",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "207062082",
+          "state": "MD",
+          "telephone_number": "301-237-3247"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-10-03",
+        "credential": "PMHNP",
+        "enumeration_date": "2023-10-03",
+        "first_name": "IFEANYI",
+        "last_name": "OGBECHIE",
+        "last_updated": "2023-10-03",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1696368046000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1696368046000",
+      "number": "1811777196",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "R102798",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

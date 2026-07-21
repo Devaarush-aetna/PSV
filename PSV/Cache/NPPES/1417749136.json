@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "371 GRAND OAK BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SHEPHERDSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "401658685",
+          "state": "KY",
+          "telephone_number": "502-587-4011"
+        },
+        {
+          "address_1": "371 GRAND OAK BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SHEPHERDSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "401658685",
+          "state": "KY",
+          "telephone_number": "502-439-9185"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-20",
+        "credential": "APRN",
+        "enumeration_date": "2025-05-19",
+        "first_name": "JESSICA",
+        "last_name": "LUCAS",
+        "last_updated": "2025-11-20",
+        "middle_name": "LEIGH",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1747699202000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1763681044000",
+      "number": "1417749136",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "2025029813",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

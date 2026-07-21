@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2911 ROBERTS AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "855-230-7402",
+          "postal_code": "323105007",
+          "state": "FL",
+          "telephone_number": "850-644-1543"
+        },
+        {
+          "address_1": "2911 ROBERTS AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-645-2824",
+          "postal_code": "323105007",
+          "state": "FL",
+          "telephone_number": "850-644-1543"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-21",
+        "credential": "M.D.",
+        "enumeration_date": "2016-04-04",
+        "first_name": "CASEY",
+        "last_name": "RUST",
+        "last_updated": "2024-08-21",
+        "middle_name": "NICOLE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1459809571000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1724265597000",
+      "number": "1417310632",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "MD",
+          "first_name": "CASEY",
+          "last_name": "BURNETTE",
+          "middle_name": "NICOLE",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "4449 MEANDERING WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TALLAHASSEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-645-0577",
+          "postal_code": "323085740",
+          "state": "FL",
+          "telephone_number": "850-644-1543"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "145847",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

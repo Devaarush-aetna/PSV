@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "65 N HIGHWAY 25 W",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WILLIAMSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "407691540",
+          "state": "KY",
+          "telephone_number": "606-549-0123"
+        },
+        {
+          "address_1": "65 N HIGHWAY 25 W",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WILLIAMSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "407691540",
+          "state": "KY",
+          "telephone_number": "606-549-0123"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-08",
+        "credential": "DO",
+        "enumeration_date": "2006-02-10",
+        "first_name": "JEFFREY",
+        "last_name": "MANN",
+        "last_updated": "2024-07-08",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1139606495000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1720476183000",
+      "number": "1568435212",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "C2299",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

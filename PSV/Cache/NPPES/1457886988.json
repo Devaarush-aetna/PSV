@@ -1,0 +1,87 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "125 MEDICAL PARK LN STE C",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HUNTSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "936-291-7206",
+          "postal_code": "773404957",
+          "state": "TX",
+          "telephone_number": "936-247-4920"
+        },
+        {
+          "address_1": "125 MEDICAL PARK LN STE C",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUNTSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "936-291-7206",
+          "postal_code": "773404957",
+          "state": "TX",
+          "telephone_number": "936-247-4920"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-07",
+        "credential": "DO",
+        "enumeration_date": "2017-04-21",
+        "first_name": "RACHEL",
+        "last_name": "HOLEMAN",
+        "last_updated": "2025-08-07",
+        "middle_name": "S",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1492797675000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754580468000",
+      "number": "1457886988",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "DO4055",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "05159",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "TP411",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8905 W POST RD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891482429",
+          "state": "NV",
+          "telephone_number": "918-728-5852"
+        },
+        {
+          "address_1": "4618 EL CAMINO CABOS DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891476055",
+          "state": "NV",
+          "telephone_number": "918-728-5852"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "M.D.",
+        "authorized_official_first_name": "YANJIA",
+        "authorized_official_last_name": "ZHOU",
+        "authorized_official_telephone_number": "9187285852",
+        "authorized_official_title_or_position": "Owner",
+        "certification_date": "2025-03-03",
+        "enumeration_date": "2025-03-03",
+        "last_updated": "2025-03-03",
+        "organization_name": "NEVADA SKIN INSTITUTE PLLC",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1741037104000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1741044249000",
+      "number": "1619775038",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207N00000X",
+          "desc": "Dermatology",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193200000X - Multi-Specialty Group"
+        }
+      ]
+    }
+  ]
+}

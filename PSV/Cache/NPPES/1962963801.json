@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "101 THE CITY DR S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ORANGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "928683201",
+          "state": "CA",
+          "telephone_number": "714-456-8888"
+        },
+        {
+          "address_1": "200 S MANCHESTER AVE STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ORANGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "928683219",
+          "state": "CA"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-11",
+        "credential": "DO",
+        "enumeration_date": "2019-03-25",
+        "first_name": "MICHAEL",
+        "last_name": "KORCZYNSKI",
+        "last_updated": "2025-03-11",
+        "middle_name": "RICHARD",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1553553514000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1741717182000",
+      "number": "1962963801",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1800 W CHARLESTON BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891022386",
+          "state": "NV",
+          "telephone_number": "702-383-2000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "20A23020",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "DO3674",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

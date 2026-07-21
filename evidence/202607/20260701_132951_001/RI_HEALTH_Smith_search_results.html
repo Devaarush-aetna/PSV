@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head>
+		<title>SearchResults</title>
+		<link rel="stylesheet" href="stylesheets/elicense2000.css">
+	<script language="javascript">
+function SetValue(agencyID,licenseID)
+{
+	var href = window.opener.location.href;
+	var form = window.opener.document.forms[0];
+	form.elements["license_id"].value = licenseID;
+	form.elements["tempAgencyID"].value = agencyID;
+//	var action = href.substring(0,href.indexOf("?"));
+//	form.action = action + '?action=lu&agency_id=' + agencyID + '&license_id=' + licenseID;
+	form.submit();
+	window.close();
+}
+	</script></head>
+	
+	<body>
+		<form name="TheForm" method="post" action="./SearchResults.aspx" id="TheForm">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNzM2NTgwNzkyD2QWAgIBD2QWAmYPZBYCAgEPZBYCZg9kFgJmD2QWAgIDD2QWAmYPZBYCZg8UKwALDxYSHhNBdXRvR2VuZXJhdGVDb2x1bW5zaB4IUGFnZVNpemUCKB4TVXNlQWNjZXNzaWJsZUhlYWRlcmceC18hSXRlbUNvdW50AigeCERhdGFLZXlzFgAeEEN1cnJlbnRTb3J0T3JkZXJlHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCkBgeCVBhZ2VDb3VudAJOHgtBbGxvd1BhZ2luZ2cWBB4FV2lkdGgFAzk2JR4FY2xhc3MFC21vZHVsZWxhYmVsZBYMHghQb3NpdGlvbgsqJ1N5c3RlbS5XZWIuVUkuV2ViQ29udHJvbHMuUGFnZXJQb3NpdGlvbgAeBE1vZGULKiNTeXN0ZW0uV2ViLlVJLldlYkNvbnRyb2xzLlBhZ2VyTW9kZQEeD1BhZ2VCdXR0b25Db3VudAIoHglCYWNrQ29sb3IJyKCD/x4JRm9yZUNvbG9yCqQBHgRfIVNCAoyAoAYWBB8OCcigg/8fEAIIZGRkZGRkZGRksNSxfvecVI+EpIjao9yibVu8elzcNGRD92UpALB/4ds=">
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['TheForm'];
+if (!theForm) {
+    theForm = document.TheForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="3731BCAC">
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdACmf+zKC9tnMdYJv4liIwty5cUwAeux3lvz5e9uCfHLttetcOcdLSoZP2awE3iBPVXrQnOj8QSXgMWXLMqYysShHlKbf3n9t3HyKBT+A0G8h9S7jku96rYSc2qejOyqCWRRuUSYpTUEpk9b4byiuQzlt0NiEstXgoERi4AZAEN9jlvDBReY2Yamv0jH3Th743W4jCFFAqeqBTWMs+tJqkPJnY9VcSK89pUtB/FtSYVfqsQlutMIqN5uJQU7RZ2yBPAuwvfiOp09lOpmO90YkA/PtjqBodmMfRO+bhAx5vrkYXon2RnqH1abnvYTgA+iHsD/UNgC6ee1uFeS83vGWU92/19UQft/72W3ED7jbzFA8cl57KzKmqJhT9E0h84mDT37EZgSpWvA/orLL9GWZlyIpZr7aVT8T4qyEHLrJUh6CFR/TuwzBG47JjIIVj8mcfactbFYUGsbdpnLaktmMWhDEv+Iab8daYjVz81VQmehXNN3mktcESxwcJP8jNwUNFWrepDI/1KZW0POoe//jWuNyOy9uTgIAAdTOYf1IWhtdL6CApmXygej0g89yKqrjA38wKILfunIzX4MUPnpH2dgLCkok3ZI6NfjSIcbV1HqBaafIKJPKH5N/Sb8+u3b3BeAbaZhEcqI+hKBk5PXGbEWyGjI+auUdYGlNhhl46rsobSt1lzfmP3TUGy4KPMM07HQzczcowEbBdLgnK5zeLHgA/HDNwSC2h/7fhCN+m2h4WC+0sTLW9YM0fwdRc9bg8/24sHM0j7SgUo2CTawhDfCEKjL6QztZBDrG8AD4WoYRklD6G9xe2Nzx4DZJKMGOkPD0t4o33E/FVCYGTxhdZyRUOjxnVHR20S89tmrfsHxe/7Ho6QNqDZj1flerPCQPnLTPsKNd9vObhW3JJ3WYLWZ4"><table role="presentation" border="0" width="100%">
+	<tbody><tr>
+		<td width="100%" height="10" bgcolor="white" rowspan="1" colspan="2"><table role="presentation" cellspacing="0" width="100%" cellpadding="0">
+			<tbody><tr>
+				<td width="100%" bgcolor="#0049B2" class="noprint" rowspan="1" colspan="16"><span id="banner_image" width="100%"><a href="http://www.health.ri.gov"><img src="./images/header.jpg" alt="State of Rhode Island" border="0"></a></span></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td cellspacing="0" bgcolor="white" cellpadding="0" valign="top" rowspan="1" colspan="1"><table role="presentation" border="0" cellspacing="0" width="100%" align="left" cellpadding="0">
+			<tbody><tr>
+				<td width="10" rowspan="20" colspan="1"><span id="col_spacer"></span></td>
+			</tr>
+			<tr>
+				<td align="left" valign="top" rowspan="0" colspan="1"><span id="Title" class="header"><img alt="" border="0" height="8" src="images/dot.gif" width="13"><br>Search Results<br><img alt="" border="0" height="8" src="images/dot.gif" width="13"></span></td>
+			</tr>
+			<tr>
+				<td rowspan="1" colspan="1"><span id="Back_to_Search" class="instructions">VERIFYING A LICENSE<br>For a more detailed view of a licensee's background, select the licensee name from the alphabetical list below. Click the numbers below the grid to see additional pages of licensees. To return to the Search page, use the Search Again button below. (Do not use the browser Back key.)<br>
+<img alt="" border="0" height="10" src="images/dot.gif" width="650"><br><input type="reset" name="my_button" value="Search Again" id="my_button" maxlength="9" onclick="javascript:document.location.href='Search.aspx?facility=N'"><br><img alt="" border="0" height="10" src="images/dot.gif" width="650">
+<p></p></span></td>
+			</tr>
+			<tr>
+				<td rowspan="0" colspan="2"><table cellspacing="0" rules="all" width="96%" class="modulelabel" border="1" id="datagrid_results" style="border-collapse:collapse;">
+					<tbody><tr style="background-color:#83A0C8;">
+						<th scope="col"><font face="Arial" size="2" color="white"><b>Full Name</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>License Number</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>Profession</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>License Type</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>License Status</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>City</b></font></th><th scope="col"><font face="Arial" size="2" color="white"><b>State Prov</b></font></th>
+					</tr><tr>
+						<td id="datagrid_results__ctl3_result"><a id="datagrid_results__ctl3_hl" href="Details.aspx?result=74367108-8953-4123-9a0d-c163a2da9c61" target="_blank">GEORGE SPENCER SMITH</a></td><td><span>EMT11278</span></td><td><span>Emergency Medical Services</span></td><td><span>Emergency Medical Technician</span></td><td><span>Expired - Must Reinstate</span></td><td><span></span></td><td><span></span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl4_result"><a id="datagrid_results__ctl4_hl" href="Details.aspx?result=625f7d94-5270-462c-9438-c9bc71e6abbe" target="_blank">GEORGE SPENCER SMITH</a></td><td><span>ERS11278</span></td><td><span>Emergency Medical Services</span></td><td><span>ERS - Endotracheal Intubation</span></td><td><span>Null and Void</span></td><td><span></span></td><td><span></span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl5_result"><a id="datagrid_results__ctl5_hl" href="Details.aspx?result=e94b91e3-e902-47e3-935a-b8f56f0501fc" target="_blank">LYNN M SMITH</a></td><td><span>LMD13637</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl6_result"><a id="datagrid_results__ctl6_hl" href="Details.aspx?result=bfdbf228-36cb-404b-a812-8652fa9ab29c" target="_blank">LYNN M SMITH</a></td><td><span>LMD12975</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl7_result"><a id="datagrid_results__ctl7_hl" href="Details.aspx?result=c9b035d5-bc29-45d9-93d3-3d62da17c11a" target="_blank">GEORGE SPENCER SMITH</a></td><td><span>LS00155-P</span></td><td><span>Clinical Laboratory Science</span></td><td><span>Clin. Lab Sci.-Generalist (Prov)</span></td><td><span>Null and Void</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl8_result"><a id="datagrid_results__ctl8_hl" href="Details.aspx?result=f61eb5e5-191f-44a6-82d7-e6883d3052c5" target="_blank">GEORGE SPENCER SMITH</a></td><td><span>LS01512</span></td><td><span>Clinical Laboratory Science</span></td><td><span>Clin. Lab Sci.-Generalist</span></td><td><span>De-regulated</span></td><td><span>WAKEFIELD</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl9_result"><a id="datagrid_results__ctl9_hl" href="Details.aspx?result=7914eb0a-f014-427f-9244-ebdadff20bb6" target="_blank">JEAN F. SMITH</a></td><td><span>LMD14603</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl10_result"><a id="datagrid_results__ctl10_hl" href="Details.aspx?result=06b58285-2112-4de0-8175-30bc9f615c10" target="_blank">JEAN F. SMITH</a></td><td><span>LMD15260</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl11_result"><a id="datagrid_results__ctl11_hl" href="Details.aspx?result=5f495d82-47b2-4981-8f87-13afc3fc1747" target="_blank">JEAN F. SMITH</a></td><td><span>LMD16138</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl12_result"><a id="datagrid_results__ctl12_hl" href="Details.aspx?result=212c2635-ca85-453b-a69d-5922d43c5d3d" target="_blank">JEAN F. SMITH</a></td><td><span>LMD16207</span></td><td><span>Physician</span></td><td><span>Medical Officer (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl13_result"><a id="datagrid_results__ctl13_hl" href="Details.aspx?result=403574b6-8c7e-4629-b9d2-66733febf1be" target="_blank">EUGENE M SMITH</a></td><td><span>LMD15156</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl14_result"><a id="datagrid_results__ctl14_hl" href="Details.aspx?result=56e1867b-b1e5-4ddf-93a9-171c1b85251e" target="_blank">EUGENE M SMITH</a></td><td><span>LMD14108</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl15_result"><a id="datagrid_results__ctl15_hl" href="Details.aspx?result=135dc09a-78d7-4736-8e78-beece304ba1e" target="_blank">EUGENE M SMITH</a></td><td><span>LMD13541</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl16_result"><a id="datagrid_results__ctl16_hl" href="Details.aspx?result=bd712602-0dd3-431b-a805-0ea75595700b" target="_blank">DIANE E SMITH</a></td><td><span>LMD14914</span></td><td><span>Physician</span></td><td><span>Intern (Limited)</span></td><td><span>Expired</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl17_result"><a id="datagrid_results__ctl17_hl" href="Details.aspx?result=c42e70e7-c6b9-47c2-9f84-c5169c402c41" target="_blank">DIANE E SMITH</a></td><td><span>LMD15545</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl18_result"><a id="datagrid_results__ctl18_hl" href="Details.aspx?result=d8d8b242-5526-4896-bc70-2fa9ba9a517f" target="_blank">DIANE E SMITH</a></td><td><span>LMD16238</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl19_result"><a id="datagrid_results__ctl19_hl" href="Details.aspx?result=e8a149d0-3aea-41af-9250-adc4d283cf59" target="_blank">BRIAN W. SMITH</a></td><td><span>LMD13531</span></td><td><span>Physician</span></td><td><span>Intern (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl20_result"><a id="datagrid_results__ctl20_hl" href="Details.aspx?result=a427a872-adb0-430b-b29c-071df6d78e9a" target="_blank">TERESITA M SMITH</a></td><td><span>LMD17244</span></td><td><span>Physician</span></td><td><span>Intern (Limited)</span></td><td><span>Expired</span></td><td><span>PAWTUCKET</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl21_result"><a id="datagrid_results__ctl21_hl" href="Details.aspx?result=21afc2fb-5f4a-4f8a-8ccb-a3b71d1ef148" target="_blank">TERESITA M SMITH</a></td><td><span>LMD18128</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PAWTUCKET</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl22_result"><a id="datagrid_results__ctl22_hl" href="Details.aspx?result=57c05bb8-d48d-4b4d-ab5c-49cdd55a96f1" target="_blank">TERESITA M SMITH</a></td><td><span>LMD18915</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PAWTUCKET</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl23_result"><a id="datagrid_results__ctl23_hl" href="Details.aspx?result=28f9b296-c4dd-47a7-bd31-fd08910e5aa0" target="_blank">ANDREW HAMILTON SMITH</a></td><td><span>LMD17475</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Null and Void</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl24_result"><a id="datagrid_results__ctl24_hl" href="Details.aspx?result=92dd3f57-a66d-46e9-b4a4-7675dce33953" target="_blank">ANDREW HAMILTON SMITH</a></td><td><span>LMD18047</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Null and Void</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl25_result"><a id="datagrid_results__ctl25_hl" href="Details.aspx?result=5cb4a00d-1f2e-4d0d-a039-68eb919db148" target="_blank">ANDREW HAMILTON SMITH</a></td><td><span>LMD19068</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Null and Void</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl26_result"><a id="datagrid_results__ctl26_hl" href="Details.aspx?result=b8cd93d5-4293-439b-8994-eafd95d24fb8" target="_blank">GARRETT H SMITH</a></td><td><span>LMD19252</span></td><td><span>Physician</span></td><td><span>Resident (Limited)</span></td><td><span>Expired</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl27_result"><a id="datagrid_results__ctl27_hl" href="Details.aspx?result=1a6519b7-7a66-40ca-9f03-2365df1dc620" target="_blank">CLARA L SMITH</a></td><td><span>MD02168</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Deceased</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl28_result"><a id="datagrid_results__ctl28_hl" href="Details.aspx?result=4e648efd-afb7-4255-8e7c-347c2907cafd" target="_blank">GEORGE C SMITH</a></td><td><span>MD02851</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Deceased</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl29_result"><a id="datagrid_results__ctl29_hl" href="Details.aspx?result=e352594b-4888-4d37-9008-6c83a8fc1e0c" target="_blank">J. GERALD SMITH</a></td><td><span>MD04196</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>WARWICK</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl30_result"><a id="datagrid_results__ctl30_hl" href="Details.aspx?result=ce6e8d14-536d-4dcd-b319-5b185793dc97" target="_blank">PETER S. SMITH</a></td><td><span>MD05277</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl31_result"><a id="datagrid_results__ctl31_hl" href="Details.aspx?result=8be2d1f8-f2fe-4527-8f12-63398460b5db" target="_blank">ROBERT BRUCE SMITH</a></td><td><span>MD05373</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Inactive</span></td><td><span>SOUTH WEYMOUTH</span></td><td><span>MA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl32_result"><a id="datagrid_results__ctl32_hl" href="Details.aspx?result=a972601f-cb3f-4699-bb41-d0a3b5c2685b" target="_blank">CALDWELL W. SMITH</a></td><td><span>MD05399</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Inactive</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl33_result"><a id="datagrid_results__ctl33_hl" href="Details.aspx?result=070a1fe2-d658-4028-9049-2939e5def3a9" target="_blank">STEPHEN R. SMITH</a></td><td><span>MD05609</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl34_result"><a id="datagrid_results__ctl34_hl" href="Details.aspx?result=af1143bc-84fe-4953-8305-9d52016fcc4b" target="_blank">RICHARD D SMITH</a></td><td><span>MD07534</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Inactive</span></td><td><span>UNKNOWN</span></td><td><span>NA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl35_result"><a id="datagrid_results__ctl35_hl" href="Details.aspx?result=1d062bc3-7e5d-4483-9d84-1f5bfb343f17" target="_blank">STEPHEN W. SMITH</a></td><td><span>MD07546</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>TACOMA</span></td><td><span>WA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl36_result"><a id="datagrid_results__ctl36_hl" href="Details.aspx?result=16e4009a-ccda-4a48-bd70-2d26b4ec3fd8" target="_blank">BENJAMIN N. SMITH</a></td><td><span>MD07777</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Inactive</span></td><td><span>WELLESLEY</span></td><td><span>MA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl37_result"><a id="datagrid_results__ctl37_hl" href="Details.aspx?result=4ae18e16-10ae-4e42-9167-8c95962f9f78" target="_blank">STACEY A. SMITH</a></td><td><span>MD07983</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>ATLANTA</span></td><td><span>GA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl38_result"><a id="datagrid_results__ctl38_hl" href="Details.aspx?result=44edda00-38f6-4131-9b2a-f4c4a4b276ad" target="_blank">LYNN M. SMITH</a></td><td><span>MD08447</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>CUMBERLAND</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl39_result"><a id="datagrid_results__ctl39_hl" href="Details.aspx?result=c820c33c-d006-4c50-a2fd-c42afd3b729f" target="_blank">RICHARD W. SMITH</a></td><td><span>MD08544</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Inactive</span></td><td><span>FALL RIVER</span></td><td><span>MA</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl40_result"><a id="datagrid_results__ctl40_hl" href="Details.aspx?result=e12cedf8-1baa-42ba-84c4-046745d1f3b2" target="_blank">RICHARD MARK SMITH</a></td><td><span>MD08704</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Active</span></td><td><span>PROVIDENCE</span></td><td><span>RI</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl41_result"><a id="datagrid_results__ctl41_hl" href="Details.aspx?result=ca760fec-dfbe-48f0-b39d-b9399084295f" target="_blank">TERRANCE E. SMITH</a></td><td><span>MD09130</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Expired - Must Reinstate</span></td><td><span>WESTERVILLE</span></td><td><span>OH</span></td>
+					</tr><tr>
+						<td id="datagrid_results__ctl42_result"><a id="datagrid_results__ctl42_hl" href="Details.aspx?result=a407861a-f402-4a4b-9b5b-30d49dacc1bb" target="_blank">JEAN F. SMITH</a></td><td><span>MD09167</span></td><td><span>Physician</span></td><td><span>Allopathic Physician (MD)</span></td><td><span>Active</span></td><td><span>LINCOLN</span></td><td><span>RI</span></td>
+					</tr><tr style="color:White;background-color:#83A0C8;">
+						<td colspan="7"><span>1</span>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl1','')" style="color:White;">2</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl2','')" style="color:White;">3</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl3','')" style="color:White;">4</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl4','')" style="color:White;">5</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl5','')" style="color:White;">6</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl6','')" style="color:White;">7</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl7','')" style="color:White;">8</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl8','')" style="color:White;">9</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl9','')" style="color:White;">10</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl10','')" style="color:White;">11</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl11','')" style="color:White;">12</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl12','')" style="color:White;">13</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl13','')" style="color:White;">14</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl14','')" style="color:White;">15</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl15','')" style="color:White;">16</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl16','')" style="color:White;">17</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl17','')" style="color:White;">18</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl18','')" style="color:White;">19</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl19','')" style="color:White;">20</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl20','')" style="color:White;">21</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl21','')" style="color:White;">22</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl22','')" style="color:White;">23</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl23','')" style="color:White;">24</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl24','')" style="color:White;">25</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl25','')" style="color:White;">26</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl26','')" style="color:White;">27</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl27','')" style="color:White;">28</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl28','')" style="color:White;">29</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl29','')" style="color:White;">30</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl30','')" style="color:White;">31</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl31','')" style="color:White;">32</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl32','')" style="color:White;">33</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl33','')" style="color:White;">34</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl34','')" style="color:White;">35</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl35','')" style="color:White;">36</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl36','')" style="color:White;">37</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl37','')" style="color:White;">38</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl38','')" style="color:White;">39</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl39','')" style="color:White;">40</a>&nbsp;<a href="javascript:__doPostBack('datagrid_results$_ctl44$_ctl40','')" style="color:White;">...</a></td>
+					</tr>
+				</tbody></table></td>
+			</tr>
+		</tbody></table>
+		</td>
+		<td cellspacing="0" bgcolor="white" cellpadding="0" valign="top" rowspan="1" colspan="1"><table role="presentation" border="0" cellspacing="0" cellpadding="0" width="100%">
+		</table>
+		</td>
+	</tr>
+</tbody></table>
+</form>
+	
+
+</body></html>

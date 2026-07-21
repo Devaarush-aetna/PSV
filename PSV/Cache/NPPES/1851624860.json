@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "380 W 100 N STE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MONTICELLO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "845357879",
+          "state": "UT",
+          "telephone_number": "435-587-5041"
+        },
+        {
+          "address_1": "2391 E 3225 S",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALT LAKE CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "841092719",
+          "state": "UT"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-10",
+        "credential": "DO",
+        "enumeration_date": "2009-09-09",
+        "first_name": "ANDREW",
+        "last_name": "STEVENS",
+        "last_updated": "2024-07-10",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1252506766000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1720648718000",
+      "number": "1851624860",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "70948",
+          "primary": true,
+          "state": "MT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "14617 NW 148TH PL",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ALACHUA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "326158561",
+          "state": "FL",
+          "telephone_number": "707-738-3937"
+        },
+        {
+          "address_1": "14617 NW 148TH PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ALACHUA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "326158561",
+          "state": "FL"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-07-03",
+        "enumeration_date": "2024-07-03",
+        "first_name": "KATHLEEN",
+        "last_name": "TILMAN",
+        "last_updated": "2024-07-03",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1720026903000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1720026903000",
+      "number": "1487490074",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "1041C0700X",
+          "desc": "Social Worker, Clinical",
+          "license": "01683-c",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

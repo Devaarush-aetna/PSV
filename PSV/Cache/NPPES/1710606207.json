@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "480 HOPKINSVILLE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GREENVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-338-5777",
+          "postal_code": "423451124",
+          "state": "KY",
+          "telephone_number": "270-338-5777"
+        },
+        {
+          "address_1": "228 HOPKINSVILLE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GREENVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-377-3002",
+          "postal_code": "423451231",
+          "state": "KY",
+          "telephone_number": "270-377-3077"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-12-09",
+        "credential": "PMHNP-BC",
+        "enumeration_date": "2022-08-26",
+        "first_name": "APRIL",
+        "last_name": "ASHBY",
+        "last_updated": "2024-12-09",
+        "middle_name": "MICHELLE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1661528929000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1733771018000",
+      "number": "1710606207",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "3018245",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

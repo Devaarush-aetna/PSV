@@ -1,0 +1,50 @@
+# Environment & secrets
+.env
+*.env
+.env.*
+
+# Claude Code settings (user-specific, may contain sensitive paths/tokens)
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Large generated output (keep source code only)
+Output/
+
+# Scraper evidence cache
+Evidence/
+evidence/
+
+# Temporary / OS
+*.tmp
+~$*
+.DS_Store
+Thumbs.db
+
+# Excel lock files
+~$*.xlsx
+~$*.xls
+~$*.docx
+
+# RunQueue state
+RunQueue/

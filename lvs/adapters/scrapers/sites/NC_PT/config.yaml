@@ -116,4 +116,4 @@ smoke_test:
   # reliably. Selector config preserved (PascalCase) so the moment Cloudflare
   # whitelists this exit path again, smoke can lift the skip with no rework.
   # Unblock: cf-clearance cookie injection, residential UA, or board allowlist.
-  skip_reason: "cloudflare_intermittent: www2.ncptboard.org passes some traffic but challenges others with Cloudflare WAF (verified 2026-06-15 across 2 probes + 1 smoke run). Selectors are correct (PascalCase LastName/FirstName/LicenseNumber + input[type=submit]) — purely a WAF gating problem."
+  skip_reason: "cloudflare_intermittent_extraction: form submits and results load when Cloudflare passes (9.7s, 2026-07-01 with proxy), but full_name returns empty — table structure may differ from col-0=full_name assumption. Run headed with --force-skip to verify row structure when Cloudflare is not blocking."

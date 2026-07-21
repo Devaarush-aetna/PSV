@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "405 E IRON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-746-0428",
+          "postal_code": "674012634",
+          "state": "KS",
+          "telephone_number": "785-572-5787"
+        },
+        {
+          "address_1": "405 E IRON AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-746-0428",
+          "postal_code": "674012634",
+          "state": "KS",
+          "telephone_number": "785-572-5787"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-22",
+        "credential": "PT, DPT",
+        "enumeration_date": "2025-05-22",
+        "first_name": "DYLAN",
+        "last_name": "REUTER",
+        "last_updated": "2025-05-22",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1747925704000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1747928830000",
+      "number": "1104618248",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "Pending",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

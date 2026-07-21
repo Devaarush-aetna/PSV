@@ -1,0 +1,230 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "29373 NETWORK PL",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "606731293",
+          "state": "IL",
+          "telephone_number": "847-390-5900"
+        },
+        {
+          "address_1": "11215 METRO PKWY STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-208-3994",
+          "postal_code": "339661206",
+          "state": "FL",
+          "telephone_number": "239-208-2212"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-02",
+        "credential": "MS, MD, PhD",
+        "enumeration_date": "2011-04-07",
+        "first_name": "ANANDA-KRIIYA",
+        "last_name": "FINE",
+        "last_updated": "2026-03-02",
+        "middle_name": "SATYA",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1302188840000",
+      "endpoints": [
+        {
+          "address_1": "2320 E 93rd St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Chicago",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "afine266362@direct.myadvocateaurora.org",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "606173909",
+          "state": "IL",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        },
+        {
+          "address_1": "2320 E 93rd St",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Chicago",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://EpicFHIR.aurora.org/FHIR/MYAURORA/api/FHIR/DSTU2/",
+          "endpointType": "FHIR",
+          "endpointTypeDescription": "FHIR URL",
+          "postal_code": "606173909",
+          "state": "IL",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "126732700",
+          "issuer": null,
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1772474565000",
+      "number": "1104115492",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "9981 S HEALTHPARK DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FORT MYERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "239-935-5067",
+          "postal_code": "339083618",
+          "state": "FL",
+          "telephone_number": "239-208-2212"
+        },
+        {
+          "address_1": "1575 TREMONT ST",
+          "address_2": "APT 1011",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BOSTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "021201677",
+          "state": "MA",
+          "telephone_number": "508-000-0000"
+        },
+        {
+          "address_1": "5401 OLD YORK RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PHILADELPHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "19141",
+          "state": "PA",
+          "telephone_number": "215-456-7190"
+        },
+        {
+          "address_1": "2320 E 93RD ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "708-684-4033",
+          "postal_code": "606173909",
+          "state": "IL",
+          "telephone_number": "708-684-4029"
+        },
+        {
+          "address_1": "630 EATON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAMILTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "450132767",
+          "state": "OH",
+          "telephone_number": "513-867-2000"
+        },
+        {
+          "address_1": "2790 CLAY EDWARDS DR STE 1235",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-472-7201",
+          "postal_code": "641163276",
+          "state": "MO",
+          "telephone_number": "816-472-5157"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "036-152803",
+          "primary": false,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "264879",
+          "primary": false,
+          "state": "MA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "MD463996",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "2025048616",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "35C.002504",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "ME173026",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "V7364",
+          "primary": false,
+          "state": "TX",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2084N0400X",
+          "desc": "Psychiatry & Neurology, Neurology",
+          "license": "ME173026",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10400 CONNECTICUT AVE STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KENSINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "208953910",
+          "state": "MD",
+          "telephone_number": "240-558-4404"
+        },
+        {
+          "address_1": "763 COLUMBUS RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BURLINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "080161844",
+          "state": "NJ",
+          "telephone_number": "609-372-6768"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-28",
+        "enumeration_date": "2025-08-20",
+        "first_name": "MICHAEL",
+        "last_name": "HUTCHISON",
+        "last_updated": "2025-10-28",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1755724806000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1761654875000",
+      "number": "1780561688",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "6410 ROCKLEDGE DR STE 301",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BETHESDA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "208171841",
+          "state": "MD",
+          "telephone_number": "301-897-0357"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "40QA02360800",
+          "primary": true,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "CP048921T",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

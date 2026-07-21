@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "586 PRESIDENT ST",
+          "address_2": "APT 2A",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BROOKLYN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "112151212",
+          "state": "NY"
+        },
+        {
+          "address_1": "348 13TH ST",
+          "address_2": "SUITE 203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BROOKLYN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "112156177",
+          "state": "NY",
+          "telephone_number": "718-788-2461"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2010-06-16",
+        "first_name": "LAURA",
+        "last_name": "SUTTON",
+        "last_updated": "2010-06-16",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1276701343000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1276701343000",
+      "number": "1396066148",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

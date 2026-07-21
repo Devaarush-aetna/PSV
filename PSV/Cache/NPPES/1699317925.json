@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "13837 CIRCA CROSSING DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LITHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-658-6222",
+          "postal_code": "335474382",
+          "state": "FL",
+          "telephone_number": "813-684-2663"
+        },
+        {
+          "address_1": "13837 CIRCA CROSSING DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LITHIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "813-658-6222",
+          "postal_code": "335474382",
+          "state": "FL",
+          "telephone_number": "813-684-2663"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-03-28",
+        "enumeration_date": "2019-10-08",
+        "first_name": "DENNIS",
+        "last_name": "RINALDI",
+        "last_updated": "2024-03-28",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1570559481000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1711659904000",
+      "number": "1699317925",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

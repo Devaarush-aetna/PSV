@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "850 RIVERVIEW AVENUE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PINEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-337-2871",
+          "postal_code": "409771430",
+          "state": "KY",
+          "telephone_number": "606-337-3051"
+        },
+        {
+          "address_1": "850 RIVERVIEW AVENUE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PINEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-337-2871",
+          "postal_code": "409771430",
+          "state": "KY",
+          "telephone_number": "606-337-3051"
+        }
+      ],
+      "basic": {
+        "credential": "CRNA",
+        "enumeration_date": "2006-09-28",
+        "first_name": "SHANNON",
+        "last_name": "SMITH",
+        "last_updated": "2008-04-17",
+        "middle_name": "L",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1159460281000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1208440594000",
+      "number": "1093806325",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "CRNA",
+          "first_name": "SHANNON",
+          "last_name": "CHEEK",
+          "middle_name": "L",
+          "prefix": "--",
+          "suffix": "--",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "367500000X",
+          "desc": "Nurse Anesthetist, Certified Registered",
+          "license": "1071607 / 43207",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

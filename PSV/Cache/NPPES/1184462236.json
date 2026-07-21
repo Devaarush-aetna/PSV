@@ -1,0 +1,74 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 179",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "FOREST HILL",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-933-9801",
+          "postal_code": "210500179",
+          "state": "MD",
+          "telephone_number": "410-933-9800"
+        },
+        {
+          "address_1": "5301 CAMPBELL BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NOTTINGHAM",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-933-9801",
+          "postal_code": "212365029",
+          "state": "MD",
+          "telephone_number": "410-933-9800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-28",
+        "credential": "DPT",
+        "enumeration_date": "2024-07-15",
+        "first_name": "MORGAN",
+        "last_name": "MANNING",
+        "last_updated": "2025-10-28",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1721070602000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1761657035000",
+      "number": "1184462236",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "354 MOUNTAIN RD STE E",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PASADENA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "211221158",
+          "state": "MD",
+          "telephone_number": "410-360-1300"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "29976",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

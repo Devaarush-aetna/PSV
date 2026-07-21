@@ -1,0 +1,2311 @@
+<!DOCTYPE html><html lang="en" dir="ltr" class=" svg cssgradients svgclippaths mediaqueries no-touchevents details formvalidation flexbox cssanimations backgroundsize boxshadow" style=""><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Social Work Telehealth Registration Listing - SCLLR</title>
+    <link href="https://fonts.googleapis.com/css?family=Bitter:400,400i,700|Montserrat:400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://llr.sc.gov/css/styles.css" media="all">
+    <link rel="stylesheet" type="text/css" href="https://llr.sc.gov/css/datatables.min.css">
+    <style type="text/css">
+        #TeleTable {
+            width: 80%;
+            height: auto;
+            margin: 100px auto;
+        }
+    </style>
+    <script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script><script type="text/javascript" src="https://llr.sc.gov/js/lib/modernizr.min.js?v=3.3.1"></script>
+</head>
+
+<body class="">
+    <div class="global-wrap">
+        <div id="header"><header class="global-header" role="banner">
+	<div class="global-header__top">
+		<div class="l-constrain">
+			<div class="global-header__branding">
+				<a class="site-logo" href="https://llr.sc.gov" title="Home of South Carolina Department of Labor Licensing and Regulation" rel="home">
+					<img class="site-logo__image" src="/images/logo.svg" runat="server" alt="Home">
+				</a>
+				<svg class="global-header__logo-triangle" viewBox="0 0 100 49" xmlns="https://www.w3.org/2000/svg">
+					<path d="M50 49L0 0h100z" fill-rule="evenodd" fill="#FFF"></path>
+				</svg>
+			</div>
+			<div class="global-header__navgroup">
+				<button class="global-header__toggle global-header__toggle-close-nav hide-desktop">
+					<span class="visually-hidden">Close</span>
+					<svg class="icon" height="22" version="1.1" viewBox="0 0 22 22" width="22" xmlns="https://www.w3.org/2000/svg">
+						<path d="M21.9 2.2l-2.2-2.2-8.8 8.8-8.8-8.8-2.2 2.2 8.8 8.8-8.8 8.8 2.2 2.2 8.8-8.8 8.8 8.8 2.2-2.2-8.8-8.8 8.8-8.8z" fill="#555559"></path>
+					</svg>
+				</button>
+				<nav class="global-header__nav--primary" role="navigation">
+					<ul class="menu menu--main">
+						<li class="menu__item has-subnav">
+							<a href="#" class="menu__link has-subnav">Licensing + Services</a>
+							<ul class="menu menu__subnav">
+								<li class="menu__item">
+									<a href="/professions.aspx" class="menu__link">Apply for a License</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/ApplicationStatus/Index" class="menu__link">Application Status</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage?ReturnUrl=%2fChangeOfAdd%2f" class="menu__link">Address Change</a>
+								</li>
+								<li class="menu__item">
+									<a href="/calendar.aspx" class="menu__link">Board Calendar</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Home/MyAccount" class="menu__link">Change
+										Username/Password</a>
+								</li>
+								<li class="menu__item">
+									<a href="/fileacomplaint.aspx" class="menu__link">File a Complaint</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://verify.llronline.com/LicLookup/LookupMain.aspx" class="menu__link">Licensee Lookup</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage?ReturnUrl=%2fOnlineExams%2f" class="menu__link">Online Examinations</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage?ReturnUrl=%2fOnlineVerification2%2f" class="menu__link">Online Verification</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage?ReturnUrl=%2fSSO%2f" class="menu__link">Print License Card</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage?ReturnUrl=%2fOnlineRenewals%2f" class="menu__link">Renew a License</a>
+								</li>
+							</ul>
+						</li>
+						<li class="menu__item">
+							<a href="/professions.aspx" class="menu__link">Professions + Occupations</a>
+						</li>
+						<li class="menu__item has-subnav">
+							<a href="#" class="menu__link has-subnav">Divisions + Offices</a>
+							<ul class="menu menu__subnav">
+								<li class="menu__item">
+									<a href="https://osha.llr.sc.gov/" class="menu__link">SC OSHA</a>
+								</li>
+								<li class="menu__item">
+									<a href="/wage/" class="menu__link">Wages and Child Labor</a>
+								</li>
+								<li class="menu__item">
+									<a href="/mediation/" class="menu__link">Labor Mediation</a>
+								</li>
+								<li class="menu__item">
+									<a href="/immigration/" class="menu__link">Office of Immigration Compliance</a>
+								</li>
+								<li class="menu__item">
+									<a href="/oie/" class="menu__link">Office of Investigations and Enforcement</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://statefire.llr.sc.gov/" class="menu__link">SC State Fire</a>
+								</li>
+								<li class="menu__item">
+									<a href="/elevators/" class="menu__link">Elevators and Amusement Rides</a>
+								</li>
+
+							</ul>
+						</li>
+						<li class="menu__item has-subnav">
+							<a href="#" class="menu__link has-subnav">About</a>
+							<ul class="menu menu__subnav">
+								<li class="menu__item">
+									<a href="/aboutus/index.aspx" class="menu__link">About LLR</a>
+								</li>
+								<li class="menu__item">
+									<a href="/calendar.aspx" class="menu__link">Agency Calendar</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/reports.aspx" class="menu__link">Agency Reports</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/contact.aspx" class="menu__link">Contact Us</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://eservice.llr.sc.gov/OnlineSurvey/Home/Index/10" class="menu__link">Customer Survey</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/directions.aspx" class="menu__link">Directions</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/disclaimer.aspx" class="menu__link">Disclaimer of Liability</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/mediacenter/" class="menu__link">FOIA Requests</a>
+								</li>
+								<li class="menu__item">
+									<a href="https://www.governmentjobs.com/careers/sc?department[0]=Department%20of%20Labor%2C%20Licensing%20%26%20Regulation&amp;sort=PositionTitle%7CAscending" class="menu__link">Jobs at LLR</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/mediacenter/" class="menu__link">News and Media Center</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/privacy.aspx" class="menu__link">Privacy Statement</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/links.aspx" class="menu__link">Related Links</a>
+								</li>
+								<li class="menu__item">
+									<a href="/aboutus/mediacenter/videos.aspx" class="menu__link">Video Content</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<nav class="global-header__nav--utility">
+					<ul class="menu menu--account">
+						<li class="menu__item">
+							<a href="https://eservice.llr.sc.gov/SSO/Login/LoginPage" class="menu__link">Manage My
+								License</a>
+						</li>
+						<li class="menu__item">
+							<a href="https://translate.google.com/translate?hl=en&amp;sl=auto&amp;tl=es&amp;u=https%3A%2F%2Fllr.sc.gov" class="menu__link">Google Translate</a>
+						</li>
+						<li class="menu__item">
+							<a href="mailto:ContactLLR@llr.sc.gov?subject=Suggestions" class="menu__link">Suggestions</a>
+						</li>
+						<li class="menu__item">
+							<a href="https://www.facebook.com/SouthCarolinaLLR" class="menu__link" target="_blank"><img src="/images/Facebook logo (LLR Blue) (2).png" alt="facebook" style="width:25px; height:auto;"></a>
+						</li>
+						<li class="menu__item">
+							<a href="https://twitter.com/scdllr/" class="menu__link" target="_blank"><img src="/images/Twitter logo (SCLLR website variant).png" alt="twitter" style="width:25px; height:auto;"></a>
+						</li>
+						<li class="menu__item">
+							<a href="https://www.linkedin.com/company/scllr/" class="menu__link" target="_blank"><img src="/images/LinkedIn-LLRWeb.png" alt="Linkedin" style="width:25px; height:auto;"></a>
+						</li>
+
+					</ul>
+				</nav>
+			</div>
+			<button class="global-header__toggle global-header__search-toggle">
+				<span class="visually-hidden">search</span>
+				<svg class="icon" height="22" version="1.1" viewBox="0 0 22 22" width="22" xmlns="https://www.w3.org/2000/svg">
+					<path d="M21.3 18.7l-5.2-4.4c-0.5-0.5-1.1-0.7-1.6-0.7 1.2-1.4 2-3.3 2-5.4 0-4.6-3.7-8.2-8.2-8.2s-8.2 3.7-8.2 8.3 3.7 8.3 8.3 8.3c2 0 3.9-0.7 5.4-2 0 0.5 0.2 1 0.7 1.6l4.4 5.2c0.8 0.8 2 0.9 2.8 0.2s0.7-2-0.2-2.8zM8.3 13.8c-3 0-5.5-2.5-5.5-5.5s2.5-5.5 5.5-5.5 5.5 2.5 5.5 5.5-2.5 5.5-5.5 5.5z" fill="#555559"></path>
+				</svg>
+			</button>
+			<button class="global-header__toggle global-header__menu-toggle hide-desktop">
+				<span class="visually-hidden">Menu</span>
+				<svg height="22" version="1.1" viewBox="0 0 33 22" width="33" xmlns="https://www.w3.org/2000/svg">
+					<path d="M0 22h33.1v-3.7h-33.1v3.7zM0 12.8h33.1v-3.7h-33.1v3.7zM0 0v3.7h33.1v-3.7h-33.1z" fill="#555559"></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<div class="global-header__bottom">
+		<div class="l-constrain l-search">
+			<div class="search-block">
+				<div class="form-item form-item--search">
+					<label class="form-item__label" for="edit-search">Search</label>
+
+					<form id="searchbox_015288441147937098842:ayaul43xtig" action="/search.aspx" aria-label="searchbox">
+						<input type="hidden" name="cx" value="015288441147937098842:ayaul43xtig">
+						<input type="hidden" name="cof" value="FORID:11">
+						<input name="q" type="text" class="form-item__search search-block__input" size="25" aria-label="searchblockinput">
+						<input name="sa" class="search-block__submit" type="submit" value="Search" aria-label="searchsubmit">
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header></div>
+        <div class="l-page__main">
+            <div class="wysiwyg">
+                <div id="TeleTable">
+
+                    <!-- Content Begins  -->
+
+                    <h2>Telehealth Registration Listing</h2>
+
+                    <div id="otherStatesLicensesList_wrapper" class="dataTables_wrapper no-footer"><div class="dataTables_length" id="otherStatesLicensesList_length"><label>Show <select name="otherStatesLicensesList_length" aria-controls="otherStatesLicensesList" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div><div id="otherStatesLicensesList_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="otherStatesLicensesList"></label></div><table id="otherStatesLicensesList" class="dataTable no-footer" aria-describedby="otherStatesLicensesList_info" style="width: 1155px;">
+                        <thead>
+                            <tr><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="SC Reg #: activate to sort column ascending" style="width: 59px;">SC Reg #</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" style="width: 186px;">Name</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="City: activate to sort column ascending" style="width: 118px;">City</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="State Code: activate to sort column ascending" style="width: 73px;">State Code</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="Other Licensed State 1: activate to sort column ascending" style="width: 140px;">Other Licensed State 1</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="Other State 1 License Type: activate to sort column ascending" style="width: 152px;">Other State 1 License Type</td><td class="sorting" tabindex="0" aria-controls="otherStatesLicensesList" rowspan="1" colspan="1" aria-label="Other State 1 License Number: activate to sort column ascending" style="width: 175px;">Other State 1 License Number</td></tr>
+                        </thead>
+                        <tbody>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+<tr class="odd">
+			<td>TLS  152 CP</td>
+			<td>BOYD, KARA ILENE SMITH</td>
+			<td>BALTIMORE</td>
+			<td>MD</td>
+			<td>MD</td>
+			<td>LCSWC</td>
+			<td>17057</td>
+		</tr><tr class="even">
+			<td>TLS  122 CP</td>
+			<td>LESESNE, REBECCA SMITH</td>
+			<td>NASHVILLE</td>
+			<td>TN</td>
+			<td>TN</td>
+			<td>LCSW</td>
+			<td>7516</td>
+		</tr><tr class="odd">
+			<td>TLS  1330 CP</td>
+			<td>SMITH, LISA ANNE</td>
+			<td>OCOEE</td>
+			<td>FL</td>
+			<td>IL</td>
+			<td>LCSW</td>
+			<td>149012446</td>
+		</tr><tr class="even">
+			<td>TLS  1633 CP</td>
+			<td>SMITH, SABRINA </td>
+			<td>AUSTIN</td>
+			<td>TX</td>
+			<td>TX</td>
+			<td>clinical</td>
+			<td>61365</td>
+		</tr><tr class="odd">
+			<td>TLS  1585 CP</td>
+			<td>SMITH, KRYSTAL BIANCIA</td>
+			<td>HOOVER</td>
+			<td>AL</td>
+			<td>AL</td>
+			<td>clinical</td>
+			<td>4316</td>
+		</tr><tr class="even">
+			<td>TLS  1584 CP</td>
+			<td>SMITH, J. BRYAN </td>
+			<td>MIDDLETOWN</td>
+			<td>NJ</td>
+			<td>NJ</td>
+			<td>LCSW</td>
+			<td>44SC05619200</td>
+		</tr><tr class="odd">
+			<td>TLS  756 CP</td>
+			<td>SMITH, NANCY JOHNSON</td>
+			<td>ZEBULON</td>
+			<td>NC</td>
+			<td>NC</td>
+			<td>LCSW</td>
+			<td>C005497</td>
+		</tr><tr class="even">
+			<td>TLS  827 CP</td>
+			<td>SMITH, JOYCE L.</td>
+			<td>BETHESDA</td>
+			<td>MD</td>
+			<td>MD</td>
+			<td>LCSW-C</td>
+			<td>04947</td>
+		</tr><tr class="odd">
+			<td>TLS  265 CP</td>
+			<td>SMITH, BARBARA BEENE</td>
+			<td>DURHAM </td>
+			<td>NC</td>
+			<td>NC</td>
+			<td>LCSW</td>
+			<td>C002620</td>
+		</tr><tr class="even">
+			<td>TLS  259 CP</td>
+			<td>SMITH, CHARITA NICOLE</td>
+			<td>SAVANNAH</td>
+			<td>GA</td>
+			<td>GA</td>
+			<td>LCSW</td>
+			<td>CSW005645</td>
+		</tr></tbody>
+
+                    </table><div class="dataTables_info" id="otherStatesLicensesList_info" role="status" aria-live="polite">Showing 1 to 10 of 11 entries (filtered from 1,871 total entries)</div><div class="dataTables_paginate paging_simple_numbers" id="otherStatesLicensesList_paginate"><a class="paginate_button previous disabled" aria-controls="otherStatesLicensesList" data-dt-idx="0" tabindex="-1" id="otherStatesLicensesList_previous">Previous</a><span><a class="paginate_button current" aria-controls="otherStatesLicensesList" data-dt-idx="1" tabindex="0">1</a><a class="paginate_button " aria-controls="otherStatesLicensesList" data-dt-idx="2" tabindex="0">2</a></span><a class="paginate_button next" aria-controls="otherStatesLicensesList" data-dt-idx="3" tabindex="0" id="otherStatesLicensesList_next">Next</a></div></div>
+
+                    <!-- Content Ends  -->
+
+                </div><!-- Wrap Table  -->
+            </div><!-- End WYSIWYG  -->
+        </div><!-- End Main Page  -->
+        <div class="l-page__bottom"></div>
+        <div id="footer"><footer class="l-footer" role="contentinfo">
+  <div class="l-constrain">
+	<div class="l-footer__wrapper">
+	  <div class="l-footer__left">
+		<a href="/" aria-label="footerlogo"><div class="l-footer__logo"></div></a>
+		<div class="l-footer__info">
+		  <div class="l-footer__title">
+			South Carolina Department of Labor, Licensing and Regulation
+		  </div>
+		  <div class="l-footer__address">
+			Synergy Business Park; Kingstree Building <br>
+			110 Centerview Dr.<br>
+			Columbia, South Carolina 29210 <br>
+			<a href="tel:8038964300">(803) 896-4300</a> <br>
+			Office Hours: 8:30am - 5:00pm
+		  </div>
+		</div>
+	  </div>
+	  <div class="l-footer__right">
+		<div class="l-footer__menu">
+		  <ul class="menu menu--footer">
+			<li class="menu__item">
+			  <a href="/aboutus/contact.aspx" class="menu__link">Contact SC LLR</a>
+			</li>
+			<li class="menu__item">
+			  <a href="/aboutus/mediacenter/" class="menu__link">Media Center</a>
+			</li>
+			<li class="menu__item">
+			  <a href="https://eservice.llr.sc.gov/OnlineSurvey/Home/Index/10" class="menu__link">Customer Satisfaction Survey</a>
+			</li>
+			<li class="menu__item">
+			  <a href="https://www.governmentjobs.com/careers/sc?department[0]=Department%20of%20Labor%2C%20Licensing%20%26%20Regulation&amp;sort=PositionTitle%7CAscending" class="menu__link">Careers at LLR</a>
+			</li>
+			<li class="menu__item">
+			  <a href="https://oig.sc.gov/file-complaint" class="menu__link">Report Fraud</a>
+			</li>
+			<li class="menu__item">
+			  <a href="/aboutus/mediacenter/" class="menu__link">FOIA Requests</a>
+			</li>
+			<li class="menu__item">
+			  <a href="/aboutus/disclaimer.aspx" class="menu__link">Disclaimer</a>
+			</li>
+			<li class="menu__item">
+			  <a href="/aboutus/privacy.aspx" class="menu__link">Privacy Statement</a>
+			</li>
+		  </ul>
+		</div>
+	  </div>
+	</div>
+  </div>
+  <div class="l-footer__bottom">
+	<div class="l-constrain">
+	  <div class="l-footer__bottom-wrapper">
+		<a href="#" class="follow-us">SC Government Support Areas</a>
+		<div class="menu--twitter__wrapper">
+		  <div class="menu--twitter__layout">
+			<div class="menu--twitter__title">For other needs from your state government, visit:</div>
+			<ul class="menu menu--twitter">
+			  <li class="menu__item">
+				<a href="https://governor.sc.gov/" class="menu__link" target="_blank">Governor's Office</a>
+			  </li>
+			  <li class="menu__item">
+				<a href="https://www.scstatehouse.gov/" class="menu__link" target="_blank">State House</a>
+			  </li>
+			  <li class="menu__item">
+				<a href="https://www.admin.sc.gov/" class="menu__link" target="_blank">Department of Administration</a>
+			  </li>
+			  <li>
+				<a href="https://dph.sc.gov/" class="menu__link" target="_blank">Department of Public Health</a>
+			  </li>
+			  <li>
+				<a href="https://www.des.sc.gov/" class="menu__link" target="_blank">Department of Environmental Services</a>
+			  </li>
+			  <li>
+				<a href="https://dss.sc.gov/" class="menu__link" target="_blank">Department of Social Services</a>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</footer>
+</div>
+    </div><!-- End Global  -->
+    <script type="text/javascript" src="https://llr.sc.gov/js/jquery-3.6.1.min.js"></script>
+    <script type="text/javascript" src="https://llr.sc.gov/js/TweenMax.min.js"></script>
+    <script type="text/javascript" src="https://llr.sc.gov/js/mobile-menu.js"></script>
+    <script type="text/javascript" src="https://llr.sc.gov/js/datatables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function (e) {
+            $('#otherStatesLicensesList').dataTable({
+                order: []
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('#header').load('https://llr.sc.gov/inc/header.htm');
+        $('#footer').load('https://llr.sc.gov/inc/footer.htm');
+        $.getScript('https://llr.sc.gov/js/primary-nav.js');
+        $.getScript('https://llr.sc.gov/js/scripts.js');
+    </script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-18407004-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+
+
+</body></html>

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "498 ROSINA VISTA ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891381131",
+          "state": "NV",
+          "telephone_number": "310-387-1501"
+        },
+        {
+          "address_1": "2012 S JONES BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891463151",
+          "state": "NV",
+          "telephone_number": "702-360-1137"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-06-20",
+        "credential": "OTR",
+        "enumeration_date": "2022-06-20",
+        "first_name": "STEFFANI",
+        "last_name": "TAKAHASHI",
+        "last_updated": "2022-06-20",
+        "middle_name": "NALANI",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1655745390000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1655745390000",
+      "number": "1609507870",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225X00000X",
+          "desc": "Occupational Therapist",
+          "license": "OT-3005",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

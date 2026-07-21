@@ -1,0 +1,90 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5185 S DURANGO DR STE 1",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-475-8608",
+          "postal_code": "891130149",
+          "state": "NV",
+          "telephone_number": "702-475-8608"
+        },
+        {
+          "address_1": "5185 S DURANGO DR STE 1",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-789-0098",
+          "postal_code": "891130149",
+          "state": "NV",
+          "telephone_number": "702-475-8608"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-25",
+        "enumeration_date": "2019-04-22",
+        "first_name": "CICI",
+        "last_name": "TING",
+        "last_updated": "2026-02-25",
+        "middle_name": "YANJIA",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1555970816000",
+      "endpoints": [
+        {
+          "address_1": "7601 Stoneridge Dr",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Pleasanton",
+          "contentOtherDescription": "C-CDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://careepicwest.kp.org:14430/Interconnect-prodcalgateway/wcf/epic.community.hie/xcpdrespondinggatewaysync.svc/ncalceq",
+          "endpointDescription": "Carequality",
+          "endpointType": "SOAP",
+          "endpointTypeDescription": "SOAP URL",
+          "postal_code": "945884501",
+          "state": "CA",
+          "use": "HIE",
+          "useDescription": "Health Information Exchange (HIE)"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772054178000",
+      "number": "1396308607",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207N00000X",
+          "desc": "Dermatology",
+          "license": "178951",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207N00000X",
+          "desc": "Dermatology",
+          "license": "26062",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

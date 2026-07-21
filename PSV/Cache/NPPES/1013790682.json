@@ -1,0 +1,84 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "24077 COUNTRY LIVING RD STE 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MILLSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "302-224-1402",
+          "postal_code": "199663188",
+          "state": "DE",
+          "telephone_number": "302-224-1400"
+        },
+        {
+          "address_1": "24077 COUNTRY LIVING RD STE 2",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MILLSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "302-224-1402",
+          "postal_code": "199663188",
+          "state": "DE",
+          "telephone_number": "302-224-1400"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-10-30",
+        "credential": "LPC10206",
+        "enumeration_date": "2023-08-16",
+        "first_name": "KERRIE",
+        "last_name": "KING",
+        "last_updated": "2024-10-30",
+        "middle_name": "ANN",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1692216053000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1730317420000",
+      "number": "1013790682",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "5010 REGENCY PL STE 203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WHITE PLAINS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "240-419-2556",
+          "postal_code": "206953088",
+          "state": "MD",
+          "telephone_number": "240-427-3554"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "LC14720",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "PC-0011747",
+          "primary": true,
+          "state": "DE",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

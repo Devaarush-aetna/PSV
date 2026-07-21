@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "106 E JEFFERSON ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LA GRANGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "400311445",
+          "state": "KY",
+          "telephone_number": "502-233-3290"
+        },
+        {
+          "address_1": "5117 WITHORN SQ",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402415200",
+          "state": "KY",
+          "telephone_number": "502-767-3174"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-07-06",
+        "credential": "M.Ed., NCC, LPCC",
+        "enumeration_date": "2015-06-06",
+        "first_name": "SPARSHA",
+        "last_name": "THOUT",
+        "last_updated": "2023-07-06",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1433632027000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1688641431000",
+      "number": "1619357449",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

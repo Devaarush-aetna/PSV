@@ -1,0 +1,184 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1001 SCHOOL ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HOUMA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "703604691",
+          "state": "LA",
+          "telephone_number": "985-868-1540"
+        },
+        {
+          "address_1": "1001 SCHOOL ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HOUMA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "985-873-2968",
+          "postal_code": "703604629",
+          "state": "LA",
+          "telephone_number": "985-868-1540"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-12-03",
+        "credential": "DPM",
+        "enumeration_date": "2018-03-25",
+        "first_name": "TYLER",
+        "last_name": "TEWILLIAGER",
+        "last_updated": "2025-12-03",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1522017218000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1764787256000",
+      "number": "1295230118",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "6400 DUTCHMANS PKWY STE 215",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "402053343",
+          "state": "KY",
+          "telephone_number": "502-721-8288"
+        },
+        {
+          "address_1": "1216 N VICTOR II BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MORGAN CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "985-873-2968",
+          "postal_code": "703801382",
+          "state": "LA",
+          "telephone_number": "985-384-7001"
+        },
+        {
+          "address_1": "13554 HIGHWAY 3235",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAROSE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "985-873-2968",
+          "postal_code": "703733203",
+          "state": "LA",
+          "telephone_number": "985-798-7763"
+        },
+        {
+          "address_1": "107 MARYLAND DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LULING",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "985-873-2968",
+          "postal_code": "700702163",
+          "state": "LA",
+          "telephone_number": "985-868-1540"
+        },
+        {
+          "address_1": "285 E STATE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBUS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "432154354",
+          "state": "OH",
+          "telephone_number": "614-566-8073"
+        },
+        {
+          "address_1": "393 E TOWN ST STE 116",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBUS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "614-566-8188",
+          "postal_code": "432154799",
+          "state": "OH",
+          "telephone_number": "614-566-9108"
+        },
+        {
+          "address_1": "8101 E LOWRY BLVD STE 230",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DENVER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "303-344-1922",
+          "postal_code": "802307195",
+          "state": "CO",
+          "telephone_number": "303-344-9090"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "213ES0103X",
+          "desc": "Podiatrist, Foot & Ankle Surgery",
+          "license": "282269",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213E00000X",
+          "desc": "Podiatrist",
+          "license": "MD346187",
+          "primary": true,
+          "state": "LA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213ES0103X",
+          "desc": "Podiatrist, Foot & Ankle Surgery",
+          "license": "POD.0000876",
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213E00000X",
+          "desc": "Podiatrist",
+          "license": "282269",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "213E00000X",
+          "desc": "Podiatrist",
+          "license": "POD.0000876",
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

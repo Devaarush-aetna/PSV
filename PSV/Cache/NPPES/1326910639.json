@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12005 SW 15TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PEMBROKE PINES",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "330253713",
+          "state": "FL",
+          "telephone_number": "786-271-2620"
+        },
+        {
+          "address_1": "1131 N 35TH AVE FL 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HOLLYWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-276-0166",
+          "postal_code": "330215403",
+          "state": "FL",
+          "telephone_number": "954-265-6319"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-18",
+        "credential": "MSPH, LCGC",
+        "enumeration_date": "2025-09-18",
+        "first_name": "CELESTYN",
+        "last_name": "ANGOT",
+        "last_updated": "2025-09-18",
+        "middle_name": "BLAIR",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1758211805000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758211805000",
+      "number": "1326910639",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "170300000X",
+          "desc": "Genetic Counselor, MS",
+          "license": "688",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

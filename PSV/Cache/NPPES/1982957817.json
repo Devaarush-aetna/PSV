@@ -1,0 +1,112 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "755 W ANTELOPE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAYTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "385-383-7113",
+          "postal_code": "840411630",
+          "state": "UT",
+          "telephone_number": "385-383-7162"
+        },
+        {
+          "address_1": "5349 S ADAMS AVE PKWY",
+          "address_2": "SUITE C",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OGDEN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "801-479-0725",
+          "postal_code": "84405",
+          "state": "UT",
+          "telephone_number": "801-479-3346"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-02-27",
+        "credential": "AuD",
+        "enumeration_date": "2012-10-16",
+        "first_name": "SPENCER",
+        "last_name": "LIFFERTH",
+        "last_updated": "2025-02-27",
+        "middle_name": "K",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1350419666000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1740683026000",
+      "number": "1982957817",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1573 DEWAR DR STE 2",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCK SPRINGS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-604-0256",
+          "postal_code": "829015933",
+          "state": "WY",
+          "telephone_number": "307-362-8221"
+        },
+        {
+          "address_1": "191 OVERTHRUST RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EVANSTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "829309261",
+          "state": "WY",
+          "telephone_number": "307-362-8221"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "237600000X",
+          "desc": "Audiologist-Hearing Aid Fitter",
+          "license": "97419074101",
+          "primary": false,
+          "state": "UT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "237600000X",
+          "desc": "Audiologist-Hearing Aid Fitter",
+          "license": "A-1086",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "97419074101",
+          "primary": true,
+          "state": "UT",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "231H00000X",
+          "desc": "Audiologist",
+          "license": "A-1086",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

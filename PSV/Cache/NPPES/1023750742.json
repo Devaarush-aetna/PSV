@@ -1,0 +1,80 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1331 CLAY ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-827-4934",
+          "postal_code": "424204203",
+          "state": "KY",
+          "telephone_number": "270-827-3503"
+        },
+        {
+          "address_1": "1331 CLAY ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-827-4934",
+          "postal_code": "424204203",
+          "state": "KY",
+          "telephone_number": "270-827-3503"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-03-28",
+        "credential": "RPh",
+        "enumeration_date": "2022-04-12",
+        "first_name": "JOHN",
+        "last_name": "MARSHALL",
+        "last_updated": "2022-04-12",
+        "middle_name": "D",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1649794124000",
+      "endpoints": [
+        {
+          "address_1": "1331 CLAY STREET",
+          "address_2": "Address line 2",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "HENDERSON",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "HENDERSON",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "42420",
+          "state": "KY",
+          "useDescription": ""
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1649794124000",
+      "number": "1023750742",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "3336C0002X",
+          "desc": "Pharmacy, Clinic Pharmacy",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

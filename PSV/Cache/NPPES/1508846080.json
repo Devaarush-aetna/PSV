@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9001 STATE LINE RD # 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-523-0068",
+          "postal_code": "641143232",
+          "state": "MO",
+          "telephone_number": "816-363-2600"
+        },
+        {
+          "address_1": "9001 STATE LINE RD # 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-523-0068",
+          "postal_code": "641143232",
+          "state": "MO",
+          "telephone_number": "816-363-2600"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-10-06",
+        "credential": "MD",
+        "enumeration_date": "2006-01-19",
+        "first_name": "DAVID",
+        "last_name": "DUGAN",
+        "last_updated": "2022-10-06",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1137704072000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1665066368000",
+      "number": "1508846080",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207LH0002X",
+          "desc": "Anesthesiology, Hospice and Palliative Medicine",
+          "license": "2013004546",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207LH0002X",
+          "desc": "Anesthesiology, Hospice and Palliative Medicine",
+          "license": "04-22336",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

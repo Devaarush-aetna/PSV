@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1468 MADISON AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NEW YORK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "100296508",
+          "state": "NY"
+        },
+        {
+          "address_1": "1468 MADISON AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEW YORK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "100296508",
+          "state": "NY",
+          "telephone_number": "212-241-6500"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-02-02",
+        "enumeration_date": "2020-04-24",
+        "first_name": "JOSEPH",
+        "last_name": "TRAK",
+        "last_updated": "2026-02-02",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1587757856000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1770041359000",
+      "number": "1306466826",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207U00000X",
+          "desc": "Nuclear Medicine",
+          "license": "53030",
+          "primary": false,
+          "state": "AL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207U00000X",
+          "desc": "Nuclear Medicine",
+          "license": "326821",
+          "primary": true,
+          "state": "NY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3601 SW 29TH ST STE 205",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-272-5394",
+          "postal_code": "666142015",
+          "state": "KS",
+          "telephone_number": "785-272-4583"
+        },
+        {
+          "address_1": "3601 SW 29TH ST",
+          "address_2": "STE 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "785-272-5394",
+          "postal_code": "666142015",
+          "state": "KS",
+          "telephone_number": "785-272-4583"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-11-17",
+        "credential": "O.D.",
+        "enumeration_date": "2006-04-14",
+        "first_name": "MICHAEL",
+        "last_name": "DEUTSCHER",
+        "last_updated": "2025-11-17",
+        "middle_name": "STEVEN",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1145039324000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1763438956000",
+      "number": "1568426625",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "1503-3",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="en"><head id="Head1"><title>
+	West Virginia Board of Dentistry
+</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/GLSuiteWeb/Clients/WVBOD/CSS/JQueryUICalendar/jquery-ui-1.10.3.custom.min.css">
+        <link rel="stylesheet" href="/GLSuiteWeb/Clients/WVBOD/CSS/WYBOD.css?ver=2023110201">
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/GLSuiteWeb/Clients/WVBOD/JS/jquery-ui-1.10.3.custom.min.js"></script>
+        <script type="text/javascript" src="/GLSuiteWeb/Clients/WVBOD/JS/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="/GLSuiteWeb/Clients/WVBOD/JS/Master.js?ver=2024090401"></script>
+
+        <!-- Place all Javascript and Styles BEFORE this line! -->
+        <!-- start head content -->
+        
+    <style type="text/css">
+        .buttons {
+            height: 30px;
+            width: 200px;
+        }
+    </style>
+
+        <!-- end head content -->
+    </head>
+    <body id="mstrBody" class="oneColCtr" style="background-image:url(../../Images/bg-abca.gif);">
+        <form method="post" action="./Results.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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b2RkAgoPZBYCAgEPDxYCHwcFDjEwOTk1MjR8MTU2Nzc5FgIfAgViRGlzYWJsZUlucHV0cygpO19fZG9Qb3N0QmFjaygnY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRkdGdSZXN1bHRzJGN0bDMyJGJ0bk9yZGVyVmVyaWZpY2F0aW9uJywnJylkAiAPZBYWZg8PFgIfAQUWU21pdGgsIFNhbXVlbCBDbGFya21hbmRkAgEPDxYCHwEFLURvY3RvciBvZiBEZW50YWwgU3VyZ2VyeSwgQmFjaGVsb3Igb2YgQmlvbG9neWRkAgIPDxYCHwEFFjA1LzE1LzIwMjMsIDA1LzE1LzIwMTlkZAIDDw8WAh8BBTxVbml2ZXJzaXR5IG9mIE1pc3NvdXJpIC0gS2Fuc2FzIENpdHksIFVuaXZlcnNpdHkgb2YgTWlzc291cmlkZAIEDw8WAh8BBQQ0NjQ4ZGQCBQ8PFgIfAQUKMDYvMjgvMjAyM2RkAgYPDxYCHwEFBiZuYnNwO2RkAgcPDxYCHwEFBiZuYnNwO2RkAggPDxYCHwEFCjAyLzAxLzIwMjdkZAIJDw8WAh8BBQJOb2RkAgoPZBYCAgEPDxYCHwcFDjEwOTk2MDV8MTcxOTE2FgIfAgViRGlzYWJsZUlucHV0cygpO19fZG9Qb3N0QmFjaygnY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRkdGdSZXN1bHRzJGN0bDMzJGJ0bk9yZGVyVmVyaWZpY2F0aW9uJywnJylkAiEPZBYWZg8PFgIfAQUTU21pdGgsIE1hZGlzb24gSHVsbGRkAgEPDxYCHwEFaERvY3RvcmF0ZS0gRG9jdG9yIG9mIERlbnRhbCBTdXJnZXJ5LCBCYWNoZWxvcidzIG9mIFNjaWVuY2UtIEJpb2xvZ3ksIERvY3RvcmF0ZS0gRG9jdG9yIG9mIERlbnRhbCBTdXJnZXJ5ZGQCAg8PFgIfAQUiMDUvMTMvMjAyMywgMTIvMTQvMjAxOCwgMDUvMTMvMjAyM2RkAgMPDxYCHwEFRldlc3QgVmlyZ2luaWEgVW5pdmVyc2l0eSwgUmFkZm9yZCBVbml2ZXJzaXR5LCBXZXN0IFZpcmdpbmlhIFVuaXZlcnNpdHlkZAIEDw8WAh8BBQQ0NjM0ZGQCBQ8PFgIfAQUKMDUvMjUvMjAyM2RkAgYPDxYCHwEFBiZuYnNwO2RkAgcPDxYCHwEFBiZuYnNwO2RkAggPDxYCHwEFCjAyLzAxLzIwMjdkZAIJDw8WAh8BBQJOb2RkAgoPZBYCAgEPDxYCHwcFDjEwOTk3NTB8MTcyMTkwFgIfAgViRGlzYWJsZUlucHV0cygpO19fZG9Qb3N0QmFjaygnY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRkdGdSZXN1bHRzJGN0bDM0JGJ0bk9yZGVyVmVyaWZpY2F0aW9uJywnJylkAgMPD2QWAh8CBUZEaXNhYmxlSW5wdXRzKCk7X19kb1Bvc3RCYWNrKCdjdGwwMCRDb250ZW50UGxhY2VIb2xkZXIxJGJ0blNlYXJjaCcsJycpZAIFDw9kFgIfAgVGRGlzYWJsZUlucHV0cygpO19fZG9Qb3N0QmFjaygnY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRidG5Mb2dvdXQnLCcnKWQCBQ9kFgICAQ88KwALAGRkn1kiQdtM0Kk6Z3D4YWNdOPxc2iU8dpuJtEvOiFgoBEI=">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+function DisableInputs() {   var i;   var current;   for (i = 0; current = document.getElementsByTagName('input')[i]; i++) {       if (current.type == "submit" || current.type == "button") {           current.value = "Processing...";           current.disabled = true;       }       if (current.type == "text" || current.type == "password") {           current.readOnly = true;       }       if (current.type == "radio" || current.type == "checkbox") {           current.onclick = function () {return false;}       }   }   for (i = 0; current = document.getElementsByTagName('a')[i]; i++) {       current.style.color = "Gray";       current.style.textDecoration = "none";       current.onclick = function () {return false;}   }   for (i = 0; current = document.getElementsByTagName('select')[i]; i++) {       freezeList(current);   }   for (i = 0; current = document.getElementsByTagName('textarea')[i]; i++) {       current.readOnly = true;   }}function freezeList(whichList) {   var chosen = whichList.options.selectedIndex;   whichList.onchange = function () {       whichList.options.selectedIndex = chosen;   }}//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="3E8445F0">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdACX4ybSFFdxNnHf4mcjK4iGz55jwL7bKhoHvfFrB+rKbRMPooLJ9hjdJ4/qIy72r2sUFZsuvOQNmKUv1buGSbcksjiPyZ3DG3fmJh/zeecflKFC4oXq803x426T7sJoejaFrLDRDKuc4xR8cZNL6wkF73SuVFM3ErznpSIjJYVWFcSs1YOCNpdhUL/YgXKgFJ+/jeBa/CLHoqdLAJjFcb2wJmuVui6AkddlenRu3CEeTAq91jDdbh053kq8I+qZO2eNvrayj3HQLxMeXpJk/23KI6cPQFHOLcvkWvxWnlVfABKoi1geNrR6io+THPeAThqPw87mxHNk3ZrqXargJi/GmNCSpk/rfj4wvyYFKcplCHNTIz4mfHvQMyGngG9qmpY6IFdIFB62Qok3+RMHuQfxqhLfa3VpqhjaZikV2ixgmxsfNP1DRdXVgC7BkWlguV4j8FBijp6isi9kgGdGL/J/OPT9dTKqZI47kGVpqw6OC+6PGaYb5kgP1tN9xc/M5lej2gtSs/pZ/1vm1W+Dp5LuARsb2ciY0cJkwwERePgc0mhJXJAjIKuIPRnld5j2Wf2yR/3Q9eAJuWkYAQ8yL0nJ8xDlj8qN9PIH73bpgaxMvtusGhaLDJLUQ7kF4OjHMHIdAbJw3gnThvDTcClbMV78b2Ju/SEpZNDZSpdiDVRH6/Tjh6ApnNOH+gQRJPzq+zoURJUH64CLt4gHfuGKcKN5VPHPqFR2U2tMTZxpvzZGzXI5MW6XMaFjzT9nUdsIknot8eazwkhdft5miGG2Vi0PNHzaNnPZLO75QAA2d+xFRdRIWhrAHcyoiyRsd/0Fyiwc=">
+</div>
+            <div id="container">
+
+                <div style="clear: both; background-color: #fff; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC;">
+                    <img src="/GLSuiteWeb/Clients/WVBOD/Images/wvbodbanner.png" alt="State Seal of West Virginia" class="w100pc">
+                </div>
+                <div id="mainContent">
+                    <span id="lblPageHeader"></span>
+                    
+    <div style="padding: 15px 0px 31px 0px;">
+        <div style="text-align: center;">
+            <h2>Results Page</h2>
+            <br>
+        </div>
+        <div style="text-align: right;">
+            <input type="submit" name="ctl00$ContentPlaceHolder1$btnExport" value="Export To Excel" id="ContentPlaceHolder1_btnExport" class="buttons">
+        </div>
+        <div style="margin-top: 35px;">
+            <div id="ContentPlaceHolder1_div1">
+                <table cellspacing="0" cellpadding="3" id="ContentPlaceHolder1_dtgResults" style="width:100%;border-collapse:collapse;margin: auto;">
+	<tbody><tr>
+		<td>Licensee Name</td><td>Degree</td><td>Graduation Year</td><td>School</td><td>License Number</td><td>License Date</td><td>Specialty</td><td>Anesthesia</td><td>Expiration Date</td><td>Action Indicator</td><td>Order Verification</td>
+	</tr><tr>
+		<td>Smith, Terri Lynn</td><td>AS</td><td>01/01/1993</td><td>W V I T</td><td>1918</td><td>09/20/1993</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl02$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_0" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Donna Gail</td><td>AS</td><td>01/01/1991</td><td>W V I T</td><td>1779</td><td>07/09/1991</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl03$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_1" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Vivian Elaine</td><td>AS</td><td>01/01/1986</td><td>Ashland Community College</td><td>1550</td><td>07/10/1986</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2020</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl04$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_2" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Sarah Spiker</td><td>BS</td><td>01/01/2000</td><td>W V U</td><td>2296</td><td>05/24/2000</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl05$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_3" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Amanda Beth</td><td>AS</td><td>01/01/2002</td><td>W V U I T</td><td>2410</td><td>05/22/2002</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl06$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_4" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Amy Sue</td><td>BS</td><td>01/01/2006</td><td>W V I T</td><td>2659</td><td>05/31/2006</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl07$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_5" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Shannan Auvil</td><td>BS</td><td>01/01/2006</td><td>W V U</td><td>2687</td><td>07/26/2006</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl08$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_6" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Ashli Danielle</td><td>BS</td><td>01/01/2007</td><td>West Liberty State College</td><td>2742</td><td>06/19/2007</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl09$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_7" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Kelsea Nicole</td><td>BS</td><td>01/01/2013</td><td>West Liberty University</td><td>3164</td><td>06/06/2013</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl10$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_8" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Christina Nichoel</td><td>AS</td><td>01/01/2012</td><td>Bridgemont C T C</td><td>3257</td><td>10/27/2014</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl11$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_9" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Kayla G.</td><td>BS</td><td>01/01/2014</td><td>W V U</td><td>3306</td><td>08/13/2015</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl12$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_10" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Mary Elizabeth</td><td>BS</td><td>&nbsp;</td><td>West Liberty University</td><td>2147</td><td>09/11/1997</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl13$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_11" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Brittany N.</td><td>BS</td><td>01/01/2015</td><td>W V U</td><td>3277</td><td>05/20/2015</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2023</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl14$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_12" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Amanda Grace</td><td>AS</td><td>01/01/2000</td><td>W V U I T</td><td>2290</td><td>05/23/2000</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl15$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_13" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Tia Marie</td><td>AS</td><td>01/01/2012</td><td>S W V C T C</td><td>3122</td><td>09/11/2012</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl16$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_14" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Edward Reynolds</td><td>DDS</td><td>01/01/2012</td><td>W V U</td><td>4021</td><td>07/20/2012</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl17$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_15" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Brandon David</td><td>DDS</td><td>01/01/2015</td><td>W V U</td><td>4175</td><td>06/30/2015</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl18$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_16" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Charles Lester</td><td>DDS</td><td>01/01/1983</td><td>WVU</td><td>2700</td><td>07/01/1983</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2026</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl19$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_17" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Richard Duff</td><td>DDS</td><td>01/01/1976</td><td>WVU</td><td>2243</td><td>01/26/1977</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl20$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_18" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Jon Christopher</td><td>DDS</td><td>01/01/2001</td><td>WVU</td><td>3485</td><td>05/16/2001</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl21$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_19" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Amy Gerber</td><td>DDS</td><td>01/01/2002</td><td>W V U</td><td>3528</td><td>05/24/2002</td><td>Orthodontics and Dentofacial Orthopedics</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl22$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_20" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Kara Amber</td><td>DDS</td><td>01/01/2007</td><td>W V U</td><td>3807</td><td>01/28/2008</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl23$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_21" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Kimberly Thomas</td><td>DDS</td><td>01/01/2006</td><td>W V U</td><td>3893</td><td>01/12/2010</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl24$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_22" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Homer William</td><td>DDS</td><td>01/01/1972</td><td>WVU</td><td>1978</td><td>07/18/1972</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2022</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl25$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_23" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Tiffany Lynn</td><td>DDS</td><td>01/01/2011</td><td>W V U</td><td>3944</td><td>05/24/2011</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl26$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_24" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Michael Lawson</td><td>DDS</td><td>01/01/1990</td><td>WVU</td><td>3092</td><td>07/15/1991</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl27$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_25" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Shannon Lee </td><td>AS</td><td>05/01/2016</td><td>West Liberty UV</td><td>3360</td><td>07/11/2016</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl28$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_26" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Allison Jeanette</td><td>AS</td><td>05/01/2016</td><td>Allegany College of MD</td><td>3810</td><td>04/15/2024</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl29$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_27" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Samantha Kay</td><td>Associate</td><td>05/14/2020</td><td>BridgeValley Community and Technical College</td><td>3579</td><td>07/09/2020</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl30$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_28" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Tristan Carmella</td><td>DDS</td><td>05/15/2022</td><td>WVU</td><td>4581</td><td>06/15/2022</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl31$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_29" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Dakota</td><td>Bachelor's of Science and Dental Hygiene</td><td>05/13/2017</td><td>West Liberty University</td><td>3733</td><td>09/21/2022</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2025</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl32$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_30" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Samuel Clarkman</td><td>Doctor of Dental Surgery, Bachelor of Biology</td><td>05/15/2023, 05/15/2019</td><td>University of Missouri - Kansas City, University of Missouri</td><td>4648</td><td>06/28/2023</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl33$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_31" class="linkButton">
+                            </td>
+	</tr><tr>
+		<td>Smith, Madison Hull</td><td>Doctorate- Doctor of Dental Surgery, Bachelor's of Science- Biology, Doctorate- Doctor of Dental Surgery</td><td>05/13/2023, 12/14/2018, 05/13/2023</td><td>West Virginia University, Radford University, West Virginia University</td><td>4634</td><td>05/25/2023</td><td>&nbsp;</td><td>&nbsp;</td><td>02/01/2027</td><td>No</td><td>
+                                <input type="submit" name="ctl00$ContentPlaceHolder1$dtgResults$ctl34$btnOrderVerification" value="Order Verification" id="ContentPlaceHolder1_dtgResults_btnOrderVerification_32" class="linkButton">
+                            </td>
+	</tr>
+</tbody></table>
+                <br>
+                <div style="text-align: center;">
+                    <input type="submit" name="ctl00$ContentPlaceHolder1$btnSearch" value="New Search" id="ContentPlaceHolder1_btnSearch" class="buttons">&nbsp;&nbsp;
+                <input type="submit" name="ctl00$ContentPlaceHolder1$btnLogout" value="Home Page" id="ContentPlaceHolder1_btnLogout" class="buttons">
+                </div>
+            </div>
+            
+            <br>
+
+        </div>
+    </div>
+
+
+                    <div id="agencyFooter" style="clear: both; display: block;">
+                        <a id="Link to Email Us" href="mailto:wvbde@suddenlinkmail.com" target="_blank">Contact Us</a> | <a id="Link to Terms of Use" href="/GLSuiteWeb/Clients/WVBOD/Website Terms Of Use.pdf" target="_blank">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    
+
+</body></html>

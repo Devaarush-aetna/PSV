@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "20 TIBER RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SYOSSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "117911109",
+          "state": "NY"
+        },
+        {
+          "address_1": "624 HAWKINS AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RONKONKOMA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "117792375",
+          "state": "NY",
+          "telephone_number": "631-240-3579"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-03-09",
+        "enumeration_date": "2021-07-01",
+        "first_name": "AMANDA",
+        "last_name": "GROSSMAN",
+        "last_updated": "2021-07-01",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1625156367000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1625156367000",
+      "number": "1073183943",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": null,
+          "primary": true,
+          "state": "NY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

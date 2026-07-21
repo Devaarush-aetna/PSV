@@ -13,12 +13,17 @@ identity:
   try_name_swap: true
 
 search:
+  # KSBN requires dashed format: 10-digit inputs like "5383371052" must be submitted
+  # as "53-83371-052" (groups of 2-5-3). The ladder's license_formatted synthetic mode
+  # handles this automatically for pure-digit license inputs.
+  license_dash_format: "2-5-3"
   modes:
     # ── Tab 1: License Number search (default active tab — no pre_click needed) ──
     - mode: license_number
       input_selector: "#verificationCommand_licenseNumber"
       # The site says "Enter the middle digits only (example: 00-000000-000)".
-      # In practice, entering just the numeric sequence without dashes also works.
+      # Bare digits like "5383371052" return "License Number is not formatted correctly";
+      # the dashed form "53-83371-052" is required. license_dash_format above handles this.
       submit_js: "document.querySelector('#searchLicense form').submit()"
 
     # ── Tab 2: Name search (requires clicking the tab first) ──

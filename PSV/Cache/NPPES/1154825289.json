@@ -1,0 +1,105 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "419 SW 15TH AVE",
+          "address_2": "STE 203",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-517-8952",
+          "postal_code": "32608",
+          "state": "FL",
+          "telephone_number": "305-814-7246"
+        },
+        {
+          "address_1": "310 N L ROGERS WELLS BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GLASGOW",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-659-5947",
+          "postal_code": "421411300",
+          "state": "KY",
+          "telephone_number": "270-659-5990"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-06-01",
+        "credential": "DO",
+        "enumeration_date": "2018-03-22",
+        "first_name": "SHAMMI",
+        "last_name": "PATEL",
+        "last_updated": "2026-06-01",
+        "middle_name": "A",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1521733124000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1780331237000",
+      "number": "1154825289",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "185 S ORANGE AVE # MSBG594",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEWARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "07103",
+          "state": "NJ",
+          "telephone_number": "973-972-5045"
+        },
+        {
+          "address_1": "419 SW 15TH ST",
+          "address_2": "STE 203",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OCALA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-517-8952",
+          "postal_code": "344710609",
+          "state": "FL",
+          "telephone_number": "305-814-7246"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208100000X",
+          "desc": "Physical Medicine & Rehabilitation",
+          "license": "OS21002",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        },
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": "000000000",
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208VP0000X",
+          "desc": null,
+          "license": "OS21002",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

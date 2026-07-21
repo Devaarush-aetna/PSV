@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "16235 NW CANTON ST APT 303",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PORTLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "972291258",
+          "state": "OR",
+          "telephone_number": "503-689-2489"
+        },
+        {
+          "address_1": "16235 NW CANTON ST APT 303",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PORTLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "972291258",
+          "state": "OR",
+          "telephone_number": "503-689-2489"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-11-17",
+        "enumeration_date": "2023-11-17",
+        "first_name": "MICHAEL",
+        "last_name": "SILVERSTEIN",
+        "last_updated": "2023-11-17",
+        "middle_name": "ROLAND",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1700250075000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1700250075000",
+      "number": "1275308439",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "LD-D-10225244",
+          "primary": true,
+          "state": "OR",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

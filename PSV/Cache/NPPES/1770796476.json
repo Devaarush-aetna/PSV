@@ -1,0 +1,66 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "152 THIERMAN LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-721-0086",
+          "postal_code": "402075010",
+          "state": "KY",
+          "telephone_number": "502-891-0333"
+        },
+        {
+          "address_1": "152 THIERMAN LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-721-0086",
+          "postal_code": "402075010",
+          "state": "KY",
+          "telephone_number": "502-891-0333"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "DC",
+        "authorized_official_first_name": "GREGORY",
+        "authorized_official_last_name": "THOMAS",
+        "authorized_official_middle_name": "SHANE",
+        "authorized_official_name_prefix": "--",
+        "authorized_official_name_suffix": "--",
+        "authorized_official_telephone_number": "5028910333",
+        "authorized_official_title_or_position": "Chiropractor",
+        "enumeration_date": "2007-05-08",
+        "last_updated": "2008-04-03",
+        "organization_name": "CHIROPRACTIC LOUISVILLE PLLC",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1178642345000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1207235657000",
+      "number": "1770796476",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

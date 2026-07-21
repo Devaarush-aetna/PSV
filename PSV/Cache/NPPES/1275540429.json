@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1013 WISTERIA DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DERBY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "670373575",
+          "state": "KS",
+          "telephone_number": "316-361-0140"
+        },
+        {
+          "address_1": "1033 EAST 21ST STREET",
+          "address_2": "SUITE 101 BUILDING 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672063544",
+          "state": "KS",
+          "telephone_number": "316-315-0220"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2006-08-01",
+        "first_name": "CHARLES",
+        "last_name": "BENNETT",
+        "last_updated": "2007-07-08",
+        "middle_name": "EUGENE",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1154484547000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1275540429",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "01-04934",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

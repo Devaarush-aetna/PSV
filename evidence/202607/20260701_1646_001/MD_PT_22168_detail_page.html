@@ -1,0 +1,826 @@
+<!DOCTYPE html><html lang="en-US" class="h-100" data-bs-theme="auto"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google tag (gtag.js) -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-DELS8WSXQ2"></script>
+    <script defer="">
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-DELS8WSXQ2');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+    <link href="/bptVerification/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+    <link href="/bptVerification/assets/fontawesome/css/all.min.css" rel="stylesheet">
+    <link href="/bptVerification/assets/css/StyleSheet.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/bptVerification/assets/images/favicon.ico">
+
+    <!-- Skip Link Styling -->
+    <style>
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 10px;
+            background: #000;
+            color: #fff;
+            padding: 8px 14px;
+            z-index: 2000;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 10px;
+            outline: 3px solid #EAAA00;
+        }
+    </style>
+
+    
+<style>
+  /* Always hide any inline watermark image element */
+  .print-seal { display: none !important; }
+
+  /* ============================================================
+     Start - Verify Text + QR + Disclaimer Layout Styles
+     ============================================================ */
+
+  /* QR sizing */
+  .verify-qr {
+      width: 110px;
+      height: 110px;
+  }
+
+
+  /* Base text blocks */
+  #lblVerifyText,
+  #disclaimerText {
+      display: block;
+      line-height: 1.4;
+      font-size: 15px;
+      background: none !important;
+      color: #000 !important;
+  }
+
+  @media print {
+
+    .verify-qr {
+        /*          float: right;
+*/ margin-left: 20px;
+        text-align: center;
+    }
+
+
+    /* Force disclaimer text onto its own page (Page 2) */
+    #disclaimerText {
+        page-break-before: always !important;
+        break-before: page !important;
+    }
+
+
+      #lblVerifyText,
+      #disclaimerText {
+          font-size: 14px;
+          display: block !important;
+          background: none !important;
+      }
+  }
+
+  /* ============================================================
+     End - Verify Text + QR + Disclaimer Layout Styles
+     ============================================================ */
+
+
+
+    @media print {
+
+        @page {
+            size: letter;
+            margin: 0.5in;
+        }
+
+        html, body {
+            background: #fff !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            font-size: 14px;
+        }
+
+        html, body, form, #form1 {
+            display: block !important;
+            visibility: visible !important;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+
+            /* ------------------------------------------------------------
+       PRINT VISIBILITY FIX  
+       Allow disclaimerText to remain visible always.
+       ------------------------------------------------------------ */
+
+            /* Hide everything except main and disclaimerText */
+            form#form1 > * {
+                display: none !important;
+            }
+
+            form#form1 > main,
+            #disclaimerText {
+                display: block !important;
+            }
+
+        /* Inside main, allow PanelLookUp OR disclaimerText */
+        main > .container > * {
+            display: none !important;
+        }
+
+        main > .container > [id$="PanelLookUp"],
+        #disclaimerText {
+            display: block !important;
+        }
+
+        /* ------------------------------------------------------------
+       End visibility fix
+       ------------------------------------------------------------ */
+
+
+        /* Clean PanelLookUp structure */
+        main > .container {
+            display: block !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        [id$="PanelLookUp"] {
+            position: static !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background: #fff !important;
+        }
+
+            [id$="PanelLookUp"] .card {
+                break-inside: avoid-page !important;
+                page-break-inside: avoid !important;
+            }
+
+            [id$="PanelLookUp"] .container,
+            [id$="PanelLookUp"] .row,
+            [id$="PanelLookUp"] .col-md-12,
+            [id$="PanelLookUp"] .col-sm-12 {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            [id$="PanelLookUp"] .card-header {
+                display: none !important;
+            }
+
+            [id$="PanelLookUp"] table {
+                display: table !important;
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+
+            [id$="PanelLookUp"] thead {
+                display: table-header-group !important;
+            }
+
+            [id$="PanelLookUp"] tbody {
+                display: table-row-group !important;
+            }
+
+            [id$="PanelLookUp"] tr {
+                display: table-row !important;
+            }
+
+            [id$="PanelLookUp"] th,
+            [id$="PanelLookUp"] td {
+                display: table-cell !important;
+                padding: 6pt 8pt !important;
+                vertical-align: top;
+            }
+
+            [id$="PanelLookUp"] .card,
+            [id$="PanelLookUp"] .card-body {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+
+            [id$="PanelLookUp"] img {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+
+            /* ============================================================
+       Start - Centered Watermark (Page 1 Only)
+       ============================================================ */
+            [id$="PanelLookUp"] .card-body {
+                position: relative !important;
+                z-index: 1 !important;
+            }
+
+                /* Remove watermark on all but the first card-body */
+                [id$="PanelLookUp"] .card-body:not(:first-of-type)::after {
+                    content: none !important;
+                }
+
+                /* Centered watermark on Page 1 only */
+                [id$="PanelLookUp"] .card-body:first-of-type::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 300px;
+                    height: 300px;
+                    background: url('assets/images/Seal_of_Maryland_400.png') no-repeat center center;
+                    background-size: contain;
+                    opacity: 0.13;
+                    pointer-events: none;
+                    z-index: 0;
+                }
+        /* ============================================================
+       End - Centered Watermark
+       ============================================================ */
+
+
+        .info-grid .row {
+            margin: 0 !important;
+            padding-top: 5pt !important;
+            padding-bottom: 5pt !important;
+        }
+    }
+
+
+
+    /* Start - Info Grid Striping 📋 */
+.info-grid .row:nth-child(odd) {
+    background-color: #f8f9fa; /* Bootstrap light gray */
+}
+.info-grid .row:nth-child(even) {
+    background-color: #ffffff; /* White */
+}
+/* End - Info Grid Striping 📋 */
+
+
+
+</style>
+<!-- End - License Details Print Styles + Watermark 📄🛡️ -->
+
+
+<title>
+	License Details - Maryland Board of Physical Therapy Examiners
+</title></head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Skip to Content -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+
+    <div class="flex-grow-1 d-flex flex-column">
+
+        <form method="post" action="./verify_details?id=22168&amp;p=4" id="form1" class="flex-grow-1 d-flex flex-column">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE4OTcxMzIzNTYPZBYCZg9kFgICAQ9kFgYCAQ8PFgIeBFRleHQFG0xpY2Vuc2UgVmVyaWZpY2F0aW9uIFBvcnRhbGRkAgMPDxYEHgtOYXZpZ2F0ZVVybAUyaHR0cHM6Ly9oZWFsdGgubWFyeWxhbmQuZ292L2JwaHRlL1BhZ2VzL2luZGV4LmFzcHgeB1Zpc2libGVnZGQCCA9kFggCAg9kFgJmD2QWAgIBD2QWAgIDDxYCHgdvbmNsaWNrBWR2YXIgZWw9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ01haW5Db250ZW50X01zZzFfbWVzc2FnZURpdlN0aWNreScpO2lmKGVsKXtlbC5zdHlsZS5kaXNwbGF5PSdub25lJzt9ZAIDDxYCHwJnFh4CAQ8PFgIfAAUyTWFyeWxhbmQgU3RhdGUgQm9hcmQgb2YgUGh5c2ljYWwgVGhlcmFweSBFeGFtaW5lcnNkZAIDDw8WAh8ABRBKVURJVEggRS4gQ09PUEVSZGQCBQ8PFgIfAAW+ATxpIGNsYXNzPSdmYS1zb2xpZCBmYS1jaGVjayBmYS0yeCB0ZXh0LXN1Y2Nlc3MgbWUtMScgYXJpYS1oaWRkZW49J3RydWUnPjwvaT48c3BhbiBjbGFzcz0nYmFkZ2UgYmctc3VjY2VzcyBweC0zIHB5LTIgZnMtNiBtYi0xJyByb2xlPSdzdGF0dXMnIGFyaWEtbGFiZWw9J0xpY2Vuc2Ugc3RhdHVzOiBBY3RpdmUnPkFjdGl2ZTwvc3Bhbj5kZAIHDw8WAh8ABSlUaGUgaW5kaXZpZHVhbCBpcyBhdXRob3JpemVkIHRvIHByYWN0aWNlLmRkAgkPDxYCHwAFBTIyMTY4ZGQCCw8PFgIfAAUSUGh5c2ljYWwgVGhlcmFwaXN0ZGQCDQ9kFgICAQ8PFgIfAAUETm9uZWRkAg8PDxYCHwAFCjAzLzE1LzIwMDdkZAIRDw8WAh8ABQowNS8zMS8yMDI4ZGQCEw8PFgIfAAUCTm9kZAIVDw8WAh8BBTRodHRwczovL2hlYWx0aC5tYXJ5bGFuZC5nb3YvYnBodGUvUGFnZXMvYWN0aW9ucy5hc3B4ZGQCFw8PFgIfAAWDAzxhIGhyZWY9Imh0dHBzOi8vbWRibmMuaGVhbHRoLm1hcnlsYW5kLmdvdi9icHRWZXJpZmljYXRpb24vVmVyaWZ5IiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciI+PHN0cm9uZyBzdHlsZT0nY29sb3I6I0RDMzU0NSc+VkVSSUZZIFRISVMgSU5GT1JNQVRJT048L3N0cm9uZz48L2E+IG9yIHNjYW4gdGhlIFFSIGNvZGUgdG8gY29uZmlybSB0aGUgaW5mb3JtYXRpb24gbWF0Y2hlcy48YnI+PGJyPjxzdHJvbmc+Rm9yIGlucXVpcmllcyBvciB0byByZXBvcnQgc3VzcGljaW91cyBhY3Rpdml0eSwgZW1haWwgPGEgaHJlZj0ibWFpbHRvOm1kaC5icGh0ZUBtYXJ5bGFuZC5nb3YiPm1kaC5icGh0ZUBtYXJ5bGFuZC5nb3Y8L2E+IG9yIGNhbGwgNDEwLTc2NC00NzE4Ljwvc3Ryb25nPmRkAhkPDxYIHghJbWFnZVVybAUcfi9hc3NldHMvaW1hZ2VzL1ZlcmlmeV80LnBuZx4FV2lkdGgbAAAAAABAVUABAAAAHgZIZWlnaHQbAAAAAABAVUABAAAAHgRfIVNCAoADZGQCGw8PFgQfAAUbVmVyaWZpY2F0aW9uIHJlZmVyZW5jZSBsaW5rHwEFTWh0dHBzOi8vbWRibmMuaGVhbHRoLm1hcnlsYW5kLmdvdi9icHRWZXJpZmljYXRpb24vdmVyaWZ5X2RldGFpbHM/aWQ9MjIxNjgmcD00ZGQCHQ8PFgIfAAUWMjAyNi0wNy0wMSAwODoxNjoyOSBFVGRkAgQPDxYCHwAFMk1hcnlsYW5kIFN0YXRlIEJvYXJkIG9mIFBoeXNpY2FsIFRoZXJhcHkgRXhhbWluZXJzZGQCBQ8PFgIfAAUyTWFyeWxhbmQgU3RhdGUgQm9hcmQgb2YgUGh5c2ljYWwgVGhlcmFweSBFeGFtaW5lcnNkZGS3OAqWQ3qo1pLCThacMVMR8CNUvkeDkRuxrX+0aCguUQ==">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/bptVerification/WebResource.axd?d=gIMeH-FLGJk5-6YEUTGR1iSKgf5ZYkwSUACHW19G5d1pcQeyWWOFDulUjlSOOfV20Z6HLQVyvtVOCH-PgHiZLffrgLeaTluRVArC4uRrOyI1&amp;t=638901397900000000" type="text/javascript"></script>
+
+
+<script src="/bptVerification/ScriptResource.axd?d=R8Z96kdjZaH7DDr09F2HbbynsS4HR6e8Gw14DLUzP8Dw9Om2jYsl_YG91P6Lpe6q8IN-cikS85QVAzSeL-tlgqXee_Ftrx43NrLTYwppx5jIAatHkgbqgB9JqlpkDV9UK34YQDniNLjASBZxGtM_x6DPGA0ZJk9kQGDney6RmTs1&amp;t=5c0e0825" type="text/javascript"></script>
+<script src="/bptVerification/ScriptResource.axd?d=1HBXfInscX5B2BmEPUptbXFncJRScVI8el2SF9tPiykuT_AvMmcXldO4mnyCXhGwooqs8cb9CxIwUl63aZ-asVsWYs3bbC_PQbjjfx8ogwDg70IFRUyl1JuPYJi6DR-mJFQAe3LA9SknlmSy-i7hTABr2GJJsvpzjjiAuTCnRppSvPtkLExvzQreaAC0eGzP0&amp;t=5c0e0825" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="793568A0">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAL7y89gdCWpDmeuoz958/zng8iPOfrtnZAV3m8JGo+clFI/9+s8EWjCfvtrQk9V+68N94gnmDAEBp9kwp0fkz/p">
+</div>
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'form1', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+            <!-- Header -->
+            <header class="container-fluid site-header" role="banner">
+                <div class="container header-flex">
+
+                    <a href="/bptVerification/home" class="header-logo">
+                        <img src="/bptVerification/assets/images/logo-maryland-rev.svg" alt="Maryland Department of Health" class="logo-mdh">
+                    </a>
+
+                    <div class="header-text">
+                        <h1>
+                            <span id="lbTitle">License Verification Portal</span>
+                        </h1>
+                        <h2>Maryland State Board of Physical Therapy Examiners</h2>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Navigation -->
+            <nav class="main-menu-bar" role="navigation" aria-label="Main navigation">
+                <div class="container">
+
+                    <button class="menu-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </button>
+
+                    <div class="menu-links menu-left">
+
+                        
+
+                        <a id="lnkHome" class="menu-link" href="https://health.maryland.gov/bphte/Pages/index.aspx">
+                            Back Home
+                        </a>
+
+                        
+
+                        
+
+                        <div class="menu-login-wrap">
+
+                            
+
+                            <div class="menu-login-sub">
+                                
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main id="mainContent" class="flex-fill" role="main" tabindex="-1">
+                <div class="container">
+                    
+    
+  
+
+<!-- ✅ Header -->
+                <div class="row mt-4 mb-2">
+                    <div class="col-8">
+                   <!-- Start - RF-2 Focus Target (Details Page) 🎯 -->
+<h2 id="detailsFocusTarget" tabindex="-1">License Verification</h2>
+<!-- End - RF-2 Focus Target (Details Page) 🎯 -->
+                    </div>
+
+                    <div class="col-4 text-end">
+
+<a onclick="window.print(); return false;" id="MainContent_btnPrint" class="btn btn-light border px-3 py-2" href="javascript:__doPostBack('ctl00$MainContent$btnPrint','')">
+
+    <i class="fa-solid fa-print" aria-hidden="true"></i>
+    <span class="ms-1">Print</span>
+
+</a>            
+                        </div>
+                </div>
+ 
+
+
+
+
+
+
+
+
+
+<div id="MainContent_PanelLookUp" class="row d-flex justify-content-center align-items-center mt-2">
+<div class="col-md-12 col-sm-12">           
+            
+<div class="card shadow-sm">
+<h3 class="h5 card-header"><i class="fa-solid fa-id-card" aria-hidden="true"></i>&nbsp;&nbsp;License Details</h3>
+<div class="card-body d-flex flex-column">
+
+<div class="text-center"><img src="assets/images/MDH-logo-box-200.png" alt="MTE Logo" width="175">  </div>
+
+  
+    <br>
+
+<h2 class="text-center fw-semibold mt-3">License Verification</h2>
+
+<h3 class="text-center fw-semibold">
+    <span id="MainContent_lbBoardName">Maryland State Board of Physical Therapy Examiners</span>
+</h3>
+
+
+    <br>
+
+
+
+
+
+    
+    <!-- Start - License Info Grid 📋 -->
+<div class="info-grid m-0 m-md-2 m-lg-4">
+  <div class="row py-2">
+    <div class="col-5 col-md-4">Full Name</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbName">JUDITH E. COOPER</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">Status</div>
+    <div class="col-7 col-md-8">
+      <span id="MainContent_lbStatus"><i class="fa-solid fa-check fa-2x text-success me-1" aria-hidden="true"></i><span class="badge bg-success px-3 py-2 fs-6 mb-1" role="status" aria-label="License status: Active">Active</span></span><br>
+      <b><span id="MainContent_lblPublicExplanation">The individual is authorized to practice.</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">License #</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbLicNum">22168</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">License Type</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbLicType">Physical Therapist</span></b>
+    </div>
+  </div>
+
+  <div id="MainContent_rowSpecialty" class="row py-2">
+    <div class="col-5 col-md-4">Specialty</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbLicSpec">None</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">Original Date</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbOrgLicDate">03/15/2007</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">Expiration Date</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbExpDate">05/31/2028</span></b>
+    </div>
+  </div>
+
+  <div class="row py-2">
+    <div class="col-5 col-md-4">Disciplinary Action</div>
+    <div class="col-7 col-md-8">
+      <b><span id="MainContent_lbDisAction">No</span></b>
+      &nbsp;
+
+
+<a id="MainContent_hlDisciplinary" aria-label="Verify Disciplinary Actions (opens in new tab)" href="https://health.maryland.gov/bphte/Pages/actions.aspx" target="_blank">
+    Verify Disciplinary Actions (opens in new tab)
+</a>
+
+
+    </div>
+  </div>
+
+
+</div>
+<!-- End - License Info Grid 📋 -->
+
+
+
+
+
+
+
+
+
+
+<hr>
+
+
+<!-- Start - Verify Text + QR Responsive Block 📱🖥 -->
+<div class="row align-items-start mt-1 mb-2">
+
+    <!-- Text Column -->
+    <div class="col-12 col-md-10">
+        <span id="MainContent_lblVerifyText"><a href="https://mdbnc.health.maryland.gov/bptVerification/Verify" target="_blank" rel="noopener"><strong style="color:#DC3545">VERIFY THIS INFORMATION</strong></a> or scan the QR code to confirm the information matches.<br><br><strong>For inquiries or to report suspicious activity, email <a href="mailto:mdh.bphte@maryland.gov">mdh.bphte@maryland.gov</a> or call 410-764-4718.</strong></span>
+    </div>
+
+    <!-- QR Column -->
+    <div class="col-12 col-md-2 text-md-end text-center mt-3 mt-md-0">
+        <!-- QR code image -->
+        <img id="MainContent_qrcode" class="verify-qr" src="assets/images/Verify_4.png" alt="QR Code Link to detailed verification page" style="height:85px;width:85px;">
+    </div>
+
+</div>
+<!-- End - Verify Text + QR Responsive Block 📱🖥 -->
+
+
+
+
+<p style="font-size:14px;">Reference Link: <a id="MainContent_lbRefLink" href="https://mdbnc.health.maryland.gov/bptVerification/verify_details?id=22168&amp;p=4">Verification reference link</a> 
+    This website and the license verification data are considered primary sources and are updated daily from the Board’s official licensing database. 
+See full disclaimer below. The Information is accurate as of: <span id="MainContent_lbDateStamp">2026-07-01 08:16:29 ET</span>
+  </p>
+
+
+<!-- Start - Preload Watermark (hidden) -->
+<link rel="preload" href="assets/images/Seal_of_Maryland_400.png" as="image">
+<img src="assets/images/Seal_of_Maryland_400.png" style="width:0; height:0; opacity:0; position:absolute;" alt="" aria-hidden="true">
+<!-- End - Preload Watermark -->
+
+
+<!-- End - Print Watermark Seal 🖼️ -->
+
+
+
+  </div>
+</div>
+<!-- End - License Detail Responsive Table 📄 -->
+
+
+
+                </div>
+            </div>
+ 
+
+
+ 
+ <div style="margin-top:25px;"></div>
+
+
+    <div class="disclaimer">
+
+    <h3>Disclaimer</h3>
+
+    <p>
+        The information provided on this website is offered as a public service by 
+        <span id="MainContent_lbBoardName2">Maryland State Board of Physical Therapy Examiners</span> (“the Board”). 
+        The content is for informational purposes only and is not intended to constitute legal or medical advice.
+    </p>
+
+    <p>
+        License and credential data displayed on this site is based on information submitted by applicants and may also include data from educational institutions, other state boards, or third-party sources. 
+        While the Board strives to ensure the accuracy of the information presented, no guarantees or warranties, express or implied, are made regarding its completeness, reliability, or currency. 
+        The Board assumes no responsibility for any errors, omissions, or outcomes resulting from the use of this information.
+    </p>
+
+    <p>
+        The inclusion of a licensee on this website does not constitute an endorsement or recommendation by the Board. 
+        Users should not rely solely on the information presented here and are encouraged to verify details independently where appropriate. 
+        The Board is not obligated to update the information and disclaims any liability for actions taken based on the data or views shared through this site.
+    </p>
+
+    <p>
+        This website and the license verification data are considered primary sources and are updated daily from the Board’s official licensing database. 
+        The same information may be obtained through other official channels, including by phone, fax, or mail.
+    </p>
+
+    <p>
+        If you have questions about the content provided on this website, please contact the Board directly.
+    </p>
+
+    <p>
+        © <span id="MainContent_lbBoardName3">Maryland State Board of Physical Therapy Examiners</span>. All rights reserved. Updated 2025.
+    </p>
+
+</div>
+
+    
+ 
+ <div style="margin-top:25px;"></div>
+
+    <!-- Hidden Tooltips -->
+<div id="tooltip-data" style="display: none;">
+<div data-key="tip-1"></div>
+<div data-key="tip-2"></div>
+<div data-key="tip-3"></div>
+<div data-key="tip-4"></div>
+</div>
+
+
+
+
+
+
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <div class="mt-3" style="height:5px;background-color:var(--color-accent);"></div>
+
+            <footer class="footer portal-footer py-4" role="contentinfo" aria-label="Site footer" style="background-color:var(--color-bg);">
+
+                <div class="container text-white" style="font-size:14px;">
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="footer-board-name">
+                                Maryland State Board of Physical Therapy Examiners
+                            </div>
+
+                            <address class="footer-address mb-1">
+                                4201 Patterson Ave; Suite 304<br>
+                                Baltimore, MD 21215-2299
+                            </address>
+
+                            <div class="footer-contact">
+                                <a href="mailto:mdh.bphte@maryland.gov">
+                                    mdh.bphte@maryland.gov
+                                </a><br>
+                                Phone: 410-764-4718
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 d-flex flex-column align-items-md-end align-items-start mt-3 mt-md-0">
+
+                            <div class="footer-links text-md-end text-start mb-2">
+                                <a href="https://health.maryland.gov" target="_blank">
+                                    Maryland Department of Health
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="footer-text mt-3">
+                        Maryland Department of Health · Boards &amp; Commissions |
+                        Online Application &amp; Regulatory System (OARS) |
+                        © 2024–2026 · Version 26.2.22
+                    </div>
+
+                </div>
+            </footer>
+
+        
+
+<script type="text/javascript">
+//<![CDATA[
+n8Focus('detailsFocusTarget');//]]>
+</script>
+</form>
+    </div>
+
+    <noscript>
+        <div class="alert alert-danger text-center">
+            This site requires JavaScript to function properly.
+        </div>
+    </noscript>
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    
+
+
+
+<script src="/bptVerification/assets/js/jquery-3.7.1.min.js"></script>
+<script src="/bptVerification/assets/js/bootstrap.bundle.min.js"></script>
+<!-- End - Core JS Libraries 📦 -->
+
+<!-- Start - RF-2 Focus Helper 🎯 -->
+<script type="text/javascript">
+    function n8Focus(elementId) {
+        window.setTimeout(function () {
+            try {
+                var el = document.getElementById(elementId);
+                if (el) {
+                    el.focus();
+                    if (el.scrollIntoView) {
+                        el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+                    }
+                }
+            } catch (e) { }
+        }, 50);
+    }
+</script>
+<!-- End - RF-2 Focus Helper 🎯 -->
+
+<!-- Start - Clean Up Modal Script 🧼 -->
+<script type="text/javascript">
+    function cleanUpModal() {
+        var modalEl = document.getElementById('customConfirmModal');
+        if (!modalEl) return;
+
+        if (window.jQuery) {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open').css('overflow', '');
+        }
+
+        var instance = bootstrap.Modal.getInstance(modalEl);
+        if (instance) {
+            instance.hide();
+        }
+    }
+</script>
+<!-- End - Clean Up Modal Script 🧼 -->
+
+<!-- Start - Global Sticky Message Script 📌 -->
+<script type="text/javascript">
+    function initStickyMessageBox() {
+        var msgDiv = document.getElementById("messageDivSticky");
+        if (!msgDiv) return;
+
+        var contentArea = document.querySelector(".content-area");
+        var msgOffset = msgDiv.offsetTop + (contentArea ? contentArea.offsetTop : 0);
+
+        function handleScroll() {
+            if (window.scrollY > msgOffset) {
+                msgDiv.classList.add("fixed");
+            } else {
+                msgDiv.classList.remove("fixed");
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+
+        var closeBtn = document.getElementById("closeMessage");
+        if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+                msgDiv.style.display = "none";
+            });
+        }
+    }
+
+    if (window.Sys && Sys.Application) {
+        Sys.Application.add_load(function () {
+            setTimeout(initStickyMessageBox, 300);
+        });
+    }
+</script>
+<!-- End - Global Sticky Message Script 📌 -->
+
+<!-- ✅ Start - Tooltip Initialization Script 🧠 -->
+<script type="text/javascript">
+    if (window.Sys && Sys.Application) {
+        Sys.Application.add_load(function () {
+            const tooltipContainer = document.getElementById("tooltip-data");
+            const tooltips = document.querySelectorAll(".tool-tip");
+
+            if (tooltipContainer && tooltips.length > 0) {
+                tooltips.forEach(function (icon) {
+                    const key = icon.getAttribute("data-tooltip-key");
+                    if (key) {
+                        const tooltipText = tooltipContainer.querySelector(`[data-key="${key}"]`);
+                        if (tooltipText) {
+                            icon.setAttribute("title", tooltipText.textContent);
+                            icon.setAttribute("data-bs-toggle", "tooltip");
+                            new bootstrap.Tooltip(icon);
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+<!-- ✅ End - Tooltip Initialization Script 🧠 -->
+
+<!-- Start - Mobile Menu Toggle Script 📱 -->
+<script type="text/javascript">
+    function toggleMobileMenu() {
+        const menu = document.querySelector('.menu-links');
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    }
+</script>
+<!-- End - Mobile Menu Toggle Script 📱 --></body></html>

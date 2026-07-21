@@ -1,0 +1,107 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "741 SAN RAPHAEL ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KISSIMMEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "315-786-5058",
+          "postal_code": "347593909",
+          "state": "FL",
+          "telephone_number": "315-778-1373"
+        },
+        {
+          "address_1": "741 SAN RAPHAEL ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KISSIMMEE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "347593909",
+          "state": "FL",
+          "telephone_number": "315-778-1373"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-01-22",
+        "credential": "DO",
+        "enumeration_date": "2005-10-20",
+        "first_name": "DEAN",
+        "last_name": "PHILLIPS",
+        "last_updated": "2024-01-22",
+        "middle_name": "JAMES",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1129820983000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1705944003000",
+      "number": "1962491118",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "48042 RIDGE AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WELLESLEY ISLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "136404158",
+          "state": "NY",
+          "telephone_number": "315-778-1373"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "0102201536",
+          "primary": false,
+          "state": "VA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "DO883",
+          "primary": false,
+          "state": "SC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "200401304",
+          "primary": false,
+          "state": "NC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "OS9121",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2085R0202X",
+          "desc": "Radiology, Diagnostic Radiology",
+          "license": "189847-1",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

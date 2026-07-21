@@ -1,0 +1,182 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2627 RIVERSIDE AVE STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "322044717",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "6800 SOUTHPOINT PKWY STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322168203",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-03-05",
+        "credential": "PA-C",
+        "enumeration_date": "2020-04-16",
+        "first_name": "CARI",
+        "last_name": "BRODERICK",
+        "last_updated": "2025-03-05",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1587057761000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1741192686000",
+      "number": "1609495936",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "15255 MAX LEGGET PKWY STE 5300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322187274",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "10475 CENTURION PKWY N STE 220",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322565004",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "4565 US HIGHWAY 17 STE 200",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FLEMING ISLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "320034823",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "216 SOUTHPARK CIR E STE 216",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST AUGUSTINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "320865135",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "1690 US HIGHWAY 1 S STE F",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST AUGUSTINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "320846024",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "232 PONTE VEDRA PARK DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PONTE VEDRA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "320826600",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "2627 RIVERSIDE AVE STE 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322044717",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "2 SHIRCLIFF WAY STE 605",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322044762",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "3055 COUNTY ROAD 210 W STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST JOHNS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322597001",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        },
+        {
+          "address_1": "4268 OLDFIELD CROSSING DR STE 201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "904-634-0203",
+          "postal_code": "322238800",
+          "state": "FL",
+          "telephone_number": "904-634-0640"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "PA9113167",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3000 DONNEGAL BAY DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891172451",
+          "state": "NV",
+          "telephone_number": "305-321-7192"
+        },
+        {
+          "address_1": "2375 SPRUCE GOOSE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891352623",
+          "state": "NV",
+          "telephone_number": "833-752-4101"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-03-15",
+        "credential": "M.S. SLP",
+        "enumeration_date": "2023-03-15",
+        "first_name": "KYLLENE",
+        "last_name": "MURPHY",
+        "last_updated": "2023-03-15",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1678916983000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1678916983000",
+      "number": "1952002933",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SLP-3311",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

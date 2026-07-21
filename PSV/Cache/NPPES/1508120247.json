@@ -1,0 +1,100 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 432",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PIKEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-218-7507",
+          "postal_code": "415020432",
+          "state": "KY",
+          "telephone_number": "606-430-2207"
+        },
+        {
+          "address_1": "911 BYPASS RD BLDG A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PIKEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "606-218-7507",
+          "postal_code": "415011689",
+          "state": "KY",
+          "telephone_number": "606-430-2207"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-07-08",
+        "credential": "D.O.",
+        "enumeration_date": "2012-06-27",
+        "first_name": "MALISA",
+        "last_name": "MOSS",
+        "last_updated": "2022-07-08",
+        "middle_name": "JOSEPHINE",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1340820832000",
+      "endpoints": [
+        {
+          "address_1": "911 Bypass Rd Bldg A",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Pikeville",
+          "contentOtherDescription": "Standard Direct Functionality",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "mmoss21917@PIKEVILLEKYDIRECT.ORG",
+          "endpointDescription": "Direct address for ccda",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "415011689",
+          "state": "KY",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1657305293000",
+      "number": "1508120247",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "110662",
+          "primary": false,
+          "state": "AK",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "5101019746",
+          "primary": false,
+          "state": "MI",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207V00000X",
+          "desc": "Obstetrics & Gynecology",
+          "license": "04723",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

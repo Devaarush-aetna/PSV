@@ -1,0 +1,135 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "200 E CHESTNUT ST STE 303",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-629-3132",
+          "postal_code": "402021831",
+          "state": "KY",
+          "telephone_number": "502-629-5552"
+        },
+        {
+          "address_1": "PO BOX 776351",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHICAGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-272-5116",
+          "postal_code": "606776351",
+          "state": "IL",
+          "telephone_number": "502-588-9490"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-02",
+        "credential": "M.D.",
+        "enumeration_date": "2007-06-23",
+        "first_name": "TERESA",
+        "last_name": "FINKE-MORELAND",
+        "last_updated": "2024-08-02",
+        "middle_name": "BERNADETTE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1182604311000",
+      "endpoints": [
+        {
+          "address_1": "200 E Chestnut St Ste 303",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Louisville",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "tfinkemoreland231957@direct.nortonhealthcare.org",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "402021831",
+          "state": "KY",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "350587",
+          "issuer": null,
+          "state": "SC"
+        }
+      ],
+      "last_updated_epoch": "1722618723000",
+      "number": "1124224423",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "MD",
+          "first_name": "TERESA",
+          "last_name": "FINKE",
+          "middle_name": "BERNADETTE",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "3333 BURNET AVE",
+          "address_2": "MLC 7015",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "513-636-3549",
+          "postal_code": "452293026",
+          "state": "OH",
+          "telephone_number": "513-636-4266"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "35.090267",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "35.090267",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RA0000X",
+          "desc": "Internal Medicine, Adolescent Medicine",
+          "license": "35058",
+          "primary": false,
+          "state": "SC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "56393",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

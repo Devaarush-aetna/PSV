@@ -1,0 +1,79 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7121 W CRAIG RD STE 113-1207",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-549-7717",
+          "postal_code": "891296001",
+          "state": "NV",
+          "telephone_number": "702-527-3142"
+        },
+        {
+          "address_1": "7450 W CHEYENNE AVE",
+          "address_2": "SUITE 103 PMB 1261",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891291592",
+          "state": "NV",
+          "telephone_number": "702-527-3142"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-04-30",
+        "credential": "CCC-SLP",
+        "enumeration_date": "2022-12-29",
+        "first_name": "RYAN",
+        "last_name": "PEREZ-CARRILLO",
+        "last_updated": "2024-04-30",
+        "middle_name": "STEVEN",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1672357831000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "250024774",
+          "issuer": null,
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1714489846000",
+      "number": "1043923519",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "36625",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        },
+        {
+          "code": "235Z00000X",
+          "desc": "Speech-Language Pathologist,  ",
+          "license": "SP-3551",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

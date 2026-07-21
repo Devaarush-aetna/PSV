@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1500 LITTLE RAVEN ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DENVER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "720-251-4888",
+          "postal_code": "802026248",
+          "state": "CO",
+          "telephone_number": "720-360-4519"
+        },
+        {
+          "address_1": "PO BOX 200880",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DALLAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "404-777-1311",
+          "postal_code": "753200880",
+          "state": "TX",
+          "telephone_number": "678-837-7176"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-12-27",
+        "credential": "DPT",
+        "enumeration_date": "2018-06-26",
+        "first_name": "KAREN",
+        "last_name": "KAZIBUT",
+        "last_updated": "2023-12-27",
+        "middle_name": "DIANE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1530061994000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1703711041000",
+      "number": "1871088450",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "DPT",
+          "first_name": "KAREN",
+          "last_name": "MITTLEFEHLDT",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "PTL.0017072",
+          "primary": true,
+          "state": "CO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

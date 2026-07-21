@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7550 FRANCE AVE S",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EDINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "554355624",
+          "state": "MN",
+          "telephone_number": "952-767-2267"
+        },
+        {
+          "address_1": "7550 FRANCE AVE S",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "EDINA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "554355624",
+          "state": "MN",
+          "telephone_number": "952-250-8854"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-12-13",
+        "enumeration_date": "2017-09-14",
+        "first_name": "MELANIE",
+        "last_name": "BREN",
+        "last_updated": "2023-12-13",
+        "middle_name": "JO",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1505418437000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1702506876000",
+      "number": "1194244723",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": "1-18-33143",
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

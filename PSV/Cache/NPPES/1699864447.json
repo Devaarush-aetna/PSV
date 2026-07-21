@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1337 E 154TH TER",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OLATHE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-897-9696",
+          "postal_code": "660622874",
+          "state": "KS",
+          "telephone_number": "913-634-0880"
+        },
+        {
+          "address_1": "15100 METCALF AVE STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-897-9696",
+          "postal_code": "662232899",
+          "state": "KS",
+          "telephone_number": "913-897-1100"
+        }
+      ],
+      "basic": {
+        "credential": "P.T.",
+        "enumeration_date": "2006-10-12",
+        "first_name": "RYAN",
+        "last_name": "KLUSMAN",
+        "last_updated": "2007-07-08",
+        "middle_name": "ERIC",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1160658239000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1699864447",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "11-3048",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

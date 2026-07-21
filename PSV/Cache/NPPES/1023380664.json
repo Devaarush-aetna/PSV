@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "9001 STATE LINE RD # 300",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-523-0068",
+          "postal_code": "641143232",
+          "state": "MO",
+          "telephone_number": "816-363-2600"
+        },
+        {
+          "address_1": "9001 STATE LINE RD # 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-523-0068",
+          "postal_code": "641143232",
+          "state": "MO",
+          "telephone_number": "816-363-2600"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-19",
+        "credential": "D.O.",
+        "enumeration_date": "2012-01-28",
+        "first_name": "ALEXANDER",
+        "last_name": "LANE",
+        "last_updated": "2022-08-19",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1327763271000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1660931683000",
+      "number": "1023380664",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207RH0002X",
+          "desc": "Internal Medicine, Hospice and Palliative Medicine",
+          "license": "2014012623",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RH0002X",
+          "desc": "Internal Medicine, Hospice and Palliative Medicine",
+          "license": "0544060",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

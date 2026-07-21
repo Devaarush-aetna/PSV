@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1106 TUNNEL HILL RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELIZABETHTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "427018026",
+          "state": "KY",
+          "telephone_number": "270-675-2335"
+        },
+        {
+          "address_1": "1106 TUNNEL HILL RD STE 100",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ELIZABETHTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "427018026",
+          "state": "KY",
+          "telephone_number": "270-675-2335"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-10",
+        "enumeration_date": "2023-01-16",
+        "first_name": "SARAH",
+        "last_name": "RAMIREZ",
+        "last_updated": "2025-01-10",
+        "middle_name": "REBEKAH",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1673911018000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1736525479000",
+      "number": "1184339996",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": null,
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

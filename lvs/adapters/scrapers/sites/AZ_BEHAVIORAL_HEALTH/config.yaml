@@ -119,3 +119,5 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
+  skip: true
+  skip_reason: "thentiacloud_api_blocked_corporate: azbbhe.portalus.thentiacloud.net returns 403 Forbidden via corporate McAfee/Zscaler proxy. Same DNS block pattern as OK_BEHAVIORAL_HEALTH/OK_SOCIALWORK/OK_ODOHCS. Works from non-corporate network. Confirmed 2026-07-01."

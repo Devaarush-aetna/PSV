@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "145 LINCOLN DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HODGENVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-706-1920",
+          "postal_code": "427489706",
+          "state": "KY",
+          "telephone_number": "270-979-3241"
+        },
+        {
+          "address_1": "145 LINCOLN DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HODGENVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-706-1920",
+          "postal_code": "427489706",
+          "state": "KY",
+          "telephone_number": "270-979-3241"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-01-04",
+        "credential": "D.O.",
+        "enumeration_date": "2015-06-16",
+        "first_name": "WESLEY",
+        "last_name": "MOORE",
+        "last_updated": "2020-01-04",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1434452955000",
+      "endpoints": [
+        {
+          "address_1": "145 Lincoln Dr",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Hodgenville",
+          "contentTypeDescription": "",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "https://www.hmh.net/physicians/wesley-moore-d-o/",
+          "endpointDescription": "hospital home page",
+          "endpointType": "CONNECT",
+          "endpointTypeDescription": "CONNECT URL",
+          "postal_code": "427489706",
+          "state": "KY",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1578132581000",
+      "number": "1053792069",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "04255",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "122 N BROADWAY ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PITTSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "620-231-4990",
+          "postal_code": "667624819",
+          "state": "KS",
+          "telephone_number": "620-232-9240"
+        },
+        {
+          "address_1": "122 N BROADWAY ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PITTSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "620-231-4990",
+          "postal_code": "667624819",
+          "state": "KS",
+          "telephone_number": "620-232-9240"
+        }
+      ],
+      "basic": {
+        "credential": "DC",
+        "enumeration_date": "2005-09-21",
+        "first_name": "TIMOTHY",
+        "last_name": "VOSS",
+        "last_updated": "2011-10-19",
+        "middle_name": "JAMES",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1127333387000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1319035519000",
+      "number": "1912993379",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111NS0005X",
+          "desc": "Chiropractor, Sports Physician",
+          "license": "0104690",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

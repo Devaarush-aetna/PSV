@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1712 HIGHWAY 121 BYP N STE I",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MURRAY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "420718864",
+          "state": "KY"
+        },
+        {
+          "address_1": "1712 HIGHWAY 121 BYP N STE I",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MURRAY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "420718864",
+          "state": "KY",
+          "telephone_number": "270-761-5804"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-24",
+        "enumeration_date": "2023-05-08",
+        "first_name": "APRIL",
+        "last_name": "MUNSON",
+        "last_updated": "2025-09-24",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1683578108000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758735309000",
+      "number": "1699465310",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "300456",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

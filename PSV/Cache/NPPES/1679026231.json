@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2855 10TH ST STE B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GERING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "693412202",
+          "state": "NE",
+          "telephone_number": "308-633-1325"
+        },
+        {
+          "address_1": "2855 10TH ST STE B",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GERING",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "693412202",
+          "state": "NE",
+          "telephone_number": "308-633-1325"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-06-14",
+        "credential": "PA-C",
+        "enumeration_date": "2016-08-01",
+        "first_name": "AMANDA",
+        "last_name": "FABIAN",
+        "last_updated": "2024-06-14",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1470078321000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1718386607000",
+      "number": "1679026231",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": "PA962",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": "2837",
+          "primary": true,
+          "state": "NE",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

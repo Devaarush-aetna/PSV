@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4029 DEAN MARTIN DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891034138",
+          "state": "NV",
+          "telephone_number": "702-848-2256"
+        },
+        {
+          "address_1": "4029 DEAN MARTIN DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891034138",
+          "state": "NV",
+          "telephone_number": "702-848-2256"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-02-05",
+        "credential": "APRN / PMHNP-BC",
+        "enumeration_date": "2021-06-16",
+        "first_name": "EDWARD",
+        "last_name": "GRAHAM",
+        "last_updated": "2022-02-05",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1623872886000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1644098712000",
+      "number": "1417525361",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "842896",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

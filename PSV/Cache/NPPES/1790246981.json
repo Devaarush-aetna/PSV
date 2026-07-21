@@ -1,0 +1,85 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2123 AUBURN AVE STE 404",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "513-241-7146",
+          "postal_code": "452192906",
+          "state": "OH",
+          "telephone_number": "513-241-5630"
+        },
+        {
+          "address_1": "2123 AUBURN AVE STE 404",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "513-241-7146",
+          "postal_code": "452192906",
+          "state": "OH",
+          "telephone_number": "513-241-5630"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-05-27",
+        "credential": "DO",
+        "enumeration_date": "2019-03-29",
+        "first_name": "ALEXANDER",
+        "last_name": "PENNEKAMP",
+        "last_updated": "2026-05-27",
+        "middle_name": "MARK",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1553850404000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1779875142000",
+      "number": "1790246981",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "375 DIXMYTH AVE # 5",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "513-793-4523",
+          "postal_code": "452202475",
+          "state": "OH",
+          "telephone_number": "513-862-1800"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "34.015436",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RN0300X",
+          "desc": "Internal Medicine, Nephrology",
+          "license": "34.015436",
+          "primary": true,
+          "state": "OH",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

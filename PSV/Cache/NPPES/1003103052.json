@@ -1,0 +1,107 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "63 W MAIN ST STE A-5",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FREEHOLD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "077282140",
+          "state": "NJ",
+          "telephone_number": "848-300-3933"
+        },
+        {
+          "address_1": "95 HERBERT AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HAMILTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "086902730",
+          "state": "NJ",
+          "telephone_number": "347-948-6402"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-04-24",
+        "credential": "LMHC,LPC,ACS,LCADC",
+        "enumeration_date": "2011-06-28",
+        "first_name": "CHASE",
+        "last_name": "GIRVIN",
+        "last_updated": "2025-04-24",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1309302621000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "00695941",
+          "issuer": null,
+          "state": "NY"
+        }
+      ],
+      "last_updated_epoch": "1745507703000",
+      "number": "1003103052",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "786 HIDDEN VALLEY RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCHESTER",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "146242304",
+          "state": "NY",
+          "telephone_number": "347-948-6402"
+        },
+        {
+          "address_1": "1100 CLOVE RD APT 7G",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "STATEN ISLAND",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "103013631",
+          "state": "NY",
+          "telephone_number": "347-948-6402"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "101YA0400X",
+          "desc": "Counselor, Addiction (Substance Use Disorder)",
+          "license": "30537",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "006588",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "37PC00950300",
+          "primary": true,
+          "state": "NJ",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

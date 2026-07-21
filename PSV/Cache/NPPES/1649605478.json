@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "550 N HILLSIDE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672144910",
+          "state": "KS",
+          "telephone_number": "316-992-9107"
+        },
+        {
+          "address_1": "550 N HILLSIDE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672144910",
+          "state": "KS",
+          "telephone_number": "316-992-9107"
+        }
+      ],
+      "basic": {
+        "credential": "PA-C",
+        "enumeration_date": "2013-09-11",
+        "first_name": "MICHAEL",
+        "last_name": "MCDONALD",
+        "last_updated": "2013-09-11",
+        "middle_name": "STERLING",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1378955173000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1378955173000",
+      "number": "1649605478",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 21686",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TAMPA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "877-868-4888",
+          "postal_code": "336221686",
+          "state": "FL",
+          "telephone_number": "877-468-2211"
+        },
+        {
+          "address_1": "2500 CANTERBURY DR STE 112",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HAYS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "676012258",
+          "state": "KS",
+          "telephone_number": "785-261-7599"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-02-10",
+        "credential": "PA-C",
+        "enumeration_date": "2015-11-05",
+        "first_name": "KELLY",
+        "last_name": "FRANCIS",
+        "last_updated": "2025-02-10",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1446744464000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "PAC9109288",
+          "issuer": "Florida State License",
+          "state": "FL"
+        }
+      ],
+      "last_updated_epoch": "1739226029000",
+      "number": "1578936092",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "7544 JACQUE RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HUDSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "727-863-8774",
+          "postal_code": "346677162",
+          "state": "FL",
+          "telephone_number": "727-697-2200"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "PAC9109288",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "1503041",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

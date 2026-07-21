@@ -1,0 +1,103 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3468 BLUE HEATHER DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-924-7416",
+          "postal_code": "891296360",
+          "state": "NV",
+          "telephone_number": "702-812-9268"
+        },
+        {
+          "address_1": "3468 BLUE HEATHER DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-924-7416",
+          "postal_code": "891296360",
+          "state": "NV",
+          "telephone_number": "702-812-9268"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-01-24",
+        "credential": "CPC-I, CADC-I",
+        "enumeration_date": "2014-07-07",
+        "first_name": "MELISSA",
+        "last_name": "HILDEBRAND",
+        "last_updated": "2023-01-30",
+        "middle_name": "A",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1404765329000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1675104611000",
+      "number": "1306252762",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "3550 W CHEYENNE AVE",
+          "address_2": "130",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890328212",
+          "state": "NV",
+          "telephone_number": "702-570-5200"
+        },
+        {
+          "address_1": "2921 N TENAYA WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891281409",
+          "state": "NV",
+          "telephone_number": "702-812-9268"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "101YA0400X",
+          "desc": "Counselor, Addiction (Substance Use Disorder)",
+          "license": "06941-1",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "103K00000X",
+          "desc": "Behavior Analyst",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "CI1755",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

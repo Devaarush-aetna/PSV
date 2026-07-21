@@ -1,0 +1,132 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1900 NW EXPRESSWAY STE 800",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OKLAHOMA CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "731181804",
+          "state": "OK",
+          "telephone_number": "405-613-6515"
+        },
+        {
+          "address_1": "4055 VALLEY VIEW LN STE 700",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DALLAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "752445045",
+          "state": "TX"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-12",
+        "credential": "APRN",
+        "enumeration_date": "2019-11-07",
+        "first_name": "DANA",
+        "last_name": "LAU",
+        "last_updated": "2025-09-12",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1573181853000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757714121000",
+      "number": "1922643477",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "DANA",
+          "last_name": "AINSWORTH",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "609 SW 8TH ST FL 6",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BENTONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "727127886",
+          "state": "AR",
+          "telephone_number": "405-246-0811"
+        },
+        {
+          "address_1": "5575 WARREN PKWY STE 115",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FRISCO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "750344063",
+          "state": "TX",
+          "telephone_number": "405-613-6515"
+        },
+        {
+          "address_1": "9300 E 29TH ST N STE 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WICHITA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "672262183",
+          "state": "KS",
+          "telephone_number": "405-246-0811"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "C-APN.0104852-C-NP",
+          "primary": false,
+          "state": "CO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "R0103316",
+          "primary": true,
+          "state": "OK",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "53-84479.081",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "233896",
+          "primary": false,
+          "state": "AR",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "2025036607",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6810 STONELEDGE CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NEW MARKET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "217746685",
+          "state": "MD",
+          "telephone_number": "336-601-1255"
+        },
+        {
+          "address_1": "365 W PATRICK ST FL 205",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "FREDERICK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-202-2107",
+          "postal_code": "217015093",
+          "state": "MD",
+          "telephone_number": "240-446-0717"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-10-31",
+        "credential": "FNP-BC. PMHNP-BC",
+        "enumeration_date": "2006-02-16",
+        "first_name": "MARY",
+        "last_name": "DAMERON",
+        "last_updated": "2023-11-30",
+        "middle_name": "ANN",
+        "name_prefix": "Miss",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1140105772000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "2632275",
+          "issuer": "United Healthcare",
+          "state": null
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "7003805",
+          "issuer": null,
+          "state": "NC"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "83-00153",
+          "issuer": "Evercare",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1701382443000",
+      "number": "1467426254",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "CRNP, FNP, PMHNP",
+          "first_name": "MARY",
+          "last_name": "DAMERON",
+          "middle_name": "ANN",
+          "prefix": "Mrs.",
+          "suffix": "--",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "6810 STONELEDGE CT",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEW MARKET",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "410-202-2107",
+          "postal_code": "217746685",
+          "state": "MD",
+          "telephone_number": "240-446-0717"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "AC001349",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "R215473",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

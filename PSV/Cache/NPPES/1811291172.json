@@ -1,0 +1,111 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "777 AVENUE H",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "POWELL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "824352260",
+          "state": "WY",
+          "telephone_number": "307-754-2267"
+        },
+        {
+          "address_1": "777 AVENUE H",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "POWELL",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "824352260",
+          "state": "WY",
+          "telephone_number": "307-754-2267"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-05-29",
+        "credential": "PA",
+        "enumeration_date": "2010-12-30",
+        "first_name": "ERIN",
+        "last_name": "MISCHKE",
+        "last_updated": "2024-05-29",
+        "middle_name": "HETLAND",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1293745939000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "TL509",
+          "issuer": "WY State License",
+          "state": "WY"
+        }
+      ],
+      "last_updated_epoch": "1716997575000",
+      "number": "1811291172",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "120 N C AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "THERMOPOLIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-864-9470",
+          "postal_code": "824432410",
+          "state": "WY",
+          "telephone_number": "307-864-5534"
+        },
+        {
+          "address_1": "2831 NEW HARTFORD RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWENSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-684-4678",
+          "postal_code": "423031320",
+          "state": "KY",
+          "telephone_number": "270-926-4100"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "TC908",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "509",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": "TL509",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "131 HOSPITAL DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SALEM",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-988-3900",
+          "postal_code": "420788043",
+          "state": "KY",
+          "telephone_number": "270-988-7256"
+        },
+        {
+          "address_1": "1860 JH OBRYAN AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GRAND RIVERS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-362-9757",
+          "postal_code": "420459049",
+          "state": "KY",
+          "telephone_number": "270-362-8246"
+        }
+      ],
+      "basic": {
+        "credential": "M.D.",
+        "enumeration_date": "2005-12-16",
+        "first_name": "KHAI",
+        "last_name": "TRUONG",
+        "last_updated": "2016-08-09",
+        "middle_name": "C",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1134756836000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000370768",
+          "issuer": "BC/BS",
+          "state": "KY"
+        },
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000623499",
+          "issuer": "Anthem BC&BS",
+          "state": "KY"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "64088784",
+          "issuer": null,
+          "state": "KY"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "65944019",
+          "issuer": null,
+          "state": "KY"
+        },
+        {
+          "code": "05",
+          "desc": "MEDICAID",
+          "identifier": "7100091610",
+          "issuer": null,
+          "state": "KY"
+        }
+      ],
+      "last_updated_epoch": "1470759083000",
+      "number": "1003892548",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "39284",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

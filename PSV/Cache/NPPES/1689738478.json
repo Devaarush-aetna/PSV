@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 35949",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891335949",
+          "state": "NV",
+          "telephone_number": "206-696-0765"
+        },
+        {
+          "address_1": "5380 S RAINBOW",
+          "address_2": "#110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-838-3890",
+          "postal_code": "891181878",
+          "state": "NV",
+          "telephone_number": "702-838-3889"
+        }
+      ],
+      "basic": {
+        "credential": "MD",
+        "enumeration_date": "2006-12-19",
+        "first_name": "STEPHEN",
+        "last_name": "TAM",
+        "last_updated": "2007-12-13",
+        "middle_name": "L",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1166579272000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1197579350000",
+      "number": "1689738478",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "12069",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

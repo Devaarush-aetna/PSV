@@ -1,0 +1,104 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5437 KIETZKE LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-322-4956",
+          "postal_code": "895111088",
+          "state": "NV",
+          "telephone_number": "775-322-4550"
+        },
+        {
+          "address_1": "5437 KIETZKE LN",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-322-4956",
+          "postal_code": "895111088",
+          "state": "NV",
+          "telephone_number": "755-322-4550"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-04-11",
+        "credential": "NP",
+        "enumeration_date": "2021-07-15",
+        "first_name": "SHIVA",
+        "last_name": "ADHAM",
+        "last_updated": "2024-04-11",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1626397262000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "15193494",
+          "issuer": "CAQH",
+          "state": "NV"
+        }
+      ],
+      "last_updated_epoch": "1712858235000",
+      "number": "1003488214",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "NP",
+          "first_name": "SAME AS ABOVE",
+          "last_name": "SAME AS ABOVE",
+          "prefix": "Mrs.",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [
+        {
+          "address_1": "2340 S CARSON ST STE A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CARSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-322-4956",
+          "postal_code": "897014540",
+          "state": "NV",
+          "telephone_number": "775-322-4550"
+        },
+        {
+          "address_1": "2345 E PRATER WAY STE 102",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SPARKS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-322-4956",
+          "postal_code": "894349664",
+          "state": "NV",
+          "telephone_number": "775-322-4550"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "APRN-841794",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5130 S FORT APACHE RD STE 215",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-333-0436",
+          "postal_code": "891481732",
+          "state": "NV",
+          "telephone_number": "702-798-0111"
+        },
+        {
+          "address_1": "5741 S FORT APACHE RD STE 120",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "866-333-0436",
+          "postal_code": "891485622",
+          "state": "NV",
+          "telephone_number": "702-798-0111"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-08-11",
+        "credential": "NP",
+        "enumeration_date": "2022-08-11",
+        "first_name": "INNA",
+        "last_name": "STRESZ",
+        "last_updated": "2022-08-11",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1660249869000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1660249869000",
+      "number": "1033847546",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "851251",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

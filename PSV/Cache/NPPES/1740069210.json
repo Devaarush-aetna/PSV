@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3906 C ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAN DIEGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "921023430",
+          "state": "CA",
+          "telephone_number": "619-919-5143"
+        },
+        {
+          "address_1": "3906 C ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAN DIEGO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "921023430",
+          "state": "CA"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-09-25",
+        "enumeration_date": "2023-09-25",
+        "first_name": "JESSICA",
+        "last_name": "GENEL - PALAVICINI",
+        "last_updated": "2023-09-25",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1695666289000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1695666289000",
+      "number": "1740069210",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "133V00000X",
+          "desc": "Dietitian, Registered",
+          "license": "86086453",
+          "primary": true,
+          "state": "CA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

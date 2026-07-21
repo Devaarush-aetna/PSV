@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "4110 SOUTHPOINT BLVD",
+          "address_2": "SUITE 238",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "612-435-2390",
+          "postal_code": "322160928",
+          "state": "FL",
+          "telephone_number": "904-332-2525"
+        },
+        {
+          "address_1": "4110 SOUTHPOINT BLVD",
+          "address_2": "SUITE 238",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "JACKSONVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "612-435-2390",
+          "postal_code": "322160947",
+          "state": "FL",
+          "telephone_number": "904-332-2525"
+        }
+      ],
+      "basic": {
+        "credential": "PhD PA",
+        "enumeration_date": "2007-01-03",
+        "first_name": "SARI",
+        "last_name": "NEWMAN BERNSTEIN PHD PA",
+        "last_updated": "2012-10-15",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1167854405000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1350318769000",
+      "number": "1699832832",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "103G00000X",
+          "desc": "Clinical Neuropsychologist",
+          "license": "PY6209",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

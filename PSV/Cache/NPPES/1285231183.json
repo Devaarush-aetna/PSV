@@ -1,0 +1,91 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 61",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RANDALLSTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "211330061",
+          "state": "MD",
+          "telephone_number": "443-280-3004"
+        },
+        {
+          "address_1": "5310 OLD COURT RD STE 304",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RANDALLSTOWN",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "211336202",
+          "state": "MD",
+          "telephone_number": "443-400-5230"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-25",
+        "credential": "APRN",
+        "enumeration_date": "2020-10-04",
+        "first_name": "CHEZO",
+        "last_name": "NOJANG",
+        "last_updated": "2025-08-25",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1601828787000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756126953000",
+      "number": "1285231183",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "5457 TWIN KNOLLS RD STE 100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "210453263",
+          "state": "MD",
+          "telephone_number": "410-689-7400"
+        },
+        {
+          "address_1": "2501 GOOD HOPE RD SE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "WASHINGTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "200203011",
+          "state": "DC",
+          "telephone_number": "202-866-7505"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "R158414",
+          "primary": false,
+          "state": "MD",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "R158414",
+          "primary": true,
+          "state": "MD",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

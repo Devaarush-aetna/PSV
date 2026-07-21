@@ -1,0 +1,68 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2728 CASTLE ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NORTH LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890303830",
+          "state": "NV",
+          "telephone_number": "702-217-0627"
+        },
+        {
+          "address_1": "2728 CASTLE ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890303830",
+          "state": "NV",
+          "telephone_number": "702-217-0627"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-10",
+        "credential": "PMHNP",
+        "enumeration_date": "2012-09-07",
+        "first_name": "JOY",
+        "last_name": "IGBER",
+        "last_updated": "2026-04-10",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1347039803000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1775826580000",
+      "number": "1164771804",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "884346",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "163WP0808X",
+          "desc": "Registered Nurse, Psych/Mental Health",
+          "license": "74321",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

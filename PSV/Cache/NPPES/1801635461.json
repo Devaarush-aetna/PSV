@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8905 W POST RD STE 110",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-859-3702",
+          "postal_code": "891482429",
+          "state": "NV",
+          "telephone_number": "702-859-3702"
+        },
+        {
+          "address_1": "8905 W POST RD STE 110",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891482429",
+          "state": "NV",
+          "telephone_number": "702-859-3702"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-10",
+        "credential": "FNP",
+        "enumeration_date": "2024-05-23",
+        "first_name": "MARTI",
+        "last_name": "LIRANZA CASIN",
+        "last_updated": "2025-10-10",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1716458416000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760099154000",
+      "number": "1801635461",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "849575",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

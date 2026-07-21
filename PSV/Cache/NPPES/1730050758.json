@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6040 S RAINBOW BLVD STE B1",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-876-9741",
+          "postal_code": "891182542",
+          "state": "NV",
+          "telephone_number": "702-876-9737"
+        },
+        {
+          "address_1": "6040 S RAINBOW BLVD STE B1",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-876-9741",
+          "postal_code": "891182542",
+          "state": "NV",
+          "telephone_number": "702-876-9737"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-14",
+        "credential": "PT, DPT",
+        "enumeration_date": "2025-09-15",
+        "first_name": "ADAM",
+        "last_name": "PLAUSINAITIS",
+        "last_updated": "2025-09-15",
+        "name_prefix": "Mr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1757930704000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1757930704000",
+      "number": "1730050758",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "4767",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

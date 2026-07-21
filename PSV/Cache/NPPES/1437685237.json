@@ -1,0 +1,98 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "315 S MANNING BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ALBANY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "122081707",
+          "state": "NY"
+        },
+        {
+          "address_1": "3600 FORBES AVE",
+          "address_2": "FORBES TOWER - PLAZA SUITE 140",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PITTSBURGH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "152133410",
+          "state": "PA",
+          "telephone_number": "412-647-6340"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-21",
+        "enumeration_date": "2017-05-11",
+        "first_name": "FAISAL",
+        "last_name": "REHMAN",
+        "last_updated": "2026-03-21",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1494483782000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1774065659000",
+      "number": "1437685237",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "315 S MANNING BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ALBANY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "12208",
+          "state": "NY",
+          "telephone_number": "518-525-1550"
+        },
+        {
+          "address_1": "2375 E PRATER WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SPARKS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "894349665",
+          "state": "NV",
+          "telephone_number": "775-331-7000"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "036171291",
+          "primary": true,
+          "state": "IL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "306893",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "20955",
+          "primary": false,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

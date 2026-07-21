@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5514 CORPORATE DR STE 120",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAINT JOSEPH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-271-8810",
+          "postal_code": "645077754",
+          "state": "MO",
+          "telephone_number": "816-271-7169"
+        },
+        {
+          "address_1": "5514 CORPORATE DR STE 120",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "SAINT JOSEPH",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-271-1355",
+          "postal_code": "645077754",
+          "state": "MO",
+          "telephone_number": "816-271-1350"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-12-09",
+        "credential": "M.D.",
+        "enumeration_date": "2006-12-01",
+        "first_name": "THOMAS",
+        "last_name": "HOLDA",
+        "last_updated": "2020-12-09",
+        "middle_name": "R.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1165010924000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1607537073000",
+      "number": "1740358282",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "4301047980",
+          "primary": true,
+          "state": "MI",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "8333 N DAVIS HWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PENSACOLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-969-2840",
+          "postal_code": "325146050",
+          "state": "FL",
+          "telephone_number": "850-474-8015"
+        },
+        {
+          "address_1": "8333 N DAVIS HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PENSACOLA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "850-969-2840",
+          "postal_code": "325146050",
+          "state": "FL",
+          "telephone_number": "850-474-8015"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-14",
+        "credential": "M.D.",
+        "enumeration_date": "2006-07-11",
+        "first_name": "TREVIN",
+        "last_name": "THURMAN",
+        "last_updated": "2025-10-14",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1152647976000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760449715000",
+      "number": "1619902616",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2081P2900X",
+          "desc": "Physical Medicine & Rehabilitation, Pain Medicine",
+          "license": "TL6267",
+          "primary": false,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2081P2900X",
+          "desc": "Physical Medicine & Rehabilitation, Pain Medicine",
+          "license": "ME177399",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2081P2900X",
+          "desc": "Physical Medicine & Rehabilitation, Pain Medicine",
+          "license": "MD438591",
+          "primary": false,
+          "state": "PA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "2081P2900X",
+          "desc": "Physical Medicine & Rehabilitation, Pain Medicine",
+          "license": "A114470",
+          "primary": false,
+          "state": "CA",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208100000X",
+          "desc": "Physical Medicine & Rehabilitation",
+          "license": "228665",
+          "primary": false,
+          "state": "MA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "7400 NEW LA GRANGE RD STE 304",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-385-6619",
+          "postal_code": "402224870",
+          "state": "KY",
+          "telephone_number": "502-385-4151"
+        },
+        {
+          "address_1": "8009 NEW LA GRANGE RD STE 8",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-385-6619",
+          "postal_code": "402224791",
+          "state": "KY",
+          "telephone_number": "502-385-4151"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-23",
+        "credential": "LPCC",
+        "enumeration_date": "2024-10-16",
+        "first_name": "LEIGHA",
+        "last_name": "MILLER",
+        "last_updated": "2025-10-23",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1729101619000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1761232531000",
+      "number": "1760202477",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YP2500X",
+          "desc": "Counselor, Professional",
+          "license": "279832",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": "279832",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

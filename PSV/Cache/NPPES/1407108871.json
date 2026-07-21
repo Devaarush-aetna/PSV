@@ -1,0 +1,73 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "550 OKEECHOBEE BLVD",
+          "address_2": "1814",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "WEST PALM BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334016317",
+          "state": "FL",
+          "telephone_number": "845-978-7380"
+        },
+        {
+          "address_1": "3345 BURNS RD",
+          "address_2": "306",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PALM BEACH GARDENS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "334104324",
+          "state": "FL",
+          "telephone_number": "845-978-7380"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2012-10-10",
+        "first_name": "MICHAEL",
+        "last_name": "PURIFICATI",
+        "last_updated": "2012-10-10",
+        "name_prefix": "--",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1349885353000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1349885353000",
+      "number": "1407108871",
+      "other_names": [
+        {
+          "code": "2",
+          "credential": "D.C.",
+          "first_name": "MICHAEL",
+          "last_name": "PURIFICATI",
+          "prefix": "Dr.",
+          "suffix": "--",
+          "type": "Professional Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "CH 10760",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

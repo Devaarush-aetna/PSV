@@ -1,0 +1,109 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "711 MEDICAL VILLAGE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "EDGEWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-301-9018",
+          "postal_code": "41017",
+          "state": "KY",
+          "telephone_number": "859-301-9010"
+        },
+        {
+          "address_1": "PO BOX 636324",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "859-301-9018",
+          "postal_code": "452636324",
+          "state": "OH",
+          "telephone_number": "859-301-9010"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-11-04",
+        "credential": "M.D.",
+        "enumeration_date": "2008-07-28",
+        "first_name": "MARIO",
+        "last_name": "CASTILLO-SANG",
+        "last_updated": "2021-11-04",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1217245704000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1636043142000",
+      "number": "1225293418",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "2123 AUBURN AVE",
+          "address_2": "SU. 139",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CINCINNATI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "513-206-1172",
+          "postal_code": "452192906",
+          "state": "OH",
+          "telephone_number": "513-206-1170"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "208G00000X",
+          "desc": "Thoracic Surgery (Cardiothoracic Vascular Surgery)",
+          "license": "35126643",
+          "primary": false,
+          "state": "OH",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208G00000X",
+          "desc": "Thoracic Surgery (Cardiothoracic Vascular Surgery)",
+          "license": "34641",
+          "primary": false,
+          "state": "SC",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208600000X",
+          "desc": "Surgery",
+          "license": "2010003180",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208G00000X",
+          "desc": "Thoracic Surgery (Cardiothoracic Vascular Surgery)",
+          "license": "2010003180",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208G00000X",
+          "desc": "Thoracic Surgery (Cardiothoracic Vascular Surgery)",
+          "license": "51353",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

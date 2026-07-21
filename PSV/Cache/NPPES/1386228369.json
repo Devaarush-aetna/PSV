@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3600 SISK RD STE 4",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MODESTO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "209-643-7735",
+          "postal_code": "953560535",
+          "state": "CA",
+          "telephone_number": "209-707-2029"
+        },
+        {
+          "address_1": "3600 SISK RD STE 4",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MODESTO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "209-643-7735",
+          "postal_code": "953560535",
+          "state": "CA",
+          "telephone_number": "209-707-2029"
+        }
+      ],
+      "basic": {
+        "authorized_official_credential": "NP",
+        "authorized_official_first_name": "KAMALJOT",
+        "authorized_official_last_name": "BAJWA",
+        "authorized_official_telephone_number": "2097072029",
+        "authorized_official_title_or_position": "Owner",
+        "certification_date": "2024-10-15",
+        "enumeration_date": "2021-05-06",
+        "last_updated": "2024-10-15",
+        "organization_name": "HOPE HEALTH PSYCHIATRY, INC.",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1620326885000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1729021343000",
+      "number": "1386228369",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "2084P0800X",
+          "desc": "Psychiatry & Neurology, Psychiatry",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": "193400000X - Single Specialty Group"
+        }
+      ]
+    }
+  ]
+}

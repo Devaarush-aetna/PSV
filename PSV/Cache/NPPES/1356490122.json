@@ -1,0 +1,62 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "704 COLUMBIA HWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "GREENSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "427431118",
+          "state": "KY",
+          "telephone_number": "270-935-4284"
+        },
+        {
+          "address_1": "704 COLUMBIA HWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "GREENSBURG",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "427431118",
+          "state": "KY",
+          "telephone_number": "270-935-4284"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-07-01",
+        "credential": "ARNP",
+        "enumeration_date": "2007-01-09",
+        "first_name": "ROBBYN",
+        "last_name": "JEWELL",
+        "last_updated": "2023-07-28",
+        "middle_name": "GRIMSLEY",
+        "name_prefix": "Ms.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1168390045000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1690600196000",
+      "number": "1356490122",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363L00000X",
+          "desc": "Nurse Practitioner",
+          "license": "5086p",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

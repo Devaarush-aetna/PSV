@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "YOUR HEALTH ORG. OF FLORIDA",
+          "address_2": "1301 PLANTATION ISLAND DR. UNIT 303B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ST. AUGUSTINE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "32080",
+          "state": "FL",
+          "telephone_number": "800-491-0909"
+        },
+        {
+          "address_1": "SC HOUSE CALLS INC.",
+          "address_2": "111 DOCTORS CIR.",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "COLUMBIA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "29203",
+          "state": "SC",
+          "telephone_number": "800-491-0909"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-01-05",
+        "credential": "APRN",
+        "enumeration_date": "2025-01-30",
+        "first_name": "SHAMEIKA",
+        "last_name": "FAVORS-STALLING",
+        "last_updated": "2025-08-08",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1738277704000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754676576000",
+      "number": "1275346421",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "APRN11037317",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "11037317",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

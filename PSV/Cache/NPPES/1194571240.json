@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "5310 KIETZKE LN STE 104",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-687-1419",
+          "postal_code": "895112043",
+          "state": "NV",
+          "telephone_number": "775-348-8800"
+        },
+        {
+          "address_1": "973 MICA DR STE 201",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CARSON CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "833-687-1419",
+          "postal_code": "897057258",
+          "state": "NV",
+          "telephone_number": "775-348-8800"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-10",
+        "enumeration_date": "2024-04-29",
+        "first_name": "PHILIP",
+        "last_name": "ZUMARAN",
+        "last_updated": "2025-10-10",
+        "middle_name": "ANDREW",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1714416005000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760110356000",
+      "number": "1194571240",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363AM0700X",
+          "desc": "Physician Assistant, Medical",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

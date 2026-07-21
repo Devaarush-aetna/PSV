@@ -1,0 +1,69 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "620 NE 128TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "786-360-2048",
+          "postal_code": "331614829",
+          "state": "FL",
+          "telephone_number": "305-640-5611"
+        },
+        {
+          "address_1": "620 NE 128TH ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NORTH MIAMI",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "786-360-2048",
+          "postal_code": "331614829",
+          "state": "FL",
+          "telephone_number": "305-640-5611"
+        }
+      ],
+      "basic": {
+        "certification_date": "2023-01-05",
+        "enumeration_date": "2019-04-19",
+        "first_name": "JULIE",
+        "last_name": "CADET-PLASSMAN",
+        "last_updated": "2023-01-05",
+        "sex": "F",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1555678633000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1672945991000",
+      "number": "1528621182",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207Q00000X",
+          "desc": "Family Medicine",
+          "license": "155257",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

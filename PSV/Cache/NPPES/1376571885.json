@@ -1,0 +1,87 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1102 TRIPLETT ST",
+          "address_2": "SUITE 2100",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OWENSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "270-926-7302",
+          "postal_code": "423033104",
+          "state": "KY",
+          "telephone_number": "270-926-7320"
+        },
+        {
+          "address_1": "2330 FALCON CT",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "OWENSBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "423039328",
+          "state": "KY",
+          "telephone_number": "270-231-0420"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-06-10",
+        "credential": "PAC",
+        "enumeration_date": "2006-06-30",
+        "first_name": "NICHOLAS",
+        "last_name": "SETTLES",
+        "last_updated": "2022-08-09",
+        "middle_name": "H",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1151684683000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [
+        {
+          "code": "01",
+          "desc": "Other (non-Medicare)",
+          "identifier": "000000384092",
+          "issuer": "Anthem",
+          "state": null
+        }
+      ],
+      "last_updated_epoch": "1660058188000",
+      "number": "1376571885",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "PA925",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363AS0400X",
+          "desc": "Physician Assistant, Surgical",
+          "license": "10000826A",
+          "primary": false,
+          "state": "IN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "KYPA925",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

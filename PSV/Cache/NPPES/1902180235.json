@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "PO BOX 429",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LYMAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-787-3351",
+          "postal_code": "829370429",
+          "state": "WY",
+          "telephone_number": "307-787-6123"
+        },
+        {
+          "address_1": "106 S.MAIN ST.",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LYMAN",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-787-3351",
+          "postal_code": "829370429",
+          "state": "WY",
+          "telephone_number": "307-787-6123"
+        }
+      ],
+      "basic": {
+        "credential": "O.D.",
+        "enumeration_date": "2011-10-05",
+        "first_name": "TRAVIS",
+        "last_name": "SHELTON",
+        "last_updated": "2011-10-05",
+        "middle_name": "JOHN",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1317833057000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1317833057000",
+      "number": "1902180235",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "152W00000X",
+          "desc": "Optometrist",
+          "license": "336T",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

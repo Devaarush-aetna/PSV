@@ -1,0 +1,162 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3533 SOUTHERN BLVD STE 5650",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KETTERING",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "937-294-9010",
+          "postal_code": "454291263",
+          "state": "OH",
+          "telephone_number": "937-294-3611"
+        },
+        {
+          "address_1": "1500 SW 10TH AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "666041301",
+          "state": "KS",
+          "telephone_number": "785-354-6000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-07-09",
+        "credential": "PA-C",
+        "enumeration_date": "2020-04-07",
+        "first_name": "EMILY",
+        "last_name": "FULLER",
+        "last_updated": "2025-07-09",
+        "middle_name": "N",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1586277255000",
+      "endpoints": [
+        {
+          "address_1": "830 SW Mulvane St",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "COTTON O'NEIL CLINIC REVOCABLE TRUST",
+          "city": "Topeka",
+          "contentOtherDescription": "CCDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "efuller107354@stormontvaildirect.org",
+          "endpointDescription": "SVH Secure messaging",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "666061654",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        },
+        {
+          "address_1": "830 SW Mulvane St",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "STORMONT-VAIL HEALTHCARE INC",
+          "city": "Topeka",
+          "contentOtherDescription": "CCDA",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "efuller107354@stormontvaildirect.org",
+          "endpointDescription": "SVH Secure Messaging",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "666061654",
+          "state": "KS",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        },
+        {
+          "address_1": "50 N Medical Dr",
+          "address_type": "DOM",
+          "affiliation": "Y",
+          "affiliationName": "University of Utah",
+          "city": "Salt Lake City",
+          "contentOtherDescription": "CDA/CCD/TXT",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "efuller673197@direct.med.utah.edu",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "841320001",
+          "state": "UT",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1752086415000",
+      "number": "1194354506",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1500 SW 10TH AVE",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "TOPEKA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "666041301",
+          "state": "KS",
+          "telephone_number": "785-354-6000"
+        },
+        {
+          "address_1": "425 W GRAND AVE STE 2002",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "DAYTON",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "937-294-9010",
+          "postal_code": "454054722",
+          "state": "OH",
+          "telephone_number": "379-294-3611"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "15-02470",
+          "primary": true,
+          "state": "KS",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2700 CLAY EDWARDS DR STE 240",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORTH KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-455-5294",
+          "postal_code": "641163254",
+          "state": "MO",
+          "telephone_number": "816-455-0681"
+        },
+        {
+          "address_1": "9411 N OAK TRFY STE LL1",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "641552262",
+          "state": "MO",
+          "telephone_number": "816-691-1655"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-10-30",
+        "credential": "MD",
+        "enumeration_date": "2011-07-09",
+        "first_name": "CHRISTOPHER",
+        "last_name": "AVILA",
+        "last_updated": "2024-10-30",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1310225027000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1730329150000",
+      "number": "1043507148",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "500 NW 68TH ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "KANSAS CITY",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "877-607-1785",
+          "postal_code": "641182455",
+          "state": "MO",
+          "telephone_number": "816-420-3600"
+        },
+        {
+          "address_1": "6650 W 110TH ST STE 220A",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "OVERLAND PARK",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "913-273-3343",
+          "postal_code": "662111501",
+          "state": "KS",
+          "telephone_number": "913-549-3884"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "2014011994",
+          "primary": false,
+          "state": "MO",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "04-37150",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "04-37150",
+          "primary": false,
+          "state": "KS",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208M00000X",
+          "desc": "Hospitalist",
+          "license": "2014011994",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

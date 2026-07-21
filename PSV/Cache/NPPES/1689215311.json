@@ -1,0 +1,60 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "12290 ROCKY MOUNTAIN ST",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895061554",
+          "state": "NV",
+          "telephone_number": "775-313-3687"
+        },
+        {
+          "address_1": "770 MILL ST",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895021321",
+          "state": "NV",
+          "telephone_number": "775-636-7767"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-09-26",
+        "enumeration_date": "2019-10-03",
+        "first_name": "LYDIA",
+        "last_name": "UREN",
+        "last_updated": "2025-09-26",
+        "middle_name": "R",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1570130542000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1758891261000",
+      "number": "1689215311",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101YM0800X",
+          "desc": "Counselor, Mental Health",
+          "license": "CI5228",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1780 BROWNING WAY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ELKO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-778-3652",
+          "postal_code": "898018357",
+          "state": "NV",
+          "telephone_number": "775-778-3437"
+        },
+        {
+          "address_1": "1780 BROWNING WAY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "ELKO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "775-778-3652",
+          "postal_code": "898018357",
+          "state": "NV",
+          "telephone_number": "775-778-3652"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-27",
+        "credential": "DO",
+        "enumeration_date": "2011-03-24",
+        "first_name": "JONATHAN",
+        "last_name": "SLOTHOWER",
+        "last_updated": "2025-08-27",
+        "middle_name": "DENNIS",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1300970397000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1756330656000",
+      "number": "1801195276",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "269013",
+          "primary": false,
+          "state": "NY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "DO1906",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

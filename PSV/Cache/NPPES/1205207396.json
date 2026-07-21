@@ -1,0 +1,72 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3747 SW RAINTREE DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LEES SUMMIT",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "816-537-5649",
+          "postal_code": "640824606",
+          "state": "MO",
+          "telephone_number": "816-537-5648"
+        },
+        {
+          "address_1": "6397 LEE HWY STE 300",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CHATTANOOGA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "423-238-3473",
+          "postal_code": "374214915",
+          "state": "TN",
+          "telephone_number": "423-238-7217"
+        }
+      ],
+      "basic": {
+        "certification_date": "2020-01-20",
+        "credential": "PT, DPT",
+        "enumeration_date": "2015-10-14",
+        "first_name": "JESSICA",
+        "last_name": "WALKER",
+        "last_updated": "2020-01-20",
+        "middle_name": "WINBERRY",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1444855068000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1579552791000",
+      "number": "1205207396",
+      "other_names": [
+        {
+          "code": "1",
+          "credential": "PT, DPT",
+          "first_name": "JESSICA",
+          "last_name": "WINBERRY",
+          "middle_name": "ELISE",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "225100000X",
+          "desc": "Physical Therapist",
+          "license": "2015035672",
+          "primary": true,
+          "state": "MO",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

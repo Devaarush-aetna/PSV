@@ -1,0 +1,64 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1995 PARADISE RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-732-0054",
+          "postal_code": "891042510",
+          "state": "NV",
+          "telephone_number": "702-732-0051"
+        },
+        {
+          "address_1": "1995 PARADISE ROAD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-732-0054",
+          "postal_code": "89104",
+          "state": "NV",
+          "telephone_number": "702-732-0051"
+        }
+      ],
+      "basic": {
+        "credential": "O.M.D.",
+        "enumeration_date": "2006-12-19",
+        "first_name": "HAK",
+        "last_name": "RHEE",
+        "last_updated": "2007-07-08",
+        "middle_name": "EUN",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1166538287000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1183947785000",
+      "number": "1912060187",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "0016",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

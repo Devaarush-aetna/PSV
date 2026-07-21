@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "685 OAKRIDGE DR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "UNION",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "410919013",
+          "state": "KY",
+          "telephone_number": "859-384-0568"
+        },
+        {
+          "address_1": "111 ACADEMIC-ATHLETIC CENTER",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "MOREHEAD",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "40351",
+          "state": "KY",
+          "telephone_number": "606-783-2089"
+        }
+      ],
+      "basic": {
+        "enumeration_date": "2018-12-06",
+        "first_name": "ALYSSA",
+        "last_name": "DAVIS",
+        "last_updated": "2018-12-06",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1544111098000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1544111098000",
+      "number": "1184195992",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207PS0010X",
+          "desc": "Emergency Medicine, Sports Medicine",
+          "license": "AT1474",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

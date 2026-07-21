@@ -1,0 +1,63 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "15435 CORTEZ BLVD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BROOKSVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-796-8196",
+          "postal_code": "346136113",
+          "state": "FL",
+          "telephone_number": "352-796-2909"
+        },
+        {
+          "address_1": "7945 S SUNCOAST BLVD STE A-B",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HOMOSASSA",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "352-423-1468",
+          "postal_code": "344465005",
+          "state": "FL",
+          "telephone_number": "352-423-4923"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-18",
+        "credential": "PA",
+        "enumeration_date": "2018-09-19",
+        "first_name": "CONSTANCE",
+        "last_name": "FLORES",
+        "last_updated": "2025-10-18",
+        "middle_name": "D",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1537389710000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1760805927000",
+      "number": "1972087518",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA9113086",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

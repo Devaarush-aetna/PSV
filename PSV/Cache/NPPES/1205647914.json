@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "6628 SKY POINTE DR STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-935-8946",
+          "postal_code": "891314071",
+          "state": "NV",
+          "telephone_number": "702-550-9199"
+        },
+        {
+          "address_1": "PO BOX 750182",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891360182",
+          "state": "NV",
+          "telephone_number": "828-450-4578"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-05-19",
+        "credential": "PMHNP-C",
+        "enumeration_date": "2025-01-14",
+        "first_name": "AMY",
+        "last_name": "MCCLINTOCK",
+        "last_updated": "2025-05-19",
+        "middle_name": "TIERNEY",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1736883903000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1747693578000",
+      "number": "1205647914",
+      "other_names": [
+        {
+          "code": "1",
+          "first_name": "AMY",
+          "last_name": "ZORBAS",
+          "middle_name": "TIERNEY",
+          "type": "Former Name"
+        }
+      ],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LP0808X",
+          "desc": "Nurse Practitioner, Psych/Mental Health",
+          "license": "890138",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "90 STONEGATE CTR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SOMERSET",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "425016212",
+          "state": "KY",
+          "telephone_number": "606-451-4425"
+        },
+        {
+          "address_1": "2620 ELM HILL PIKE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "NASHVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "372143108",
+          "state": "TN"
+        }
+      ],
+      "basic": {
+        "certification_date": "2021-09-27",
+        "credential": "NP",
+        "enumeration_date": "2021-04-08",
+        "first_name": "CRYSTAL",
+        "last_name": "LUTTRELL",
+        "last_updated": "2021-09-27",
+        "middle_name": "LEANN",
+        "name_prefix": "Mrs.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1617912357000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1632763433000",
+      "number": "1992385611",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "3015993",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

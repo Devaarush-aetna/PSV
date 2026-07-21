@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1155 MILL ST # M-14",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895021576",
+          "state": "NV",
+          "telephone_number": "775-982-5262"
+        },
+        {
+          "address_1": "13945 S VIRGINIA ST STE 632",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "RENO",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "895118930",
+          "state": "NV",
+          "telephone_number": "775-982-5000"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-10-06",
+        "credential": "APRN",
+        "enumeration_date": "2025-06-12",
+        "first_name": "DANIELLE",
+        "last_name": "MATHEWS",
+        "last_updated": "2025-10-06",
+        "middle_name": "RENE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1749750904000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1759774652000",
+      "number": "1518852151",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "890669",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

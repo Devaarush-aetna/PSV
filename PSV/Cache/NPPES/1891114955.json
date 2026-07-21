@@ -1,0 +1,120 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "817 VOLVO PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CHESAPEAKE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "233202855",
+          "state": "VA",
+          "telephone_number": "757-668-4630"
+        },
+        {
+          "address_1": "1950 CENTRAL AVE",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MEMPHIS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "381045237",
+          "state": "TN",
+          "telephone_number": "317-694-5781"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-09-10",
+        "credential": "D.O.",
+        "enumeration_date": "2014-04-15",
+        "first_name": "KALEY",
+        "last_name": "NORRIS",
+        "last_updated": "2024-09-10",
+        "middle_name": "LYNN",
+        "name_prefix": "Dr.",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1397605665000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1725988378000",
+      "number": "1891114955",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "680 OYSTER POINT RD STE 105",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NEWPORT NEWS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "236064570",
+          "state": "VA",
+          "telephone_number": "757-668-4851"
+        },
+        {
+          "address_1": "3960 VIRGINIA BEACH BLVD STE 101",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "VIRGINIA BEACH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "234522449",
+          "state": "VA",
+          "telephone_number": "757-668-4648"
+        },
+        {
+          "address_1": "601 CHILDRENS LN",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "NORFOLK",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "235071910",
+          "state": "VA",
+          "telephone_number": "757-668-6550"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207P00000X",
+          "desc": "Emergency Medicine",
+          "license": "3073",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "3073",
+          "primary": false,
+          "state": "TN",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "390200000X",
+          "desc": "Student in an Organized Health Care Education/Training Program",
+          "license": null,
+          "primary": false,
+          "state": null,
+          "taxonomy_group": ""
+        },
+        {
+          "code": "208000000X",
+          "desc": "Pediatrics",
+          "license": "0102208858",
+          "primary": true,
+          "state": "VA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

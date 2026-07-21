@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1707 VILLAGE CENTER CIR STE 150",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891340597",
+          "state": "NV",
+          "telephone_number": "702-899-5810"
+        },
+        {
+          "address_1": "1707 VILLAGE CENTER CIR STE 150",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "702-899-5855",
+          "postal_code": "891340597",
+          "state": "NV",
+          "telephone_number": "702-899-5810"
+        }
+      ],
+      "basic": {
+        "authorized_official_first_name": "HOLLIE",
+        "authorized_official_last_name": "FLEMING",
+        "authorized_official_middle_name": "MICHELLE",
+        "authorized_official_telephone_number": "4178603782",
+        "authorized_official_title_or_position": "CEO/Speech Language Pathologist",
+        "certification_date": "2025-04-22",
+        "enumeration_date": "2023-02-08",
+        "last_updated": "2025-04-22",
+        "organization_name": "HOLLIE FLEMING SPEECH THERAPY, PLLC",
+        "organizational_subpart": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1675854024000",
+      "endpoints": [],
+      "enumeration_type": "NPI-2",
+      "identifiers": [],
+      "last_updated_epoch": "1745350595000",
+      "number": "1275230542",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "1925 VILLAGE CENTER CIR STE 150",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891346261",
+          "state": "NV",
+          "telephone_number": "417-860-3782"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "261QH0700X",
+          "desc": "Clinic/Center, Hearing and Speech",
+          "license": null,
+          "primary": true,
+          "state": null,
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

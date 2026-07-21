@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "2520 SAINT ROSE PKWY STE 306",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890747790",
+          "state": "NV",
+          "telephone_number": "702-487-7249"
+        },
+        {
+          "address_1": "2520 SAINT ROSE PKWY STE 306",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "HENDERSON",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "890747790",
+          "state": "NV",
+          "telephone_number": "702-487-7249"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-03-13",
+        "enumeration_date": "2021-03-10",
+        "first_name": "RACHEL",
+        "last_name": "HARTSHORN",
+        "last_updated": "2024-03-13",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1615428804000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1710365832000",
+      "number": "1760067862",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "106H00000X",
+          "desc": "Marriage & Family Therapist",
+          "license": "12619364-3904",
+          "primary": true,
+          "state": "UT",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

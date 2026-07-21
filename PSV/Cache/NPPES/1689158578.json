@@ -1,0 +1,59 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "31 BILL BUDD RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "BIG PINEY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "831138814",
+          "state": "WY",
+          "telephone_number": "307-413-3958"
+        },
+        {
+          "address_1": "31 BILL BUDD RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "BIG PINEY",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "831138814",
+          "state": "WY",
+          "telephone_number": "307-413-3958"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-02-18",
+        "enumeration_date": "2018-09-18",
+        "first_name": "ASHLIN",
+        "last_name": "APPLIN",
+        "last_updated": "2025-02-18",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1537281752000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1739915409000",
+      "number": "1689158578",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "101Y00000X",
+          "desc": "Counselor",
+          "license": "2159",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

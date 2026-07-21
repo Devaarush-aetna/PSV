@@ -1,0 +1,75 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "410 N HURSTBOURNE PKWY",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-423-0719",
+          "postal_code": "402225360",
+          "state": "KY",
+          "telephone_number": "502-423-0500"
+        },
+        {
+          "address_1": "410 N HURSTBOURNE PKWY",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-423-0719",
+          "postal_code": "402225360",
+          "state": "KY",
+          "telephone_number": "502-423-0500"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-08-29",
+        "credential": "DC",
+        "enumeration_date": "2008-08-07",
+        "first_name": "JAMES",
+        "last_name": "ANDERSON",
+        "last_updated": "2024-08-29",
+        "middle_name": "DREW",
+        "sex": "M",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1218115710000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1724939488000",
+      "number": "1184880304",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "26 MACK WALTERS RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SHELBYVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "400651738",
+          "state": "KY",
+          "telephone_number": "502-633-1574"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "249528",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

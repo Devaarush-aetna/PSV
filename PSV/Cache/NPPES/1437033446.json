@@ -1,0 +1,61 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "117 E AVENUE D",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "MELBOURNE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329011345",
+          "state": "FL",
+          "telephone_number": "321-544-7250"
+        },
+        {
+          "address_1": "1680 S FISKE BLVD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "ROCKLEDGE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "329552535",
+          "state": "FL",
+          "telephone_number": "321-866-8484"
+        }
+      ],
+      "basic": {
+        "certification_date": "2025-08-03",
+        "credential": "RN, IBCLC",
+        "enumeration_date": "2025-08-04",
+        "first_name": "SARAH",
+        "last_name": "PATTERSON",
+        "last_updated": "2025-08-04",
+        "middle_name": "MARIE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1754301912000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1754301912000",
+      "number": "1437033446",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "163WL0100X",
+          "desc": "Registered Nurse, Lactation Consultant",
+          "license": "9489070",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

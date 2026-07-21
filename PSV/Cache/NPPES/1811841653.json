@@ -1,0 +1,81 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "62 LEFT FORK SANSOM FRK",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "DANA",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "416158004",
+          "state": "KY",
+          "telephone_number": "606-213-4524"
+        },
+        {
+          "address_1": "911 BYPASS RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PIKEVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "415011602",
+          "state": "KY",
+          "telephone_number": "606-213-4524"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-04-23",
+        "credential": "MSN, APRN, FNP-C",
+        "enumeration_date": "2026-02-26",
+        "first_name": "DENISE",
+        "last_name": "DAVIS",
+        "last_updated": "2026-04-23",
+        "middle_name": "BOYD",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1772106602000",
+      "endpoints": [
+        {
+          "address_1": "911 Bypass Rd",
+          "address_type": "DOM",
+          "affiliation": "N",
+          "city": "Pikeville",
+          "contentOtherDescription": "Standard Direct Functionality",
+          "contentType": "OTHER",
+          "contentTypeDescription": "Other",
+          "country_code": "US",
+          "country_name": "United States",
+          "endpoint": "ddavis63437@PIKEVILLEKYDIRECT.ORG",
+          "endpointDescription": "Direct Address for CCDA",
+          "endpointType": "DIRECT",
+          "endpointTypeDescription": "Direct Messaging Address",
+          "postal_code": "415011602",
+          "state": "KY",
+          "use": "DIRECT",
+          "useDescription": "Direct"
+        }
+      ],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1776937821000",
+      "number": "1811841653",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "363LF0000X",
+          "desc": "Nurse Practitioner, Family",
+          "license": "4054232",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

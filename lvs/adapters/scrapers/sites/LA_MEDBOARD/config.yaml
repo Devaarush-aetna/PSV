@@ -142,7 +142,5 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
-  # 2026-06-15 (session 29): skip lifted. Re-probed online.lasbme.org/#/verifylicense
-  # and confirmed it serves the public Verification form with inputs licenseNumber /
-  # firstName / lastName / PractitionerType / licenseStatus / speciality. Prior session
-  # 28's "login portal" finding was a misread of the LaMED nav menu vs. the actual SPA.
+  skip: true
+  skip_reason: "recaptcha_v3_proxy_block: online.lasbme.org loads reCAPTCHA v3 and silently returns 0 results for low-scored requests (corporate proxy IP flagged). Search form submits but API returns empty; no captcha challenge shown. Confirmed 2026-07-01."

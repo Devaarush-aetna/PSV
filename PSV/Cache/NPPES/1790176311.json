@@ -1,0 +1,70 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "160 S FLAMINGO RD",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "PEMBROKE PINES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-620-0238",
+          "postal_code": "330271720",
+          "state": "FL",
+          "telephone_number": "954-620-0011"
+        },
+        {
+          "address_1": "160 S FLAMINGO RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "PEMBROKE PINES",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "954-620-0238",
+          "postal_code": "330271720",
+          "state": "FL",
+          "telephone_number": "954-620-0011"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-09-23",
+        "credential": "D.O.",
+        "enumeration_date": "2015-02-18",
+        "first_name": "DIANA",
+        "last_name": "ZULETA",
+        "last_updated": "2024-09-23",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1424292355000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1727103216000",
+      "number": "1790176311",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "207RR0500X",
+          "desc": "Internal Medicine, Rheumatology",
+          "license": "OS15382",
+          "primary": true,
+          "state": "FL",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "OS15382",
+          "primary": false,
+          "state": "FL",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

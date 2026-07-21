@@ -1,0 +1,65 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "10000 BROWNSBORO RD",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-412-8862",
+          "postal_code": "402413900",
+          "state": "KY",
+          "telephone_number": "502-412-8580"
+        },
+        {
+          "address_1": "10000 BROWNSBORO RD",
+          "address_2": "STE 3",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LOUISVILLE",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "502-412-8862",
+          "postal_code": "402413900",
+          "state": "KY",
+          "telephone_number": "502-216-4497"
+        }
+      ],
+      "basic": {
+        "credential": "D.C.",
+        "enumeration_date": "2007-02-07",
+        "first_name": "JASON",
+        "last_name": "OLLIS",
+        "last_updated": "2017-02-14",
+        "middle_name": "EVAN",
+        "name_prefix": "Dr.",
+        "name_suffix": "--",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1170879582000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1487094217000",
+      "number": "1831239078",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "111N00000X",
+          "desc": "Chiropractor",
+          "license": "4708",
+          "primary": true,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

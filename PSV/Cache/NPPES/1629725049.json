@@ -1,0 +1,58 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "3030 S JONES BLVD STE 107",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891466793",
+          "state": "NV"
+        },
+        {
+          "address_1": "3030 S JONES BLVD STE 107",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "LAS VEGAS",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "891466793",
+          "state": "NV",
+          "telephone_number": "708-708-2207"
+        }
+      ],
+      "basic": {
+        "certification_date": "2022-03-05",
+        "enumeration_date": "2022-03-05",
+        "first_name": "AEJA",
+        "last_name": "KIM",
+        "last_updated": "2022-03-05",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1646523984000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1646523984000",
+      "number": "1629725049",
+      "other_names": [],
+      "practiceLocations": [],
+      "taxonomies": [
+        {
+          "code": "171100000X",
+          "desc": "Acupuncturist",
+          "license": "2201",
+          "primary": true,
+          "state": "NV",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

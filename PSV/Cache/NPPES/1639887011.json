@@ -1,0 +1,83 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "1441 WILKINS CIR",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "CASPER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-472-2883",
+          "postal_code": "826011337",
+          "state": "WY",
+          "telephone_number": "307-233-2700"
+        },
+        {
+          "address_1": "1441 WILKINS CIR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "CASPER",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "307-472-2883",
+          "postal_code": "826011337",
+          "state": "WY",
+          "telephone_number": "307-233-2700"
+        }
+      ],
+      "basic": {
+        "certification_date": "2024-12-11",
+        "credential": "PA-C",
+        "enumeration_date": "2022-11-14",
+        "first_name": "LACEY",
+        "last_name": "MARTIN",
+        "last_updated": "2024-12-11",
+        "middle_name": "MARIE",
+        "sex": "F",
+        "sole_proprietor": "NO",
+        "status": "A"
+      },
+      "created_epoch": "1668464027000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1733931529000",
+      "number": "1639887011",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "206 SUGAR MILL DR",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SAVANNAH",
+          "country_code": "US",
+          "country_name": "United States",
+          "postal_code": "314199437",
+          "state": "GA",
+          "telephone_number": "706-614-6168"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "PA1061",
+          "primary": true,
+          "state": "WY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "363A00000X",
+          "desc": "Physician Assistant",
+          "license": "1195040",
+          "primary": false,
+          "state": "GA",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}

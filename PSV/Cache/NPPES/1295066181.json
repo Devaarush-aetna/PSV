@@ -1,0 +1,117 @@
+{
+  "result_count": 1,
+  "results": [
+    {
+      "addresses": [
+        {
+          "address_1": "222 NEW RD STE 201",
+          "address_purpose": "MAILING",
+          "address_type": "DOM",
+          "city": "LINWOOD",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "609-904-6929",
+          "postal_code": "082211281",
+          "state": "NJ",
+          "telephone_number": "609-788-8953"
+        },
+        {
+          "address_1": "100 KINGS WAY W UNIT D1",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SEWELL",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "856-352-6710",
+          "postal_code": "080802235",
+          "state": "NJ",
+          "telephone_number": "856-352-6572"
+        }
+      ],
+      "basic": {
+        "certification_date": "2026-03-04",
+        "credential": "D.O.",
+        "enumeration_date": "2010-01-18",
+        "first_name": "PETER",
+        "last_name": "SACCONE",
+        "last_updated": "2026-03-04",
+        "middle_name": "JOSEPH",
+        "name_prefix": "Dr.",
+        "sex": "M",
+        "sole_proprietor": "YES",
+        "status": "A"
+      },
+      "created_epoch": "1263817118000",
+      "endpoints": [],
+      "enumeration_type": "NPI-1",
+      "identifiers": [],
+      "last_updated_epoch": "1772631365000",
+      "number": "1295066181",
+      "other_names": [],
+      "practiceLocations": [
+        {
+          "address_1": "499 BECKETT RD STE 103",
+          "address_purpose": "LOCATION",
+          "address_type": "DOM",
+          "city": "SWEDESBORO",
+          "country_code": "US",
+          "country_name": "United States",
+          "fax_number": "856-832-4938",
+          "postal_code": "080851766",
+          "state": "NJ",
+          "telephone_number": "856-975-5027"
+        }
+      ],
+      "taxonomies": [
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "25MB0902500",
+          "primary": false,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RP1001X",
+          "desc": "Internal Medicine, Pulmonary Disease",
+          "license": "25MB09025200",
+          "primary": true,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207R00000X",
+          "desc": "Internal Medicine",
+          "license": "04509",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0200X",
+          "desc": "Internal Medicine, Critical Care Medicine",
+          "license": "25MB09025200",
+          "primary": false,
+          "state": "NJ",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RP1001X",
+          "desc": "Internal Medicine, Pulmonary Disease",
+          "license": "04509",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        },
+        {
+          "code": "207RC0200X",
+          "desc": "Internal Medicine, Critical Care Medicine",
+          "license": "04509",
+          "primary": false,
+          "state": "KY",
+          "taxonomy_group": ""
+        }
+      ]
+    }
+  ]
+}
