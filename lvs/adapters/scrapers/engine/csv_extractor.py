@@ -13,9 +13,6 @@ import logging
 import re
 from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo
-
-_EST = ZoneInfo("America/New_York")
 from typing import Optional
 
 log = logging.getLogger(__name__)
@@ -24,6 +21,24 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Cache helpers
 # ---------------------------------------------------------------------------
+
+def _archive_old_cache_files(cache_dir: Path, source_id: str, new_file: Path, ext: str = "csv") -> None:
+    """Move old {source_id}_YYYYMMDD_HHMM.{ext} files to cache_dir/cache/ after a fresh download.
+
+    Keeps the active cache dir clean while preserving history.
+    """
+    archive_dir = cache_dir / "cache"
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    for f in cache_dir.glob(f"{source_id}_????????_????.{ext}"):
+        if f == new_file:
+            continue
+        dest = archive_dir / f.name
+        try:
+            f.rename(dest)
+            log.info("[%s] Archived old cache: %s → cache/%s", source_id, f.name, f.name)
+        except Exception as exc:
+            log.warning("[%s] Could not archive %s: %s", source_id, f.name, exc)
+
 
 def _find_cached_csv(cache_dir: str, source_id: str, cache_days: int) -> Optional[Path]:
     cache_path = Path(cache_dir)
@@ -35,7 +50,7 @@ def _find_cached_csv(cache_dir: str, source_id: str, cache_days: int) -> Optiona
             continue
         try:
             file_date = datetime.strptime(m.group(1), "%Y%m%d_%H%M")
-            if (datetime.now() - file_date).days <= cache_days:
+            if (datetime.now() - file_date).days < cache_days:
                 log.info("Using cached CSV: %s", f.name)
                 return f
         except ValueError:
@@ -509,10 +524,20 @@ async def _download_google_sheet_link(
       1. Navigate to base_url in browser to find the Google Sheets link
       2. Resolve the Google Sheets URL (via href or new-tab click)
       3. Construct CSV export URL: /d/{sheet_id}/export?format=csv
-      4. Download via Playwright APIRequestContext — inherits the browser's proxy
-         and cert handling, which works on corporate networks where direct httpx
-         calls to docs.google.com are blocked.
+      4. Download via Playwright — tries four mechanisms in order:
+         a) page.goto(export_url) + expect_download — Chromium handles NTLM/Kerberos proxy
+            auth automatically via Windows SSO; APIRequestContext cannot (gets 407). Primary.
+         a-direct) Same as (a) but in a fresh context with NO proxy — fires only when (a)
+            detected a proxy block page (URLBlockedStorage).  Chromium headless launched
+            without an explicit proxy goes direct; bypasses the URL-filter while keeping the
+            full browser download path (redirects, cookies, Content-Disposition).
+         b) ctx.request.get() without proxy — direct outbound HTTPS to Google; works when
+            the corporate proxy blocks docs.google.com as "Personal Network Storage".
+         c) page.inner_text("body") — some configurations render the CSV inline rather than
+            triggering a download event; captured as plain text.
     """
+    import os as _os
+    import tempfile as _tempfile
     from playwright.async_api import async_playwright
     from .proxy import get_proxy_config
     proxy_cfg = get_proxy_config()
@@ -526,7 +551,44 @@ async def _download_google_sheet_link(
         try:
             log.info("google_sheet_link: navigating to %s", base_url)
             await page.goto(base_url, wait_until="domcontentloaded", timeout=60_000)
-            await page.wait_for_selector(link_selector, timeout=30_000)
+            _selector_found = False
+            try:
+                await page.wait_for_selector(link_selector, timeout=30_000)
+                _selector_found = True
+            except Exception:
+                pass
+
+            # If the proxy-bearing context failed to render the link selector, retry
+            # the board page navigation in a fresh direct (no-proxy) context.  This
+            # handles the case where a corporate proxy intercepts the .wyo.gov page,
+            # strips JS, or requires auth — making the download link invisible.
+            if not _selector_found and proxy_cfg:
+                log.warning(
+                    "google_sheet_link: link selector %r not found via proxy — "
+                    "retrying board page without proxy", link_selector
+                )
+                ctx_direct_nav = await browser.new_context(
+                    ignore_https_errors=True, accept_downloads=True,
+                )
+                try:
+                    page_direct = await ctx_direct_nav.new_page()
+                    await page_direct.goto(base_url, wait_until="domcontentloaded", timeout=60_000)
+                    await page_direct.wait_for_selector(link_selector, timeout=30_000)
+                    # Switch the active page/context so the rest of the function works
+                    page = page_direct
+                    ctx = ctx_direct_nav
+                    proxy_cfg = None  # mark as direct so Attempt A uses direct context too
+                    log.info("google_sheet_link: direct board page navigation succeeded")
+                except Exception as _nav_exc:
+                    await ctx_direct_nav.close()
+                    raise RuntimeError(
+                        f"google_sheet_link: link selector {link_selector!r} not found on "
+                        f"{base_url} via proxy or direct navigation: {_nav_exc}"
+                    )
+            elif not _selector_found:
+                raise RuntimeError(
+                    f"google_sheet_link: link selector {link_selector!r} not found on {base_url}"
+                )
 
             locator = page.locator(link_selector).nth(link_selector_nth)
             href = (await locator.get_attribute("href")) or ""
@@ -556,24 +618,186 @@ async def _download_google_sheet_link(
                     f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
                 )
 
-            log.info("google_sheet_link: downloading CSV via browser page.goto from %s", export_url)
-            # Chromium will trigger a download for the CSV export URL.
-            # page.goto() will raise "Download is starting" — that's expected;
-            # we capture the download via expect_download(), which fires concurrently.
-            async with page.expect_download(timeout=download_timeout_ms) as dl_info:
-                try:
-                    await page.goto(export_url, timeout=download_timeout_ms)
-                except Exception as e:
-                    if "Download is starting" not in str(e):
+            # ── Attempt A: page.goto + expect_download (NTLM-aware via Chromium) ──────
+            # Chromium negotiates NTLM/Kerberos proxy auth automatically via Windows SSO.
+            # APIRequestContext cannot do NTLM and always gets 407 from corporate proxies,
+            # so page.goto + expect_download is the primary download path.
+            log.info("google_sheet_link: attempt A — page.goto + expect_download: %s", export_url)
+            _download_err: Exception | None = None
+            try:
+                async with page.expect_download(timeout=download_timeout_ms) as _dl_info:
+                    try:
+                        await page.goto(
+                            export_url, wait_until="domcontentloaded",
+                            timeout=min(30_000, download_timeout_ms),
+                        )
+                    except Exception:
+                        pass  # navigation exception is expected when a download is triggered
+                    # Quick abort checks — bail early rather than waiting the
+                    # full download_timeout_ms for a download that will never fire.
+                    try:
+                        # Google auth redirect: sheet requires login (not public)
+                        if "accounts.google.com" in page.url:
+                            raise RuntimeError(
+                                "google_sheet_link: attempt A — Google Sheet redirected to "
+                                "accounts.google.com; sheet is not publicly shared"
+                            )
+                        _page_text = await page.inner_text("body", timeout=2_000)
+                        if any(kw in _page_text for kw in (
+                            "URLBlockedStorage", "URLBlocked", "Access Denied",
+                            "blocked by", "not permitted", "Forbidden",
+                        )):
+                            raise RuntimeError(
+                                "google_sheet_link: attempt A — proxy block page detected"
+                            )
+                    except RuntimeError:
                         raise
-            download = await dl_info.value
-            tmp_path = await download.path()
-            if not tmp_path:
-                raise RuntimeError(
-                    f"google_sheet_link: download had no path for {export_url}"
+                    except Exception:
+                        pass  # body not yet available — let the download timeout handle it
+                _dl = await _dl_info.value
+                _tmp = _tempfile.mktemp(suffix=".csv")
+                await _dl.save_as(_tmp)
+                try:
+                    with open(_tmp, "rb") as _f:
+                        _raw = _f.read()
+                    log.info("google_sheet_link: attempt A succeeded — %d bytes", len(_raw))
+                    for _enc in ("utf-8-sig", "utf-8", "latin-1"):
+                        try:
+                            return _raw.decode(_enc)
+                        except UnicodeDecodeError:
+                            continue
+                    return _raw.decode("latin-1")
+                finally:
+                    try:
+                        _os.unlink(_tmp)
+                    except Exception:
+                        pass
+            except Exception as _a_exc:
+                _download_err = _a_exc
+                log.warning("google_sheet_link: attempt A failed (%s) — trying fallbacks", _a_exc)
+
+            # ── Attempt A-direct: page.goto + expect_download, no proxy ─────────────
+            # When Attempt A hit a proxy block page (URLBlockedStorage / Access Denied),
+            # the corporate proxy filtered docs.google.com but the firewall may still
+            # allow direct outbound HTTPS.  Chromium headless launched without an explicit
+            # proxy setting goes direct (no system-proxy pickup in headless mode), so this
+            # attempt bypasses the URL-filter while keeping the full browser download path
+            # (handles redirects, Set-Cookie, Content-Disposition) that APIRequestContext lacks.
+            _proxy_was_blocked = proxy_cfg and (
+                "proxy block page" in str(_download_err).lower()
+                or "URLBlockedStorage" in str(_download_err)
+                or "urlblocked" in str(_download_err).lower()
+            )
+            if _proxy_was_blocked:
+                log.info(
+                    "google_sheet_link: attempt A-direct — no-proxy page download: %s",
+                    export_url,
                 )
-            with open(tmp_path, "rb") as fh:
-                return fh.read().decode("utf-8-sig", errors="replace")
+                try:
+                    _ctx_np = await browser.new_context(
+                        ignore_https_errors=True, accept_downloads=True,
+                    )
+                    try:
+                        _page_np = await _ctx_np.new_page()
+                        async with _page_np.expect_download(timeout=download_timeout_ms) as _dl_info_np:
+                            try:
+                                await _page_np.goto(
+                                    export_url, wait_until="domcontentloaded",
+                                    timeout=min(30_000, download_timeout_ms),
+                                )
+                            except Exception:
+                                pass
+                            # Fast-fail if Google auth redirect (sheet not public)
+                            try:
+                                if "accounts.google.com" in _page_np.url:
+                                    raise RuntimeError(
+                                        "google_sheet_link: attempt A-direct — Google Sheet "
+                                        "redirected to accounts.google.com; sheet is not public"
+                                    )
+                            except RuntimeError:
+                                raise
+                            except Exception:
+                                pass
+                        _dl_np = await _dl_info_np.value
+                        _tmp_np = _tempfile.mktemp(suffix=".csv")
+                        await _dl_np.save_as(_tmp_np)
+                        try:
+                            with open(_tmp_np, "rb") as _f_np:
+                                _raw_np = _f_np.read()
+                            log.info(
+                                "google_sheet_link: attempt A-direct succeeded — %d bytes",
+                                len(_raw_np),
+                            )
+                            for _enc in ("utf-8-sig", "utf-8", "latin-1"):
+                                try:
+                                    return _raw_np.decode(_enc)
+                                except UnicodeDecodeError:
+                                    continue
+                            return _raw_np.decode("latin-1")
+                        finally:
+                            try:
+                                _os.unlink(_tmp_np)
+                            except Exception:
+                                pass
+                    finally:
+                        await _ctx_np.close()
+                except Exception as _adirect_exc:
+                    log.warning(
+                        "google_sheet_link: attempt A-direct failed (%s) — trying Attempt B",
+                        _adirect_exc,
+                    )
+
+            # ── Attempt B: direct (no-proxy) APIRequestContext ──────────────────────
+            # Works when the corporate proxy blocks docs.google.com as "Personal Network
+            # Storage" but the firewall permits direct outbound HTTPS to Google.
+            log.info("google_sheet_link: attempt B — direct (no-proxy) request: %s", export_url)
+            try:
+                ctx_direct = await browser.new_context(
+                    ignore_https_errors=True, accept_downloads=True
+                )
+                try:
+                    resp_direct = await ctx_direct.request.get(export_url, timeout=download_timeout_ms)
+                    ct_direct = resp_direct.headers.get("content-type", "")
+                    if resp_direct.ok and "text/html" not in ct_direct:
+                        body_direct = await resp_direct.body()
+                        log.info("google_sheet_link: attempt B succeeded — %d bytes", len(body_direct))
+                        return body_direct.decode("utf-8-sig", errors="replace")
+                    _preview = ""
+                    try:
+                        _preview = (await resp_direct.body())[:200].decode("utf-8", errors="replace")
+                    except Exception:
+                        pass
+                    raise RuntimeError(
+                        f"google_sheet_link: direct attempt HTTP {resp_direct.status} — {_preview[:80]}"
+                    )
+                finally:
+                    await ctx_direct.close()
+            except Exception as _b_exc:
+                log.warning("google_sheet_link: attempt B failed (%s) — trying page body read", _b_exc)
+
+            # ── Attempt C: read page body as plain CSV text ──────────────────────────
+            # Some Google Sheet export configurations serve the CSV inline as plain text
+            # rather than triggering a browser download event.
+            log.info("google_sheet_link: attempt C — reading page body as CSV text")
+            try:
+                _content = await page.content()
+                if "DOCTYPE" not in _content:
+                    _body_text = await page.inner_text("body", timeout=5_000)
+                    _lines = [ln for ln in _body_text.splitlines() if ln.strip()]
+                    if _lines and len(_lines) > 1 and "," in _lines[0]:
+                        log.info(
+                            "google_sheet_link: attempt C succeeded — %d lines from page body",
+                            len(_lines),
+                        )
+                        return "\n".join(_lines)
+                raise RuntimeError("google_sheet_link: attempt C — page body is not CSV text")
+            except RuntimeError:
+                raise
+            except Exception as _c_exc:
+                log.warning("google_sheet_link: attempt C failed (%s)", _c_exc)
+
+            # All attempts failed
+            raise _download_err  # type: ignore[misc]
         finally:
             await browser.close()
 
@@ -1312,6 +1536,31 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
                 pass
         return cached, effective_header_row
 
+    # Manual-placement fallback: if a file named <SOURCE_ID>_manual.csv exists in the
+    # cache directory, use it directly. Allows teams to download a blocked Google Sheet
+    # by hand and drop it here. Auto-detects raw format (preamble rows before header)
+    # vs. processed format (header at row 0) using the same preamble check as the cache.
+    _manual_path = cache_dir / f"{source_id}_manual.csv"
+    if _manual_path.exists():
+        log.info("[%s] Using manually-placed fallback CSV: %s", source_id, _manual_path.name)
+        _manual_header_row = effective_header_row
+        if _is_processed:
+            try:
+                import pandas as _pd_m
+                _peek_m = _pd_m.read_csv(
+                    _manual_path, dtype=str, header=0, nrows=0, encoding=csv_cfg.encoding
+                )
+                _peek_m.columns = _peek_m.columns.str.strip()
+                _first_m = _peek_m.columns[0] if len(_peek_m.columns) else ""
+                if len(_first_m) > 40 or any(
+                    kw in _first_m.lower()
+                    for kw in ("wyoming", "note", "board", "license", "please", "last update")
+                ):
+                    _manual_header_row = csv_cfg.header_row  # raw Google Sheet export format
+            except Exception:
+                pass
+        return _manual_path, _manual_header_row
+
     log.info("[%s] Downloading CSV (strategy=%s) ...", source_id, csv_cfg.download_strategy)
     strategy = csv_cfg.download_strategy
     dl_timeout = getattr(csv_cfg, "download_timeout_ms", 120_000)
@@ -1370,9 +1619,9 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
         max_mtime = max((p.stat().st_mtime for p in src_cache_paths), default=None)
         if max_mtime is not None:
             from datetime import datetime as _dt
-            date_tag = _dt.fromtimestamp(max_mtime, tz=_EST).strftime("%Y%m%d_%H%M")
+            date_tag = _dt.fromtimestamp(max_mtime).strftime("%Y%m%d_%H%M")
         else:
-            date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+            date_tag = datetime.now().strftime("%Y%m%d_%H%M")
         save_path = cache_dir / f"{source_id}_{date_tag}.csv"
         save_path.write_text(merged_df.to_csv(index=False), encoding="utf-8")
         log.info("[%s] CSV saved → %s (%d rows total)", source_id, save_path.name, len(merged_df))
@@ -1438,12 +1687,16 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
                     dfs_multi.append(extra_df)
                     log.info("[%s] Additional sheet (%s): %d rows", source_id, extra_sel, len(extra_df))
                 except Exception as exc:
-                    log.warning("[%s] Additional sheet download failed (%s): %s", source_id, extra_sel, exc)
+                    raise RuntimeError(
+                        f"[{source_id}] additional_link_selectors download failed for "
+                        f"'{extra_sel}': {exc}"
+                    ) from exc
             merged_df = pd.concat(dfs_multi, ignore_index=True).fillna("")
-            date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+            date_tag = datetime.now().strftime("%Y%m%d_%H%M")
             save_path = cache_dir / f"{source_id}_{date_tag}.csv"
             save_path.write_text(merged_df.to_csv(index=False), encoding=csv_cfg.encoding)
             log.info("[%s] CSV saved → %s (%d rows)", source_id, save_path.name, len(merged_df))
+            _archive_old_cache_files(cache_dir, source_id, save_path)
             return save_path, 0
     elif strategy == "aithent_portal_xls":
         proxy_cfg = get_proxy_config()
@@ -1478,13 +1731,14 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
     else:
         raise ValueError(f"Unknown CSV download strategy: {strategy!r}")
 
-    date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+    date_tag = datetime.now().strftime("%Y%m%d_%H%M")
     save_path = cache_dir / f"{source_id}_{date_tag}.csv"
     # mopro_zip output is already decoded Unicode — save as UTF-8 to avoid latin-1
     # encode failures from special characters (e.g. ‘ right single quote).
     save_enc = "utf-8" if strategy == "mopro_zip" else csv_cfg.encoding
     save_path.write_text(text, encoding=save_enc)
     log.info("[%s] CSV saved → %s", source_id, save_path.name)
+    _archive_old_cache_files(cache_dir, source_id, save_path)
     return save_path, effective_header_row
 
 

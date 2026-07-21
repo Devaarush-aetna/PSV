@@ -119,6 +119,8 @@ transport:
     max_attempts: 3
     backoff_ms: [1000, 2000, 4000]
     retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

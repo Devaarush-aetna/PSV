@@ -7,9 +7,9 @@ identity:
   # ASP.NET WebForms portal at mdbnc.health.maryland.gov/bsweVerification/ — same structure as MD_AUDIOLOGY.
   # License search: #bodyContentPlaceHolder_licenseNoSearch + search2 button.
   # Name search:    #bodyContentPlaceHolder_lastNameSearch  + search1 button.
-  # Results grid (name/lic): verificationNameGridView / verificationLicGridView
-  #   Columns: [0]=LastName [1]=FirstName [2]=LicType [3]=Status [4]=LicenseNum [5]=ViewDetails
-  #   (license_num is at index 4, NOT 2 — confirmed from Maryland_SocialWorker.py)
+  # Results grid (name search): verificationNameGridView — cols [0]=LastName [1]=FirstName [2]=LicType [3]=Status [4]=LicenseNum [5]=DetailsView
+  # Results grid (lic search):  verificationLicGridView  — cols [0]=LastName [1]=FirstName [2]=LicType [3]=LicenseNum [4]=DetailsView
+  #   Link text is "Details View" (NOT "View Details").
   # Detail: #bodyContentPlaceHolder_DetailsView1 two_column_table (td/td, label in col[0], value in col[1]).
   # Fields: Full Name, License Level, License Number, Status, Original License Date, Expiration Date.
   base_url: "https://mdbnc.health.maryland.gov/bsweVerification/Default.aspx"
@@ -32,7 +32,7 @@ search:
       selector: "#bodyContentPlaceHolder_search1"
   results_wait:
     strategy: element_visible
-    selector: "a:has-text('View Details')"
+    selector: "a:has-text('Details View')"
     timeout_ms: 20000
     no_results_indicators:
       - "no records found"
@@ -44,7 +44,10 @@ search:
 results:
   type: table
   table:
-    table_selector: "#bodyContentPlaceHolder_verificationNameGridView"
+    # Comma selector: lic-search returns verificationLicGridView (lic_num at col 3);
+    # name-search returns verificationNameGridView (lic_num at col 4, but matching
+    # uses name-hint so col-3 mapping is harmless for name-search rows).
+    table_selector: "#bodyContentPlaceHolder_verificationLicGridView, #bodyContentPlaceHolder_verificationNameGridView"
     table_index: 0
     row_selector: "tbody tr"
     cell_selector: "td"
@@ -52,11 +55,11 @@ results:
     columns:
       0: last_name
       1: first_name
-      4: license_number
+      3: license_number
   has_detail_page: true
   detail_trigger:
     type: link_in_cell
-    selector: "a:has-text('View Details')"
+    selector: "a:has-text('Details View')"
   pagination:
     enabled: true
     strategy: next_button

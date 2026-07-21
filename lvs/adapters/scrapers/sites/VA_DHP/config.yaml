@@ -12,6 +12,9 @@ search:
   # Three separate forms on the page — each form has its own submit button.
   # Use form:has(#field) selector to target the button within the correct form.
   # SSN+LastName form (form 2) is not supported — requires SSN which is PII.
+  # VA DHP stores all license numbers as exactly 10 digits (zero-padded).
+  # Inputs shorter than 10 digits are padded automatically (e.g. "12345" → "0000012345").
+  license_digit_pad: 10
   modes:
     - mode: license_number
       input_selector: "#LicenseNo"

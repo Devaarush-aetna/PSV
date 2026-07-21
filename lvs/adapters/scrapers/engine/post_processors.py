@@ -52,17 +52,57 @@ def clean_name(value: str | None) -> str:
     return re.sub(r"\s+", " ", value.strip())
 
 
+# Trailing tokens to strip before extracting a last name from a full-name string.
+# Boards frequently append credentials (MD, DPM, RN) and generational suffixes (Jr, III)
+# after the last name. Stored de-dotted/de-hyphenated — matching normalizes tokens the
+# same way before lookup.
+_NAME_SUFFIX_SET: frozenset[str] = frozenset({
+    # Generational / legal
+    "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    # Medical degrees
+    "MD", "DO", "DPM", "DDS", "DMD", "OD", "PHD", "PSYD",
+    "DPT", "DC", "ND",
+    # Nursing / advanced practice
+    "RN", "LPN", "LVN", "APRN", "DNP", "CNM", "NP",
+    # PA
+    "PA",
+    # Behavioral health
+    "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABAD", "BCABA", "RBT",
+    # PT / OT / SLP / AUD
+    "PT", "OT", "SLP", "AUD",
+    # Pharmacy
+    "PHARMD", "RPH",
+    # Fellowship designations
+    "FACP", "FACS", "FACOG", "FAAP",
+})
+
+
+def _strip_name_suffixes(parts: list[str]) -> list[str]:
+    """Pop trailing credential/generational tokens from a name parts list."""
+    while parts and re.sub(r"[.\-]", "", parts[-1]).upper() in _NAME_SUFFIX_SET:
+        parts = parts[:-1]
+    return parts
+
+
 def split_full_name(full_name: str) -> tuple[str, str]:
-    """Split 'Last, First Middle' or 'First Last' into (first, last)."""
+    """Split 'Last, First Middle' or 'First Last' into (first, last).
+
+    Strips trailing credential/generational suffixes (MD, DPM, Jr., etc.) so that
+    boards appending credentials after the name (e.g. 'Victor McNamara DPM') don't
+    end up with the credential stored as the last name.
+    """
     name = clean_name(full_name)
     if not name:
         return ("", "")
     if "," in name:
-        parts = name.split(",", 1)
-        last = parts[0].strip()
-        first = parts[1].strip().split()[0] if parts[1].strip() else ""
+        raw_last, _, rest = name.partition(",")
+        parts_last = _strip_name_suffixes(raw_last.strip().split())
+        last = " ".join(parts_last)
+        first = rest.strip().split()[0] if rest.strip() else ""
         return (first, last)
-    parts = name.split()
+    parts = _strip_name_suffixes(name.split())
+    if not parts:
+        return ("", "")
     if len(parts) == 1:
         return ("", parts[0])
     return (parts[0], parts[-1])

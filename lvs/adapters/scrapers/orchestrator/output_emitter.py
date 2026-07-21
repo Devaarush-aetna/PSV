@@ -1,13 +1,23 @@
-"""4-channel output writer + per-row trace persister.
+"""Multi-channel output writer + per-row trace persister.
 
-Channels (all under PSV_DEV/Output/{channel}/{YYYY-MM}/{run_id}.{ext}):
-  - standard      Excel + CSV   every input row
-  - nppes         CSV           every row, full NPPES record + diff vs master
-  - ai_fallback   CSV           every row where the AI agent ran
-  - manual        CSV           every unresolved row, with structured failure_reason
+All files land under:
+    PSV_DEV/Output/{YYYYMM}/{run_id}/{Channel}/{ChannelName}_{YYYYMMDD_HHMM}.ext
 
-The standard channel reuses psv_test.write_results for the Excel sheet and
-adds a CSV sibling.
+Channels:
+  - Standard        Excel + CSV   every input row (includes routed_to column)
+  - NPPES           CSV           every row, full NPPES record + diff vs master
+  - AIFallback      CSV           every row where the AI agent ran
+  - Manual          CSV           every unresolved row, with structured failure_reason
+  - AddLicense      Excel         clean Pass rows ready for upload
+  - AIAddLicense    Excel         "almost sure" rows — AI-resolved, partial/numeric
+                                  matches, NPI-based, cross-row reconciliation;
+                                  same AddLicense format + VerificationReason column.
+                                  These rows are NOT duplicated in Manual.
+  - RunSummary      CSV           per-state counters for the run
+  - Drift           CSV           site-drift reports flagged by the AI agent
+  - Traces/         JSON          per-row attempt log ({master_row_id}.json)
+  - FallOut         Excel         client-facing error report — all Manual rows with
+                                  provider identity, run metadata, and failure reason
 """
 from __future__ import annotations
 
@@ -29,6 +39,7 @@ from .ai_agent import AiAgentResult
 from .ladder import LadderResult
 from .nppes_client import NpiDiscrepancy, NppesRecord
 from .trace import RowTrace
+from engine.models import LicenseStatus as _LicenseStatus
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +53,39 @@ _CAPTCHA_REASONS: frozenset[str] = frozenset({
     "state_captcha_blocked",
     "prov_type_captcha_blocked",
     "board_skip_captcha",
+    "board_skipped",      # skip:true in board identity (e.g. BACB registry down)
 })
+
+# Manual-reason strings that route a row exclusively to AI_ADD_LICENSE (not Manual).
+# These are "almost sure" matches a reviewer can approve with a quick look.
+# Rows land in Manual only if _collect_ai_add_license returns False (no expiry date).
+_REASONS_FOR_AI_ADD_LICENSE: frozenset[str] = frozenset({
+    "AI fallback passed: manual review required to confirm verification result before use",
+    "Numeric License ID matched",
+    "License matched but Name mismatched",
+    # "Name matched but License mismatched" intentionally excluded:
+    # cross-name match without license confirmation must go to Manual, not AIAddLicense.
+    "NPI used to fetch - manual review required",
+    "Name mismatch after license match: EPDB and NPPES name scores both below 0.70 threshold",
+})
+
+# BACB boards are captcha-blocked — skip automated verification for any row
+# routed exclusively to one of these source_ids.
+_BACB_SOURCE_IDS: frozenset[str] = frozenset({"BACB"})
+_BACB_CAPTCHA_REASON: str = (
+    "Captcha Based Board: BACB (Behavior Analyst Certification Board) "
+    "does not permit automated verification. Manual check required at bacb.com."
+)
+
+# National / multi-state registries that use their own credential numbering system
+# (not state-issued license numbers). When the found record comes from one of these
+# boards AND both name components match perfectly (≥ 1.0), skip the license-number
+# comparison — the input may carry a state registration number (e.g. "NV20211995691")
+# while the board stores its own certification ID (e.g. "L-163604").
+_NATIONAL_REGISTRY_SOURCE_IDS: frozenset[str] = frozenset({
+    "IBCLC_COMMISSION",  # IBCLCE certification; NV/other states may store state reg numbers
+})
+
 _board_name_cache: dict[str, str] = {}
 
 
@@ -101,6 +144,9 @@ class RowOutcome:
     @property
     def reason(self) -> str:
         if self.status == "Pass":
+            # Surface the out-of-state verification state when applicable (FL T-licenses).
+            if self.ladder_result and self.ladder_result.reason and self.ladder_result.reason.startswith("out_of_state:"):
+                return self.ladder_result.reason
             return ""
         if self.ai_result and self.ai_result.reason:
             return self.ai_result.reason
@@ -122,13 +168,19 @@ def _blank_state_stats() -> dict:
         "captcha":        0,  # Captcha / WAF blocked
         "mismatch":       0,  # Name/license cross-validation override to Fail
         "same_expiry":    0,  # Expiry same as input (no update needed)
+        "expired_after_fetch": 0,  # Board expiry is in the past — not added to add_license
         "no_expiry":      0,  # Pass but board returned no expiry date
-        "manual":         0,  # Total rows in manual channel
-        "add_license":    0,  # Total rows in add_license channel
+        "manual":           0,  # Total rows in manual channel
+        "add_license":      0,  # Total rows in add_license channel
+        "ai_add_license":   0,  # Total rows in ai_add_license channel
         "ai_used":        0,  # Any row where AI agent ran
         "ai_resolved":    0,  # AI resolved (outcome == "resolved")
         "ai_failed":      0,  # AI ran but did not resolve
         "npi_substituted": 0, # NPI was used to find the board record
+        # AI token / cost aggregates (summed across all rows in this state)
+        "ai_input_tokens":  0,
+        "ai_output_tokens": 0,
+        "ai_usd_cost":      0.0,
     }
 
 
@@ -141,6 +193,8 @@ class OutputEmitter:
     _ai_rows: list[dict] = field(default_factory=list)
     _manual_rows: list[dict] = field(default_factory=list)
     _add_license_rows: list[dict] = field(default_factory=list)
+    _ai_add_license_rows: list[dict] = field(default_factory=list)
+    _fallout_rows: list[dict] = field(default_factory=list)
     _state_stats: dict[str, dict] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -162,13 +216,20 @@ class OutputEmitter:
         input_lic = (outcome.master_row.get("license_id", "") or "").strip()
         if not board_lic or not input_lic:
             return None  # one side has no license to compare
+        # National registries (IBCLCE etc.) use their own credential numbering that differs
+        # from state-issued registration numbers. When both name components match perfectly
+        # and the record comes from a known national registry, the license-number difference
+        # is an expected cross-system artifact — not a wrong-person mismatch.
+        src = getattr(rec, "source_id", "") or ""
+        if src in _NATIONAL_REGISTRY_SOURCE_IDS and bd.first_name >= 1.0 and bd.last_name >= 1.0:
+            return None
         return "Name matched but License mismatched"
 
     @staticmethod
     def _same_expiry_check(outcome: "RowOutcome") -> str | None:
         """If the board expiry matches the input expiry, return a manual reason.
-        Future match → 'Provider has the same Expiry as input, still in 90 days'
-        Past match   → 'Expired and same date in the State board'
+        Future match -> 'Provider has the same Expiry as input, still in 90 days'
+        Past match   -> 'Expired and same date in the State board'
         Returns None when either date is absent or they differ.
         """
         rec = outcome.chosen_record
@@ -189,8 +250,8 @@ class OutputEmitter:
             return None
         today = _date.today()
         if board_date >= today:
-            return "Provider has the same Expiry as input, still in 90 days"
-        return "Expired and same date in the State board"
+            return "Check again later for updates, same as input"
+        return "Expired and same as input"
 
     @staticmethod
     def _license_name_mismatch_reason(outcome: "RowOutcome") -> str | None:
@@ -236,7 +297,37 @@ class OutputEmitter:
         _strip = lambda s: _re.sub(r"[^a-z0-9]", "", s.lower())
         if _strip(input_lic) == _strip(board_lic):
             return None  # effectively identical — no review needed
-        return "Name matched and license numerics aligned but not exact match — manual review required"
+        return "Numeric License ID matched"
+
+    @staticmethod
+    def _expired_after_fetch_reason(outcome: "RowOutcome") -> str | None:
+        """Return 'Provider fetch after Expiry' when the board record is expired.
+
+        Two triggers (either is sufficient):
+          1. Board record's status field is LicenseStatus.EXPIRED — catches boards that
+             mark a license "Expired" without populating an expiry date.
+          2. Board-returned expiry date is in the past — catches boards that return a
+             date but no explicit status (or an ambiguous status like "Inactive").
+        Only fires on Pass rows where a matched board record exists.
+        """
+        rec = outcome.chosen_record
+        if rec is None:
+            return None
+        # Check 1: board explicitly returned status=Expired
+        rec_status = getattr(rec, "status", None)
+        if rec_status == _LicenseStatus.EXPIRED:
+            return "Provider fetch after Expiry"
+        # Check 2: board-returned expiry date is in the past
+        board_expiry_str = _expiry_str(rec)
+        if not board_expiry_str:
+            return None
+        try:
+            board_date = _date.fromisoformat(board_expiry_str[:10])
+        except Exception:
+            return None
+        if board_date < _date.today():
+            return "Provider fetch after Expiry"
+        return None
 
     # Human-readable manual-reason messages, keyed by final_reason code.
     _CAPTCHA_MANUAL_REASONS: dict[str, str] = field(default_factory=lambda: {
@@ -252,6 +343,11 @@ class OutputEmitter:
             "Captcha Based Board: State board blocks automated access via CAPTCHA, McAfee, "
             "DataDome, or WAF. Manual verification required on the state board website."
         ),
+        "board_skipped": (
+            "Board Skipped: Registry is currently unavailable (under maintenance or access "
+            "restriction). Automated verification was not attempted. "
+            "Manual verification required on the board's website."
+        ),
     })
 
     def collect(self, outcome: RowOutcome) -> None:
@@ -261,11 +357,19 @@ class OutputEmitter:
           1. Standard channel  — every row, always.
           2. NPPES / AI channels — when applicable.
           3. Compute a single manual_reason (first match wins).
-          4. If manual_reason → manual channel only, never add_license.
-             If no manual_reason AND Pass with expiry → add_license only.
+          4. If manual_reason -> manual channel only, never add_license.
+             If no manual_reason AND Pass with expiry -> add_license only.
           Standard and add_license are populated independently;
           manual and add_license are always mutually exclusive.
         """
+        # Override trace outcome to Fail before persisting the JSON so that the
+        # trace file is consistent with the Standard CSV status column.
+        # The ladder sets final_outcome="Pass" whenever a board record is found,
+        # but an expired record must surface as Fail everywhere.
+        if self._expired_after_fetch_reason(outcome):
+            outcome.trace.final_outcome = "Fail"
+            outcome.trace.final_reason = "Provider fetch after Expiry"
+
         outcome.trace.write_json(self.dirs["trace"])
         self._collect_standard(outcome)
         self._collect_nppes(outcome)
@@ -282,40 +386,90 @@ class OutputEmitter:
             self._standard_rows[-1]["status"] = "Fail"
             self._standard_rows[-1]["match_method"] = "name_license_mismatch"
             self._standard_rows[-1]["reason"] = manual_reason
-        elif manual_reason == "Expired and same date in the State board":
+        elif manual_reason == "Temporary License ID":
+            self._standard_rows[-1]["status"] = "Fail"
+            self._standard_rows[-1]["match_method"] = "temporary_license_id"
+            self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == "Expired and same as input":
             self._standard_rows[-1]["status"] = "Fail"
             self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == "Check again later for updates, same as input":
+            self._standard_rows[-1]["status"] = "Fail"
+            self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == "Provider fetch after Expiry":
+            self._standard_rows[-1]["status"] = "Fail"
+            self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == "Numeric License ID matched":
+            self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == (
+            "Name mismatch after license match: "
+            "EPDB and NPPES name scores both below 0.70 threshold"
+        ):
+            self._standard_rows[-1]["reason"] = manual_reason
 
-        # Route: manual XOR add_license
+        # Route: manual XOR add_license; AI_ADD_LICENSE rows are excluded from manual
+        # (AIAddLicense IS the manual file for these — reviewers only need one place to look).
+        # If an AI_ADD_LICENSE-qualifying row has no expiry, it falls back to manual only.
         went_manual = False
         went_add_license = False
+        went_ai_add_license = False
+        _epdb = str(outcome.master_row.get("epdb_pin", "") or "").strip()
         if manual_reason:
-            self._collect_manual(outcome, failure_reason=manual_reason)
-            went_manual = True
-        elif outcome.status == "Pass":
-            added = self._collect_add_license(outcome)
-            if added:
-                went_add_license = True
+            if manual_reason in _REASONS_FOR_AI_ADD_LICENSE:
+                if not _epdb:
+                    self._collect_manual(outcome, failure_reason="EPDB is blanks")
+                    went_manual = True
+                elif self._collect_ai_add_license(outcome, manual_reason):
+                    went_ai_add_license = True
+                else:
+                    self._collect_manual(outcome, failure_reason=manual_reason)
+                    went_manual = True
             else:
-                # Pass but no expiry returned — manual, never add_license
-                self._collect_manual(
-                    outcome,
-                    failure_reason=(
-                        "no_expiry_date: license verified on state board but expiration "
-                        "date not returned — manual review required to confirm LicenseTermDate"
-                    ),
-                )
+                self._collect_manual(outcome, failure_reason=manual_reason)
                 went_manual = True
+        elif outcome.status == "Pass":
+            if not _epdb:
+                self._collect_manual(outcome, failure_reason="EPDB is blanks")
+                went_manual = True
+            else:
+                added = self._collect_add_license(outcome)
+                if added:
+                    went_add_license = True
+                else:
+                    # No expiry returned — board verified the person but gave no expiry date.
+                    # Treat as Fail: we cannot confirm the license is current without a term date.
+                    _no_expiry_reason = (
+                        "no_expiry_date: license verified on state board but expiration "
+                        "date not returned - manual review required to confirm LicenseTermDate"
+                    )
+                    self._standard_rows[-1]["status"] = "Fail"
+                    self._standard_rows[-1]["reason"] = _no_expiry_reason
+                    self._collect_manual(outcome, failure_reason=_no_expiry_reason)
+                    went_manual = True
+
+        # Tag the standard row with its routing destination
+        if went_ai_add_license:
+            self._standard_rows[-1]["routed_to"] = "AIAddLicense"
+            # Rows routed to AIAddLicense represent "almost sure" matches approved for
+            # upload — treat as Pass regardless of any intermediate Fail flag (e.g. name
+            # mismatch that was resolved by fuzzy score above threshold).
+            self._standard_rows[-1]["status"] = "Pass"
+        elif went_add_license:
+            self._standard_rows[-1]["routed_to"] = "AddLicense"
+        elif went_manual:
+            self._standard_rows[-1]["routed_to"] = "Manual"
 
         # Per-state stats accumulation
-        self._accumulate_state_stats(outcome, manual_reason, went_manual, went_add_license)
+        self._accumulate_state_stats(outcome, manual_reason, went_manual, went_add_license, went_ai_add_license)
 
     def _compute_manual_reason(self, outcome: RowOutcome) -> str | None:
         """Single point that decides whether a row goes to manual and why.
-        Returns a human-readable reason string, or None (→ eligible for add_license).
+        Returns a human-readable reason string, or None (-> eligible for add_license).
 
         Priority order (first match wins):
           1. Captcha / board-skip blocked
+          1.5. BACB captcha-blocked registry
+          1.7. Low fuzzy/AI score (< 0.70) AND license ID numerics don't match
           2. AI fallback used — any layer (search or disambiguator) — Pass or Fail
           3. NPI substituted
           4. Rule-based Fail (no match found)
@@ -328,12 +482,45 @@ class OutputEmitter:
         if _final_reason in _CAPTCHA_REASONS:
             return self._CAPTCHA_MANUAL_REASONS.get(_final_reason, _final_reason)
 
+        # 1.5. BACB board — captcha-blocked registry; skip automated verification
+        if outcome.status != "Pass":
+            _bacb_sources = {a.source_id for a in outcome.trace.attempts}
+            if _bacb_sources and _bacb_sources.issubset(_BACB_SOURCE_IDS):
+                return _BACB_CAPTCHA_REASON
+
+        # 1.7. Low match score + no license match → Manual regardless of method.
+        # Fires when: the match score (rule-based fuzzy OR AI confidence) is below 0.70
+        # AND the license ID numerics didn't align. Both conditions together indicate the
+        # match is too uncertain to be upload-ready — route to manual regardless of
+        # whether the ladder or AI agent accepted it.
+        # Skipped when the board record is expired (that surfaces as the primary reason).
+        _bd_check = outcome.chosen_breakdown
+        _input_lic_check = (outcome.master_row.get("license_id", "") or "").strip()
+        if (outcome.status == "Pass"
+                and _bd_check is not None
+                and _bd_check.total < 0.70
+                and _bd_check.license_numerics < 1.0
+                and _input_lic_check
+                and not self._expired_after_fetch_reason(outcome)):
+            return (
+                f"Low match score ({round(_bd_check.total, 3)}) with no license ID match "
+                f"— manual review required"
+            )
+
         # 2. AI fallback used — layer 1 (search) or layer 2 (disambiguator)
         #    Applies regardless of Pass/Fail outcome; never goes to add_license.
+        #    Expiry checks run first for Pass rows: an expired license must show
+        #    'Provider fetch after Expiry' / same-expiry reason, not 'AI fallback passed'.
         if outcome.ai_result is not None:
             if outcome.status == "Pass":
+                expired = self._expired_after_fetch_reason(outcome)
+                if expired:
+                    return expired
+                same = self._same_expiry_check(outcome)
+                if same:
+                    return same
                 return (
-                    "AI fallback passed — manual review required to confirm "
+                    "AI fallback passed: manual review required to confirm "
                     "verification result before use"
                 )
             else:
@@ -342,14 +529,36 @@ class OutputEmitter:
                 if (_final_reason == "name_mismatch"
                         and outcome.trace.license_attempts_returned_records()):
                     return "License matched but Name mismatched"
+                # AI resolved a candidate but the board license number did not match
+                # the input license ID — route to Manual with a clear reason.
+                if _final_reason == "AI found License ID mismatched":
+                    return "AI found License ID mismatched"
                 _ai_fail_reason = (outcome.ai_result.reason or "no_candidates")
-                return f"AI fallback failed — manual review required ({_ai_fail_reason})"
+                _ai_fail_reason = _ai_fail_reason.replace("—", "-").replace(";", ",")
+                return f"AI fallback failed - manual review required ({_ai_fail_reason})"
 
-        # 3. NPI substituted (standard stays Pass; human confirms the NPI-derived match)
+        # 3. Board record expired — checked before NPI/name-gate routing so that an
+        # expired license always surfaces as "Provider fetch after Expiry" regardless
+        # of name score or NPI substitution. (AI fallback already checks this at step 2;
+        # this catches the rule-based, NPI-substituted, and name-gate pass paths.)
+        if outcome.status == "Pass":
+            expired_after_fetch = self._expired_after_fetch_reason(outcome)
+            if expired_after_fetch:
+                return expired_after_fetch
+
+        # 4. NPI substituted (standard stays Pass; human confirms the NPI-derived match)
         if outcome.status == "Pass" and outcome.ladder_result and outcome.ladder_result.npi_substituted:
-            return "NPI used to fetch — manual review required"
+            return "NPI used to fetch - manual review required"
 
-        # 4. Rule-based Fail
+        # 4.5. Post-license name gate: max(nppes_score, epdb_score) < 0.70 — manual only
+        _gate_reason = getattr(outcome.trace, "name_gate_reason", None)
+        if outcome.status == "Pass" and _gate_reason == "name_gate_manual":
+            return (
+                "Name mismatch after license match: "
+                "EPDB and NPPES name scores both below 0.70 threshold"
+            )
+
+        # 5. Rule-based Fail
         if outcome.status == "Fail":
             _fail_reason_code = outcome.reason or "no_records"
             # When a license-mode rung found a record but the name doesn't match,
@@ -358,6 +567,13 @@ class OutputEmitter:
                     and outcome.trace.license_attempts_returned_records()):
                 return "License matched but Name mismatched"
             return _fail_reason_code
+
+        # 5.5. Temporary/training license prefix (TC###) — these are KY training
+        # credentials that the state board lists under a different permanent number.
+        # Name may match perfectly; the TC number itself is unverifiable via scrape.
+        _input_lic = (outcome.master_row.get("license_id", "") or "").strip().upper()
+        if _input_lic.startswith("TC"):
+            return "Temporary License ID"
 
         # 5. Name ↔ license cross-validation (Pass rows only beyond this point)
         mismatch = (
@@ -387,6 +603,7 @@ class OutputEmitter:
         manual_reason: str | None,
         went_manual: bool,
         went_add_license: bool,
+        went_ai_add_license: bool = False,
     ) -> None:
         state = (outcome.master_row.get("lic_state") or "UNKNOWN").upper()
         if state not in self._state_stats:
@@ -397,6 +614,11 @@ class OutputEmitter:
         _final_reason = (outcome.trace.final_reason or "").strip()
         _ai_used = outcome.ai_result is not None
         _npi_used = bool(outcome.ladder_result and outcome.ladder_result.npi_substituted)
+        _is_bacb = (
+            outcome.status != "Pass"
+            and bool(outcome.trace.attempts)
+            and all(a.source_id in _BACB_SOURCE_IDS for a in outcome.trace.attempts)
+        )
 
         # AI counters
         if _ai_used:
@@ -406,30 +628,38 @@ class OutputEmitter:
                 s["pass_ai"] += 1
             else:
                 s["ai_failed"] += 1
+            # Accumulate token / cost for every row where AI ran
+            s["ai_input_tokens"]  += getattr(outcome.ai_result, "input_tokens", 0) or 0
+            s["ai_output_tokens"] += getattr(outcome.ai_result, "output_tokens", 0) or 0
+            s["ai_usd_cost"]      += getattr(outcome.ai_result, "usd_cost", 0.0) or 0.0
 
         # NPI
         if _npi_used:
             s["npi_substituted"] += 1
             s["pass_npi"] += 1
 
-        # Captcha
-        if _final_reason in _CAPTCHA_REASONS:
+        # Captcha (includes BACB-blocked rows)
+        if _final_reason in _CAPTCHA_REASONS or _is_bacb:
             s["captcha"] += 1
 
         # Mismatch override
         if manual_reason in (
             "Name matched but License mismatched",
             "License matched but Name mismatched",
-            "Name matched and license numerics aligned but not exact match — manual review required",
+            "Numeric License ID matched",
         ):
             s["mismatch"] += 1
 
         # Same expiry
         if manual_reason in (
-            "Provider has the same Expiry as input, still in 90 days",
-            "Expired and same date in the State board",
+            "Check again later for updates, same as input",
+            "Expired and same as input",
         ):
             s["same_expiry"] += 1
+
+        # Expired after fetch
+        if manual_reason == "Provider fetch after Expiry":
+            s["expired_after_fetch"] += 1
 
         # No expiry
         if went_manual and manual_reason and "no_expiry_date" in manual_reason:
@@ -441,7 +671,7 @@ class OutputEmitter:
             if not _ai_used and not _npi_used:
                 s["pass_rule"] += 1
         else:
-            if not _ai_used and _final_reason not in _CAPTCHA_REASONS:
+            if not _ai_used and _final_reason not in _CAPTCHA_REASONS and not _is_bacb:
                 s["fail_rule"] += 1
 
         # Channel counters
@@ -449,6 +679,8 @@ class OutputEmitter:
             s["manual"] += 1
         if went_add_license:
             s["add_license"] += 1
+        if went_ai_add_license:
+            s["ai_add_license"] += 1
 
     # ----- Channel collectors -----
 
@@ -464,7 +696,12 @@ class OutputEmitter:
 
         # Match method
         _final_reason = (o.trace.final_reason or "").strip()
-        if o.status != "Pass" and _final_reason in _CAPTCHA_REASONS:
+        _is_bacb = (
+            o.status != "Pass"
+            and bool(o.trace.attempts)
+            and all(a.source_id in _BACB_SOURCE_IDS for a in o.trace.attempts)
+        )
+        if o.status != "Pass" and (_final_reason in _CAPTCHA_REASONS or _is_bacb):
             match_method = "Captcha Based Board"
         elif o.status != "Pass":
             match_method = "none"
@@ -480,6 +717,7 @@ class OutputEmitter:
             ) else "exact_name"
 
         row = {
+            "master_row_id": o.master_row_id,
             "first_name": m.get("first_name", ""),
             "middle_name": m.get("middle_name", ""),
             "last_name": m.get("last_name", ""),
@@ -488,7 +726,11 @@ class OutputEmitter:
             "lic_type": m.get("lic_type", ""),
             "license_id": m.get("license_id", ""),
             "npi_no": m.get("npi_no", ""),
-            "status": o.status,
+            "status": (
+                "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
+                else "Fail" if self._expired_after_fetch_reason(o)
+                else o.status
+            ),
             "license_expiry": _expiry_str(rec),
             "matched_license": getattr(rec, "license_number", "") or "" if rec else "",
             "matched_first": getattr(rec, "licensee_first_name", "") or "" if rec else "",
@@ -502,13 +744,36 @@ class OutputEmitter:
             "ai_fallback_used": o.ai_result is not None,
             "ai_outcome": (o.ai_result.outcome if o.ai_result else ""),
             "npi_substituted": bool(o.ladder_result and o.ladder_result.npi_substituted),
+            "nppes_used": o.trace.nppes_used,
             "secondary_check_passed": bool(bd and bd.gate_passed),
             "provider_type_matched": bool(bd and bd.provider_type >= 1.0),
             "attempts_used": len(o.trace.attempts),
             "evidence_dir": ev,
             "trace_path": str(self.dirs["trace"] / f"{o.master_row_id}.json"),
+            "routed_to": "",  # filled after routing decision in collect()
             "reason": o.reason,
             "fuzzy_breakdown": json.dumps(bd.to_dict()) if bd else "",
+            "epdb_pin": str(m.get("epdb_pin", "") or ""),
+            "epdb_name_score": (
+                round(o.trace.epdb_name_score, 3)
+                if o.trace.epdb_name_score is not None else ""
+            ),
+            "nppes_name_score": (
+                round(o.trace.nppes_name_score, 3)
+                if o.trace.nppes_name_score is not None else ""
+            ),
+            # AI telemetry — populated for every row; blank when AI did not run
+            "ai_model": getattr(o.ai_result, "model", "") if o.ai_result else "",
+            "ai_input_tokens": getattr(o.ai_result, "input_tokens", "") if o.ai_result else "",
+            "ai_output_tokens": getattr(o.ai_result, "output_tokens", "") if o.ai_result else "",
+            "ai_usd_cost": (
+                round(o.ai_result.usd_cost, 6)
+                if o.ai_result and getattr(o.ai_result, "usd_cost", None) is not None else ""
+            ),
+            "ai_confidence_score": (
+                getattr(o.ai_result, "confidence_score", "")
+                if o.ai_result and getattr(o.ai_result, "confidence_score", None) is not None else ""
+            ),
         }
         self._standard_rows.append(row)
 
@@ -567,10 +832,27 @@ class OutputEmitter:
             "chosen_license": (getattr(ai.chosen_candidate, "license_number", "") or ""
                                 if ai.chosen_candidate else ""),
             "drift_count": len(ai.drift_reports),
+            # Token / cost telemetry
+            "model": getattr(ai, "model", ""),
+            "input_tokens": getattr(ai, "input_tokens", 0),
+            "output_tokens": getattr(ai, "output_tokens", 0),
+            "usd_cost": (
+                round(getattr(ai, "usd_cost", 0.0), 6)
+                if getattr(ai, "usd_cost", None) is not None else ""
+            ),
+            # Confidence: disambiguation ScoreBreakdown.total (0..1)
+            "confidence_score": (
+                getattr(ai, "confidence_score", None)
+                if getattr(ai, "confidence_score", None) is not None else ""
+            ),
+            # Groundedness
+            "groundedness_score": getattr(ai, "groundedness_score", 0),
+            "hallucination_risk": getattr(ai, "hallucination_risk", "high"),
         }
         self._ai_rows.append(row)
 
     def _collect_manual(self, o: RowOutcome, failure_reason: str | None = None) -> None:
+        reason = failure_reason if failure_reason is not None else o.reason
         row = {
             "master_row_id": o.master_row_id,
             "first_name": o.master_row.get("first_name", ""),
@@ -581,28 +863,46 @@ class OutputEmitter:
             "lic_type": o.master_row.get("lic_type", ""),
             "license_id": o.master_row.get("license_id", ""),
             "npi_no": o.master_row.get("npi_no", ""),
-            "failure_reason": failure_reason if failure_reason is not None else o.reason,
+            "failure_reason": reason,
             "attempts_used": len(o.trace.attempts),
             "trace_path": str(self.dirs["trace"] / f"{o.master_row_id}.json"),
+            "nppes_used": o.trace.nppes_used,
         }
         self._manual_rows.append(row)
+        self._collect_fallout(o, reason)
+
+    def _collect_fallout(self, o: RowOutcome, failure_reason: str) -> None:
+        """Client FallOut Report — one row per Manual-routed record."""
+        m = o.master_row
+        # Always use the input license_id — never the board-fetched license_number.
+        lic_num = str(m.get("license_id", "") or "")
+        self._fallout_rows.append({
+            "FirstName":        str(m.get("first_name", "") or ""),
+            "LastName":         str(m.get("last_name", "") or ""),
+            "EPDB_PIN":         str(m.get("epdb_pin", "") or ""),
+            "State":            str(m.get("lic_state", "") or ""),
+            "LicenseNumber":    str(lic_num),
+            "VerificationDate": _run_date_text(self.run_id),
+            "CheckedBy":        f"Automation ({self.run_id})",
+            "Outcome":          failure_reason,
+        })
 
     def _collect_add_license(self, o: RowOutcome) -> bool:
         """AddLicense channel — one row per Pass result with a confirmed expiry date.
 
         Column rules (per AddLicense.xlsx template):
-          EPDB                    → Input  (EPDB PIN from master row)
-          State                   → Input  (License State from master row)
-          MaintBy                 → Input  (Maintained By from master row)
-          LicenseNumber           → Input  (verified license number from board)
-          LicenseEffDate          → Blanks (intentionally empty)
-          LicenseTermDate         → Updated Exp Date (expiry from board record)
-          LicenseType             → Operating (LIC_TYPE_NM from master row)
-          OriginalLicenseDate     → Blanks (intentionally empty)
-          OverrideExistingLicense → Yes
-          EPDBDone                → Blanks (filled manually post-upload)
+          EPDB                    -> Input  (EPDB PIN from master row)
+          State                   -> Input  (License State from master row)
+          MaintBy                 -> Input  (Maintained By from master row)
+          LicenseNumber           -> Input  (verified license number from board)
+          LicenseEffDate          -> Blanks (intentionally empty)
+          LicenseTermDate         -> Updated Exp Date (expiry from board record)
+          LicenseType             -> Operating (LIC_TYPE_NM from master row)
+          OriginalLicenseDate     -> Blanks (intentionally empty)
+          OverrideExistingLicense -> Yes
+          EPDBDone                -> Blanks (filled manually post-upload)
 
-        Returns True if the row was added, False if skipped (no expiry found → manual).
+        Returns True if the row was added, False if skipped (no expiry found -> manual).
         All values written as text strings; dates as MM/DD/YYYY.
         """
         m = o.master_row
@@ -611,14 +911,14 @@ class OutputEmitter:
         expiry = _expiry_text(rec)
         if not expiry:
             log.info(
-                "[add_license] Skipping %s %s — no expiry date returned by board (→ manual review)",
+                "[add_license] Skipping %s %s — no expiry date returned by board (-> manual review)",
                 m.get("first_name", ""), m.get("last_name", ""),
             )
             return False
 
-        verified_license = getattr(rec, "license_number", "") or "" if rec else ""
-        if not verified_license:
-            verified_license = m.get("license_id", "")
+        # Always use the input license_id (matches what is already in EPDB).
+        # The board may format its license differently; the input value is authoritative for upload.
+        verified_license = (m.get("license_id", "") or "").strip()
 
         row = {
             "EPDB": str(m.get("epdb_pin", "") or ""),
@@ -633,6 +933,65 @@ class OutputEmitter:
             "EPDBDone": "",
         }
         self._add_license_rows.append(row)
+        return True
+
+    def _collect_ai_add_license(self, o: RowOutcome, manual_reason: str) -> bool:
+        """AI AddLicense channel — same base columns as AddLicense plus match context.
+
+        Gathers rows that are "almost sure" matches: AI-resolved, partial name/license
+        matches, NPI-based lookups.  These rows are NOT duplicated in Manual —
+        AIAddLicense IS the manual-review file for these cases.
+
+        Returns True if the row was added (expiry found), False if skipped.
+        """
+        m = o.master_row
+        rec = o.chosen_record
+        bd = o.chosen_breakdown
+
+        expiry = _expiry_text(rec)
+        if not expiry:
+            return False
+
+        # LicenseNumber uses the input license_id (matches what is already in EPDB).
+        # board_lic_raw is the raw value from the board record — may differ in format
+        # (e.g. input '029' vs board '29') and is used for the diff columns/reason label.
+        verified_license = (m.get("license_id", "") or "").strip()
+        board_lic_raw    = (getattr(rec, "license_number", "") or "").strip() if rec else ""
+
+        input_first = (m.get("first_name", "") or "").strip()
+        input_last  = (m.get("last_name",  "") or "").strip()
+        input_name  = f"{input_first} {input_last}".strip()
+        input_lic   = (m.get("license_id", "") or "").strip()
+
+        board_first = (getattr(rec, "licensee_first_name", "") or "") if rec else ""
+        board_last  = (getattr(rec, "licensee_last_name",  "") or "") if rec else ""
+        board_name  = f"{board_first} {board_last}".strip() if (board_first or board_last) else (
+            (getattr(rec, "full_name", "") or "") if rec else ""
+        )
+
+        row = {
+            "EPDB":                   str(m.get("epdb_pin",      "") or ""),
+            "State":                  str(m.get("lic_state",     "") or ""),
+            "MaintBy":                str(m.get("maintained_by", "") or ""),
+            "LicenseNumber":          str(verified_license),
+            "LicenseEffDate":         "",
+            "LicenseTermDate":        expiry,
+            "LicenseType":            str(m.get("lic_type", "") or ""),
+            "OriginalLicenseDate":    "",
+            "OverrideExistingLicense": "Yes",
+            "EPDBDone":               "",
+            "VerificationReason":     _ai_add_license_reason_label(
+                                          manual_reason, input_lic, board_lic_raw,
+                                          input_name, board_name),
+            "InputName":              input_name,
+            "BoardMatchedName":       board_name,
+            "InputLicense":           input_lic,
+            "BoardMatchedLicense":    board_lic_raw or str(verified_license),
+            "MatchScore":             (round(bd.total, 3) if bd else ""),
+            "master_row_id":          o.master_row_id,
+            "nppes_used":             o.trace.nppes_used,
+        }
+        self._ai_add_license_rows.append(row)
         return True
 
     # ----- Flush all channels to disk -----
@@ -652,25 +1011,32 @@ class OutputEmitter:
             paths["manual"] = self._write_csv("manual", self._manual_rows)
         if self._add_license_rows:
             paths["add_license"] = self._write_add_license_xlsx()
+        if self._ai_add_license_rows:
+            paths["ai_add_license"] = self._write_ai_add_license_xlsx()
+        if self._fallout_rows:
+            paths["fall_out"] = self._write_fallout_xlsx()
         if self._state_stats:
             paths["run_summary"] = self._write_run_summary()
         log.info("Output flushed: %s", {k: str(v) for k, v in paths.items()})
         return paths
 
     def _rebuild_add_license_after_reconciliation(self) -> None:
-        """Add entries for rows that were promoted to Pass via cross_row_name_match.
-        Respects the mutual-exclusivity rule: any license already in the manual channel
-        is never added to add_license.
+        """Route cross_row_name_match rows to AIAddLicense (never AddLicense).
+        Cross-row reconciled rows are never "clean" — the input license ID did not
+        match the board directly, so a human must confirm before upload.
+        Mutual-exclusivity: any license already in manual or ai_add_license is skipped.
         """
         existing_licenses = {r["LicenseNumber"] for r in self._add_license_rows}
-        # Licenses that are already going to manual must not also go to add_license
+        existing_licenses |= {r.get("LicenseNumber", "") for r in self._ai_add_license_rows}
+        # Licenses that are already going to manual must not also go to ai_add_license
         manual_licenses = {r.get("license_id", "") for r in self._manual_rows if r.get("license_id")}
         for row in self._standard_rows:
             if row.get("match_method") != "cross_row_name_match":
                 continue
             if row.get("status") != "Pass":
                 continue
-            lic = row.get("matched_license") or row.get("license_id", "")
+            # Prefer input license_id for the upload-ready LicenseNumber column.
+            lic = row.get("license_id") or row.get("matched_license", "")
             if lic in existing_licenses or lic in manual_licenses:
                 continue
 
@@ -678,7 +1044,13 @@ class OutputEmitter:
             expiry = _iso_to_text(expiry_iso)
 
             if not expiry:
-                # No expiry — route to manual channel instead of add_license
+                # No expiry — cannot confirm the license is current; treat as Fail.
+                _no_expiry_reason = (
+                    "no_expiry_date: license verified via cross_row_name_match but "
+                    "expiration date not available - manual review required to confirm LicenseTermDate"
+                )
+                row["status"] = "Fail"
+                row["reason"] = _no_expiry_reason
                 self._manual_rows.append({
                     "master_row_id": row.get("trace_path", ""),
                     "first_name": row.get("first_name", ""),
@@ -689,27 +1061,72 @@ class OutputEmitter:
                     "lic_type": row.get("lic_type", ""),
                     "license_id": lic,
                     "npi_no": row.get("npi_no", ""),
-                    "failure_reason": (
-                        "no_expiry_date: license verified via cross_row_name_match but "
-                        "expiration date not available — manual review required to confirm LicenseTermDate"
-                    ),
+                    "failure_reason": _no_expiry_reason,
                     "attempts_used": row.get("attempts_used", ""),
                     "trace_path": row.get("trace_path", ""),
                 })
                 continue
 
-            self._add_license_rows.append({
-                "EPDB": "",
-                "State": str(row.get("lic_state", "") or ""),
-                "MaintBy": "",
-                "LicenseNumber": str(lic),
-                "LicenseEffDate": "",
-                "LicenseTermDate": expiry,
-                "LicenseType": str(row.get("lic_type", "") or ""),
-                "OriginalLicenseDate": "",
+            # Past-expiry check — do not add expired licenses to add_license
+            _manual_stub = {
+                "master_row_id": row.get("master_row_id", "") or row.get("trace_path", ""),
+                "first_name": row.get("first_name", ""),
+                "middle_name": row.get("middle_name", ""),
+                "last_name": row.get("last_name", ""),
+                "lic_state": row.get("lic_state", ""),
+                "prov_type": row.get("prov_type", ""),
+                "lic_type": row.get("lic_type", ""),
+                "license_id": lic,
+                "npi_no": row.get("npi_no", ""),
+                "attempts_used": row.get("attempts_used", ""),
+                "trace_path": row.get("trace_path", ""),
+            }
+            try:
+                if _date.fromisoformat(expiry_iso[:10]) < _date.today():
+                    self._manual_rows.append({
+                        **_manual_stub,
+                        "failure_reason": "Provider fetch after Expiry",
+                    })
+                    continue
+            except Exception:
+                pass
+
+            # EPDB is required — use the value propagated from master_row via standard row
+            _recon_epdb = str(row.get("epdb_pin", "") or "").strip()
+            if not _recon_epdb:
+                self._manual_rows.append({
+                    **_manual_stub,
+                    "failure_reason": "EPDB is blanks",
+                })
+                continue
+
+            input_name = f"{row.get('first_name', '')} {row.get('last_name', '')}".strip()
+            self._ai_add_license_rows.append({
+                "EPDB":                    _recon_epdb,
+                "State":                   str(row.get("lic_state", "") or ""),
+                "MaintBy":                 "",
+                "LicenseNumber":           str(lic),
+                "LicenseEffDate":          "",
+                "LicenseTermDate":         expiry,
+                "LicenseType":             str(row.get("lic_type", "") or ""),
+                "OriginalLicenseDate":     "",
                 "OverrideExistingLicense": "Yes",
-                "EPDBDone": "",
+                "EPDBDone":                "",
+                "VerificationReason": (
+                    f"Cross-row name match: same provider verified via another row "
+                    f"in this batch (matched license: {row.get('matched_license', lic)!r})"
+                ),
+                "InputName":           input_name,
+                "BoardMatchedName": (
+                    f"{row.get('matched_first', '')} {row.get('matched_last', '')}".strip()
+                ),
+                "InputLicense":        str(row.get("license_id", "") or ""),
+                "BoardMatchedLicense": str(row.get("matched_license", "") or lic),
+                "MatchScore":          str(row.get("fuzzy_score", "") or ""),
+                "master_row_id":       str(row.get("master_row_id", "") or ""),
+                "nppes_used":          row.get("nppes_used", False),
             })
+            row["routed_to"] = "AIAddLicense"
             existing_licenses.add(lic)
 
     def _reconcile_by_name(self) -> None:
@@ -740,7 +1157,7 @@ class OutputEmitter:
                 _norm(row.get("prov_type", "")),
             )
             if not key[0] or not key[1]:
-                continue  # no name → cannot reconcile
+                continue  # no name -> cannot reconcile
             if key in pass_lookup:
                 ambiguous_keys.add(key)
             else:
@@ -761,9 +1178,25 @@ class OutputEmitter:
             if key in ambiguous_keys or key not in pass_lookup:
                 continue
             src = pass_lookup[key]
+            # Guard: license IDs must be compatible before promoting via name-only.
+            # Two-stage comparison:
+            #   1. Alphanumeric-normalised (strip hyphens/spaces, lowercase) — handles
+            #      "CH-1445" == "CH1445" and keeps meaningful letter suffixes like "-C".
+            #   2. Digit-only fallback — handles prefix differences ("CH1445" vs "1445")
+            #      and leading-zero variants; blocks "CH1445" vs "CH10445" (1445≠10445).
+            # If both sides have a license and neither stage passes, the licenses are
+            # unrelated — leave the row as Fail/Manual.
+            _input_lic     = (row.get("license_id", "") or "").strip()
+            _src_board_lic = (src.get("matched_license", "") or src.get("license_id", "")).strip()
+            if _input_lic and _src_board_lic:
+                import re as _re
+                _alnum = lambda s: _re.sub(r"[-\s]", "", s.lower())
+                if _alnum(_input_lic) != _alnum(_src_board_lic):
+                    if not _lic_num_match(_input_lic, _src_board_lic):
+                        continue
             row["status"] = "Pass"
             row["match_method"] = "cross_row_name_match"
-            row["matched_license"] = src.get("matched_license", "")
+            row["matched_license"] = src.get("matched_license", "") or src.get("license_id", "")
             row["matched_first"] = src.get("matched_first", "")
             row["matched_last"] = src.get("matched_last", "")
             row["license_expiry"] = src.get("license_expiry", "")
@@ -775,33 +1208,72 @@ class OutputEmitter:
         if reconciled:
             log.info("Post-run name reconciliation: resolved %d row(s) via cross_row_name_match",
                      reconciled)
-            # Remove reconciled rows from manual channel (they are now Pass)
+            # Remove reconciled rows from manual channel (they are now Pass).
+            # Also patch per-state stats so RunSummary reflects final channel routing
+            # (manual→add_license) rather than the pre-reconciliation state.
             reconciled_ids = {
                 r["license_id"]
                 for r in self._standard_rows
                 if r.get("match_method") == "cross_row_name_match"
             }
+            for mr in self._manual_rows:
+                if mr.get("license_id") in reconciled_ids:
+                    state = (mr.get("lic_state") or "UNKNOWN").upper()
+                    if state in self._state_stats:
+                        self._state_stats[state]["manual"] = max(
+                            0, self._state_stats[state]["manual"] - 1
+                        )
+                        self._state_stats[state]["ai_add_license"] += 1
             self._manual_rows = [
                 r for r in self._manual_rows
                 if r.get("license_id") not in reconciled_ids
             ]
 
+    def _write_fallout_xlsx(self) -> Path:
+        """Write Client FallOut Report — all Manual-routed rows in a client-readable Excel."""
+        dt = cfg.date_time_from_run_id(self.run_id)
+        out = self.dirs["fall_out"] / f"ClientFallOut_{dt}.xlsx"
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "ClientFallOut"
+        _FO_COLS = [
+            "FirstName", "LastName", "EPDB_PIN", "State", "LicenseNumber",
+            "VerificationDate", "CheckedBy", "Outcome",
+        ]
+        ws.append(_FO_COLS)
+        hdr_fill = PatternFill("solid", fgColor="F4CCCC")  # light red
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+            cell.fill = hdr_fill
+        for r in self._fallout_rows:
+            row_num = ws.max_row + 1
+            for col_idx, h in enumerate(_FO_COLS, start=1):
+                cell = ws.cell(row=row_num, column=col_idx, value=str(r.get(h, "") or ""))
+                cell.number_format = "@"
+        wb.save(str(out))
+        log.info("Client FallOut report written: %s (%d row(s))", out, len(self._fallout_rows))
+        return out
+
     def _write_run_summary(self) -> Path:
-        """Write one row per state to Output/run_summary/{YYYY-MM}/{run_id}_summary.csv."""
-        out = self.dirs["run_summary"] / f"{self.run_id}_summary.csv"
+        """Write one row per state to Output/{YYYYMM}/{run_id}/RunSummary/RunSummary_{dt}.csv."""
+        dt = cfg.date_time_from_run_id(self.run_id)
+        out = self.dirs["run_summary"] / f"RunSummary_{dt}.csv"
         _COLS = [
             "run_id", "state",
             "total", "pass_rule", "pass_ai", "pass_npi",
             "fail_rule", "fail_ai", "captcha",
-            "mismatch", "same_expiry", "no_expiry",
-            "manual", "add_license",
+            "mismatch", "same_expiry", "expired_after_fetch", "no_expiry",
+            "manual", "add_license", "ai_add_license",
             "ai_used", "ai_resolved", "ai_failed", "npi_substituted",
+            "ai_input_tokens", "ai_output_tokens", "ai_usd_cost",
         ]
         rows = []
         for state in sorted(self._state_stats):
             s = self._state_stats[state]
             row = {"run_id": self.run_id, "state": state}
             row.update({k: s.get(k, 0) for k in _COLS if k not in ("run_id", "state")})
+            # Round USD cost to 6 decimal places for readability
+            row["ai_usd_cost"] = round(row["ai_usd_cost"], 6)
             rows.append(row)
 
         # Append a TOTAL row across all states
@@ -811,6 +1283,7 @@ class OutputEmitter:
                 if k in ("run_id", "state"):
                     continue
                 total_row[k] = sum(r.get(k, 0) for r in rows)
+            total_row["ai_usd_cost"] = round(total_row["ai_usd_cost"], 6)
             rows.append(total_row)
 
         with open(out, "w", newline="", encoding="utf-8") as f:
@@ -824,7 +1297,9 @@ class OutputEmitter:
     def _write_csv(self, channel: str, rows: list[dict]) -> Path:
         if not rows:
             return Path()
-        out = self.dirs[channel] / f"{self.run_id}.csv"
+        dt = cfg.date_time_from_run_id(self.run_id)
+        folder_name = self.dirs[channel].name  # e.g. "NPPES", "AIFallback"
+        out = self.dirs[channel] / f"{folder_name}_{dt}.csv"
         # Union of all keys across rows
         keys: list[str] = []
         seen: set[str] = set()
@@ -841,7 +1316,8 @@ class OutputEmitter:
         return out
 
     def _write_add_license_xlsx(self) -> Path:
-        out = self.dirs["add_license"] / f"{self.run_id}_AddLicense.xlsx"
+        dt = cfg.date_time_from_run_id(self.run_id)
+        out = self.dirs["add_license"] / f"AddLicense_{dt}.xlsx"
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "AddLicense"
@@ -864,8 +1340,45 @@ class OutputEmitter:
         wb.save(str(out))
         return out
 
+    def _write_ai_add_license_xlsx(self) -> Path:
+        """Write AI_ADD_LICENSE Excel — same base columns as AddLicense plus match context."""
+        dt = cfg.date_time_from_run_id(self.run_id)
+        out = self.dirs["ai_add_license"] / f"AIAddLicense_{dt}.xlsx"
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "AIAddLicense"
+        _AAL_COLS = [
+            "EPDB", "State", "MaintBy", "LicenseNumber",
+            "LicenseEffDate", "LicenseTermDate", "LicenseType",
+            "OriginalLicenseDate", "OverrideExistingLicense", "EPDBDone",
+            # Match context columns (informational — do not upload these)
+            "VerificationReason", "InputName", "BoardMatchedName",
+            "InputLicense", "BoardMatchedLicense", "MatchScore", "master_row_id",
+            "nppes_used",
+        ]
+        # Header row
+        ws.append(_AAL_COLS)
+        hdr_fill = PatternFill("solid", fgColor="D9E1F2")  # light blue
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+            cell.fill = hdr_fill
+        # Mark the context-only columns with a lighter fill so reviewers know to stop at EPDBDone
+        context_start = _AAL_COLS.index("VerificationReason") + 1  # 1-based col index
+        ctx_fill = PatternFill("solid", fgColor="FFF2CC")  # pale yellow
+        for col_idx in range(context_start, len(_AAL_COLS) + 1):
+            ws.cell(row=1, column=col_idx).fill = ctx_fill
+        # Data rows — every cell TEXT format
+        for r in self._ai_add_license_rows:
+            row_num = ws.max_row + 1
+            for col_idx, h in enumerate(_AAL_COLS, start=1):
+                cell = ws.cell(row=row_num, column=col_idx, value=str(r.get(h, "") or ""))
+                cell.number_format = "@"
+        wb.save(str(out))
+        return out
+
     def _write_standard_xlsx(self) -> Path:
-        out = self.dirs["standard"] / f"{self.run_id}.xlsx"
+        dt = cfg.date_time_from_run_id(self.run_id)
+        out = self.dirs["standard"] / f"Standard_{dt}.xlsx"
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "PSV Results"
@@ -921,6 +1434,17 @@ def _expiry_text(rec: Optional[Any]) -> str:
         return str(d) if d else ""
 
 
+def _run_date_text(run_id: str) -> str:
+    """Extract run date from run_id (YYYYMMDD...) → MM/DD/YYYY text."""
+    try:
+        if len(run_id) >= 8 and run_id[:8].isdigit():
+            d = _date(int(run_id[:4]), int(run_id[4:6]), int(run_id[6:8]))
+            return d.strftime("%m/%d/%Y")
+    except Exception:
+        pass
+    return ""
+
+
 def _iso_to_text(iso: str) -> str:
     """Convert an ISO date string (YYYY-MM-DD) to MM/DD/YYYY text. Returns '' if unparseable."""
     if not iso:
@@ -930,6 +1454,36 @@ def _iso_to_text(iso: str) -> str:
         return parsed.strftime("%m/%d/%Y")
     except Exception:
         return iso  # pass through as-is if already formatted or unparseable
+
+
+def _ai_add_license_reason_label(
+    manual_reason: str,
+    input_lic: str,
+    board_lic: str,
+    input_name: str,
+    board_name: str,
+) -> str:
+    """Return a short, human-readable VerificationReason string for AI_ADD_LICENSE rows."""
+    if manual_reason.startswith("AI fallback passed"):
+        return "AI agent resolved match - verify before upload"
+    if manual_reason == "Numeric License ID matched":
+        return (
+            f"Numeric license match: format differs "
+            f"(input: {input_lic!r}: board: {board_lic!r})"
+        )
+    if manual_reason == "License matched but Name mismatched":
+        return (
+            f"License exact match: name on board differs "
+            f"(input: {input_name!r}: board: {board_name!r})"
+        )
+    if manual_reason == "Name matched but License mismatched":
+        return (
+            f"Name exact match: license on board differs "
+            f"(input: {input_lic!r}: board: {board_lic!r})"
+        )
+    if manual_reason.startswith("NPI used to fetch"):
+        return "NPI-verified match - confirm license before upload"
+    return manual_reason
 
 
 def _diff_cell(pair: Optional[tuple[str, str]]) -> str:

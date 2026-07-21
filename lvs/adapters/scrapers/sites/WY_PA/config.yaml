@@ -62,7 +62,9 @@ results:
           if (!cur) continue;
           const key = FIELD_MAP[label];
           if (!key) continue;
-          if (key === 'status') {
+          if (label === 'License Status') {
+            const expMatch = value.match(/Expires?\s+(\d{1,2}\/\d{1,2}\/\d{4})/i);
+            if (expMatch) cur['expiration_date'] = expMatch[1];
             cur[key] = value.includes(';') ? value.split(';').pop().trim() : value;
           } else {
             cur[key] = value;
@@ -111,6 +113,8 @@ transport:
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
+  proxy:
+    enabled: false   # proxy:9119 returns 403 (Azure AG WAF block) — direct Chromium works
 evidence:
   capture_html: true
   capture_screenshot: true

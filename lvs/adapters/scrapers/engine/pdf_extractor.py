@@ -17,9 +17,6 @@ import re
 import time
 from datetime import datetime
 from pathlib import Path
-from zoneinfo import ZoneInfo
-
-_EST = ZoneInfo("America/New_York")
 from typing import Any, Optional
 
 log = logging.getLogger(__name__)
@@ -28,6 +25,21 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # PDF download + caching
 # ---------------------------------------------------------------------------
+
+def _archive_old_cache_files(cache_dir: Path, stem: str, new_file: Path, ext: str = "pdf") -> None:
+    """Move old {stem}_YYYYMMDD_HHMM.{ext} files to cache_dir/cache/ after a fresh download."""
+    archive_dir = cache_dir / "cache"
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    for f in cache_dir.glob(f"{stem}_????????_????.{ext}"):
+        if f == new_file:
+            continue
+        dest = archive_dir / f.name
+        try:
+            f.rename(dest)
+            log.info("[%s] Archived old cache: %s → cache/%s", stem, f.name, f.name)
+        except Exception as exc:
+            log.warning("[%s] Could not archive %s: %s", stem, f.name, exc)
+
 
 def _find_cached_pdf(cache_dir: str, stem: str, cache_days: int) -> Optional[str]:
     """Find a cached PDF named {stem}_{YYYYMMDD}.pdf that is still within cache_days.
@@ -47,7 +59,7 @@ def _find_cached_pdf(cache_dir: str, stem: str, cache_days: int) -> Optional[str
             continue
         try:
             file_date = datetime.strptime(m.group(1), "%Y%m%d_%H%M")
-            if (datetime.now() - file_date).days <= cache_days:
+            if (datetime.now() - file_date).days < cache_days:
                 log.info("Using cached PDF: %s", f.name)
                 return str(f)
         except ValueError:
@@ -125,11 +137,12 @@ def download_pdf(url: str, cache_dir: str, cache_days: int) -> str:
     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
         content = pool.submit(_run_in_thread).result(timeout=120)
 
-    date_tag = datetime.now(_EST).strftime("%Y%m%d_%H%M")
+    date_tag = datetime.now().strftime("%Y%m%d_%H%M")
     filepath = os.path.join(cache_dir, f"{stem}_{date_tag}.pdf")
     with open(filepath, "wb") as f:
         f.write(content)
     log.info("PDF saved → %s (%.1f KB)", os.path.basename(filepath), len(content) / 1024)
+    _archive_old_cache_files(Path(cache_dir), stem, Path(filepath))
     return filepath
 
 
@@ -283,7 +296,7 @@ def normalize_output(row: dict[str, Any], pdf_format: str) -> dict[str, Any]:
     for key, value in row.items():
         if value is None:
             continue
-        kl = key.lower().strip().rstrip(".")
+        kl = key.lower().strip().rstrip(".").strip()
         vs = str(value).strip()
 
         if kl in ("license #", "license", "lic. no", "license no", "license number",

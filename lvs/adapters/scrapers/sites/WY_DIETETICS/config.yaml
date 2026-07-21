@@ -7,13 +7,14 @@ identity:
   # Wyoming Google Sheets public roster — 7-day cache.
   # Link selector opens Google Sheet; export as CSV.
   # CSV has 3 description rows before header (header_row: 3).
-  # Columns confirmed from WY_CHIRO live sheet: LASTNAME, FIRSTNAME, INITIAL, LicNo, Issued, Expires, License Status
+  # Active sheet columns: LASTNAME, FIRSTNAME, INITIAL, LICNO, ISSDATE, EXPDATE, License Status
+  # Mailing List sheet adds Deactivated rows with different header format (title-case expected)
   base_url: "https://dietetics.wyo.gov/consumers/lookup"
   archetype: csv_bulk
 
 csv_bulk:
   download_strategy: google_sheet_link
-  link_selector: "a[aria-label='List of Active Licenses']"
+  link_selector: "a[aria-label='Mailing List of Active and Expired Licenses']"
   header_row: 3
   cache_days: 7
   cache_dir: "./PSV/CSVS"
@@ -56,17 +57,30 @@ detail:
     timeout_ms: 500
   strategies: []
   field_map:
+    # Mailing List sheet (Active + Deactivated) — title-case column names
+    "Last Name": last_name
+    "First Name": first_name
+    "License Number": license_number
+    "License No": license_number
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "License Status": status
+    "Status": status
+    # Mailing List sheet uses ALLCAPS names
     "LASTNAME": last_name
     "FIRSTNAME": first_name
     "LICNO": license_number
     "ISSDATE": issue_date
     "EXPDATE": expiration_date
-    "License Status": status
+    "CurrentStatus": status
+    "STANDING": status
 
 output:
   status_map:
     "Active": active
     "active": active
+    "Deactivated": inactive
+    "deactivated": inactive
     "Inactive": inactive
     "Expired": expired
     "Suspended": suspended
@@ -92,6 +106,8 @@ transport:
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+  proxy:
+    enabled: true
 
 evidence:
   capture_html: true

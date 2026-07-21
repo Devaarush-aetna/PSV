@@ -175,26 +175,27 @@ async def main(args: argparse.Namespace) -> None:
         import os as _os
         _os.environ["PSV_AI_MOCK_PATH"] = args.ai_mock
 
+    run_id = args.run_id if args.run_id else (timestamp + "_001")
+
     if args.legacy_output:
         output_path = PSV_DEV / f"PSV_Output_{timestamp}.xlsx"
         log.info("Legacy single-Excel output: %s", output_path)
     else:
-        log.info("Outputs at PSV_DEV/Output/{channel}/%s/  Evidence at PSV_DEV/Evidence/", timestamp[:6])
+        log.info("Outputs at PSV_DEV/Output/%s/%s/  Evidence at PSV_DEV/Evidence/", timestamp[:6], run_id)
 
-    run_id = timestamp + "_001"     # match dispatcher's run_id format roughly
     emitter = None if args.legacy_output else OutputEmitter(run_id=run_id)
 
-    total_pass = total_fail = 0
+    total_pass = total_fail = total_skip = 0
     append = False  # legacy-output appender flag
 
     for state in run_states:
         rows = state_rows[state]
 
-        # CAPTCHA-blocked states: write Fail rows and skip
+        # CAPTCHA-blocked states: write Skip rows and continue
         if state in CAPTCHA_STATES:
             log.warning("[%s] CAPTCHA-blocked — no boards in inventory, skipping %d rows", state, len(rows))
             if args.legacy_output:
-                fail_rows = [{**r, "status": "Fail",
+                fail_rows = [{**r, "status": "Skip",
                               "reason": f"No board configured — {state} is CAPTCHA-blocked (not in inventory)",
                               "expiry_date": ""}
                              for r in rows]
@@ -205,29 +206,28 @@ async def main(args: argparse.Namespace) -> None:
                 from orchestrator.trace import RowTrace, make_master_row_id
                 from orchestrator.output_emitter import RowOutcome
                 for idx, row in enumerate(rows):
-                    mri = make_master_row_id(idx, row.get("last_name", ""),
-                                              row.get("license_id", ""))
+                    mri = make_master_row_id(idx, row.get("npi_no", ""))
                     tr = RowTrace(master_row_id=mri, run_id=run_id, state=state,
                                   prov_type=row.get("prov_type", ""),
                                   npi_no=row.get("npi_no", ""))
-                    tr.final_outcome = "Fail"
+                    tr.final_outcome = "Skip"
                     tr.final_reason = "state_captcha_blocked"
                     emitter.collect(RowOutcome(master_row=row, master_row_id=mri, trace=tr))
-            total_fail += len(rows)
+            total_skip += len(rows)
             continue
 
         log.info("=" * 60)
         log.info("[%s] Starting — %d rows", state, len(rows))
         try:
             if args.legacy_output:
-                passes, fails = await run_state(
+                passes, fails, skips = await run_state(
                     rows=rows, state=state, output_path=output_path,
                     append=append, batch_size=args.batch_size,
                     timeout=args.timeout, sequential=args.sequential,
                 )
                 append = True
             else:
-                passes, fails = await run_state_orchestrated(
+                passes, fails, skips = await run_state_orchestrated(
                     rows=rows, state=state, emitter=emitter, run_id=run_id,
                     enable_nppes=not args.no_nppes,
                     enable_ai=not args.no_ai,
@@ -236,6 +236,7 @@ async def main(args: argparse.Namespace) -> None:
                 )
             total_pass += passes
             total_fail += fails
+            total_skip += skips
         except Exception as exc:
             log.error("[%s] Unhandled error — writing %d rows as Fail: %s", state, len(rows), exc, exc_info=True)
             if args.legacy_output:
@@ -249,14 +250,16 @@ async def main(args: argparse.Namespace) -> None:
         paths = emitter.flush()
         log.info("Channel files written: %s", {k: str(v) for k, v in paths.items()})
 
-    grand_total = total_pass + total_fail
+    grand_total = total_pass + total_fail + total_skip
     log.info("=" * 60)
     log.info("=== ALL STATES COMPLETE ===")
     log.info("  Pass : %d", total_pass)
     log.info("  Fail : %d", total_fail)
+    log.info("  Skip : %d", total_skip)
     log.info("  Total: %d", grand_total)
-    if grand_total:
-        log.info("  Rate : %.1f%%", 100.0 * total_pass / grand_total)
+    verifiable = total_pass + total_fail
+    if verifiable:
+        log.info("  Rate : %.1f%%", 100.0 * total_pass / verifiable)
 
 
 def cli() -> None:
@@ -317,6 +320,10 @@ def cli() -> None:
     p.add_argument(
         "--legacy-output", action="store_true",
         help="Write the legacy single PSV_Output_*.xlsx instead of the 4-channel layout",
+    )
+    p.add_argument(
+        "--run-id", default=None,
+        help="Override the auto-generated run_id (useful for parallel runs to avoid collisions)",
     )
     args = p.parse_args()
     asyncio.run(main(args))

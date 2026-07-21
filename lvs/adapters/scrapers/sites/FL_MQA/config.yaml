@@ -3,7 +3,7 @@ identity:
   board_name: Florida Department of Health — Medical Quality Assurance
   state: FL
   country: US
-  profession_codes: [MD, DO, DDS, DMD, RN, LPN, RPh, DC, OD, DPM, PA, PT, OT, SW, MFT, MHC, SLP, AUD, PSY]
+  profession_codes: [MD, DO, DDS, DMD, RN, LPN, RPh, DC, OD, DPM, PA, PT, OT, SW, MFT, MHC, SLP, AUD, PSY, MST, PE]
   # Single MQA portal covers ALL Florida health license boards.
   # Board and Profession dropdowns are left at default "-- Any --" so searches span all boards.
   # Detail page has 3 tabs (License Information, Secondary Locations, Discipline/Admin Action).
@@ -28,7 +28,9 @@ identity:
     GNC: "5301"   # Genetic Counselor
     LPC: "5203"   # Licensed Mental Health Counselor (FL equivalent of LPC)
     MD: "1501"    # Medical Doctor
+    MST: "1401"   # Massage Therapist (alternate EPDB code for MT)
     MT: "1401"    # Massage Therapist
+    PE: "4101"    # School Psychologist
     MW: "3201"    # Midwifery
     NP: "1711"    # Advanced Practice Registered Nurse
     NPB: "1711"   # Advanced Practice Registered Nurse
@@ -133,6 +135,17 @@ results:
     disabled_class: disabled
 
 detail:
+  # For T-prefix (Temporary) licenses: if the main License Information tab has no
+  # expiration date, click the 'Out of State' secondary tab to fetch expiry and the
+  # originating state name.  The state name flows through as the Pass reason so that
+  # reviewers know which home-state license underpins the FL temporary license.
+  out_of_state_tab:
+    enabled: true
+    trigger_license_prefix: "T"
+    tab_selector: "a:has-text('Out of State'), a:text-is('Out of State'), li a:has-text('Out of State')"
+    expiration_label: "Expiration Date"
+    state_label: "State"
+    content_wait_selector: "table tr td, dl dt, h2"
   wait:
     strategy: url_change
     timeout_ms: 20000

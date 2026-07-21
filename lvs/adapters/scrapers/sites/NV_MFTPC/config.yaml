@@ -3,7 +3,7 @@ identity:
   board_name: Nevada State Board of Examiners for Marriage and Family Therapists and Professional Counselors
   state: NV
   country: US
-  profession_codes: [MFT, PC]
+  profession_codes: [MFT, PC, LC, MT]
   # Certemy Angular SPA at nvboe.certemy.com — subdomain differs from app.certemy.com.
   # Same live-filter Angular table pattern as all Certemy boards.
   # Live column headers discovered 2026-06-10:
@@ -93,6 +93,8 @@ transport:
     max_attempts: 2
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false  # nvboe.certemy.com Angular app returns empty tables when routed via corporate proxy
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

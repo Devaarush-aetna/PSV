@@ -3,7 +3,7 @@ identity:
   board_name: Kansas Board of Optometry
   state: KS
   country: US
-  profession_codes: [OD]
+  profession_codes: [OD, OP]
   base_url: "https://www.kansas.gov/ssrv-optometry/search/search.html"
   archetype: classic_html_form
 
@@ -30,9 +30,11 @@ search:
       - "no records"
       - "not found"
       - "0 results"
+      - "person not listed"
 
 results:
   type: table
+  single_result_url_pattern: "details.html"
   table:
     row_selector: "table tbody tr, table tr"
     cell_selector: "td"

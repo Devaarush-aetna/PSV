@@ -3,7 +3,7 @@
   board_name: "Massachusetts Health License Verification"
   state: "MA"
   country: "US"
-  profession_codes: ["RN", "LPN", "MD", "DO", "PT", "OT", "DC", "PA", "NP"]
+  profession_codes: ["RN", "LPN", "MD", "DO", "PT", "OT", "DC", "PA", "NP", "CP"]
   base_url: "https://checkahealthlicense.mass.gov/search"
   archetype: "ag_grid_spa"
 

@@ -31,14 +31,23 @@ from .trace import (
     AttemptRecord, RowTrace,
     OUTCOME_AMBIGUOUS, OUTCOME_ERROR, OUTCOME_LICENSE_MISMATCH,
     OUTCOME_MATCH_EXACT, OUTCOME_MATCH_VIA_DISAMBIGUATOR, OUTCOME_NAME_MISMATCH,
+    OUTCOME_NAME_MATCH_NO_LICENSE,
     OUTCOME_NARROWED, OUTCOME_NO_RECORDS, OUTCOME_PROVIDER_TYPE_MISMATCH,
     OUTCOME_SKIPPED_DUPLICATE,
     REASON_AMBIGUOUS_AFTER_NARROWING, REASON_LICENSE_MISMATCH,
+    REASON_NAME_MATCH_NO_LICENSE,
     REASON_NAME_MISMATCH, REASON_NO_RECORDS, REASON_PROVIDER_TYPE_MISMATCH,
     make_signature, normalize_query_value,
 )
 
 log = logging.getLogger(__name__)
+
+# (source_id, prov_type) pairs where provider-type comparison is suppressed.
+# WY_PHYSICIAN is the board used for WY PH: it only returns MD/DO license types,
+# so a PH prov_type would always mismatch — skip the check entirely for this combo.
+_SKIP_PROV_TYPE_CHECK: frozenset[tuple[str, str]] = frozenset({
+    ("WY_PHYSICIAN", "PH"),
+})
 
 
 # A SearchExecutor is the function that actually runs ONE query against ONE
@@ -46,6 +55,13 @@ log = logging.getLogger(__name__)
 # so the ladder doesn't need to know about Playwright/PsvBrowser/dispatcher
 # internals.
 SearchExecutor = Callable[[SiteConfig, SearchQuery, str], Awaitable[list]]
+
+# Modes that search by name only (no license number submitted to the board).
+# The "name_match_no_license" guard only fires for these — when the board found
+# a record via a license-number search, that's already implicit confirmation.
+_NAME_MODES: frozenset[str] = frozenset({
+    "first_name", "last_name", "first_and_last", "first_and_last_typed",
+})
 
 
 @dataclass
@@ -110,11 +126,11 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
     lic = o.get("license_id", master_row.get("license_id") or None)
 
     # Normalize query value used for signature dedup + folder labels
-    if mode == "license_number":
+    if mode in ("license_number", "license_number_exact"):
         query_str = lic or ""
     elif mode == "license_numeric_only":
         query_str = re.sub(r"\D", "", lic or "")
-    elif mode == "license_formatted":
+    elif mode in ("license_formatted", "license_middle_group"):
         # query_str is set by caller via override_fields["license_id"] already reformatted
         query_str = lic or ""
     elif mode == "first_name":
@@ -127,7 +143,8 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         query_str = lic or last or first or ""
 
     # Synthetic modes — engine sees canonical mode name
-    if mode in ("license_numeric_only", "license_formatted"):
+    if mode in ("license_numeric_only", "license_formatted", "license_middle_group",
+                "license_number_exact"):
         actual_mode = "license_number"
     elif mode == "first_and_last_typed":
         actual_mode = "first_and_last"
@@ -191,6 +208,34 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
         seen_norms.add(key)
         plans.append(PlannedAttempt(mode=mode, query=query, normalized_query=norm))
 
+    # Rung 0 — exact leading-zero search.
+    # When the input license_id starts with "0" (e.g. "01486"), insert an attempt at the
+    # very front of the plan that searches with the raw value before any normalization rung
+    # strips the leading zeros.  The normalized_query is set to the raw lic (not passed
+    # through normalize_query_value which would strip the zero) so the dedup key is unique:
+    #   ("license_number_exact", "01486")  ≠  ("license_number", "1486")
+    # Both rungs will fire; if the board finds the leading-zero form first the ladder stops.
+    _r0_lic = master_row.get("license_id") or ""
+    if (
+        _r0_lic.startswith("0")
+        and len(_r0_lic) > 1
+        and "license_number" in capability.supported_modes(config)
+    ):
+        _r0_query, _ = _build_query(
+            "license_number_exact", master_row, license_type_override=license_type
+        )
+        _r0_key = ("license_number_exact", _r0_lic)
+        if _r0_key not in seen_norms:
+            seen_norms.add(_r0_key)
+            plans.insert(
+                0,
+                PlannedAttempt(
+                    mode="license_number_exact",
+                    query=_r0_query,
+                    normalized_query=_r0_lic,
+                ),
+            )
+
     # Synthetic: license_formatted — try dashed format when board specifies license_dash_format
     # and the raw license is all-digits (e.g. "5383371052" → "53-83371-052" for KSBN).
     # Inserted right after license_numeric_only (before name-based modes) so that all
@@ -217,6 +262,158 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
                     plans.insert(last_lic_idx + 1,
                                  PlannedAttempt(mode="license_formatted", query=fq,
                                                 normalized_query=fnorm))
+
+    # Synthetic: license_formatted — try prefix-dash format when board specifies
+    # license_prefix_dash and the raw license matches ^([A-Za-z]+)(\d+)$
+    # (e.g. "L301745" → "L-301745" for IBCLC_COMMISSION).
+    if getattr(config.search, "license_prefix_dash", False) and \
+            "license_number" in capability.supported_modes(config):
+        raw_lic = master_row.get("license_id") or ""
+        m = re.match(r'^([A-Za-z]+)(\d+)$', raw_lic)
+        if m:
+            formatted = f"{m.group(1)}-{m.group(2)}"
+            if formatted != raw_lic:
+                override = {"license_id": formatted}
+                fq, fnorm = _build_query("license_formatted", master_row, override,
+                                         license_type_override=license_type)
+                fkey = ("license_formatted", fnorm)
+                if fkey not in seen_norms:
+                    seen_norms.add(fkey)
+                    last_lic_idx = max(
+                        (i for i, p in enumerate(plans)
+                         if p.mode in ("license_number", "license_numeric_only")),
+                        default=-1,
+                    )
+                    plans.insert(last_lic_idx + 1,
+                                 PlannedAttempt(mode="license_formatted", query=fq,
+                                                normalized_query=fnorm))
+
+    # Synthetic: license_digit_pad — zero-pad the digit portion to N digits when the board
+    # config specifies license_digit_pad (e.g. MD_PHYSICIANS: letter + exactly 7 digits,
+    # VA_DHP: pure digits padded to exactly 10).
+    # Handles three cases:
+    #   1. Input already has a letter prefix: "D90369" → "D0090369"  (pad=7)
+    #   2. Pure-digit input with license_digit_prefixes: "90369" + prefix "D" → "D0090369"
+    #   3. Pure-digit input, no prefix: "12345" → "0000012345"  (pad=10, VA_DHP)
+    digit_pad = getattr(config.search, "license_digit_pad", None)
+    if digit_pad and "license_number" in capability.supported_modes(config):
+        raw_lic_dp = master_row.get("license_id") or ""
+        m_alpha = re.match(r'^([A-Za-z]+)(\d+)$', raw_lic_dp)
+        digit_pfxs = getattr(config.search, "license_digit_prefixes", None) or []
+
+        dp_candidates: list[str] = []
+        if m_alpha and len(m_alpha.group(2)) < digit_pad:
+            # Case 1: letter-prefixed input, pad digit portion
+            dp_candidates.append(f"{m_alpha.group(1)}{m_alpha.group(2).zfill(digit_pad)}")
+        elif re.match(r'^\d+$', raw_lic_dp) and digit_pfxs:
+            # Case 2: pure-digit input — attach each configured prefix + pad
+            for pfx in digit_pfxs:
+                dp_candidates.append(f"{pfx}{raw_lic_dp.zfill(digit_pad)}")
+        elif re.match(r'^\d+$', raw_lic_dp) and len(raw_lic_dp) < digit_pad:
+            # Case 3: pure-digit input, no prefix — zero-pad to digit_pad digits.
+            # Used by VA_DHP where all license numbers are exactly 10 digits.
+            dp_candidates.append(raw_lic_dp.zfill(digit_pad))
+        else:
+            # Case 4: mixed-format input with separators (e.g. "CDRH.0071196").
+            # Extract the digit run, apply prefix+pad combos the same as Case 2.
+            # Handles boards like MD_PHYSICIANS where the input may carry a foreign
+            # prefix (FDA CDRH ID) but the state license digits are still present.
+            _dp_digits = re.sub(r'\D', '', raw_lic_dp)
+            if _dp_digits and digit_pfxs and len(_dp_digits) <= digit_pad:
+                for pfx in digit_pfxs:
+                    dp_candidates.append(f"{pfx}{_dp_digits.zfill(digit_pad)}")
+
+        for dp_fmt in dp_candidates:
+            if dp_fmt == raw_lic_dp:
+                continue
+            override_dp = {"license_id": dp_fmt}
+            dpq, dpnorm = _build_query("license_formatted", master_row, override_dp,
+                                       license_type_override=license_type)
+            dpkey = ("license_formatted", dpnorm)
+            if dpkey not in seen_norms:
+                seen_norms.add(dpkey)
+                last_lic_idx_dp = max(
+                    (i for i, p in enumerate(plans)
+                     if p.mode in ("license_number", "license_numeric_only",
+                                   "license_formatted")),
+                    default=-1,
+                )
+                plans.insert(last_lic_idx_dp + 1,
+                             PlannedAttempt(mode="license_formatted", query=dpq,
+                                            normalized_query=dpnorm))
+
+    # Synthetic: license_middle_group — for boards with license_dash_format (3-group)
+    # and a pre-dashed input (e.g. "13-86228-111", "53-83739-032", "14-138727-052"),
+    # extract the center segment as the search key ("86228", "83739", "138727").
+    # Splits on "-" directly so any middle-group width is handled (5-digit, 6-digit, etc.).
+    # Handles KSBN inputs where the DB prefix varies (53-, 13-, 14-) but the board only
+    # indexes the bare center digits.
+    if dash_fmt and "license_number" in capability.supported_modes(config):
+        raw_lic_mg = master_row.get("license_id") or ""
+        parts_mg = raw_lic_mg.split("-")
+        if len(parts_mg) == 3:
+            middle_mg = parts_mg[1].strip()
+            lic_digits_mg = re.sub(r"\D", "", raw_lic_mg)
+            if middle_mg and middle_mg not in (raw_lic_mg, lic_digits_mg):
+                override_mg = {"license_id": middle_mg}
+                mq, mnorm = _build_query("license_middle_group", master_row,
+                                          override_mg,
+                                          license_type_override=license_type)
+                mkey = ("license_middle_group", mnorm)
+                if mkey not in seen_norms:
+                    seen_norms.add(mkey)
+                    last_lic_idx_mg = max(
+                        (i for i, p in enumerate(plans)
+                         if p.mode in ("license_number", "license_numeric_only",
+                                       "license_formatted")),
+                        default=-1,
+                    )
+                    plans.insert(last_lic_idx_mg + 1,
+                                 PlannedAttempt(mode="license_middle_group",
+                                                query=mq,
+                                                normalized_query=mnorm))
+
+    # Synthetic: license_middle_group from unsegmented long-digit input.
+    # When a board uses an N-digit dash format (e.g. "2-5-3" = 10 digits) but the raw
+    # license has N+1 pure digits (e.g. 11 digits), treat it as having a wider middle
+    # group (prefix and suffix widths stay the same, middle absorbs the extra digit).
+    # Example: dash_fmt="2-5-3", input="12345678123" (11 digits) →
+    #   prefix=2, suffix=3, middle=digits[2:8]="345678" → search "345678".
+    # This covers KSBN where some records carry an 11-digit storage key but the board
+    # only indexes the 6-digit center segment.
+    if dash_fmt and "license_number" in capability.supported_modes(config):
+        raw_lic_long = master_row.get("license_id") or ""
+        digits_long = re.sub(r"\D", "", raw_lic_long)
+        try:
+            _dash_groups = [int(n) for n in dash_fmt.split("-")]
+        except ValueError:
+            _dash_groups = []
+        if (
+            raw_lic_long == digits_long          # pure-digit input (no dashes/letters)
+            and len(_dash_groups) == 3           # 3-group format configured
+            and len(digits_long) == sum(_dash_groups) + 1  # exactly one digit longer
+        ):
+            _prefix_len = _dash_groups[0]
+            _suffix_len = _dash_groups[-1]
+            middle_long = digits_long[_prefix_len: len(digits_long) - _suffix_len]
+            if middle_long:
+                override_long = {"license_id": middle_long}
+                mq_long, mnorm_long = _build_query("license_middle_group", master_row,
+                                                    override_long,
+                                                    license_type_override=license_type)
+                mkey_long = ("license_middle_group", mnorm_long)
+                if mkey_long not in seen_norms:
+                    seen_norms.add(mkey_long)
+                    last_lic_idx_long = max(
+                        (i for i, p in enumerate(plans)
+                         if p.mode in ("license_number", "license_numeric_only",
+                                       "license_formatted")),
+                        default=-1,
+                    )
+                    plans.insert(last_lic_idx_long + 1,
+                                 PlannedAttempt(mode="license_middle_group",
+                                                query=mq_long,
+                                                normalized_query=mnorm_long))
 
     return plans
 
@@ -291,17 +488,43 @@ async def _fetch_detail_record(
     board_lic = (getattr(record, "license_number", None) or "").strip()
     if not board_lic:
         return record
-    sig = make_signature(cfg_obj.identity.source_id, "license_number", board_lic)
-    if trace.has_signature(sig):
-        return record  # already attempted this exact query
-    q = SearchQuery(mode="license_number", query=board_lic, license_number=board_lic)
+    # Use a _detail_expiry suffix so this secondary call doesn't collide with
+    # the main license_number signature already recorded by the first search pass.
+    # The first pass returned records from the results table (no expiry); this call
+    # specifically triggers detail-page visits to pick up the expiration_date.
+    detail_sig = make_signature(cfg_obj.identity.source_id, "license_number_detail_expiry", board_lic)
+    if trace.has_signature(detail_sig):
+        return record
+    # Include first/last name from the matched record so PsvBrowser.search can
+    # narrow to the specific row rather than visiting every detail page in the set.
+    board_fn = (getattr(record, "licensee_first_name", None) or "").strip() or None
+    board_ln = (getattr(record, "licensee_last_name", None) or "").strip() or None
+    q = SearchQuery(
+        mode="license_number", query=board_lic, license_number=board_lic,
+        first_name=board_fn, last_name=board_ln,
+    )
     try:
         detail_records = await asyncio.wait_for(
             executor(cfg_obj, q, trace.run_id), timeout=float(timeout_s),
         )
-        trace.seen_signatures.add(sig)
+        trace.seen_signatures.add(detail_sig)
         for dr in detail_records:
             if getattr(dr, "expiration_date", None) is not None:
+                # When the original record has a known name, only accept a detail
+                # record that matches it — boards like KS_GLSUITE reuse the same
+                # numeric license number across license types, so the re-fetch can
+                # return many people with the same number and we must not swap in
+                # the wrong one.
+                if board_fn or board_ln:
+                    dr_fn = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
+                    dr_ln = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
+                    # Only reject on name mismatch when the detail record actually has a name.
+                    # If heading extraction fails (e.g. KSBHADA h3 with embedded link text),
+                    # the detail record has empty first/last — don't discard it when the board
+                    # license number already uniquely identifies the record.
+                    if (dr_fn or dr_ln) and (
+                            dr_fn != (board_fn or "").upper() or dr_ln != (board_ln or "").upper()):
+                        continue
                 return dr
     except Exception as exc:
         log.debug("[%s] detail expiry re-fetch failed for '%s': %s",
@@ -312,6 +535,12 @@ async def _fetch_detail_record(
 # --------------------------------------------------------------------------
 # The driver
 # --------------------------------------------------------------------------
+
+def _out_of_state_reason(record: Any) -> Optional[str]:
+    """Return 'out_of_state:<STATE>' when the record was verified via the Out of State tab."""
+    state = getattr(record, "out_of_state_state", None)
+    return f"out_of_state:{state}" if state else None
+
 
 async def run_ladder(
     routed_configs: list[SiteConfig],
@@ -330,11 +559,15 @@ async def run_ladder(
         return LadderResult(status="Fail", reason=trace_mod.REASON_NO_RECORDS)
 
     last_specific_reason: Optional[str] = None
+    # Soft-match fallback: a name-only Pass with license_numerics=0.0 when
+    # more boards remain.  We store it and keep searching for an exact-license
+    # hit on a later board; if nothing better is found, we return this.
+    soft_match: Optional[LadderResult] = None
 
     blm = board_license_type_map or {}
 
     # ===================== Loop 1: master ladder over boards =====================
-    for cfg_obj in routed_configs:
+    for board_idx, cfg_obj in enumerate(routed_configs):
         lt_for_board = blm.get(cfg_obj.identity.source_id)
         plans = build_attempt_plan(cfg_obj, master_row, license_type=lt_for_board)
         if not plans:
@@ -359,18 +592,63 @@ async def run_ladder(
 
             if verdict.status == "selected":
                 best = verdict.best
+                bd = verdict.best_breakdown
+                lic_numerics = bd.license_numerics if bd else 1.0
+                has_lic_id = bool(master_row.get("license_id"))
+                is_last_board = (board_idx == len(routed_configs) - 1)
+                # If name-only match with zero license score and more boards remain,
+                # store as a soft fallback and continue searching for an exact hit.
+                # Only defer name-mode searches — license-mode hits confirm via the
+                # search itself even when the board omits license_number from results.
+                if has_lic_id and lic_numerics == 0.0 and not is_last_board \
+                        and plan.mode in _NAME_MODES:
+                    if soft_match is None:
+                        if getattr(best, "expiration_date", None) is None:
+                            best = await _fetch_detail_record(
+                                cfg_obj, best, trace, executor, timeout_s,
+                            )
+                        soft_match = LadderResult(
+                            status="Pass",
+                            best_record=best,
+                            best_breakdown=bd,
+                            tiebreaker_used=verdict.tiebreaker_used,
+                            weight_profile_used=bd.weight_profile,
+                        )
+                    attempt.outcome = OUTCOME_MATCH_EXACT
+                    break  # stop rungs on this board; continue to next board
                 if getattr(best, "expiration_date", None) is None:
                     best = await _fetch_detail_record(
                         cfg_obj, best, trace, executor, timeout_s,
                     )
+                # If the input has a license but scoring couldn't confirm it
+                # (lic_numerics == 0.0), do a final check on the (possibly
+                # detail-enriched) record before accepting the name-only match.
+                # Re-check covers boards that only expose license_number on the
+                # detail page. Only fail when the detail record also has a
+                # license that doesn't match — an absent board license stays Fail.
+                # Skip for license-mode searches: the board confirmed the match
+                # by returning the record in response to a license query.
+                if has_lic_id and lic_numerics == 0.0 and plan.mode in _NAME_MODES:
+                    _detail_lic = (getattr(best, "license_number", "") or "").strip()
+                    _input_lic = (master_row.get("license_id") or "").strip()
+                    if not (_detail_lic and disamb.license_numerics_match(_input_lic, _detail_lic)):
+                        attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
+                        trace.final_outcome = "Fail"
+                        return LadderResult(
+                            status="Fail",
+                            best_breakdown=bd,
+                            reason=REASON_NAME_MATCH_NO_LICENSE,
+                            weight_profile_used=bd.weight_profile if bd else "name_only",
+                        )
                 attempt.outcome = OUTCOME_MATCH_EXACT
                 trace.final_outcome = "Pass"
                 return LadderResult(
                     status="Pass",
                     best_record=best,
-                    best_breakdown=verdict.best_breakdown,
+                    best_breakdown=bd,
                     tiebreaker_used=verdict.tiebreaker_used,
-                    weight_profile_used=verdict.best_breakdown.weight_profile,
+                    weight_profile_used=bd.weight_profile,
+                    reason=_out_of_state_reason(best),
                 )
 
             if verdict.status == "narrow":
@@ -389,11 +667,27 @@ async def run_ladder(
                         chosen, master_row,
                         weight_profile=_pick_profile(trace, master_row),
                     )
+                    _nrw_lic_num = bd.license_numerics if bd else 1.0
+                    _nrw_has_lic = bool(master_row.get("license_id"))
+                    if _nrw_has_lic and _nrw_lic_num == 0.0 and plan.mode in _NAME_MODES:
+                        _nrw_detail_lic = (getattr(chosen, "license_number", "") or "").strip()
+                        _nrw_input_lic = (master_row.get("license_id") or "").strip()
+                        if not (_nrw_detail_lic and disamb.license_numerics_match(
+                                _nrw_input_lic, _nrw_detail_lic)):
+                            attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
+                            trace.final_outcome = "Fail"
+                            return LadderResult(
+                                status="Fail",
+                                best_breakdown=bd,
+                                reason=REASON_NAME_MATCH_NO_LICENSE,
+                                weight_profile_used=bd.weight_profile if bd else "name_only",
+                            )
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                     trace.final_outcome = "Pass"
                     return LadderResult(
                         status="Pass", best_record=chosen, best_breakdown=bd,
                         weight_profile_used=bd.weight_profile,
+                        reason=_out_of_state_reason(chosen),
                     )
                 # Still ambiguous → escalate to AI
                 attempt.outcome = OUTCOME_AMBIGUOUS
@@ -405,7 +699,7 @@ async def run_ladder(
 
             if verdict.status == "no_gate_pass":
                 if records:
-                    attempt.outcome = _diagnose_failure_outcome(records, master_row)
+                    attempt.outcome = _diagnose_failure_outcome(records, master_row, cfg_obj.identity.source_id)
                     last_specific_reason = _outcome_to_reason(attempt.outcome)
                 else:
                     attempt.outcome = OUTCOME_NO_RECORDS
@@ -423,9 +717,28 @@ async def run_ladder(
             # — go to NPPES retry path. (Could also try other boards; conservative.)
             break
 
+    # If a soft-match (name-only, zero license score) was stored and no exact
+    # license match was found on any subsequent board, do a final license check
+    # on the detail-enriched record before accepting it.
+    if soft_match is not None:
+        _sm_input_lic = (master_row.get("license_id") or "").strip()
+        if _sm_input_lic:
+            _sm_detail_lic = (getattr(soft_match.best_record, "license_number", "") or "").strip()
+            if not (_sm_detail_lic and disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)):
+                trace.final_outcome = "Fail"
+                return LadderResult(
+                    status="Fail",
+                    best_breakdown=soft_match.best_breakdown,
+                    reason=REASON_NAME_MATCH_NO_LICENSE,
+                    weight_profile_used=soft_match.weight_profile_used,
+                )
+        trace.final_outcome = "Pass"
+        if soft_match.best_record and not soft_match.reason:
+            soft_match.reason = _out_of_state_reason(soft_match.best_record)
+        return soft_match
+
     # ===================== NPPES targeted retry =====================
     if nppes_record and discrepancy and not discrepancy.is_empty():
-        trace.nppes_used = True
         for cfg_obj in routed_configs:
             lt_for_board = blm.get(cfg_obj.identity.source_id)
             retry_plans = build_targeted_retry_plan(cfg_obj, master_row, nppes_record, discrepancy,
@@ -461,6 +774,7 @@ async def run_ladder(
                         npi_substituted=True,
                         tiebreaker_used=verdict.tiebreaker_used,
                         weight_profile_used=verdict.best_breakdown.weight_profile,
+                        reason=_out_of_state_reason(best),
                     )
                 if verdict.status == "narrow":
                     narrowed_pool, narrowed_status = disamb.apply_narrowing(
@@ -478,11 +792,12 @@ async def run_ladder(
                             status="Pass", best_record=chosen, best_breakdown=bd,
                             npi_substituted=True,
                             weight_profile_used=bd.weight_profile,
+                            reason=_out_of_state_reason(chosen),
                         )
                     attempt.outcome = OUTCOME_AMBIGUOUS
                 if verdict.status == "no_gate_pass":
                     if records:
-                        attempt.outcome = _diagnose_failure_outcome(records, master_row)
+                        attempt.outcome = _diagnose_failure_outcome(records, master_row, cfg_obj.identity.source_id)
                     else:
                         attempt.outcome = OUTCOME_NO_RECORDS
 
@@ -594,7 +909,8 @@ async def _evaluate_records(records: list, master_row: dict, trace: RowTrace
     return disamb.evaluate(records, master_row, weight_profile=profile)
 
 
-def _diagnose_failure_outcome(records: list, master_row: dict) -> str:
+def _diagnose_failure_outcome(records: list, master_row: dict,
+                              source_id: str = "") -> str:
     """For records that returned but didn't pass the gate — pick the most
     specific outcome code so the trace tells us WHY (name vs license vs type).
     """
@@ -630,7 +946,7 @@ def _diagnose_failure_outcome(records: list, master_row: dict) -> str:
         return OUTCOME_LICENSE_MISMATCH
     if (any_first_match or any_last_match) and not (any_first_match and (any_last_match or any_lic_match)):
         return OUTCOME_NAME_MISMATCH
-    if m_pt and not any(
+    if m_pt and (source_id, m_pt) not in _SKIP_PROV_TYPE_CHECK and not any(
         disamb.provider_type_matches(m_pt,
                                      getattr(r, "license_type", "") or "",
                                      getattr(r, "profession_code", "") or "")
@@ -644,6 +960,7 @@ def _outcome_to_reason(outcome: str) -> str:
     return {
         OUTCOME_NAME_MISMATCH: REASON_NAME_MISMATCH,
         OUTCOME_LICENSE_MISMATCH: REASON_LICENSE_MISMATCH,
+        OUTCOME_NAME_MATCH_NO_LICENSE: REASON_NAME_MATCH_NO_LICENSE,
         OUTCOME_PROVIDER_TYPE_MISMATCH: REASON_PROVIDER_TYPE_MISMATCH,
         OUTCOME_AMBIGUOUS: REASON_AMBIGUOUS_AFTER_NARROWING,
         OUTCOME_NARROWED: REASON_AMBIGUOUS_AFTER_NARROWING,

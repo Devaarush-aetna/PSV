@@ -24,7 +24,7 @@ csv_bulk:
 
   merge_sources:
     - source_id: WY_MENTAL_HEALTH
-      header_row: 3       # raw Google Sheet export; engine auto-overrides to 0 after additional_link_selectors refresh
+      header_row: 0       # merged active+expired CSV (processed DataFrame, header at row 0)
       encoding: "utf-8-sig"
       columns:
         license_number: "License Number"
@@ -216,6 +216,8 @@ transport:
     retry_on: []
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
+  proxy:
+    enabled: true
 evidence:
   capture_html: false
   capture_screenshot: false

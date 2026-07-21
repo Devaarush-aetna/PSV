@@ -1,7 +1,7 @@
 """LicenseRecord serialization — JSON file output + SQLite upsert.
 
 Output JSON files land at:
-    PSV_DEV/Output/{source_id}/{run_id}.json
+    PSV_DEV/Output/{YYYYMM}/{run_id}/{source_id}/{source_id}_{YYYYMMDD_HHMM}.json
 """
 from __future__ import annotations
 
@@ -24,6 +24,20 @@ log = logging.getLogger(__name__)
 
 # PSV_DEV/ — engine/output.py → engine/ → scrapers/ → adapters/ → lvs/ → PSV_DEV/
 _PROJECT_ROOT = Path(__file__).resolve().parents[4]
+
+
+def _next_annual_date(mmdd: str) -> date:
+    """Return the next occurrence (on or after today) of the given MM-DD date.
+
+    Used for boards where every license expires on the same calendar day each
+    year (e.g. KY_OD: "03-01" → always next March 1st).
+    """
+    month, day = (int(p) for p in mmdd.split("-"))
+    today = date.today()
+    candidate = date(today.year, month, day)
+    if candidate < today:
+        candidate = date(today.year + 1, month, day)
+    return candidate
 
 
 def _json_default(obj):
@@ -68,6 +82,11 @@ def map_to_license_record(
     exp_raw = resolve(mapping.get("expiration_date", "")) or raw.get("expiration_date")
     issue_raw = resolve(mapping.get("issue_date", "")) or raw.get("issue_date")
 
+    # Board-level fixed annual expiration: fill in when the record has none.
+    _parsed_exp = parse_date(exp_raw, out.date_formats)
+    if _parsed_exp is None and out.fixed_annual_expiration_mmdd:
+        _parsed_exp = _next_annual_date(out.fixed_annual_expiration_mmdd)
+
     disc = raw.get("disciplinary_actions", [])
     if isinstance(disc, str):
         disc = [{"raw": disc}] if disc.strip() else []
@@ -86,13 +105,14 @@ def map_to_license_record(
         profession_code=config.identity.profession_codes[0] if config.identity.profession_codes else None,
         status=normalize_status(status_raw, out.status_map),
         effective_date=parse_date(eff_raw, out.date_formats),
-        expiration_date=parse_date(exp_raw, out.date_formats),
+        expiration_date=_parsed_exp,
         issue_date=parse_date(issue_raw, out.date_formats),
         address=resolve(mapping.get("address", "")) or raw.get("address") or None,
         city=resolve(mapping.get("city", "")) or raw.get("city") or None,
         state_code=resolve(mapping.get("state_code", "")) or raw.get("state_code") or None,
         zip_code=resolve(mapping.get("zip_code", "")) or raw.get("zip_code") or None,
         disciplinary_actions=disc,
+        out_of_state_state=raw.get("out_of_state_state") or None,
         source_url=raw.get("_source_url", ""),
         scraped_at=datetime.utcnow(),
         evidence_html_path=evidence.get("html_path"),
@@ -102,9 +122,23 @@ def map_to_license_record(
     )
 
 
+def _yyyymm(run_id: str) -> str:
+    if len(run_id) >= 6 and run_id[:8].isdigit():
+        return f"{run_id[:4]}{run_id[4:6]}"
+    return datetime.now().strftime("%Y%m")
+
+
+def _dt(run_id: str) -> str:
+    if (len(run_id) >= 13 and run_id[:8].isdigit()
+            and run_id[8] == "_" and run_id[9:13].isdigit()):
+        return run_id[:13]
+    return run_id
+
+
 def resolve_output_path(source_id: str, run_id: str) -> Path:
-    """Return PSV_DEV/Output/{source_id}/{run_id}.json"""
-    return _PROJECT_ROOT / "Output" / source_id / f"{run_id}.json"
+    """Return Output/{YYYYMM}/{run_id}/{source_id}/{source_id}_{dt}.json"""
+    return (_PROJECT_ROOT / "Output" / _yyyymm(run_id)
+            / run_id / source_id / f"{source_id}_{_dt(run_id)}.json")
 
 
 async def write_output(records: list[LicenseRecord], source_id: str, run_id: str) -> str:

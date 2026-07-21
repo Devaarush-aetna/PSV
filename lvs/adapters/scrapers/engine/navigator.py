@@ -512,6 +512,11 @@ async def fill_extra_inputs(page: Page, mode_cfg, query: SearchQuery, partial_fa
 
     for sel, option_template in (mode_cfg.extra_selects or {}).items():
         option = _resolve_template(option_template, query) if "{" in option_template else option_template
+        if not option:
+            # Template resolved to empty string (e.g. {type} with no license_type mapping) —
+            # skip rather than attempting to select "" which may lock the dropdown to an invalid state.
+            log.debug("Skipping extra_select '%s': template resolved to empty string", sel)
+            continue
         try:
             await page.wait_for_selector(sel, state="visible", timeout=5000)
             # Try by label first, then by value
@@ -746,6 +751,25 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
         except Exception as e:
             log.warning("pre_search_click '%s' failed: %s", config.search.pre_search_click, e)
 
+    # Iframe-embedded search form: switch to the inner frame for form interaction.
+    # Results are read from the parent page after the frame's submit triggers navigation.
+    search_target = page
+    if config.search.iframe_search_selector:
+        try:
+            frame_el = await page.wait_for_selector(
+                config.search.iframe_search_selector, timeout=15000
+            )
+            if frame_el:
+                inner_frame = await frame_el.content_frame()
+                if inner_frame:
+                    await inner_frame.wait_for_load_state("networkidle", timeout=15000)
+                    search_target = inner_frame
+                    log.info("[%s] Using iframe for search: %s",
+                             config.identity.source_id, config.search.iframe_search_selector)
+        except Exception as e:
+            log.warning("[%s] iframe_search_selector failed, using main page: %s",
+                        config.identity.source_id, e)
+
     # Combo mode synthesis: when the requested mode is a recognised combo and the
     # config has no explicit entry for it, synthesise one from the existing single-
     # field modes and inject it into config.search.modes for this call.
@@ -765,7 +789,7 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     if primary_value is not None:
         effective_query = query.model_copy(update={"query": primary_value})
 
-    if not await set_search_by(page, config.search, effective_query):
+    if not await set_search_by(search_target, config.search, effective_query):
         if partial_failures is not None:
             partial_failures.append(
                 f"set_search_by failed for mode '{effective_query.mode}' — results may be from wrong search mode"
@@ -776,13 +800,13 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     # that mode-specific fields (e.g. inside a hidden Bootstrap tab) are visible/enabled.
     if mode_cfg and mode_cfg.pre_click:
         try:
-            await page.wait_for_selector(mode_cfg.pre_click, state="visible", timeout=5000)
-            await page.locator(mode_cfg.pre_click).first.click()
+            await search_target.wait_for_selector(mode_cfg.pre_click, state="visible", timeout=5000)
+            await search_target.locator(mode_cfg.pre_click).first.click()
             await asyncio.sleep(0.6)
             log.info("mode pre_click: clicked '%s'", mode_cfg.pre_click)
         except Exception as e:
             log.warning("mode pre_click '%s' failed: %s", mode_cfg.pre_click, e)
-    filled = await fill_search_input(page, config.search, effective_query)
+    filled = await fill_search_input(search_target, config.search, effective_query)
     if not filled:
         raise RuntimeError(f"[{config.identity.source_id}] Could not fill search input for query '{query.query}'")
     # Pega Constellation: dispatch change+blur after typing to trigger server-side postValue
@@ -813,7 +837,7 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
         await asyncio.sleep(3)
     # Use the original `query` (not effective_query) so {first}/{last}/{license}
     # substitutions in extra_inputs see the full structured fields.
-    await fill_extra_inputs(page, mode_cfg, query, partial_failures=partial_failures)
+    await fill_extra_inputs(search_target, mode_cfg, query, partial_failures=partial_failures)
     # Apply orthogonal license_type / provider_type filters from SiteIdentity.
     await apply_orthogonal_filters(page, config, query, partial_failures=partial_failures)
     if mode_cfg and mode_cfg.submit_js:
@@ -829,13 +853,26 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
             log.warning("submit_js failed: %s", e)
             clicked = False
     elif config.search.submit_via_enter:
-        await page.keyboard.press("Enter")
+        await search_target.keyboard.press("Enter")
         log.info("submit_via_enter: pressed Enter to submit form")
         clicked = True
     else:
-        clicked = await click_search_button(page, config.search, query)
+        clicked = await click_search_button(search_target, config.search, query)
     if not clicked:
         raise RuntimeError(f"[{config.identity.source_id}] Could not click search button")
+    # After iframe submit, Clarus JS receives a postMessage from the iframe's translate
+    # response and then navigates the PARENT page to ?data={...}. Give the JS time to
+    # process the message, then wait for the parent page's new navigation to complete.
+    if config.search.iframe_search_selector and search_target is not page:
+        try:
+            await asyncio.sleep(0.8)  # let Clarus JS receive and process translate response
+            await page.wait_for_url(lambda u: "?data=" in u, timeout=10000)
+            await page.wait_for_load_state("networkidle", timeout=15000)
+        except Exception:
+            try:
+                await page.wait_for_load_state("networkidle", timeout=15000)
+            except Exception:
+                pass
     has_results = await wait_for_results(page, config.search, partial_failures=partial_failures)
     # Post-search click: some boards show results in a list/card view first and
     # require clicking a toggle (e.g. grid radio button) to switch to table view.

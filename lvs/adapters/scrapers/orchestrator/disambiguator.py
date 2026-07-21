@@ -59,6 +59,7 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("SAMANTHA", "SAM"),
     ("ALEXANDER", "ALEX"), ("ALEXANDRA", "ALEX"),
     ("BENJAMIN", "BEN"),
+    ("NATHANIEL", "NATHAN"), ("NATHANIEL", "NAT"),
     ("DEIRDRE", "DIERDRE"),
 ]
 _NICK_MAP: dict[str, set[str]] = {}
@@ -81,11 +82,54 @@ def _numeric_only(s: str) -> str:
 
 
 # Suffixes boards append after the last name that are NOT part of it.
+# Stored with and without periods — both forms are recognised in _split_full_name via
+# _NAME_SUFFIXES_NORM (all-uppercase, dots/hyphens removed), so "M.D." and "MD" match.
 _NAME_SUFFIXES = {
-    "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.",
-    "ESQ", "ESQ.", "PHD", "MD", "DO", "DDS", "DMD", "RN",
-    "APRN", "DNP", "NP", "PA", "PT", "OT", "DC", "OD",
+    # Generational / legal
+    "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.", "ESQ", "ESQ.",
+    # Medical degrees (plain + dotted)
+    "MD", "M.D.", "DO", "D.O.", "DPM", "D.P.M.", "DDS", "D.D.S.", "DMD", "D.M.D.",
+    "OD", "O.D.", "PHD", "PH.D.", "PSYD", "PSY.D.", "DPT", "D.P.T.", "DC", "D.C.",
+    "ND", "N.D.",
+    # Nursing / advanced practice
+    "RN", "R.N.", "LPN", "LVN", "APRN", "DNP", "CNM", "NP",
+    # PA
+    "PA",
+    # Behavioral health
+    "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABA", "RBT",
+    # PT / OT / SLP / AUD
+    "PT", "OT", "SLP", "AUD",
+    # Pharmacy
+    "PHARMD", "PHARM.D.", "RPH",
+    # Fellowship designations
+    "FACP", "FACS", "FACOG", "FAAP",
 }
+
+# Pre-normalised (uppercase, dots/hyphens stripped) for O(1) lookup.
+_NAME_SUFFIXES_NORM: frozenset[str] = frozenset(
+    re.sub(r"[.\-]", "", s).upper() for s in _NAME_SUFFIXES
+)
+
+# Honorific / title prefixes that may appear before a provider's actual name.
+# Only unambiguous civilian titles are included to minimise false positives.
+_NAME_PREFIXES_NORM: frozenset[str] = frozenset({
+    "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV", "PASTOR", "RABBI",
+    "SISTER", "BROTHER",
+})
+
+
+def _strip_name_affixes(tokens: list[str]) -> list[str]:
+    """Remove leading honorific/title prefixes and trailing credential suffixes.
+
+    Works on an already-normalised token list (uppercase, hyphens→spaces).
+    Returns a new list; never mutates the input.
+    """
+    toks = list(tokens)
+    while toks and re.sub(r"[.\-]", "", toks[0]) in _NAME_PREFIXES_NORM:
+        toks = toks[1:]
+    while toks and re.sub(r"[.\-]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+        toks = toks[:-1]
+    return toks
 
 
 def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
@@ -106,12 +150,14 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         rest = full_name[comma_idx + 1:].strip()
 
         last_toks = raw_last.upper().split()
-        while last_toks and last_toks[-1].rstrip('.') in _NAME_SUFFIXES:
+        while last_toks and re.sub(r"[.\-]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
             last_toks = last_toks[:-1]
 
         rest_toks = rest.upper().split()
-        while rest_toks and rest_toks[-1].rstrip('.') in _NAME_SUFFIXES:
+        while rest_toks and re.sub(r"[.\-]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
+        while rest_toks and re.sub(r"[.\-]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
+            rest_toks = rest_toks[1:]
 
         first_tok = rest_toks[0] if rest_toks else ''
         last_str = ' '.join(last_toks) if last_toks else ''
@@ -119,8 +165,10 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
 
     # ---- Format 2: "First [Middle] Last" ----
     toks = full_name.upper().split()
-    while toks and toks[-1].rstrip(".") in _NAME_SUFFIXES:
+    while toks and re.sub(r"[.\-]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
         toks = toks[:-1]
+    while toks and re.sub(r"[.\-]", "", toks[0]) in _NAME_PREFIXES_NORM:
+        toks = toks[1:]
     if not toks:
         return "", ""
     if len(toks) == 1:
@@ -143,13 +191,12 @@ def first_name_matches(master_first: str, candidate_first: str) -> bool:
     """rapidfuzz token_sort_ratio >= NAME_FUZZ_MIN, plus nickname dictionary."""
     if not master_first or not candidate_first:
         return False
-    m = _normalize_name(master_first)
-    c = _normalize_name(candidate_first)
-    if not m or not c:
+    m_toks = _strip_name_affixes(_normalize_name(master_first).split())
+    c_toks = _strip_name_affixes(_normalize_name(candidate_first).split())
+    if not m_toks or not c_toks:
         return False
-    # Take only the first token of each (handles "John P." -> "JOHN")
-    m_tok = m.split(" ")[0]
-    c_tok = c.split(" ")[0]
+    m_tok = m_toks[0]
+    c_tok = c_toks[0]
     if m_tok == c_tok:
         return True
     if fuzz.token_sort_ratio(m_tok, c_tok) >= cfg.NAME_FUZZ_MIN:
@@ -165,8 +212,10 @@ def first_name_score(master_first: str, candidate_first: str) -> float:
     """0..1 fractional score for the first name field."""
     if not master_first or not candidate_first:
         return 0.0
-    m_tok = _normalize_name(master_first).split(" ")[0]
-    c_tok = _normalize_name(candidate_first).split(" ")[0]
+    m_toks = _strip_name_affixes(_normalize_name(master_first).split())
+    c_toks = _strip_name_affixes(_normalize_name(candidate_first).split())
+    m_tok = m_toks[0] if m_toks else ""
+    c_tok = c_toks[0] if c_toks else ""
     if not m_tok or not c_tok:
         return 0.0
     if m_tok == c_tok:
@@ -179,17 +228,35 @@ def first_name_score(master_first: str, candidate_first: str) -> float:
 def last_name_score(master_last: str, candidate_last: str) -> float:
     if not master_last or not candidate_last:
         return 0.0
-    m = _normalize_name(master_last)
-    c = _normalize_name(candidate_last)
+    m = " ".join(_strip_name_affixes(_normalize_name(master_last).split()))
+    c = " ".join(_strip_name_affixes(_normalize_name(candidate_last).split()))
     if not m or not c:
         return 0.0
     if m == c:
         return 1.0
     # Hyphenated surname fallback: any component substring match counts strongly.
-    if "-" in master_last:
-        parts = [_normalize_name(p) for p in master_last.split("-") if p.strip()]
-        if any(p and p in c for p in parts):
-            return 0.95
+    # Check BOTH sides — board may carry the hyphen even when EPDB doesn't.
+    for _raw, _other in ((master_last, c), (candidate_last, m)):
+        if "-" in _raw:
+            parts = [" ".join(_strip_name_affixes(_normalize_name(p).split()))
+                     for p in _raw.split("-") if p.strip()]
+            if any(p and p in _other for p in parts):
+                return 0.95
+    # Compound/multi-surname: one name is a contiguous word-span of the other.
+    # Handles both directions:
+    #   "DA COSTA"        vs "DA COSTA GOMEZ"  →  0.95
+    #   "GOMEZ"           vs "DA COSTA GOMEZ"  →  0.95
+    #   "DA COSTA GOMEZ"  vs "DA COSTA"        →  0.95
+    m_words = m.split()
+    c_words = c.split()
+    if len(m_words) != len(c_words):
+        shorter, longer = (
+            (m_words, c_words) if len(m_words) < len(c_words) else (c_words, m_words)
+        )
+        n = len(shorter)
+        for i in range(len(longer) - n + 1):
+            if longer[i : i + n] == shorter:
+                return 0.95
     return fuzz.token_sort_ratio(m, c) / 100.0
 
 
@@ -209,8 +276,24 @@ def license_numerics_match(master_lic: str, candidate_lic: str) -> bool:
         return True
     if m.lstrip("0") == c.lstrip("0"):
         return True
-    # Substring match only when both have content and lengths are close
-    if len(m) >= 4 and m in c and abs(len(c) - len(m)) <= 2:
+    # Substring match: board prepends a state/type code so the input appears at the
+    # TAIL of the board value (e.g. "031234" for input "1234").  Use endswith to
+    # prevent matching input digits that form a leading prefix of a different number
+    # (e.g. "1495" leading "14959" — different numbers, not a format difference).
+    if len(m) >= 4 and c.endswith(m) and abs(len(c) - len(m)) <= 2:
+        return True
+    # Center-digits match: board stores only the core of a prefixed/suffixed input
+    # e.g. KSBN "5384002" (input) vs "84002" (board), or "5378516022" vs "78516".
+    # Require shorter side ≥ 5 digits and at most 5 extra digits in the longer side
+    # to prevent spurious matches on unrelated short license IDs.
+    shorter, longer = (m, c) if len(m) <= len(c) else (c, m)
+    if len(shorter) >= 5 and shorter in longer and len(longer) - len(shorter) <= 5:
+        return True
+    # Versioned credential match: both sides share a leading ≥ 5-digit group regardless of
+    # renewal suffix (e.g. "40215-DI-1" vs "40215-DI-3" where the trailing cycle changes).
+    m_g = re.match(r"^(\d{5,})\D", master_lic.upper().strip())
+    c_g = re.match(r"^(\d{5,})\D", candidate_lic.upper().strip())
+    if m_g and c_g and m_g.group(1) == c_g.group(1):
         return True
     return False
 
@@ -265,18 +348,19 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "OT": ("OCCUPATIONAL THERAPIST", "OCCUPATIONAL THERAPY"),
         "SW": ("SOCIAL WORKER", "SOCIAL WORK", "LCSW", "LCSWA", "LMSW"),
         "LCSW": ("LICENSED CLINICAL SOCIAL", "SOCIAL WORK"),
-        "LPC": ("PROFESSIONAL COUNSELOR", "MENTAL HEALTH COUNSEL", "COUNSEL"),
+        "LPC": ("PROFESSIONAL COUNSELOR", "MENTAL HEALTH COUNSEL", "COUNSEL", "CPC"),
         "LC": ("LICENSED COUNSEL", "COUNSEL", "MENTAL HEALTH COUNSEL"),
         "MFT": ("MARRIAGE", "FAMILY THERAPIST"),
         "DC": ("CHIROPRACT",),
-        "DAC": ("ADDICTION COUNSEL", "DRUG ABUSE", "SUBSTANCE ABUSE"),
-        "AP": ("ACUPUNCTUR", "ORIENTAL MEDICINE"),
+        "DAC": ("ADDICTION COUNSEL", "DRUG ABUSE", "SUBSTANCE ABUSE", "ALCOHOL AND DRUG", "DRUG AND ALCOHOL"),
+        "AP": ("ACUPUNCTUR", "ORIENTAL MEDICINE", "LAC", "DOM", "OMD"),
         "AU": ("AUDIOLOGIST", "AUDIOLOGY"),
         "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST"),
         "ST": ("SPEECH", "SPEECH-LANGUAGE", "SPEECH LANGUAGE"),
         "CP": ("PSYCHOLOGIST", "PSYCHOLOGY"),
         "PC": ("PSYCHOLOGIST", "PSYCHOLOGY"),
-        "PH": ("PHARMACIST", "PHARMACY"),
+        "PH": ("PHARMACIST", "PHARMACY",
+               "MEDICAL DOCTOR", "PHYSICIAN", "OSTEOPATHIC"),  # WY routes PH to WY_PHYSICIAN (MD/DO board)
         "PM": ("PHARMACY",),
         "DT": ("DIETITIAN", "DIETETICS", "NUTRITIONIST", "NUTRITION"),
         "NUT": ("NUTRITIONIST", "NUTRITION"),
@@ -394,9 +478,24 @@ def score_candidate(candidate: Any, master_row: dict,
     c_first = getattr(candidate, "licensee_first_name", "") or ""
     c_last = getattr(candidate, "licensee_last_name", "") or ""
     c_lic = c_lic_raw  # reuse the already-read value from above
+    # Some boards map a legacy/old numeric ID to raw_fields["legacy_license_number"]
+    # (e.g. KY_MULTIBOARD col3 "Legacy Number" vs col4 "License Number"). When the
+    # input contains the legacy ID, fall through to it for scoring and gate checks.
+    _raw_fields = getattr(candidate, "raw_fields", None) or {}
+    c_lic_legacy = (_raw_fields.get("legacy_license_number") or "").upper().strip()
     c_lic_type = getattr(candidate, "license_type", "") or ""
     c_prof_code = getattr(candidate, "profession_code", "") or ""
     c_state = getattr(candidate, "state_code", "") or ""
+
+    # Defense-in-depth: if c_last was stored as a bare credential suffix (e.g. "DPM",
+    # "M.D."), the initial parse grabbed the wrong token. Re-split from the original
+    # full name using the master last-name word count to get the real last name.
+    if c_last and re.sub(r"[.\-]", "", c_last.strip()).upper() in _NAME_SUFFIXES_NORM:
+        full = getattr(candidate, "licensee_full_name", "") or ""
+        if full.strip():
+            c_first_new, c_last_new = _split_full_name(full, m_last)
+            if c_last_new:
+                c_first, c_last = c_first_new, c_last_new
 
     # If candidate has full name but no parsed first/last, split intelligently:
     # strip suffixes, use master last-name word count for compound last names.
@@ -409,7 +508,10 @@ def score_candidate(candidate: Any, master_row: dict,
 
     # Score each field, weighted.
     if weights["license_numerics"] > 0:
-        breakdown.license_numerics = 1.0 if license_numerics_match(m_lic, c_lic) else 0.0
+        _lic_match = license_numerics_match(m_lic, c_lic) or (
+            bool(c_lic_legacy) and license_numerics_match(m_lic, c_lic_legacy)
+        )
+        breakdown.license_numerics = 1.0 if _lic_match else 0.0
     breakdown.first_name = first_name_score(m_first, c_first)
     breakdown.last_name = last_name_score(m_last, c_last)
     breakdown.provider_type = 1.0 if provider_type_matches(m_pt, c_lic_type, c_prof_code) else 0.0
@@ -422,7 +524,10 @@ def score_candidate(candidate: Any, master_row: dict,
     # Gate: (first AND license) OR (first AND last). Middle never used.
     first_ok = first_name_matches(m_first, c_first)
     last_ok = last_name_matches(m_last, c_last)
-    lic_ok = license_numerics_match(m_lic, c_lic) if (m_lic and c_lic) else False
+    lic_ok = (
+        (license_numerics_match(m_lic, c_lic) if (m_lic and c_lic) else False)
+        or (bool(m_lic and c_lic_legacy) and license_numerics_match(m_lic, c_lic_legacy))
+    )
     breakdown.gate_passed = bool(first_ok and (lic_ok or last_ok))
 
     return breakdown
@@ -510,7 +615,34 @@ def evaluate(candidates: list[Any], master_row: dict,
     delta = top_bd.total - second_bd.total
 
     if delta <= cfg.TIEBREAKER_DELTA:
-        # Tiebreaker: candidate whose provider_type matches wins.
+        # Tiebreaker 1: candidate whose license matches the input wins.
+        # Checked before provider_type because the license number is a stronger
+        # identifier than the license-type label on the board record.
+        m_lic = (master_row.get("license_id") or "")
+        if m_lic:
+            _top_raw = (getattr(top_cand, "raw_fields", None) or {})
+            _sec_raw = (getattr(second_cand, "raw_fields", None) or {})
+            top_lic_ok = (
+                license_numerics_match(m_lic, getattr(top_cand, "license_number", "") or "")
+                or license_numerics_match(m_lic, _top_raw.get("legacy_license_number") or "")
+            )
+            second_lic_ok = (
+                license_numerics_match(m_lic, getattr(second_cand, "license_number", "") or "")
+                or license_numerics_match(m_lic, _sec_raw.get("legacy_license_number") or "")
+            )
+            if top_lic_ok and not second_lic_ok:
+                return DisambiguationVerdict(
+                    status="selected", best=top_cand, best_breakdown=top_bd,
+                    gate_passers=[c for c, _ in gate_passers],
+                    all_breakdowns=breakdowns, tiebreaker_used=True,
+                )
+            if second_lic_ok and not top_lic_ok:
+                return DisambiguationVerdict(
+                    status="selected", best=second_cand, best_breakdown=second_bd,
+                    gate_passers=[c for c, _ in gate_passers],
+                    all_breakdowns=breakdowns, tiebreaker_used=True,
+                )
+        # Tiebreaker 2: candidate whose provider_type matches wins.
         m_pt = (master_row.get("prov_type") or "").upper()
         if m_pt:
             top_pt_ok = top_bd.provider_type >= 1.0
@@ -527,7 +659,7 @@ def evaluate(candidates: list[Any], master_row: dict,
                     gate_passers=[c for c, _ in gate_passers],
                     all_breakdowns=breakdowns, tiebreaker_used=True,
                 )
-        # Close scores AND tiebreaker indeterminate → ambiguous; ladder may narrow.
+        # Close scores AND both tiebreakers indeterminate → narrow; ladder may apply_narrowing.
         return DisambiguationVerdict(
             status="narrow", best=None,
             gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,

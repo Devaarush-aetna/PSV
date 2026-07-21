@@ -12,16 +12,15 @@ identity:
 
 csv_bulk:
   download_strategy: google_sheet_link
-  link_selector: "a[href*='docs.google.com']"
-  link_selector_nth: 1           # page has two Google Sheets links; PT roster is the second
+  link_selector: "text=Mailing List of Active and Expired Licenses"
   download_timeout_ms: 180000    # 3-minute timeout for Google Sheets CSV export
   header_row: 3
   cache_days: 7
   cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
-    license_number: "LICENSE #"
-    last_name: "NAME "    # WY PT roster has a trailing space in the header — preserve it
+    license_number: "License No."
+    last_name: "Last Name"
 
 search:
   modes:
@@ -57,7 +56,16 @@ detail:
     timeout_ms: 500
   strategies: []
   field_map:
-    # WY_PT CSV: NAME = last name only (with trailing space), Unnamed: 1 = first name, Unnamed: 2 = initial
+    # Mailing List sheet (Active + Deactivated) — confirmed column names from cached CSV
+    "Last Name": last_name
+    "First Name": first_name
+    "License No.": license_number
+    "License Number": license_number
+    "Date Issued": issue_date
+    "Expiry Date": expiration_date
+    "Expiration Date": expiration_date
+    "Status": status
+    # Fallback: Active-only sheet used ALLCAPS/unnamed column names
     "NAME ": last_name
     "Unnamed: 1": first_name
     "LICENSE #": license_number
@@ -67,18 +75,22 @@ detail:
 
 output:
   status_map:
-    # WY PT roster encodes status as a single letter: A=Active, E=Expired
+    "Active": active
+    "active": active
+    "Active License": active
+    "Deactivated": inactive
+    "deactivated": inactive
+    "Inactive": inactive
+    "Inactive License": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    # Single-letter codes from old active-only sheet
     "A": active
     "E": expired
     "I": inactive
     "S": suspended
     "R": revoked
-    "Active": active
-    "active": active
-    "Inactive": inactive
-    "Expired": expired
-    "Suspended": suspended
-    "Revoked": revoked
   date_formats:
     - "%m/%d/%Y"
     - "%Y-%m-%d"
@@ -101,6 +113,8 @@ transport:
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
+  proxy:
+    enabled: true
 evidence:
   capture_html: true
   capture_screenshot: true

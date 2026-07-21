@@ -157,9 +157,23 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) 
     trigger_sel = config.results.detail_trigger.selector
 
     async for _ in paginate(page, config.results.pagination):
+        # Pre-extract table summary rows before clicking any detail button.
+        # Boards whose back_navigation resets the page (e.g. Thentia Cloud returning
+        # to homepage) lose the results table after the first detail click.  Having
+        # the summaries cached lets us fall back to them for rows whose View button
+        # is no longer reachable after back-navigation.
+        _summary_rows: list = []
+        try:
+            if config.results.type == "table":
+                _raw_summary, _ = await extract_results_table(page, config.results)
+                _summary_rows = [map_to_license_record(r, config, {}) for r in _raw_summary]
+        except Exception:
+            pass
+
         buttons = page.locator(trigger_sel)
         num_buttons = await buttons.count()
         if num_buttons == 0:
+            records.extend(_summary_rows)
             break
 
         for idx in range(num_buttons):
@@ -170,11 +184,15 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) 
 
                 try:
                     if not await btn.is_visible(timeout=3000):
-                        log.info("Button idx=%d not visible, ending page iteration", idx)
-                        break
+                        log.info("Button idx=%d not visible — falling back to table summary for %d remaining row(s)",
+                                 idx, max(0, len(_summary_rows) - idx))
+                        records.extend(_summary_rows[idx:])
+                        return records
                 except Exception:
-                    log.info("Button idx=%d check failed, ending page iteration", idx)
-                    break
+                    log.info("Button idx=%d check failed — falling back to table summary for %d remaining row(s)",
+                             idx, max(0, len(_summary_rows) - idx))
+                    records.extend(_summary_rows[idx:])
+                    return records
 
                 await btn.scroll_into_view_if_needed()
                 await asyncio.sleep(0.3)

@@ -125,7 +125,7 @@ async def check_one(
     cache_dir = _resolve_cache_dir(csv_cfg)
     cached_path, age_days = _cache_age_info(cache_dir, source_id, csv_cfg.cache_days)
 
-    if cached_path and not force:
+    if cached_path and age_days is not None and age_days < csv_cfg.cache_days and not force:
         ttl_left = csv_cfg.cache_days - age_days
         return source_id, FRESH, f"{cached_path.name}  (age={age_days}d, {ttl_left}d remaining)", 0
 

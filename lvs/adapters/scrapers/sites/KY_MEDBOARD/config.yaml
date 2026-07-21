@@ -3,7 +3,7 @@ identity:
   board_name: Kentucky Board of Medical Licensure
   state: KY
   country: US
-  profession_codes: [MD, DO]
+  profession_codes: [MD, DO, PH]
   base_url: "https://web1.ky.gov/gensearch/LicenseSearch.aspx?AGY=5"
   archetype: classic_html_form
 

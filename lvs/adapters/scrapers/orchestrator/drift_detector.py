@@ -16,23 +16,30 @@ from . import config as cfg
 
 log = logging.getLogger(__name__)
 
-_REPORT_NAME = "site_drift_report.csv"
 _HEADERS = (
     "timestamp", "source_id", "suspected_selector", "evidence_dir",
     "fix_hint", "severity",
 )
 
 
-def _report_path() -> Path:
+def _report_path(drift_dir: Path | None, run_id: str = "") -> Path:
+    """Return per-run Drift_{dt}.csv path when drift_dir is provided,
+    otherwise fall back to the legacy Output/_drift/ location."""
+    if drift_dir is not None:
+        drift_dir.mkdir(parents=True, exist_ok=True)
+        dt = cfg.date_time_from_run_id(run_id) if run_id else "unknown"
+        return drift_dir / f"Drift_{dt}.csv"
     cfg.DRIFT_ROOT.mkdir(parents=True, exist_ok=True)
-    return cfg.DRIFT_ROOT / _REPORT_NAME
+    return cfg.DRIFT_ROOT / "site_drift_report.csv"
 
 
 def append_drift_report(source_id: str, suspected_selector: str,
                         evidence_dir: str, fix_hint: str,
-                        severity: str = "med") -> dict[str, Any]:
+                        severity: str = "med",
+                        drift_dir: Path | None = None,
+                        run_id: str = "") -> dict[str, Any]:
     """Append one row. Returns the row as dict for the agent's tool result."""
-    path = _report_path()
+    path = _report_path(drift_dir, run_id)
     row = {
         "timestamp": datetime.utcnow().isoformat(),
         "source_id": source_id,

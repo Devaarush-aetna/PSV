@@ -81,9 +81,13 @@ def _resolve_server() -> Optional[str]:
     if lvs:
         return lvs
 
-    # Priority 2 — shell-script PROXY variable ("proxy:9119" or full URL)
-    raw = os.environ.get("PROXY", "").strip()
-    if raw:
+    # Priority 2 — shell-script PROXY variable ("proxy:9119" or full URL).
+    # If PROXY is present in the environment at all (even as ""), treat it as an
+    # explicit override: empty string means "no proxy" (bypasses psv_config.yaml).
+    if "PROXY" in os.environ:
+        raw = os.environ["PROXY"].strip()
+        if not raw:
+            return None  # PROXY="" explicitly disables proxy; do NOT fall through to yaml
         if raw.startswith(("http://", "https://", "socks5://")):
             return raw
         return f"http://{raw}"

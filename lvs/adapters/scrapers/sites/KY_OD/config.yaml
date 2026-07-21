@@ -87,6 +87,9 @@ detail:
     wait_after_ms: 1000
 
 output:
+  # All KY OD licenses expire March 1st annually.  Records have no expiration_date
+  # column, so we default every found record to the next March 1st.
+  fixed_annual_expiration_mmdd: "03-01"
   status_map:
     "Active": active
     "active": active

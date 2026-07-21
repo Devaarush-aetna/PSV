@@ -20,7 +20,7 @@ csv_bulk:
   encoding: "utf-8-sig"
   search_columns:
     license_number: "LicNo"
-    last_name: "LASTNAME"
+    last_name: "LastName"
 
 search:
   modes:
@@ -56,17 +56,19 @@ detail:
     timeout_ms: 500
   strategies: []
   field_map:
-    "LASTNAME": last_name
-    "FIRSTNAME": first_name
+    "LastName": last_name
+    "FirstName": first_name
     "LicNo": license_number
-    "Issued": issue_date
-    "Expires": expiration_date
-    "License Status": status
+    "IssDate": issue_date
+    "ExpDate": expiration_date
+    "Stat": status
 
 output:
   status_map:
     "Active": active
     "active": active
+    "Deactivated": inactive
+    "deactivated": inactive
     "Inactive": inactive
     "Expired": expired
     "Suspended": suspended
@@ -93,6 +95,8 @@ transport:
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
+  proxy:
+    enabled: true
 evidence:
   capture_html: true
   capture_screenshot: true

@@ -12,7 +12,7 @@ identity:
 
 csv_bulk:
   download_strategy: aithent_portal_xls
-  business_unit: "Dietitians & Music Therapists"   # exact dropdown option text
+  business_unit: "Dietitians and Music Therapist"   # exact dropdown option text
   header_row: 0                  # converted CSV has headers at row 0
   download_timeout_ms: 300000    # 5-minute timeout for large XLS export
   cache_days: 7

@@ -19,6 +19,7 @@ end-to-end CI tests possible without API access.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -26,12 +27,16 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Optional
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from engine.models import SearchQuery, SiteConfig
 
 from . import config as cfg
 from . import disambiguator as disamb
 from . import drift_detector
 from . import trace as trace_mod
+from .observability import score_groundedness as _score_groundedness
 from .nppes_client import NppesRecord, NpiDiscrepancy
 from .trace import (
     AttemptRecord, RowTrace,
@@ -47,6 +52,8 @@ log = logging.getLogger(__name__)
 SearchExecutor = Callable[[SiteConfig, SearchQuery, str], Awaitable[list]]
 
 # ---------- Circuit breaker (module-level, shared across calls) ----------
+# Only non-transient errors (auth, quota, bad-request) open the breaker.
+# Connection errors and timeouts are transient — they do NOT count toward the limit.
 _MAX_CONSECUTIVE_ERRORS = 2
 _consecutive_errors: int = 0
 _circuit_open: bool = False
@@ -56,13 +63,45 @@ def _is_circuit_open() -> bool:
     return _circuit_open
 
 
+def reset_circuit_breaker() -> None:
+    """Reset the circuit breaker state. Call at the start of each new run."""
+    global _consecutive_errors, _circuit_open
+    _consecutive_errors = 0
+    _circuit_open = False
+
+
 def _record_success() -> None:
     global _consecutive_errors
     _consecutive_errors = 0
 
 
-def _record_failure() -> None:
+def _is_transient_error(exc: Exception) -> bool:
+    """Return True for retry-able errors that should NOT trip the circuit breaker.
+    Permanent errors (auth, bad-request) still count toward the limit.
+    """
+    try:
+        import anthropic as _ant
+        # Network-level (no HTTP response) — always transient
+        if isinstance(exc, (_ant.APIConnectionError, _ant.APITimeoutError)):
+            return True
+        # HTTP 429 (rate limit) and HTTP 5xx (server error) — transient, not a quota burn
+        if isinstance(exc, (_ant.RateLimitError, _ant.InternalServerError)):
+            return True
+    except ImportError:
+        pass
+    # httpx-level errors that surface as generic exceptions
+    exc_name = type(exc).__name__
+    return exc_name in ("ConnectError", "ConnectTimeout", "ReadTimeout",
+                        "WriteTimeout", "RemoteProtocolError")
+
+
+def _record_failure(exc: Optional[Exception] = None) -> None:
     global _consecutive_errors, _circuit_open
+    if exc is not None and _is_transient_error(exc):
+        log.warning(
+            "AI agent transient error (not counted toward circuit breaker): %s", exc
+        )
+        return
     _consecutive_errors += 1
     if _consecutive_errors >= _MAX_CONSECUTIVE_ERRORS:
         _circuit_open = True
@@ -76,6 +115,16 @@ def _record_failure() -> None:
 _anthropic_client = None
 
 
+def _parse_custom_headers(raw: str) -> dict[str, str]:
+    """Parse newline-delimited 'Key: Value' header string (same logic as SDK)."""
+    headers: dict[str, str] = {}
+    for line in raw.split("\n"):
+        colon = line.find(":")
+        if colon >= 0:
+            headers[line[:colon].strip()] = line[colon + 1:].strip()
+    return headers
+
+
 def _get_client():
     global _anthropic_client
     if _anthropic_client is not None:
@@ -83,9 +132,22 @@ def _get_client():
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not api_key:
         return None
+    base_url    = os.environ.get("ANTHROPIC_BASE_URL", "")
+    raw_headers = os.environ.get("ANTHROPIC_CUSTOM_HEADERS", "")
     try:
         import anthropic
-        _anthropic_client = anthropic.AsyncAnthropic(api_key=api_key)
+        init_kwargs: dict = {"api_key": api_key}
+        if base_url:
+            init_kwargs["base_url"] = base_url
+        if raw_headers:
+            parsed = _parse_custom_headers(raw_headers)
+            if parsed:
+                init_kwargs["default_headers"] = parsed
+        _anthropic_client = anthropic.AsyncAnthropic(**init_kwargs)
+        log.info(
+            "Anthropic client ready: %s",
+            base_url or "https://api.anthropic.com",
+        )
         return _anthropic_client
     except Exception as exc:
         log.warning("Anthropic client init failed: %s", exc)
@@ -207,6 +269,13 @@ Rules:
 """
 
 
+# Token pricing for claude-sonnet-4-6 (USD per token).
+# Update when model or pricing changes.
+_USD_PER_INPUT_TOKEN: float = 3.00 / 1_000_000   # $3.00 / 1M
+_USD_PER_OUTPUT_TOKEN: float = 15.00 / 1_000_000  # $15.00 / 1M
+_AI_MODEL: str = "claude-sonnet-4-6"
+
+
 @dataclass
 class AiAgentResult:
     outcome: str                       # "resolved" | "gave_up" | "errored" | "skipped"
@@ -218,6 +287,16 @@ class AiAgentResult:
     tools_used: list[str] = field(default_factory=list)
     drift_reports: list[dict] = field(default_factory=list)
     raw_messages: list[dict] = field(default_factory=list)
+    # Token / cost telemetry (accumulated across all turns)
+    model: str = _AI_MODEL
+    input_tokens: int = 0
+    output_tokens: int = 0
+    usd_cost: float = 0.0
+    # Confidence: ScoreBreakdown.total from chosen candidate (None when not resolved)
+    confidence_score: Optional[float] = None
+    # Groundedness scoring (populated after resolution)
+    groundedness_score: int = 0
+    hallucination_risk: str = "high"
 
 
 def _build_context_message(
@@ -303,6 +382,7 @@ async def run_ai_agent(
     executor: SearchExecutor,
     candidate_cache: dict[str, list],
     timeout_s: int = 45,
+    drift_dir: Optional["Path"] = None,
 ) -> AiAgentResult:
     """Multi-turn Claude tool-use loop. Returns AiAgentResult with reason always set."""
     if _is_circuit_open():
@@ -358,20 +438,51 @@ async def run_ai_agent(
                     b.get("type") == "tool_use" for b in response_content
                 ) else "end_turn"
             else:
-                resp = await client.messages.create(
-                    model="claude-sonnet-4-6",
-                    max_tokens=2048,
-                    system=system_prompt,
-                    messages=messages,
-                    tools=_TOOL_SCHEMAS,
-                    temperature=0,
-                )
-                _record_success()
-                response_content = [b.model_dump() for b in resp.content]
-                stop_reason = resp.stop_reason
+                # Inner retry loop for transient errors (rate limits, connection drops).
+                # Non-transient errors (auth, bad-request) re-raise immediately to the
+                # outer except so the circuit breaker counts them correctly.
+                _last_exc: Optional[Exception] = None
+                for _retry_n, _retry_delay in enumerate([0, 2, 5]):
+                    if _retry_n > 0:
+                        log.warning(
+                            "AI agent turn %d transient retry %d/%d (delay=%ds): %s",
+                            turn + 1, _retry_n, len([0, 2, 5]) - 1, _retry_delay, _last_exc,
+                        )
+                        await asyncio.sleep(_retry_delay)
+                    try:
+                        resp = await client.messages.create(
+                            model=_AI_MODEL,
+                            max_tokens=2048,
+                            system=system_prompt,
+                            messages=messages,
+                            tools=_TOOL_SCHEMAS,
+                            temperature=0,
+                        )
+                        _record_success()
+                        response_content = [b.model_dump() for b in resp.content]
+                        stop_reason = resp.stop_reason
+                        if hasattr(resp, "usage") and resp.usage is not None:
+                            in_tok = getattr(resp.usage, "input_tokens", 0) or 0
+                            out_tok = getattr(resp.usage, "output_tokens", 0) or 0
+                            result.input_tokens += in_tok
+                            result.output_tokens += out_tok
+                            result.usd_cost += (
+                                in_tok * _USD_PER_INPUT_TOKEN
+                                + out_tok * _USD_PER_OUTPUT_TOKEN
+                            )
+                        _last_exc = None
+                        break  # success
+                    except Exception as inner_exc:
+                        _last_exc = inner_exc
+                        if not _is_transient_error(inner_exc):
+                            raise  # non-transient → outer except handles it
+                else:
+                    # All retries exhausted for a transient error — propagate it
+                    assert _last_exc is not None
+                    raise _last_exc
 
         except Exception as exc:
-            _record_failure()
+            _record_failure(exc)
             log.error("AI agent turn %d errored: %s", turn + 1, exc)
             result.outcome = "errored"
             result.reason = REASON_AI_TOOL_ERROR
@@ -406,7 +517,7 @@ async def run_ai_agent(
 
             tool_result = await _dispatch_tool(
                 name, args, master_row, trace, executor, cfg_by_sid,
-                candidate_cache, result, timeout_s,
+                candidate_cache, result, timeout_s, drift_dir,
             )
             tool_results.append({
                 "type": "tool_result",
@@ -440,6 +551,7 @@ async def _dispatch_tool(
     candidate_cache: dict[str, list],
     result: AiAgentResult,
     timeout_s: int,
+    drift_dir: Optional["Path"] = None,
 ) -> dict:
     if name == "give_up":
         reason = args.get("reason", "ai_gave_up")
@@ -469,6 +581,7 @@ async def _dispatch_tool(
         report = drift_detector.append_drift_report(
             source_id=sid, suspected_selector=suspected,
             evidence_dir=ev, fix_hint=fix_hint, severity="med",
+            drift_dir=drift_dir, run_id=trace.run_id,
         )
         result.drift_reports.append(report)
         return {"ok": True, "report": report}
@@ -499,8 +612,13 @@ async def _dispatch_tool(
             result.outcome = "resolved"
             result.chosen_candidate = chosen
             result.chosen_breakdown = bd
+            result.confidence_score = round(bd.total, 4) if bd is not None else None
             result.chosen_source_id = sid
             result.reason = "ai_pick_candidate"
+            _ev = "inspect_evidence" in result.tools_used
+            result.groundedness_score, result.hallucination_risk = _score_groundedness(
+                _ev, result.confidence_score, result.tools_used
+            )
             return {"ok": True, "chosen": _candidate_summary(chosen)}
         return {"ok": False, "error": "invalid_candidate_index"}
 
@@ -547,8 +665,13 @@ async def _dispatch_tool(
                 result.outcome = "resolved"
                 result.chosen_candidate = verdict.best
                 result.chosen_breakdown = bd
+                result.confidence_score = round(bd.total, 4) if bd is not None else None
                 result.chosen_source_id = sid
                 result.reason = "ai_try_search_auto_resolved"
+                _ev = "inspect_evidence" in result.tools_used
+                result.groundedness_score, result.hallucination_risk = _score_groundedness(
+                    _ev, result.confidence_score, result.tools_used
+                )
                 return {
                     "ok": True,
                     "record_count": len(records),

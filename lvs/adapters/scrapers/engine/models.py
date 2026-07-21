@@ -70,6 +70,7 @@ class LicenseRecord(BaseModel):
     ai_layer: Optional[int] = None
     manual_flag: bool = False
     secondary_check_passed: bool = False
+    out_of_state_state: Optional[str] = None   # FL T-license: state name from Out of State tab
     provider_type_matched: bool = False
     fuzzy_score: Optional[float] = None
     fuzzy_breakdown: Optional[dict] = None
@@ -158,6 +159,7 @@ class SiteIdentity(BaseModel):
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
         "socrata_api", "socrata_bulk_csv", "pdf_bulk", "csv_bulk", "certemy",
         "json_api", "datatables_jsapi", "filemaker_webdirect", "pega_constellation",
+        "psypact",
     ]
     # Optional explicit capability list — overrides auto-derivation in check_board_capability.
     # Use when the auto-derivation is wrong (e.g. dropdown-switched single-field boards).
@@ -255,6 +257,31 @@ class SearchConfig(BaseModel):
     # Example: "2-5-3" reformats "5383371052" (10 digits) → "53-83371-052".
     # The ladder will add a synthetic `license_formatted` attempt after license_numeric_only.
     license_dash_format: Optional[str] = None
+    # When true, licenses matching ^([A-Za-z]+)(\d+)$ get a synthetic `license_formatted`
+    # attempt with a dash inserted after the prefix (e.g. "L301745" → "L-301745").
+    # Used for boards like IBCLC_COMMISSION that require hyphenated credential numbers.
+    license_prefix_dash: bool = False
+    # When true, licenses matching ^([A-Za-z]+)(\d+)$ get a synthetic attempt with a space
+    # inserted between the alpha prefix and the digits (e.g. "LCPC03720" → "LCPC 03720").
+    # Used for boards like KS_BSRB that require a space between the type prefix and number.
+    license_alpha_space_insert: bool = False
+    # List of alpha prefixes to try prepending (with a space) when the input license is
+    # pure-digit. E.g. ["LCPC", "LPC"] → tries "LCPC 03192", "LPC 03192" for input "03192".
+    # Used for boards like KS_BSRB where callers may omit the required license-type prefix.
+    license_digit_prefixes: Optional[list[str]] = None
+    # When set, zero-pads the digit portion of the license to exactly N digits.
+    # For inputs already containing a letter prefix (e.g. "D63352"), the prefix is kept and
+    # only the digit segment is padded: "D63352" → "D0063352" with license_digit_pad=7.
+    # When combined with license_digit_prefixes for pure-digit inputs, generates
+    # prefix+padded combos with no space (e.g. prefix "D" + "63352".zfill(7) → "D0063352").
+    # For pure-digit inputs with no prefix list, simply zero-pads to digit_pad digits
+    # (e.g. "12345".zfill(10) → "0000012345"). Used for VA_DHP (license_digit_pad=10).
+    license_digit_pad: Optional[int] = None
+    # CSS selector for an <iframe> that contains the search form. When set, the engine
+    # switches to the iframe's content frame for set_search_by / fill_search_input /
+    # fill_extra_inputs / click_search_button, then reverts to the main page for
+    # wait_for_results. Used for Clarus-embedded boards (e.g. IBCLC_COMMISSION).
+    iframe_search_selector: Optional[str] = None
 
 
 class DetailTrigger(BaseModel):
@@ -354,12 +381,23 @@ class BackNavigation(BaseModel):
     wait_after_ms: int = 1500
 
 
+class OutOfStateTabConfig(BaseModel):
+    """Config for fetching expiry from an 'Out of State' secondary tab (FL_MQA T-licenses)."""
+    enabled: bool = False
+    trigger_license_prefix: str = "T"
+    tab_selector: str = "a:has-text('Out of State'), a:text-is('Out of State')"
+    expiration_label: str = "Expiration Date"
+    state_label: str = "State"
+    content_wait_selector: str = "table tr td, dl dt, h2"
+
+
 class DetailConfig(BaseModel):
     wait: DetailWait = Field(default_factory=DetailWait)
     strategies: list[dict] = Field(default_factory=list)
     field_map: dict[str, str] = Field(default_factory=dict)
     sections: list[DetailSection] = Field(default_factory=list)
     back_navigation: BackNavigation = Field(default_factory=BackNavigation)
+    out_of_state_tab: OutOfStateTabConfig = Field(default_factory=OutOfStateTabConfig)
 
 
 class OutputConfig(BaseModel):
@@ -368,6 +406,10 @@ class OutputConfig(BaseModel):
     date_formats: list[str] = Field(default_factory=lambda: [
         "%m/%d/%Y", "%Y-%m-%d", "%m-%d-%Y", "%B %d, %Y", "%b %d, %Y",
     ])
+    # When set (e.g. "03-01"), any record missing expiration_date gets the next
+    # annual occurrence of that MM-DD as its expiration. Use for boards like KY_OD
+    # where all licenses expire on the same calendar date each year.
+    fixed_annual_expiration_mmdd: Optional[str] = None
 
 
 class RateLimitConfig(BaseModel):

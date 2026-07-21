@@ -30,9 +30,12 @@ search:
         - "[aria-label='Search']"
         - "button[type='submit']"
   results_wait:
-    strategy: "element_visible"
+    strategy: "ajax_row_count"
     selector: "table tbody tr"
-    timeout_ms: 30000
+    timeout_ms: 20000
+    min_rows: 1
+    stable_ticks: 3
+    poll_interval_ms: 400
     no_results_indicators:
       - "no results"
       - "no records found"
@@ -43,15 +46,17 @@ results:
   table:
     row_selector: "table tbody tr"
     cell_selector: "td"
+    # Column order confirmed from live HTML (2026-07-15):
+    #   License Number | First Name | Last Name | City | License Type | License Status | Expiration Date | (flag col)
     columns:
-      0: "name"
-      1: "license_number"
-      2: "license_type"
-      3: "status"
-  has_detail_page: true
-  detail_trigger:
-    type: "view_button"
-    selector: "a.btn-single"
+      0: "license_number"
+      1: "first_name"
+      2: "last_name"
+      3: "city"
+      4: "license_type"
+      5: "status"
+      6: "expiration_date"
+  has_detail_page: false
   pagination:
     enabled: true
     strategy: "next_button"

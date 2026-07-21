@@ -3,11 +3,14 @@ identity:
   board_name: Kansas State Board of Healing Arts
   state: KS
   country: US
-  profession_codes: []
+  profession_codes: [PH]
   base_url: "https://www.kansas.gov/ssrv-ksbhada/search.html"
   archetype: classic_html_form
 
 search:
+  # KS physician licenses: 7-digit pure-digit inputs (e.g. "0442330") need dash-formatting
+  # → "04-42330" (2-5 grouping). Board format: XX-XXXXX.
+  license_dash_format: "2-5"
   modes:
     # Selectors use fuzzy match — same approach as original scraper (selectors unconfirmed)
     - mode: license_number

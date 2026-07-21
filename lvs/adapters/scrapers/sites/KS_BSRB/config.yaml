@@ -8,6 +8,10 @@ identity:
   archetype: classic_html_form
 
 search:
+  # "LCPC03720" → "LCPC 03720": insert space between letter prefix and digits.
+  license_alpha_space_insert: true
+  # For pure-digit inputs like "03192", try with each prefix in order.
+  license_digit_prefixes: [LSCSW, LMSW, LCP, LCPC, LPC, LMFT]
   modes:
     - mode: license_number
       input_selector: "input#t_web_lookup__license_no"

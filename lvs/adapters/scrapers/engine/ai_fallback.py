@@ -39,9 +39,21 @@ load_dotenv()
 log = logging.getLogger(__name__)
 
 # ── Configuration ─────────────────────────────────────────────────────────────
-_ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-_ANTHROPIC_MODEL   = os.environ.get("ANTHROPIC_MODEL", "claude-opus-4-8")
-_CLAUDE_CONFIGURED = bool(_ANTHROPIC_API_KEY)
+_ANTHROPIC_API_KEY  = os.environ.get("ANTHROPIC_API_KEY", "")
+_ANTHROPIC_MODEL    = os.environ.get("ANTHROPIC_MODEL", "claude-opus-4-8")
+_ANTHROPIC_BASE_URL = os.environ.get("ANTHROPIC_BASE_URL", "")   # CVS gateway
+_ANTHROPIC_HDRS_RAW = os.environ.get("ANTHROPIC_CUSTOM_HEADERS", "")
+_CLAUDE_CONFIGURED  = bool(_ANTHROPIC_API_KEY)
+
+
+def _parse_custom_headers(raw: str) -> Dict[str, str]:
+    """Parse newline-delimited 'Key: Value' header string (same logic as SDK)."""
+    headers: Dict[str, str] = {}
+    for line in raw.split("\n"):
+        colon = line.find(":")
+        if colon >= 0:
+            headers[line[:colon].strip()] = line[colon + 1:].strip()
+    return headers
 
 _MIN_FIELDS_THRESHOLD  = 3
 _MAX_HTML_CHARS        = 20_000
@@ -62,12 +74,24 @@ CONFIDENCE_BEST_MATCH  = 80
 
 try:
     import anthropic as _anthropic
-    _client = _anthropic.AsyncAnthropic(api_key=_ANTHROPIC_API_KEY) if _CLAUDE_CONFIGURED else None
+    if _CLAUDE_CONFIGURED:
+        _init_kwargs: Dict[str, Any] = {"api_key": _ANTHROPIC_API_KEY}
+        if _ANTHROPIC_BASE_URL:
+            _init_kwargs["base_url"] = _ANTHROPIC_BASE_URL
+        if _ANTHROPIC_HDRS_RAW:
+            _init_kwargs["default_headers"] = _parse_custom_headers(_ANTHROPIC_HDRS_RAW)
+        _client = _anthropic.AsyncAnthropic(**_init_kwargs)
+        log.info(
+            "Anthropic client ready → %s",
+            _ANTHROPIC_BASE_URL or "https://api.anthropic.com",
+        )
+    else:
+        _client = None
     _CLAUDE_AVAILABLE = _CLAUDE_CONFIGURED
-except Exception:
+except Exception as _init_exc:
     _CLAUDE_AVAILABLE = False
     _client = None
-    log.warning("Anthropic SDK not available — AI fallback disabled")
+    log.warning("Anthropic SDK init failed — AI fallback disabled: %s", _init_exc)
 
 
 # =============================================================================
@@ -203,7 +227,8 @@ _ALERT_SUGGESTIONS: Dict[AlertType, str] = {
         "Inspect raw response body and update the parser if the format has changed.",
     AlertType.AI_SERVICE_ERROR:
         "Anthropic API returned repeated connection errors. Verify ANTHROPIC_API_KEY, "
-        "check quota/rate limits, and confirm network access to api.anthropic.com. "
+        "check quota/rate limits, and confirm network access to the configured gateway "
+        f"({_ANTHROPIC_BASE_URL or 'https://api.anthropic.com'}). "
         "AI fallback is disabled for the remainder of this run.",
     AlertType.NPI_SERVICE_DOWN:
         "NPPES NPI registry (npiregistry.cms.hhs.gov) was unreachable. "

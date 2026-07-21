@@ -3,7 +3,7 @@
 A RowTrace is the per-input-row attempt log — it records every rung tried,
 which board, which mode, what came back, and where the evidence landed. The
 AI agent reads it as context if it gets invoked. The output emitter persists
-it to PSV_DEV/Output/_traces/{YYYY-MM}/{run_id}/{master_row_id}.json.
+it to PSV_DEV/Output/{YYYYMM}/{run_id}/Traces/{master_row_id}.json.
 """
 from __future__ import annotations
 
@@ -21,6 +21,9 @@ OUTCOME_AMBIGUOUS = "ambiguous"
 OUTCOME_NARROWED = "narrowed"
 OUTCOME_NAME_MISMATCH = "name_mismatch"
 OUTCOME_LICENSE_MISMATCH = "license_mismatch"
+# Name matched but license was never confirmed (no license found or license mismatch
+# discovered after detail-page fetch). Triggers Fail even with a high name fuzzy score.
+OUTCOME_NAME_MATCH_NO_LICENSE = "name_match_no_license"
 OUTCOME_PROVIDER_TYPE_MISMATCH = "provider_type_mismatch"
 OUTCOME_ERROR = "error"
 OUTCOME_SKIPPED_DUPLICATE = "skipped_duplicate"
@@ -33,6 +36,7 @@ OUTCOME_AI_BOARD_HIT = "ai_board_hit"
 # clarified must always populate the `reason` column).
 REASON_NAME_MISMATCH = "name_mismatch"
 REASON_LICENSE_MISMATCH = "license_mismatch"
+REASON_NAME_MATCH_NO_LICENSE = "name_match_no_license"
 REASON_PROVIDER_TYPE_MISMATCH = "provider_type_mismatch"
 REASON_AMBIGUOUS_AFTER_NARROWING = "ambiguous_after_narrowing"
 REASON_NO_RECORDS = "no_records"
@@ -106,8 +110,12 @@ class RowTrace:
     escalate_to_ai_reason: Optional[str] = None
     nppes_used: bool = False
     nppes_discrepancy: Optional[dict] = None
-    final_outcome: str = ""           # "Pass" | "Fail" | "EscalatedAi" | "Resolved"
+    final_outcome: str = ""           # "Pass" | "Fail" | "Skip" | "EscalatedAi" | "Resolved"
     final_reason: Optional[str] = None  # one of REASON_* codes when not Pass
+    # Post-license name gate (set by run_state_orchestrated after ladder, before emitter)
+    epdb_name_score: Optional[float] = None
+    nppes_name_score: Optional[float] = None
+    name_gate_reason: Optional[str] = None  # "name_gate_manual" | None
 
     def append(self, rec: AttemptRecord) -> None:
         self.attempts.append(rec)
@@ -141,6 +149,9 @@ class RowTrace:
             "nppes_discrepancy": self.nppes_discrepancy,
             "final_outcome": self.final_outcome,
             "final_reason": self.final_reason,
+            "epdb_name_score": self.epdb_name_score,
+            "nppes_name_score": self.nppes_name_score,
+            "name_gate_reason": self.name_gate_reason,
         }
 
     def write_json(self, trace_dir: Path) -> Path:
@@ -150,8 +161,10 @@ class RowTrace:
         return path
 
 
-def make_master_row_id(row_index: int, last_name: str, license_id: str) -> str:
-    """Stable per-row key for trace files / nppes channel correlation."""
-    safe_last = _FS_UNSAFE.sub("_", (last_name or "_")[:20])
-    safe_lic = _FS_UNSAFE.sub("_", (license_id or "_")[:20])
-    return f"row_{row_index:04d}_{safe_last}_{safe_lic}"
+def make_master_row_id(row_index: int, npi_no: str) -> str:
+    """Stable per-row key for trace files / output channel correlation.
+    Format: row_{NNNN}_{npi_no}  e.g. row_0042_1234567890
+    When npi_no is absent the segment is empty: row_0042_
+    """
+    safe_npi = _FS_UNSAFE.sub("_", (npi_no or "").strip()[:20]) or "000"
+    return f"row_{row_index:04d}_{safe_npi}"

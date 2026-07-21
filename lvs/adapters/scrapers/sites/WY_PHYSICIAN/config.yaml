@@ -42,16 +42,30 @@ results:
     row_selector: "#ContentPlaceHolder1_dtgResults tr"
     cell_selector: "td"
     skip_first_row: true
-    # Columns: 0=Name, 1=Address, 2=Phone, 3=LicenseNo, 4=DateLicensed, 5=ReactivationDate,
-    #          6=LicenseStatus, 7=BoardCertification, 8=Specialty, 9=SubSpecialty, 10=DisciplinaryAction
-    columns:
-      0: "full_name"
-      1: "address"
-      3: "license_number"
-      4: "issue_date"
-      6: "status"
-      8: "license_type"
-      10: "disciplinary_action"
+    # Col 6 format: "Expires MM/DD/YYYY; Active" — expiry and status are both parsed via custom_js
+    custom_js: |
+      () => {
+        const rows = [...document.querySelectorAll('#ContentPlaceHolder1_dtgResults tr')];
+        const records = [];
+        for (const row of rows.slice(1)) {
+          const cells = [...row.querySelectorAll('td')];
+          if (cells.length < 7) continue;
+          const statusRaw = cells[6].textContent.trim();
+          const expMatch = statusRaw.match(/Expires?\s+(\d{1,2}\/\d{1,2}\/\d{4})/i);
+          const statusPart = statusRaw.includes(';') ? statusRaw.split(';').pop().trim() : statusRaw;
+          records.push({
+            full_name: cells[0] ? cells[0].textContent.trim() : '',
+            address: cells[1] ? cells[1].textContent.trim() : '',
+            license_number: cells[3] ? cells[3].textContent.trim() : '',
+            issue_date: cells[4] ? cells[4].textContent.trim() : '',
+            expiration_date: expMatch ? expMatch[1] : '',
+            status: statusPart,
+            license_type: cells[8] ? cells[8].textContent.trim() : '',
+            disciplinary_action: cells[10] ? cells[10].textContent.trim() : '',
+          });
+        }
+        return records;
+      }
   has_detail_page: false
   pagination:
     enabled: false
@@ -103,6 +117,8 @@ transport:
     retry_on: ["timeout", "navigation_error", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
+  proxy:
+    enabled: false   # proxy:9119 returns 403 (Azure AG WAF block) — direct Chromium works
 evidence:
   capture_html: true
   capture_screenshot: true

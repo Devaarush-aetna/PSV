@@ -45,7 +45,7 @@ from engine.output import map_to_license_record
 from engine.proxy import get_proxy_config
 from engine.validate import load_config
 from engine.navigator import navigate_to_search, fill_search_form
-from archetypes._shared import _wait_for_detail_content, _navigate_back
+from archetypes._shared import _wait_for_detail_content, _navigate_back, _try_out_of_state_tab
 from run import verify_license
 
 log = logging.getLogger("psv_test")
@@ -82,7 +82,6 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("KY", "RNA"): "KY Board of Nursing requires CAPTCHA — automated access blocked",
     # McAfee Web Gateway blocks both proxy and direct access (502 both routes 2026-06-29)
     ("NV", "OT"):  "NV OT board (occupationaltherapy.nv.gov) blocked by McAfee Web Gateway",
-    ("NV", "DAC"): "NV DAC board (bsacp.nv.gov) blocked by McAfee Web Gateway",
     # Nevada State Board of Nursing (nevadanursingboard.org) — connection forcibly closed
     # by McAfee Web Gateway from corporate network (WinError 10054, 2026-06-29).
     ("NV", "NP"):  "NV Board of Nursing (nevadanursingboard.org) blocked by McAfee Web Gateway",
@@ -91,19 +90,30 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     # Nevada Board of Examiners for Social Workers — DNS resolution fails from corporate
     # network (getaddrinfo failed on all known nv.gov/swbn variants, 2026-06-29).
     ("NV", "SW"):  "NV Social Work board (swbn.nv.gov) — DNS blocked at corporate network layer",
-    # NV_DIETITIAN (nvdpbh.aithent.com) — Aithent portal navigates but Generate Excel stalls;
-    # every attempt times out after 60s (confirmed 2026-06-30, multiple consecutive attempts).
-    ("NV", "DT"):  "NV Dietitian board (nvdpbh.aithent.com) — Aithent XLS export consistently times out; manual verification required",
     # KY Board of Pharmacy (kybopp.aithent.com) — McAfee Web Gateway returns 502 from
     # corporate network; pharmacy.ky.gov also returns 403 (confirmed 2026-06-30).
-    ("KY", "PH"):  "KY Board of Pharmacy (kybopp.aithent.com) blocked by McAfee Web Gateway",
+    # KY PH removed 2026-07-01: PH now routes to KY_MEDBOARD first (no CAPTCHA).
     ("KY", "PM"):  "KY Board of Pharmacy (kybopp.aithent.com) blocked by McAfee Web Gateway",
-    # KY Board of Dentistry (kybde.ky.gov) — McAfee Web Gateway returns 502 from corporate
-    # network (confirmed 2026-06-30).
-    ("KY", "DN"):  "KY Board of Dentistry (kybde.ky.gov) blocked by McAfee Web Gateway",
+    # KY Board of Dentistry: kybde.ky.gov was McAfee-blocked; replaced 2026-07-04 by
+    # kbd.portalus.thentiacloud.net (KY_DENTAL) which IS accessible — DN entry removed.
+    # KY Board of Social Work (kscsw.org) — CAPTCHA-protected, automated access blocked.
+    ("KY", "SW"):  "KY Board of Social Work (kscsw.org) — CAPTCHA-protected, automated access blocked",
+    # KY Board of Physical Therapy (secure.kentucky.gov/formservices/PT) — CAPTCHA-protected;
+    # PT licenses are NOT on KY_MULTIBOARD despite partial name hits there.
+    ("KY", "PT"):  "KY Board of Physical Therapy (secure.kentucky.gov/formservices/PT) — CAPTCHA-protected, automated access blocked",
     # NV Board of Nursing (nvbn.boardsofnursing.org) — same block as NV/PN/RNA/NP.
     # MW (midwife/CNM) licenses carry RN-prefix numbers issued by the nursing board.
     ("NV", "MW"):  "NV Board of Nursing (nvbn.boardsofnursing.org) blocked — connection times out from corporate network",
+    # MD Board of Occupational Therapy Practice (mdbnc.health.maryland.gov/OTVerification) —
+    # CAPTCHA-protected, automated access blocked from corporate network.
+    ("MD", "OT"):  "MD Board of Occupational Therapy Practice (mdbnc.health.maryland.gov) — CAPTCHA-protected, automated access blocked",
+    # MD ABA (Behavior Analysts) — no automated-access board in inventory; site requires CAPTCHA.
+    ("MD", "ABA"): "MD Behavior Analyst board — CAPTCHA-protected, automated access blocked",
+    # WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, no automated access.
+    # NP/PN/RNA must not fall through to WY_PHYSICIAN (physician board).
+    ("WY", "NP"):  "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
+    ("WY", "PN"):  "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
+    ("WY", "RNA"): "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -146,9 +156,10 @@ def _parse_psypact_expiry(date_str: str):
 async def _verify_psypact_row(row: dict, trace, run_id: str = "") -> "LadderResult":
     """Verify a PSYPACT E.Passport license via directory.psypact.gov.
 
-    Calls the standalone psypact_scraper at PSV_DEV root, matches the
-    returned Mobility Number against the numeric portion of the license_id
-    (e.g. "PSYPACT18696" → expected "18696").
+    Handles both common license_id formats:
+      - "PSYPACT18696"  →  mobility number "18696"
+      - "APIT-18240"    →  mobility number "18240"  (Authority to Practice
+                            Interjurisdictional Telepsychology)
     """
     from orchestrator.ladder import LadderResult  # noqa: PLC0415
     from orchestrator.disambiguator import ScoreBreakdown  # noqa: PLC0415
@@ -159,7 +170,10 @@ async def _verify_psypact_row(row: dict, trace, run_id: str = "") -> "LadderResu
     last = (row.get("last_name") or "").strip()
     license_id = (row.get("license_id") or "").strip()
 
-    expected_num = re.sub(r"[^\d]", "", license_id.upper().replace("PSYPACT", ""))
+    # Strip known PSYPACT prefixes before extracting the mobility number.
+    # "PSYPACT18696" → "18696", "APIT-18240" → "18240"
+    _stripped = re.sub(r"^(?:PSYPACT|APIT[-\s]*)", "", license_id.upper())
+    expected_num = re.sub(r"[^\d]", "", _stripped)
     ym = yyyy_mm_from_run_id(run_id) if run_id else ""
     evidence_dir = str(_PSV_DEV / "Evidence" / ym / run_id)
 
@@ -304,10 +318,51 @@ _SOCRATA_TYPE_MAP: dict[tuple[str, str], str] = {
     ("KS_NURSING_KSBN", "MW"):  "NMW",
 }
 
+# Fallback license types to try when the primary type-filtered name search returns 0.
+# Handles career-progression scenarios (e.g. PN→RN): the board may have moved the
+# person to a different license class while the input still shows the original prov_type.
+# Only fires for browser boards after ALL standard name searches return 0.
+_BOARD_TYPE_FALLBACKS: dict[tuple[str, str], list[str]] = {
+    # KSBN: PN/LPN nurses who upgraded to RN or APRN keep only the new license class.
+    ("KS_NURSING_KSBN", "PN"):  ["RN", "NP"],
+    ("KS_NURSING_KSBN", "NP"):  ["RN"],
+    ("KS_NURSING_KSBN", "RN"):  ["LPN", "NP"],
+}
+
 
 def _normalize(s: str) -> str:
-    # Replace hyphens/apostrophes/periods with space so "Vives-Montano"=="Vives Montano"
-    return re.sub(r"\s+", " ", re.sub(r"[-.']+", " ", s.upper())).strip()
+    # Replace commas, hyphens, apostrophes, periods with space; collapse whitespace
+    return re.sub(r"\s+", " ", re.sub(r"[,\-.']+", " ", s.upper())).strip()
+
+
+# Credential suffixes and honorific prefixes stripped from board-returned names
+# before comparison to avoid false name_mismatch when the board appends "MD", "RN",
+# etc. or prepends "Dr." to the licensee name.
+_CRED_SUFFIXES: frozenset[str] = frozenset({
+    "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    "MD", "DO", "DPM", "DDS", "DMD", "OD", "PHD", "PSYD",
+    "DPT", "DC", "ND",
+    "RN", "LPN", "LVN", "APRN", "DNP", "CNM", "NP", "PA", "CRNA",
+    "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABA", "RBT",
+    "PT", "OT", "SLP", "AUD",
+    "PHARMD", "RPH",
+    "FACP", "FACS", "FACOG", "FAAP",
+})
+_CRED_PREFIXES: frozenset[str] = frozenset({
+    "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV",
+    "PASTOR", "RABBI", "SISTER", "BROTHER",
+})
+
+
+def _strip_name_credentials(s: str) -> str:
+    """Remove leading honorific prefixes and trailing credential suffixes from
+    an already-normalized (uppercase, comma-free) name string."""
+    tokens = s.split()
+    while tokens and tokens[0] in _CRED_PREFIXES:
+        tokens = tokens[1:]
+    while tokens and tokens[-1] in _CRED_SUFFIXES:
+        tokens = tokens[:-1]
+    return " ".join(tokens)
 
 
 def _full_name(rec) -> str:
@@ -325,20 +380,20 @@ def _full_name(rec) -> str:
 
 
 def _name_matches(rec, last: str, first: str) -> bool:
-    full = _normalize(_full_name(rec))
+    full = _strip_name_credentials(_normalize(_full_name(rec)))
     if not full:
         return False
-    last_norm = _normalize(last) if last else ""
+    last_norm = _strip_name_credentials(_normalize(last)) if last else ""
     if last_norm and last_norm not in full:
         # Hyphenated surname fallback: board may store only one component of the name
         # (e.g. board shows "BATES, AMY J" while PSV has "Bates-Daly" → try "BATES" or "DALY").
         if "-" in last:
-            parts = [_normalize(p) for p in last.split("-") if p.strip()]
+            parts = [_strip_name_credentials(_normalize(p)) for p in last.split("-") if p.strip()]
             if not any(p and p in full for p in parts):
                 return False
         else:
             return False
-    if first and _normalize(first) not in full:
+    if first and _strip_name_credentials(_normalize(first)) not in full:
         return False
     return True
 
@@ -354,20 +409,46 @@ def _license_matches(rec, lid: str) -> bool:
     rec_u = lic.upper().strip()
     if lid_u == rec_u:
         return True
+    # Legacy license number fallback: some boards keep an old numeric ID alongside the
+    # current license number (e.g. KY_MULTIBOARD col3 "Legacy Number" vs col4 "License Number").
+    # When the board-config maps that column to legacy_license_number, check it here.
+    _raw = getattr(rec, "raw_fields", None) or {}
+    _legacy = (_raw.get("legacy_license_number") or "").upper().strip()
+    if _legacy:
+        if lid_u == _legacy:
+            return True
+        if lid_u.isdigit() and _legacy.isdigit() and lid_u.lstrip("0") == _legacy.lstrip("0"):
+            return True
     # Substring match only when at least one side is alphanumeric (prefix/suffix case
     # like "8901" ⊂ "LC8901").  Two all-digit strings must be an exact match — otherwise
     # "3940" spuriously matches inside "13940", "23940", etc.
     if lid_u.isdigit() and rec_u.isdigit():
+        # Middle-group exception: board returns just the center digits of a longer license
+        # (e.g. KSBN returns "84236" for full input "5384236101").
+        # Require returned value ≥ 4 shorter than input to prevent "3940" ⊂ "13940" (diff=1).
+        if len(rec_u) >= 4 and len(lid_u) - len(rec_u) >= 4 and rec_u in lid_u:
+            return True
+        # Leading-zero tolerance for pure-digit pairs: "4102" == "04102".
+        # The lstrip check below is unreachable in this branch without this explicit guard.
+        if lid_u.lstrip("0") == rec_u.lstrip("0"):
+            return True
         return False
     if lid_u in rec_u:
-        # Guard: a pure-digit PSV ID (e.g., "2561") must not match a board license
-        # whose digit-only content is substantially longer (e.g., "17-02561" → 7 digits).
-        # Year-prefixed formats like "YY-NNNNN" would be a different number entirely.
-        # Allow ≤ 2 extra digits (covers zero-padding like "4643" ↔ "04643" or "LC 04643").
-        if lid_u.isdigit() and len(re.sub(r"\D", "", rec_u)) > len(lid_u) + 2:
-            pass  # skip — year-prefix or totally different number
+        if lid_u.isdigit():
+            _dig_rec = re.sub(r"\D", "", rec_u)
+            if len(_dig_rec) > len(lid_u) + 2:
+                pass  # skip — year-prefix or totally different number (e.g. "2561" in "17-02561")
+            elif not _dig_rec.endswith(lid_u):
+                pass  # skip — digits appear at front of board value, not trailing ("1495" in "14959")
+            else:
+                return True
         else:
             return True
+    # Middle-digits-only boards (e.g. KSBN): board returns the center group of a dashed
+    # license — "81920" ⊂ "53-81920-022". Only reached when input is NOT all-digit (dashes
+    # skip the all-digit guard above), so min-length of 4 prevents accidental short matches.
+    if rec_u and len(rec_u) >= 4 and rec_u in lid_u:
+        return True
     # Numeric-only fallback: "LPC 04643" should match "LCPC 04643" since the digit
     # portion is identical (different type-prefix conventions across PSV vs board).
     lid_num = re.sub(r"\D", "", lid_u)
@@ -376,6 +457,23 @@ def _license_matches(rec, lid: str) -> bool:
         return True
     # Leading-zero tolerance: "01041" == "1041" after stripping leading zeros
     if lid_num and rec_num and len(lid_num) >= 3 and lid_num.lstrip("0") == rec_num.lstrip("0"):
+        return True
+    # Leading numeric group match: handles NNNNN-XX-V versioned credential formats such as
+    # NV_DIETITIAN ("39673-DI-3" vs input "39673-D1-2" or "40902-DI-1" vs "40902-DI-0").
+    # Board renumbers credentials on each renewal cycle; the first digit block is the stable key.
+    # Only fires when BOTH sides have a leading digit group of ≥ 4 followed by a non-digit,
+    # so pure-digit comparisons (already handled above) and short IDs are unaffected.
+    m_in = re.match(r"^(\d{4,})\D", lid_u)
+    m_rec = re.match(r"^(\d{4,})\D", rec_u)
+    if m_in and m_rec and m_in.group(1) == m_rec.group(1):
+        return True
+    # Cross-format match: handles TYPE-prefixed board IDs where the board stores
+    # "DI-40215" (prefix-number) but input carries "40215-DI-1" (number-prefix-version).
+    # Finds the first ≥ 5-digit group in each side; short IDs (≤ 4 digits) are excluded to
+    # avoid false matches on common short sequences (e.g. "0076" in "A-0076").
+    m_in_any = re.search(r"(\d{5,})", lid_u)
+    m_rec_any = re.search(r"(\d{5,})", rec_u)
+    if m_in_any and m_rec_any and m_in_any.group(1) == m_rec_any.group(1):
         return True
     return False
 
@@ -429,6 +527,7 @@ class PsvBrowser:
             single_pat = getattr(self.config.results, "single_result_url_pattern", None)
             if single_pat and single_pat in page.url:
                 raw = await extract_detail(page, self.config.detail)
+                await _try_out_of_state_tab(page, self.config, raw)
                 if run_id:
                     try:
                         await capture_evidence(page, self.config.evidence,
@@ -468,18 +567,100 @@ class PsvBrowser:
                 except Exception:
                     pass
             # Follow detail pages when the board stores expiry/full data only on the detail page.
-            # For license_number searches with ≤5 results: visit ALL result rows' detail pages
-            # (boards like FL_MQA return 2–3 rows for one APRN number; expiry is on detail only).
-            # For other modes: follow detail only for single results to avoid O(N) requests.
+            # For license_number searches: visit up to 10 detail pages.
+            # For name-mode searches (first_name, last_name, first_and_last, etc.): visit ALL
+            # returned rows — a first_name search may return several records and we must evaluate
+            # every one (checking both name AND license) before declaring no match and moving to
+            # the next board. Capping at 1 was causing false negatives when the correct record
+            # happened not to be the first row returned.
             _has_detail = (
                 self.config.results.has_detail_page
                 and self.config.results.detail_trigger
             )
-            _detail_limit = 5 if query.mode == "license_number" else 1
-            if _has_detail and raw_rows and len(raw_rows) <= _detail_limit:
+            _NAME_QUERY_MODES = {
+                "first_name", "last_name", "first_and_last", "first_and_last_typed",
+            }
+            _detail_limit = (
+                len(raw_rows) if query.mode in _NAME_QUERY_MODES else 10
+            )
+            # Boards like MD_PHYSICIANS show a single view-button (#btnLICNO2) instead
+            # of a results table. extract_results_table returns 0 rows, but the trigger
+            # button IS present. Synthesise one placeholder row so the detail loop runs.
+            if _has_detail and not raw_rows:
+                trigger_sel = self.config.results.detail_trigger.selector
+                try:
+                    if await page.locator(trigger_sel).count() > 0:
+                        raw_rows = [{}]
+                except Exception:
+                    pass
+            # Name-hint narrowing: when the query carries first/last name alongside a
+            # license_number search (detail-expiry re-fetch), find the single matching
+            # row and visit only that detail page — avoids O(N) visits on multi-name boards.
+            _detail_hint_fn = (getattr(query, "first_name", None) or "").upper().strip()
+            _detail_hint_ln = (getattr(query, "last_name", None) or "").upper().strip()
+            _detail_targeted_idx: int | None = None
+            if (query.mode == "license_number" and (_detail_hint_fn or _detail_hint_ln)
+                    and _has_detail and raw_rows and len(raw_rows) > 1):
+                for _ri, _rw in enumerate(raw_rows):
+                    _rw_ln = (_rw.get("last_name", "") or "").upper().strip()
+                    _rw_fn = (_rw.get("first_name", "") or "").upper().strip()
+                    # Boards that return full_name instead of split fields (e.g. MD_PT
+                    # returns "MCDERMOTT, KYLE M.") — split on the first comma.
+                    if not (_rw_ln or _rw_fn):
+                        _rw_full = (_rw.get("full_name", "") or "").upper().strip()
+                        if "," in _rw_full:
+                            _rw_ln = _rw_full.split(",", 1)[0].strip()
+                            _rw_fn = _rw_full.split(",", 1)[1].strip()
+                        elif _rw_full:
+                            _rw_fn = _rw_full
+                    _ln_ok = not _detail_hint_ln or _rw_ln == _detail_hint_ln
+                    _fn_ok = not _detail_hint_fn or _rw_fn == _detail_hint_fn
+                    if _ln_ok and _fn_ok:
+                        _detail_targeted_idx = _ri
+                        log.info("[%s] Name-hint: targeting detail idx=%d (%s %s)",
+                                 src, _ri, _rw_fn, _rw_ln)
+                        break
+            # License-number-based targeting: fires when 2+ rows are returned from a
+            # license_number search and name-hint didn't resolve (e.g. boards that only
+            # expose full_name without names in the query, or license-only queries).
+            # Exact string match is tried first; numeric-only match (leading-zero tolerance)
+            # is the fallback, but ONLY when both sides share the same alpha/numeric type —
+            # this prevents "21524" from falsely matching "CP021524T" via stripped digits.
+            if (_detail_targeted_idx is None and query.mode == "license_number"
+                    and _has_detail and raw_rows and len(raw_rows) > 1):
+                _lic_hint = (getattr(query, "license_number", None) or "").strip()
+                if _lic_hint:
+                    _lic_hint_u = _lic_hint.upper()
+                    _lic_hint_num = re.sub(r'\D', '', _lic_hint_u).lstrip('0') or '0'
+                    _lic_hint_has_alpha = bool(re.search(r'[A-Za-z]', _lic_hint_u))
+                    for _ri, _rw in enumerate(raw_rows):
+                        _rw_lic = (_rw.get("license_number", "") or "").strip()
+                        if not _rw_lic:
+                            continue
+                        _rw_lic_u = _rw_lic.upper()
+                        _rw_lic_num = re.sub(r'\D', '', _rw_lic_u).lstrip('0') or '0'
+                        _rw_lic_has_alpha = bool(re.search(r'[A-Za-z]', _rw_lic_u))
+                        _exact_match = _rw_lic_u == _lic_hint_u
+                        _numeric_match = (
+                            _rw_lic_num != '0' and _lic_hint_num != '0'
+                            and len(_rw_lic_num) >= 3
+                            and _rw_lic_num == _lic_hint_num
+                            and _rw_lic_has_alpha == _lic_hint_has_alpha
+                        )
+                        if _exact_match or _numeric_match:
+                            _detail_targeted_idx = _ri
+                            log.info("[%s] License-hint: targeting detail idx=%d (lic=%s)",
+                                     src, _ri, _rw_lic)
+                            break
+            _visit_indices = (
+                [_detail_targeted_idx] if _detail_targeted_idx is not None
+                else range(len(raw_rows))
+            )
+            if _has_detail and raw_rows and (
+                    _detail_targeted_idx is not None or len(raw_rows) <= _detail_limit):
                 trigger_sel = self.config.results.detail_trigger.selector
                 detailed = []
-                for _idx in range(len(raw_rows)):
+                for _idx in _visit_indices:
                     try:
                         btn = page.locator(trigger_sel).nth(_idx)
                         if not await btn.is_visible(timeout=3000):
@@ -497,6 +678,7 @@ class PsvBrowser:
                             pass
                         await _wait_for_detail_content(page, self.config)
                         raw = await extract_detail(page, self.config.detail)
+                        await _try_out_of_state_tab(page, self.config, raw)
                         if run_id:
                             try:
                                 await capture_evidence(page, self.config.evidence,
@@ -578,6 +760,27 @@ async def _try_search_api(config, query: SearchQuery, timeout: int) -> list:
         return []
 
 
+def _epdb_name_gate_note(rec, last_name: str, first_name: str) -> str:
+    """Return a bracketed gate note for standalone psv_test.py reason strings.
+
+    Empty when the gate approves or skips (names already match).
+    Called only inside run_row() — EPDB-only (no NPPES in standalone mode).
+    """
+    try:
+        from orchestrator.name_gate import evaluate_name_gate  # noqa: PLC0415
+        ng = evaluate_name_gate(
+            master_row={"first_name": first_name, "last_name": last_name},
+            board_record=rec,
+            nppes=None,
+        )
+        if ng.skipped or ng.verdict == "approve":
+            return ""
+        score_str = f"{ng.epdb_score:.2f}" if ng.epdb_score is not None else "N/A"
+        return f" [gate:{ng.verdict} epdb={score_str}]"
+    except Exception:
+        return ""
+
+
 def _match_analysis(records, last_name, first_name, license_id):
     """Return (both, name_hits, lic_hits) lists from records."""
     both = [r for r in records if _name_matches(r, last_name, first_name) and _license_matches(r, license_id)]
@@ -617,7 +820,8 @@ async def _try_first_and_last_psv(
             return None
         both, name_hits, lic_hits = _match_analysis(recs, l, f, license_id)
         if both:
-            return "Pass", f"Verified via {src_id} ({label})", _get_expiry(both[0])
+            _gn = _epdb_name_gate_note(both[0], l, f)
+            return "Pass", f"Verified via {src_id} ({label}){_gn}", _get_expiry(both[0])
         if name_hits and not lic_hits:
             if license_id.upper().startswith("TC"):
                 return "Pass", f"Verified via {src_id} (TC — {label} name match)", _get_expiry(name_hits[0])
@@ -664,7 +868,11 @@ async def _fetch_detail_expiry(psv_b: "PsvBrowser", rec, timeout: int) -> str:
     board_lic = getattr(rec, "license_number", None) or ""
     if not board_lic:
         return ""
-    q = SearchQuery(mode="license_number", query=board_lic, license_number=board_lic)
+    q = SearchQuery(
+        mode="license_number", query=board_lic, license_number=board_lic,
+        first_name=(getattr(rec, "licensee_first_name", None) or "").strip() or None,
+        last_name=(getattr(rec, "licensee_last_name", None) or "").strip() or None,
+    )
     detail_recs = await _try_search_psv(psv_b, q, timeout)
     for dr in detail_recs:
         exp = _get_expiry(dr)
@@ -690,6 +898,17 @@ async def run_row(
 
     if not license_id:
         return "Fail", "No license ID", ""
+
+    # --- PSYPACT / APIT E.Passport: bypass state board, verify via directory.psypact.gov ---
+    _lic_upper = license_id.upper()
+    if _lic_upper.startswith("PSYPACT") or _lic_upper.startswith("APIT"):
+        _trace_stub = types.SimpleNamespace(final_outcome=None, final_reason=None)
+        _lr = await _verify_psypact_row(row_data, _trace_stub)
+        if _lr.status == "Pass" and getattr(_lr, "best_record", None):
+            _exp = getattr(_lr.best_record, "expiration_date", None)
+            _exp_str = _exp.isoformat() if hasattr(_exp, "isoformat") else (str(_exp) if _exp else "")
+            return "Pass", "Verified via PSYPACT_DIRECTORY (psypact.gov)", _exp_str
+        return "Fail", "no_records", ""
 
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
     if not preferred_sids:
@@ -743,10 +962,15 @@ async def run_row(
                 expiry = _get_expiry(both[0])
                 if not expiry and is_browser and psv_b:
                     expiry = await _fetch_detail_expiry(psv_b, both[0], timeout)
-                return "Pass", f"Verified via {src_id} (license search)", expiry
+                _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                return "Pass", f"Verified via {src_id} (license search){_gn}", expiry
             if name_hits and not lic_hits:
                 if license_id.upper().startswith("TC"):
                     return "Pass", f"Verified via {src_id} (TC temp cert — name match only)", _get_expiry(name_hits[0])
+                # Exact name match in a license-number search: credential close but format differs.
+                # Store as last-resort fallback (same logic as Pass 2 single-name fallback).
+                if len(name_hits) == 1 and first_name and _single_name_fallback is None:
+                    _single_name_fallback = (src_id, name_hits[0])
                 last_fail_reason = f"name found but license not matched ({len(name_hits)} records) — {src_id}"
                 continue
             if lic_hits and not name_hits:
@@ -765,7 +989,14 @@ async def run_row(
 
         # --- Pass 1.5: strip non-digits and retry if license has a prefix/hyphens ---
         numeric_id = re.sub(r"\D", "", license_id)
-        if not lic_search_garbage and numeric_id and numeric_id != license_id:
+        # Skip numeric-only retry when the license starts with alphabetic characters
+        # fused directly to digits (no separator), e.g. "A01225" or "PA1728".
+        # In those formats the letters are a meaningful credential-type prefix that
+        # routes to a different board (e.g. MD_PSYCH_ASSOC for "A"-prefix licenses).
+        # Stripping the prefix would match a different person on the wrong board.
+        # Hyphenated formats like "PPC-1359" still get the retry (separator present).
+        _alpha_prefix_fused = bool(re.match(r'^[A-Za-z]+\d', license_id)) and "-" not in license_id and "/" not in license_id
+        if not lic_search_garbage and numeric_id and numeric_id != license_id and not _alpha_prefix_fused:
             log.info("[%s] No results for '%s', retrying with numeric-only: '%s'",
                      src_id, license_id, numeric_id)
             q_num = SearchQuery(
@@ -785,7 +1016,8 @@ async def run_row(
             if records:
                 both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, numeric_id)
                 if both:
-                    return "Pass", f"Verified via {src_id} (numeric license search)", _get_expiry(both[0])
+                    _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                    return "Pass", f"Verified via {src_id} (numeric license search){_gn}", _get_expiry(both[0])
                 if name_hits and not lic_hits:
                     last_fail_reason = f"name found but numeric license not matched ({len(name_hits)} records) — {src_id}"
                     continue
@@ -797,6 +1029,331 @@ async def run_row(
                 log.info("[%s] Numeric search also returned unrelated records — falling through to name search",
                          src_id)
                 lic_search_garbage = True
+
+        # --- Pass 1.51: strip trailing sequence/renewal suffix (e.g. "1380-3" → "1380") ---
+        # Some boards store only the base license number without a trailing renewal suffix.
+        # Pattern: all-digit prefix + hyphen + 1-2 trailing digits (e.g. "1380-3", "1373-3").
+        # Confirmed for KS_OPTOMETRY where "-N" suffix is a renewal sequence, not part of the number.
+        _seq_m = re.match(r'^(\d+)-(\d{1,2})$', license_id)
+        if not lic_search_garbage and _seq_m:
+            _base_id = _seq_m.group(1)
+            if _base_id and _base_id != license_id and _base_id != numeric_id:
+                log.info("[%s] Stripping sequence suffix: '%s' → '%s'", src_id, license_id, _base_id)
+                q_base = SearchQuery(
+                    mode="license_number",
+                    query=_base_id,
+                    license_number=_base_id,
+                    first_name=first_name or None,
+                    middle_name=middle_name or None,
+                    last_name=last_name or None,
+                    **_type_kwargs,
+                )
+                if is_browser:
+                    records = await _try_search_psv(psv_b, q_base, timeout)
+                else:
+                    records = await _try_search_api(api_cfg, q_base, timeout)
+                if records:
+                    both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, _base_id)
+                    if both:
+                        _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                        return "Pass", f"Verified via {src_id} (base license — sequence suffix stripped){_gn}", _get_expiry(both[0])
+                    if name_hits and not lic_hits:
+                        last_fail_reason = (
+                            f"name found but base license not matched ({len(name_hits)} records) — {src_id}")
+                        continue
+                    if lic_hits and not name_hits:
+                        last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                        if last_only:
+                            return "Pass", f"Verified via {src_id} (base license + last name)", _get_expiry(last_only[0])
+                        return "Pass", f"Verified via {src_id} (base license — name on board differs)", _get_expiry(lic_hits[0])
+                    log.info("[%s] Base-license search also returned unrelated records — falling through to name search",
+                             src_id)
+                    lic_search_garbage = True
+
+        _board_cfg = (psv_b.config if psv_b else api_cfg)
+        _dash_fmt = getattr(getattr(_board_cfg, "search", None), "license_dash_format", None)
+
+        # --- Pass 1.53: extract middle group from already-dashed KSBN-style licenses ---
+        # KSBN board note: "Enter the middle digits only (example: 00-000000-000)".
+        # When input is "53-81920-022" or "5381920022", derive the center group ("81920")
+        # and search with that alone. Only fires for 3-part dash formats (e.g. "2-5-3").
+        if not lic_search_garbage and _dash_fmt:
+            _fp = _dash_fmt.split("-")
+            if len(_fp) == 3:
+                try:
+                    _fp0, _fp1 = int(_fp[0]), int(_fp[1])
+                except ValueError:
+                    _fp0 = _fp1 = None
+                if _fp0 is not None and _fp1 is not None:
+                    _raw153 = re.sub(r"\D", "", license_id)
+                    if len(_raw153) >= _fp0 + _fp1:
+                        _mid153 = _raw153[_fp0:_fp0 + _fp1]
+                        # Skip if already just the middle group (e.g. input was "81920")
+                        if _mid153 and _mid153 not in (license_id, _raw153):
+                            log.info("[%s] Trying middle-group license: '%s'", src_id, _mid153)
+                            q_mid153 = SearchQuery(
+                                mode="license_number",
+                                query=_mid153,
+                                license_number=_mid153,
+                                first_name=first_name or None,
+                                middle_name=middle_name or None,
+                                last_name=last_name or None,
+                                **_type_kwargs,
+                            )
+                            records = await (_try_search_psv(psv_b, q_mid153, timeout) if is_browser
+                                             else _try_search_api(api_cfg, q_mid153, timeout))
+                            if records:
+                                both, name_hits, lic_hits = _match_analysis(
+                                    records, last_name, first_name, _mid153)
+                                if both:
+                                    expiry = _get_expiry(both[0])
+                                    if not expiry and is_browser and psv_b:
+                                        expiry = await _fetch_detail_expiry(psv_b, both[0], timeout)
+                                    _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                                    return "Pass", f"Verified via {src_id} (middle-group license){_gn}", expiry
+                                if name_hits and not lic_hits:
+                                    last_fail_reason = (
+                                        f"name found but middle-group license not matched — {src_id}")
+                                if lic_hits:
+                                    last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                                    if last_only:
+                                        return "Pass", f"Verified via {src_id} (middle-group license + last name)", _get_expiry(last_only[0])
+                                    return "Pass", f"Verified via {src_id} (middle-group license — name differs)", _get_expiry(lic_hits[0])
+
+        # --- Pass 1.55: try dash-formatted license when board specifies license_dash_format ---
+        # Handles pure-digit licenses that need grouping (e.g. "5383371052" → "53-83371-052" on KSBN).
+        if not lic_search_garbage and _dash_fmt:
+            _raw_digits = re.sub(r"\D", "", license_id)
+            if _raw_digits and _raw_digits == license_id:  # pure-digit only (same guard as ladder)
+                from orchestrator.ladder import _apply_dash_format
+                _dash_id = _apply_dash_format(_raw_digits, _dash_fmt)
+                if _dash_id and _dash_id != license_id:
+                    log.info("[%s] Trying dash-formatted license: '%s'", src_id, _dash_id)
+                    q_dash = SearchQuery(
+                        mode="license_number",
+                        query=_dash_id,
+                        license_number=_dash_id,
+                        first_name=first_name or None,
+                        middle_name=middle_name or None,
+                        last_name=last_name or None,
+                        **_type_kwargs,
+                    )
+                    records = await (_try_search_psv(psv_b, q_dash, timeout) if is_browser
+                                     else _try_search_api(api_cfg, q_dash, timeout))
+                    if records:
+                        both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, _dash_id)
+                        if both:
+                            _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                            return "Pass", f"Verified via {src_id} (dash-formatted license){_gn}", _get_expiry(both[0])
+                        if name_hits and not lic_hits:
+                            last_fail_reason = f"name found but dash-formatted license not matched — {src_id}"
+                            continue
+                        if lic_hits and not name_hits:
+                            last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                            if last_only:
+                                return "Pass", f"Verified via {src_id} (dash-formatted license + last name)", _get_expiry(last_only[0])
+                            return "Pass", f"Verified via {src_id} (dash-formatted license match — name differs)", _get_expiry(lic_hits[0])
+                        lic_search_garbage = True
+
+        # --- Pass 1.56: derive KSBN license from IBCLC credential format ---
+        # IBCLC credentials follow XX-XXXXXX-XXX (11 stripped digits, e.g. "14-126425-012").
+        # For boards with license_dash_format (e.g. KSBN 2-5-3), the underlying nursing license
+        # is sometimes the last 10 stripped digits formatted per the dash spec ("41-26425-012").
+        # The KSBN site also accepts "middle digits only" — the 5-digit center group ("26425").
+        # Tester note: "middle 5 digit from license#" = last 5 of the 6-digit IBCLC middle group.
+        if not lic_search_garbage and _dash_fmt:
+            _ibclc_m = re.match(r'^(\d{1,2})-(\d{6})-(\d{3})$', license_id)
+            if _ibclc_m:
+                _raw_11 = re.sub(r"\D", "", license_id)
+                _derived_10 = _raw_11[-10:]
+                from orchestrator.ladder import _apply_dash_format
+                _derived_id = _apply_dash_format(_derived_10, _dash_fmt)
+                # Also try the middle 5 digits alone (KSBN "middle digits only" search).
+                _parts = _dash_fmt.split("-")
+                _mid_len = int(_parts[1]) if len(_parts) == 3 else None
+                _mid_start = int(_parts[0]) if len(_parts) == 3 else None
+                _middle_only = (_derived_10[_mid_start:_mid_start + _mid_len]
+                                if _mid_start is not None and _mid_len is not None else None)
+                _ibclc_candidates = [
+                    (_derived_id, f"last-10 → {_dash_fmt}"),
+                    (_middle_only, "middle digits only"),
+                ]
+                _ibclc_any_records = False
+                for _attempt_id, _attempt_label in _ibclc_candidates:
+                    if not _attempt_id or _attempt_id == license_id:
+                        continue
+                    log.info("[%s] Trying IBCLC-derived license (%s): '%s'",
+                             src_id, _attempt_label, _attempt_id)
+                    q_deriv = SearchQuery(
+                        mode="license_number",
+                        query=_attempt_id,
+                        license_number=_attempt_id,
+                        first_name=first_name or None,
+                        middle_name=middle_name or None,
+                        last_name=last_name or None,
+                        **_type_kwargs,
+                    )
+                    records = await (_try_search_psv(psv_b, q_deriv, timeout) if is_browser
+                                     else _try_search_api(api_cfg, q_deriv, timeout))
+                    if records:
+                        _ibclc_any_records = True
+                        both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, _attempt_id)
+                        if both:
+                            _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                            return "Pass", f"Verified via {src_id} (IBCLC-derived license){_gn}", _get_expiry(both[0])
+                        if name_hits and not lic_hits:
+                            last_fail_reason = f"name found but IBCLC-derived license not matched — {src_id}"
+                        if lic_hits and not name_hits:
+                            last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                            if last_only:
+                                return "Pass", f"Verified via {src_id} (IBCLC-derived license + last name)", _get_expiry(last_only[0])
+                            return "Pass", f"Verified via {src_id} (IBCLC-derived license — name differs)", _get_expiry(lic_hits[0])
+                if not _ibclc_any_records:
+                    lic_search_garbage = True
+
+        # --- Pass 1.57: alpha-space-insert, digit-prefix, and digit-pad normalization ---
+        # license_alpha_space_insert: "LCPC03720" → "LCPC 03720" (insert space after alpha prefix).
+        # license_digit_prefixes: ["LCPC", "LPC"] for pure-digit inputs like "03192" → "LCPC 03192".
+        # license_digit_pad: N — zero-pads digit portion to N digits:
+        #   "D63352" → "D0063352" (pad=7); pure-digit with prefixes uses no space + padded digits.
+        _alpha_space = getattr(getattr(_board_cfg, "search", None), "license_alpha_space_insert", False)
+        _digit_pfxs = getattr(getattr(_board_cfg, "search", None), "license_digit_prefixes", None) or []
+        _digit_pad = getattr(getattr(_board_cfg, "search", None), "license_digit_pad", None)
+        if not lic_search_garbage and (_alpha_space or _digit_pfxs or _digit_pad):
+            _p157_cands: list[tuple[str, str]] = []
+            _m157_alpha = re.match(r'^([A-Za-z]+)(\d+)$', license_id)
+            if _alpha_space and _m157_alpha:
+                _p157_cands.append(
+                    (f"{_m157_alpha.group(1)} {_m157_alpha.group(2)}", "alpha-space-insert"))
+            # Zero-pad digit portion for inputs that already have a letter prefix (e.g. "D63352" → "D0063352")
+            if _digit_pad and _m157_alpha:
+                _pfx_letters = _m157_alpha.group(1)
+                _pfx_digits = _m157_alpha.group(2)
+                if len(_pfx_digits) < _digit_pad:
+                    _p157_cands.append(
+                        (f"{_pfx_letters}{_pfx_digits.zfill(_digit_pad)}", f"digit-pad-{_digit_pad}"))
+            # Zero-pad purely numeric license (e.g. "1681" → "01681" with digit_pad=5)
+            if _digit_pad and not _m157_alpha and re.match(r'^\d+$', license_id) and len(license_id) < _digit_pad:
+                _p157_cands.append((license_id.zfill(_digit_pad), f"zfill-{_digit_pad}"))
+            if _digit_pfxs and re.match(r'^\d+$', license_id):
+                for _pfx157 in _digit_pfxs:
+                    if _digit_pad:
+                        # No space; zero-pad digit portion (e.g. MD: "D" + "63352".zfill(7) → "D0063352")
+                        _p157_cands.append((f"{_pfx157}{license_id.zfill(_digit_pad)}", f"prefix-{_pfx157}-pad"))
+                    else:
+                        _p157_cands.append((f"{_pfx157} {license_id}", f"prefix-{_pfx157}"))
+            # Case 4: mixed-format input (e.g. "CDRH.0071196") — a dot or other separator
+            # breaks both the alpha-prefix and pure-digit regexes above.  Extract just the
+            # digit run and apply the prefix+pad combos so "D0071196" etc. are still tried.
+            if _digit_pad and _digit_pfxs and not _m157_alpha and not re.match(r'^\d+$', license_id):
+                _mixed_digits = re.sub(r'\D', '', license_id)
+                if _mixed_digits and len(_mixed_digits) <= _digit_pad:
+                    for _pfx157 in _digit_pfxs:
+                        _p157_cands.append(
+                            (f"{_pfx157}{_mixed_digits.zfill(_digit_pad)}", f"prefix-{_pfx157}-pad"))
+            for _cand157, _lbl157 in _p157_cands:
+                if _cand157 == license_id:
+                    continue
+                log.info("[%s] Trying formatted license (%s): '%s'", src_id, _lbl157, _cand157)
+                q157 = SearchQuery(
+                    mode="license_number",
+                    query=_cand157,
+                    license_number=_cand157,
+                    first_name=first_name or None,
+                    middle_name=middle_name or None,
+                    last_name=last_name or None,
+                    **_type_kwargs,
+                )
+                records = await (_try_search_psv(psv_b, q157, timeout) if is_browser
+                                 else _try_search_api(api_cfg, q157, timeout))
+                if records:
+                    both, name_hits, lic_hits = _match_analysis(
+                        records, last_name, first_name, _cand157)
+                    if both:
+                        expiry = _get_expiry(both[0])
+                        if not expiry and is_browser and psv_b:
+                            expiry = await _fetch_detail_expiry(psv_b, both[0], timeout)
+                        _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                        return "Pass", f"Verified via {src_id} ({_lbl157}){_gn}", expiry
+                    if name_hits and not lic_hits:
+                        last_fail_reason = f"name found but {_lbl157} license not matched — {src_id}"
+                        continue
+                    if lic_hits:
+                        last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                        if last_only:
+                            return "Pass", f"Verified via {src_id} ({_lbl157} + last name)", _get_expiry(last_only[0])
+                        return "Pass", f"Verified via {src_id} ({_lbl157} — name differs)", _get_expiry(lic_hits[0])
+
+        # --- Pass 1.6: try prefix-dash license when board specifies license_prefix_dash ---
+        # Handles licenses like "L301745" → "L-301745" for IBCLC_COMMISSION.
+        _prefix_dash = getattr(getattr(_board_cfg, "search", None), "license_prefix_dash", False)
+        if not lic_search_garbage and _prefix_dash:
+            _m = re.match(r'^([A-Za-z]+)(\d+)$', license_id)
+            if _m:
+                _prefixed_id = f"{_m.group(1)}-{_m.group(2)}"
+                log.info("[%s] Trying prefix-dash license: '%s'", src_id, _prefixed_id)
+                q_pfx = SearchQuery(
+                    mode="license_number",
+                    query=_prefixed_id,
+                    license_number=_prefixed_id,
+                    first_name=first_name or None,
+                    middle_name=middle_name or None,
+                    last_name=last_name or None,
+                    **_type_kwargs,
+                )
+                records = await (_try_search_psv(psv_b, q_pfx, timeout) if is_browser
+                                 else _try_search_api(api_cfg, q_pfx, timeout))
+                if records:
+                    both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, _prefixed_id)
+                    if both:
+                        _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                        return "Pass", f"Verified via {src_id} (prefix-dash license){_gn}", _get_expiry(both[0])
+                    if name_hits and not lic_hits:
+                        last_fail_reason = f"name found but prefix-dash license not matched — {src_id}"
+                        continue
+                    if lic_hits and not name_hits:
+                        last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                        if last_only:
+                            return "Pass", f"Verified via {src_id} (prefix-dash license + last name)", _get_expiry(last_only[0])
+                        return "Pass", f"Verified via {src_id} (prefix-dash license match — name differs)", _get_expiry(lic_hits[0])
+                    lic_search_garbage = True
+
+        # --- Pass 1.7: try license_and_last combo when board supports it ---
+        # Needed for boards like IBCLC_COMMISSION where credential_number is a separate field
+        # from the name search field; license_number mode incorrectly fills the name field.
+        # Try each candidate license format (raw, prefix-dashed) paired with last_name.
+        if is_browser and last_name and not lic_search_garbage:
+            _has_lic_and_last = any(
+                getattr(m, "mode", None) == "license_and_last"
+                for m in (getattr(getattr(psv_b.config, "search", None), "modes", None) or [])
+            )
+            if _has_lic_and_last:
+                _lic_candidates = [license_id]
+                _m17 = re.match(r'^([A-Za-z]+)(\d+)$', license_id)
+                if _m17:
+                    _lic_candidates.append(f"{_m17.group(1)}-{_m17.group(2)}")
+                for _lic_cand in _lic_candidates:
+                    log.info("[%s] Trying license_and_last combo: name=%s cred=%s", src_id, last_name, _lic_cand)
+                    q_combo = SearchQuery(
+                        mode="license_and_last",
+                        query=f"{last_name} {_lic_cand}",
+                        license_number=_lic_cand,
+                        first_name=first_name or None,
+                        middle_name=middle_name or None,
+                        last_name=last_name or None,
+                        **_type_kwargs,
+                    )
+                    records = await _try_search_psv(psv_b, q_combo, timeout)
+                    if records:
+                        both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, _lic_cand)
+                        if both:
+                            _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+                            return "Pass", f"Verified via {src_id} (license_and_last combo){_gn}", _get_expiry(both[0])
+                        if lic_hits and not name_hits:
+                            last_only = [r for r in lic_hits if _name_matches(r, last_name, "")]
+                            if last_only:
+                                return "Pass", f"Verified via {src_id} (license_and_last + last name)", _get_expiry(last_only[0])
+                            return "Pass", f"Verified via {src_id} (license_and_last — name differs)", _get_expiry(lic_hits[0])
 
         # --- Pass 2: fall back to last_name search if license searches returned nothing ---
         if not last_name:
@@ -829,6 +1386,70 @@ async def run_row(
                 )
                 if fal:
                     return fal
+            # Pass 2.5a2: compound last name with space — retry with each token.
+            # Try last token first (e.g. "Campos Papaioannou" → "Papaioannou"), then first
+            # token (e.g. "Marvel Massey" → "Marvel") for boards that index only one component.
+            if is_browser and " " in last_name:
+                _first_token = last_name.split(" ", 1)[0]
+                _last_token = last_name.rsplit(" ", 1)[-1]
+                for _tok_label, _search_tok in [("last token", _last_token), ("first token", _first_token)]:
+                    log.info("[%s] Compound last name — retrying with %s '%s'",
+                             src_id, _tok_label, _search_tok)
+                    _q_token = SearchQuery(
+                        mode="last_name",
+                        query=_search_tok,
+                        license_number=license_id,
+                        first_name=first_name or None,
+                        middle_name=middle_name or None,
+                        last_name=last_name or None,
+                        **_type_kwargs,
+                    )
+                    _records_tok = await _try_search_psv(psv_b, _q_token, timeout)
+                    if _records_tok:
+                        # Try full compound name match first; fall back to single-token match
+                        _both_t, _, _ = _match_analysis(_records_tok, last_name, first_name, license_id)
+                        if not _both_t:
+                            _both_t, _, _ = _match_analysis(_records_tok, _search_tok, first_name, license_id)
+                        if _both_t:
+                            _exp_t = _get_expiry(_both_t[0])
+                            if not _exp_t:
+                                _exp_t = await _fetch_detail_expiry(psv_b, _both_t[0], timeout)
+                            _gn_t = _epdb_name_gate_note(_both_t[0], last_name, first_name)
+                            return "Pass", f"Verified via {src_id} (compound last name — {_tok_label}){_gn_t}", _exp_t
+            # Pass 2.6: all type-filtered name searches returned 0 — try fallback license types.
+            # Handles career progression (e.g. PN/LPN→RN): the board reclassified the person
+            # under a different license type while the input still shows the original prov_type.
+            _fallback_types = _BOARD_TYPE_FALLBACKS.get((src_id, prov_type), [])
+            if is_browser and _type_kwargs and _fallback_types and last_name:
+                for _fb_type in _fallback_types:
+                    log.info("[%s] Type-filtered name search empty — retrying with licenseType=%s",
+                             src_id, _fb_type)
+                    _q_fb = SearchQuery(
+                        mode="last_name",
+                        query=last_name,
+                        license_number=license_id,
+                        first_name=first_name or None,
+                        middle_name=middle_name or None,
+                        last_name=last_name or None,
+                        license_type=_fb_type,
+                    )
+                    _recs_fb = await _try_search_psv(psv_b, _q_fb, timeout)
+                    if _recs_fb:
+                        _both_fb, _nm_fb, _lh_fb = _match_analysis(
+                            _recs_fb, last_name, first_name, license_id)
+                        if _both_fb:
+                            _exp_fb = _get_expiry(_both_fb[0])
+                            if not _exp_fb:
+                                _exp_fb = await _fetch_detail_expiry(psv_b, _both_fb[0], timeout)
+                            _gn_fb = _epdb_name_gate_note(_both_fb[0], last_name, first_name)
+                            return "Pass", (
+                                f"Verified via {src_id} (fallback licenseType={_fb_type}){_gn_fb}"
+                            ), _exp_fb
+                        if _nm_fb and not _lh_fb and len(_nm_fb) == 1 and first_name:
+                            # Name match but license class differs — store as single-name fallback
+                            if _single_name_fallback is None:
+                                _single_name_fallback = (src_id, _nm_fb[0])
+                        break  # stop after first fallback type that returns any records
             continue
 
         both, name_hits, lic_hits = _match_analysis(records, last_name, first_name, license_id)
@@ -836,7 +1457,8 @@ async def run_row(
             expiry = _get_expiry(both[0])
             if not expiry and is_browser and psv_b:
                 expiry = await _fetch_detail_expiry(psv_b, both[0], timeout)
-            return "Pass", f"Verified via {src_id} (name search)", expiry
+            _gn = _epdb_name_gate_note(both[0], last_name, first_name)
+            return "Pass", f"Verified via {src_id} (name search){_gn}", expiry
         if name_hits and not lic_hits:
             if license_id.upper().startswith("TC"):
                 return "Pass", f"Verified via {src_id} (TC temp cert — name match only)", _get_expiry(name_hits[0])
@@ -871,7 +1493,10 @@ async def run_row(
         if len(records) <= 5:
             last_lic = [r for r in records if _license_matches(r, license_id) and _name_matches(r, last_name, "")]
             if last_lic:
-                return "Pass", f"Verified via {src_id} (last name + license match)", _get_expiry(last_lic[0])
+                expiry = _get_expiry(last_lic[0])
+                if not expiry and is_browser and psv_b:
+                    expiry = await _fetch_detail_expiry(psv_b, last_lic[0], timeout)
+                return "Pass", f"Verified via {src_id} (last name + license match)", expiry
         last_fail_reason = f"{len(records)} record(s) from name search but no license+name match — {src_id}"
 
     if _single_name_fallback:
@@ -1104,23 +1729,24 @@ async def run_state(
     captcha_rows = [r for r in rows if (state, r["prov_type"].upper()) in CAPTCHA_PROV_TYPES]
     rows = [r for r in rows if (state, r["prov_type"].upper()) not in CAPTCHA_PROV_TYPES]
     fails = 0
+    skips = 0
     if captcha_rows:
         log.warning(
-            "[%s] %d row(s) with CAPTCHA-blocked prov_types written as Fail: %s",
+            "[%s] %d row(s) with CAPTCHA-blocked prov_types written as Skip: %s",
             state, len(captcha_rows),
             sorted({r["prov_type"] for r in captcha_rows}),
         )
         captcha_results = [
-            {**r, "status": "Fail",
+            {**r, "status": "Skip",
              "reason": CAPTCHA_PROV_TYPES[(state, r["prov_type"].upper())],
              "expiry_date": ""}
             for r in captcha_rows
         ]
         write_results(captcha_results, output_path, append)
         append = True
-        fails += len(captcha_rows)
+        skips += len(captcha_rows)
     if not rows:
-        return 0, fails
+        return 0, fails, skips
 
     # Determine which boards are needed for the prov_types in this batch
     needed_sids: set[str] = set()
@@ -1171,7 +1797,7 @@ async def run_state(
     _log_proxy_plan(state, configs, proxy_cfg)
 
     total = len(rows)
-    passes = fails = 0
+    passes = fails = skips = 0
 
     async with async_playwright() as pw:
         browser: Browser | None = None
@@ -1228,7 +1854,7 @@ async def run_state(
                 await browser.close()
 
     log.info("[%s] State complete: %d Pass / %d Fail / %d Total", state, passes, fails, total)
-    return passes, fails
+    return passes, fails, 0
 
 
 async def run_state_orchestrated(
@@ -1257,6 +1883,10 @@ async def run_state_orchestrated(
     from orchestrator.output_emitter import RowOutcome
     from orchestrator.trace import RowTrace, make_master_row_id, REASON_PROVIDER_TYPE_MISMATCH
 
+    # Reset the AI circuit breaker so a previous run's connection error doesn't
+    # carry over and block the entire current run.
+    ai_mod.reset_circuit_breaker()
+
     if not _ROUTING:
         _load_routing()
 
@@ -1277,7 +1907,7 @@ async def run_state_orchestrated(
     proxy_cfg = get_proxy_config()
     _log_proxy_plan(state, configs_list, proxy_cfg)
 
-    passes = fails = 0
+    passes = fails = skips = 0
 
     async with async_playwright() as pw:
         browser = None
@@ -1304,8 +1934,7 @@ async def run_state_orchestrated(
 
         try:
             for idx, row in enumerate(rows):
-                master_row_id = make_master_row_id(idx, row.get("last_name", ""),
-                                                   row.get("license_id", ""))
+                master_row_id = make_master_row_id(idx, row.get("npi_no", ""))
                 trace = RowTrace(
                     master_row_id=master_row_id,
                     run_id=run_id,
@@ -1324,12 +1953,14 @@ async def run_state_orchestrated(
                         log.warning("[%s] NPPES fetch failed for npi=%s: %s",
                                     state, row.get("npi_no"), exc)
                     if nppes:
-                        trace.nppes_used = True
                         discrepancy = nppes_mod.diff_master_vs_nppes(row, nppes)
                         trace.nppes_discrepancy = discrepancy.to_dict()
 
                 # --- PSYPACT E.Passport: verify via directory.psypact.gov ---
-                if (row.get("license_id") or "").upper().startswith("PSYPACT"):
+                # Recognise both "PSYPACT18696" and "APIT-18240" (Authority to
+                # Practice Interjurisdictional Telepsychology) license formats.
+                _lic_upper = (row.get("license_id") or "").upper()
+                if _lic_upper.startswith("PSYPACT") or _lic_upper.startswith("APIT"):
                     ladder_result = await _verify_psypact_row(row, trace, run_id=run_id)
                     ai_result = None
                     outcome = RowOutcome(
@@ -1368,30 +1999,28 @@ async def run_state_orchestrated(
                 ladder_result = None
                 ai_result = None
 
-                # CAPTCHA-blocked prov_type: fail immediately, skip all board calls
+                # CAPTCHA-blocked prov_type: skip immediately, skip all board calls
                 _captcha_reason = CAPTCHA_PROV_TYPES.get((state, prov_type_upper))
-                # NV/PH with DO-prefix license = osteopathic physician miscategorized
-                # in EPDB as pharmacist (LIC_TYPE_NM="STATE MEDICAL", license=DO####).
-                # Confirmed systemic in 2026-06-30 run (17/24 NV/PH had DO-prefix).
-                _do_prefix_mismatch = (
-                    state == "NV" and prov_type_upper == "PH"
-                    and str(row.get("license_id", "")).upper().startswith("DO")
-                )
                 if _captcha_reason:
-                    trace.final_outcome = "Fail"
+                    trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
-                elif _do_prefix_mismatch:
-                    trace.final_outcome = "Fail"
-                    trace.final_reason = REASON_PROVIDER_TYPE_MISMATCH
                 elif not routed_configs:
-                    trace.final_outcome = "Fail"
-                    # Distinguish captcha-skipped boards from truly unconfigured routing
-                    _skip_captcha = any(
-                        _is_captcha_skip(_SKIP_REASON_BY_SID.get(s, ""))
-                        for s in routed_sids
-                        if s in _SKIP_REASON_BY_SID
+                    # Any skip:true board → Skip regardless of whether the skip reason
+                    # mentions captcha keywords (e.g. BACB "Registry Down" is still a Skip).
+                    # Only fall to Fail when no routing at all (empty routed_sids).
+                    _has_skip_board = bool(routed_sids) and any(
+                        s in _SKIP_REASON_BY_SID for s in routed_sids
                     )
-                    trace.final_reason = "board_skip_captcha" if _skip_captcha else "no_routing"
+                    if _has_skip_board:
+                        _is_captcha = any(
+                            _is_captcha_skip(_SKIP_REASON_BY_SID.get(s, ""))
+                            for s in routed_sids if s in _SKIP_REASON_BY_SID
+                        )
+                        trace.final_outcome = "Skip"
+                        trace.final_reason = "board_skip_captcha" if _is_captcha else "board_skipped"
+                    else:
+                        trace.final_outcome = "Fail"
+                        trace.final_reason = "no_routing"
                 else:
                     # --- Run rule-based ladder ---
                     ladder_result = await ladder_mod.run_ladder(
@@ -1405,9 +2034,39 @@ async def run_state_orchestrated(
                         board_license_type_map=board_lt_map,
                     )
 
+                    # --- Post-license name gate ---
+                    # Validates board name vs NPPES name (first) then EPDB name (second)
+                    # after cleanup.  Forces AI for [0.70, 0.80) gray-zone scores.
+                    # Score computation always runs for Pass rows (for output columns);
+                    # AI routing only fires when enable_ai=True.
+                    _force_name_gate_ai = False
+                    if (ladder_result.status == "Pass"
+                            and ladder_result.best_record is not None):
+                        from orchestrator.name_gate import evaluate_name_gate  # noqa: PLC0415
+                        _ng = evaluate_name_gate(
+                            master_row=row,
+                            board_record=ladder_result.best_record,
+                            nppes=nppes,
+                        )
+                        trace.epdb_name_score = _ng.epdb_score
+                        trace.nppes_name_score = _ng.nppes_score
+                        if not _ng.skipped:
+                            log.info(
+                                "[%s] name_gate: epdb=%s nppes=%s max=%.3f verdict=%s",
+                                state,
+                                f"{_ng.epdb_score:.3f}" if _ng.epdb_score is not None else "N/A",
+                                f"{_ng.nppes_score:.3f}" if _ng.nppes_score is not None else "N/A",
+                                _ng.max_score, _ng.verdict,
+                            )
+                        if _ng.verdict == "ai_review" and enable_ai:
+                            _force_name_gate_ai = True
+                            trace.name_gate_reason = "name_gate_ai_review"
+                        elif _ng.verdict == "manual":
+                            trace.name_gate_reason = "name_gate_manual"
+
                     # --- AI agent fallback ---
                     if enable_ai and (
-                        ladder_result.status == "EscalateAi" or force_ai
+                        ladder_result.status == "EscalateAi" or force_ai or _force_name_gate_ai
                     ):
                         candidate_cache: dict[str, list] = {}
                         # Replay stored records into cache via fresh query? We
@@ -1423,12 +2082,87 @@ async def run_state_orchestrated(
                             executor=executor,
                             candidate_cache=candidate_cache,
                             timeout_s=timeout,
+                            drift_dir=emitter.dirs.get("drift"),
                         )
                         if ai_result.outcome == "resolved":
+                            # If AI resolved a candidate but the license number from the
+                            # board does not match the input license ID, treat as Fail and
+                            # route to Manual — the AI found the wrong person or the board
+                            # stores a different license format we cannot reconcile.
+                            _ai_bd = ai_result.chosen_breakdown
+                            _input_lic_ai = (row.get("license_id") or "").strip()
+                            _board_lic_ai = (
+                                getattr(ai_result.chosen_candidate, "license_number", "") or ""
+                            ).strip()
+                            if (
+                                _ai_bd is not None
+                                and _ai_bd.license_numerics == 0.0
+                                and _input_lic_ai
+                                and _board_lic_ai
+                            ):
+                                trace.final_outcome = "Fail"
+                                trace.final_reason = "AI found License ID mismatched"
+                            else:
+                                trace.final_outcome = "Pass"
+                                # Back-fill expiry from detail page when the AI chose a
+                                # record from a multi-row name search (detail not yet visited).
+                                _ai_cand = ai_result.chosen_candidate
+                                _ai_src = ai_result.chosen_source_id or ""
+                                if _ai_cand is not None and not _get_expiry(_ai_cand) and _ai_src in psv_browsers:
+                                    _detail_exp = await _fetch_detail_expiry(
+                                        psv_browsers[_ai_src], _ai_cand, timeout
+                                    )
+                                    if _detail_exp:
+                                        try:
+                                            from datetime import date as _dt
+                                            _ai_cand.expiration_date = _dt.fromisoformat(_detail_exp[:10])
+                                        except Exception:
+                                            pass
+                        elif (
+                            ai_result.outcome in ("skipped", "errored")
+                            and _force_name_gate_ai
+                            and not (ladder_result.status == "EscalateAi" or force_ai)
+                        ):
+                            # AI was triggered only for name-gate borderline review, not
+                            # because the license lookup failed. The ladder already confirmed
+                            # the license on the board. When AI is unavailable (circuit-breaker
+                            # open or transient error), trust the license match rather than
+                            # failing the entire record.
+                            log.warning(
+                                "[%s] AI unavailable for name-gate review (%s) — "
+                                "falling back to ladder Pass (license confirmed on board)",
+                                state, ai_result.outcome,
+                            )
                             trace.final_outcome = "Pass"
+                            trace.name_gate_reason = f"name_gate_ai_fallback:{ai_result.outcome}"
                         else:
                             trace.final_outcome = "Fail"
                             trace.final_reason = ai_result.reason
+
+                    # --- PSYPACT secondary check for CP prov_type ---
+                    # CP (Clinical Psychologist) providers may hold PSYPACT E.Passports
+                    # with mobility numbers matching their state license ID. When the
+                    # primary board ladder does not produce a Pass, check PSYPACT as a
+                    # secondary source regardless of license-ID prefix.
+                    if (prov_type_upper == "CP"
+                            and ladder_result is not None
+                            and ladder_result.status != "Pass"
+                            and trace.final_outcome != "Pass"):
+                        _psypact_lr = await _verify_psypact_row(row, trace, run_id=run_id)
+                        if _psypact_lr.status == "Pass":
+                            ladder_result = _psypact_lr
+                            ai_result = None
+
+                # nppes_used: True only when NPPES data actually drove the resolution,
+                # not merely when it was fetched.
+                trace.nppes_used = bool(
+                    (ladder_result is not None and ladder_result.npi_substituted)
+                    or (ai_result is not None and ai_result.outcome == "resolved"
+                        and nppes is not None)
+                    or (getattr(trace, "name_gate_reason", None) in (
+                            "name_gate_manual", "name_gate_ai_review")
+                        and nppes is not None)
+                )
 
                 outcome = RowOutcome(
                     master_row=row,
@@ -1441,21 +2175,24 @@ async def run_state_orchestrated(
                 )
                 emitter.collect(outcome)
 
+                _row_display_status = trace.final_outcome or outcome.status
                 if outcome.status == "Pass":
                     passes += 1
+                elif _row_display_status == "Skip":
+                    skips += 1
                 else:
                     fails += 1
                 log.info("[%s] %s %s %s %s -> %s | %s",
                          state, row["prov_type"], row["last_name"],
                          row["first_name"], row["license_id"],
-                         outcome.status, outcome.reason or "ok")
+                         _row_display_status, outcome.reason or "ok")
 
         finally:
             if browser:
                 await browser.close()
-    log.info("[%s] State complete: %d Pass / %d Fail / %d Total",
-             state, passes, fails, len(rows))
-    return passes, fails
+    log.info("[%s] State complete: %d Pass / %d Fail / %d Skip / %d Total",
+             state, passes, fails, skips, len(rows))
+    return passes, fails, skips
 
 
 async def main_async(args: argparse.Namespace) -> None:
@@ -1479,7 +2216,7 @@ async def main_async(args: argparse.Namespace) -> None:
         rows = rows[: args.max_rows]
         log.info("Limiting to %d rows (--max-rows)", args.max_rows)
 
-    passes, fails = await run_state(
+    passes, fails, *_ = await run_state(
         rows=rows,
         state=state,
         output_path=output_path,

@@ -3,7 +3,7 @@
   board_name: "Nevada Division of Alcohol and Drug Counselors"
   state: "NV"
   country: "US"
-  profession_codes: ["DMD", "DDS", "RDH", "DA"]
+  profession_codes: ["DMD", "DDS", "RDH", "DA", "LPC", "DAC"]
   base_url: "https://nvadgc.us.thentiacloud.net/webs/nvadgc/register/"
   archetype: "thentia_cloud"
 
@@ -43,11 +43,15 @@ results:
   table:
     row_selector: "table tbody tr"
     cell_selector: "td"
+    # Column order confirmed from live HTML (2026-07-04):
+    #   License Number | Last Name | First Name | City | License Category | License Status | (View button)
     columns:
-      0: "name"
-      1: "license_number"
-      2: "license_type"
-      3: "status"
+      0: "license_number"
+      1: "last_name"
+      2: "first_name"
+      3: "city"
+      4: "license_type"
+      5: "status"
   has_detail_page: true
   detail_trigger:
     type: "view_button"

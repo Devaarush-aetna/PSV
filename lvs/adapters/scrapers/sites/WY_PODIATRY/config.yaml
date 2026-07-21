@@ -7,20 +7,21 @@ identity:
   # Wyoming Google Sheets public roster — 7-day cache.
   # Link selector opens Google Sheet; export as CSV.
   # CSV has 3 description rows before header (header_row: 3).
-  # Columns confirmed from WY_CHIRO live sheet: LASTNAME, FIRSTNAME, INITIAL, LicNo, Issued, Expires, License Status
+  # Active sheet (header_row 6): Licensee Name, Status, License #, Issued, Expires
+  # Mailing List sheet (Active + Deactivated) — different header format with separate name columns
   base_url: "https://podiatry.wyo.gov/public/license-verification"
   archetype: csv_bulk
 
 csv_bulk:
   download_strategy: google_sheet_link
-  link_selector: "text=List of Active Licensees"
+  link_selector: "text=Mailing List of Active and Expired Licenses"
   header_row: 6
   cache_days: 7
   cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
   search_columns:
     license_number: "License #"
-    last_name: "Licensee Name"
+    last_name: "Last Name"
 
 search:
   modes:
@@ -56,17 +57,28 @@ detail:
     timeout_ms: 500
   strategies: []
   field_map:
+    # Mailing List sheet (Active + Deactivated) — separate name columns expected
+    "Last Name": last_name
+    "First Name": first_name
+    "License Number": license_number
+    "License No": license_number
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
+    "License Status": status
+    "Status": status
+    # Fallback: Active-only sheet used full-name and short column names
     "Licensee Name": last_name
     "License #": license_number
     "Issued": issue_date
     "Expires": expiration_date
-    "Status": status
 
 output:
   status_map:
     "A": active
     "Active": active
     "active": active
+    "Deactivated": inactive
+    "deactivated": inactive
     "I": inactive
     "Inactive": inactive
     "Expired": expired
@@ -94,6 +106,8 @@ transport:
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
+  proxy:
+    enabled: true
 evidence:
   capture_html: true
   capture_screenshot: true

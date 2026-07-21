@@ -34,6 +34,59 @@ async def _emit_event(
     await log_scrape_event(db, event)
 
 
+async def _try_out_of_state_tab(page, config: SiteConfig, raw: dict) -> None:
+    """For FL_MQA T-prefix licenses: if expiry is missing from the main detail page,
+    click the 'Out of State' secondary tab and extract expiry + originating state name.
+    Mutates `raw` in place; no-ops on any error."""
+    oos = config.detail.out_of_state_tab
+    if not oos.enabled:
+        return
+    license_num = (raw.get("license_number") or "").strip()
+    if not license_num.upper().startswith(oos.trigger_license_prefix.upper()):
+        return
+    if raw.get("expiration_date"):
+        return
+    try:
+        tab_loc = page.locator(oos.tab_selector)
+        visible = False
+        count = await tab_loc.count()
+        for i in range(count):
+            try:
+                if await tab_loc.nth(i).is_visible(timeout=3000):
+                    await tab_loc.nth(i).evaluate("el => el.removeAttribute('target')")
+                    visible = True
+                    await tab_loc.nth(i).click()
+                    await asyncio.sleep(1)  # allow JS tab switch to update DOM
+                    break
+            except Exception:
+                continue
+        if not visible:
+            log.debug("[%s] Out of State tab not found for license '%s'",
+                      config.identity.source_id, license_num)
+            return
+        # Wait for tab content to load (networkidle handles both AJAX tabs and navigation tabs)
+        try:
+            await page.wait_for_load_state("networkidle", timeout=10000)
+        except Exception:
+            await asyncio.sleep(2)
+        # Extract using the same detail strategies + field_map (returns mapped field names)
+        tab_raw = await extract_detail(page, config.detail)
+        # extract_detail applies field_map, so keys are mapped names (e.g. "expiration_date"),
+        # not the raw HTML labels.  Look up by mapped name directly.
+        exp_val = tab_raw.get("expiration_date")
+        state_val = tab_raw.get("state_code") or tab_raw.get("out_of_state_state")
+        if exp_val:
+            raw["expiration_date"] = exp_val
+            raw["_out_of_state_expiry_used"] = True
+        if state_val:
+            raw["out_of_state_state"] = str(state_val).strip()
+        log.info("[%s] Out of State tab: expiry=%s state=%s for license '%s'",
+                 config.identity.source_id, exp_val, state_val, license_num)
+    except Exception as exc:
+        log.debug("[%s] Out of State tab fetch failed for '%s': %s",
+                  config.identity.source_id, license_num, exc)
+
+
 async def _scrape_one_detail(page, config: SiteConfig, run_id: str, db) -> dict:
     evidence = await capture_evidence(
         page, config.evidence, stage="detail_page", run_id=run_id,
@@ -51,6 +104,10 @@ async def _scrape_one_detail(page, config: SiteConfig, run_id: str, db) -> dict:
             db=db,
         )
         raw.update(ai_data)
+
+    # FL T-license secondary check: fetch expiry + originating state from Out of State tab
+    # when the main detail page has no expiration date.
+    await _try_out_of_state_tab(page, config, raw)
 
     raw.update(evidence)
     return raw

@@ -14,8 +14,6 @@ identity:
 csv_bulk:
   download_strategy: google_sheet_link
   link_selector: "a[aria-label='Active License Verification']"
-  # Also download the expired/inactive roster and concatenate with the active sheet.
-  # Both sheets share the same column layout (Last Name, First Name, ..., License Number, ..., License Status).
   additional_link_selectors:
     - "a[aria-label='Expired License Verification']"
   header_row: 3
@@ -63,14 +61,18 @@ detail:
     "Last Name": last_name
     "First Name": first_name
     "License Number": license_number
+    "License No": license_number
     "Issue Date": issue_date
     "Expiration Date": expiration_date
     "License Status": status
+    "Status": status
 
 output:
   status_map:
     "Active": active
     "active": active
+    "Deactivated": inactive
+    "deactivated": inactive
     "Inactive": inactive
     "Expired": expired
     "Suspended": suspended
@@ -96,6 +98,8 @@ transport:
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+  proxy:
+    enabled: true
 
 evidence:
   capture_html: true

@@ -230,6 +230,81 @@ python -c "from engine.proxy import get_proxy_config; print(get_proxy_config())"
 
 ---
 
+## PSV batch output channels
+
+`psv_test.py` / `run_psv.py` produce up to six output files per run under
+`PSV_DEV/Output/{YYYYMM}/`:
+
+| Folder | File | Contents | When written |
+|--------|------|----------|--------------|
+| `Standard/` | `{run_id}.xlsx` + `.csv` | Every input row — Pass/Fail, expiry, match method, fuzzy score, board name | Always |
+| `NPPES/` | `{run_id}.csv` | NPI registry lookup result + diff vs master row | Always |
+| `AIFallback/` | `{run_id}.csv` | Every row where the AI agent ran — turns, tools, outcome | When AI ran |
+| `Manual/` | `{run_id}.csv` | Every unresolved row with structured `failure_reason` | When any row needs review |
+| `AddLicense/` | `{run_id}_AddLicense.xlsx` | Clean Pass rows ready to upload — EPDB, State, MaintBy, LicenseNumber, LicenseTermDate, LicenseType, OverrideExistingLicense | When Pass rows with board-returned expiry exist |
+| `AIAddLicense/` | `{run_id}_AIAddLicense.xlsx` | "Almost sure" rows — same columns as AddLicense + match context (**see below**) | When any qualifying match exists |
+| `RunSummary/` | `{run_id}_summary.csv` | Per-state counters (total, pass, fail, manual, add_license, ai_add_license, …) | Always |
+
+### AddLicense column rules
+
+| Column | Source |
+|--------|--------|
+| EPDB | Input EPDB PIN |
+| State | Input license state |
+| MaintBy | Input maintained-by field |
+| LicenseNumber | Board-verified license number |
+| LicenseEffDate | *(blank)* |
+| LicenseTermDate | Board-returned expiry date (MM/DD/YYYY) |
+| LicenseType | Input lic_type |
+| OriginalLicenseDate | *(blank)* |
+| OverrideExistingLicense | `Yes` |
+| EPDBDone | *(blank — filled post-upload)* |
+
+### AI AddLicense — extra context columns
+
+The `AIAddLicense` sheet has the same 10 columns as `AddLicense`, plus:
+
+| Column | Description |
+|--------|-------------|
+| VerificationReason | Short label explaining why this row is in AI_ADD_LICENSE |
+| InputName | First + last name from input row |
+| BoardMatchedName | Name returned by the board |
+| InputLicense | License number from input row |
+| BoardMatchedLicense | License number returned by the board |
+| MatchScore | Disambiguator fuzzy score (0–1), blank for NPI/cross-row matches |
+
+> **Upload rule:** columns A–J (EPDB → EPDBDone) are the upload payload.
+> Columns K–P are review context only — do **not** include them in the upload template.
+
+### Which rows qualify for AI AddLicense
+
+A row appears in `AI_ADD_LICENSE` when the engine is "almost sure" but wants a human
+to confirm before upload.  The row **also** appears in `Manual` (mutual exclusivity
+with `AddLicense` still holds; `AI_ADD_LICENSE` is additive):
+
+| VerificationReason | Root cause |
+|--------------------|------------|
+| `AI agent resolved match — verify before upload` | AI agent or disambiguator identified the correct record |
+| `Numeric license match — format differs (input: X → board: Y)` | Digit-for-digit match; only prefix/punctuation differs (e.g. `12345` vs `LC-12345`) |
+| `License exact match — name on board differs (input: X → board: Y)` | Board license number matches exactly; board name differs from input |
+| `Name exact match — license on board differs (input: X → board: Y)` | Input name matches board name; license numbers don't align |
+| `NPI-verified match — confirm license before upload` | NPI registry lookup found the record; license confirmed via NPI substitution |
+| `Cross-row name match — same provider found via another row in this batch` | Post-run reconciliation matched a Fail row to an already-passing row for the same provider |
+
+### Manual-only rows (not in AI AddLicense)
+
+| failure_reason prefix | Meaning |
+|-----------------------|---------|
+| `Captcha Based Board: …` | Board is CAPTCHA/WAF-blocked — manual board lookup required |
+| `AI fallback failed — …` | AI agent ran but could not resolve |
+| `License Expired after fetch` | Board confirmed the license exists but expiry is already in the past |
+| `Expired and same as input` | Board expiry matches input and is in the past |
+| `Check again later for updates, same as input` | Board expiry matches input and is still in the future |
+| `no_expiry_date: …` | Pass but board returned no expiry date |
+| `no_records` / `name_mismatch` / etc. | Rule-based Fail — no match found |
+
+---
+
 ## Running smoke tests with known good values
 
 Every `config.yaml` contains a `smoke_test` block with a stable query and expected result.

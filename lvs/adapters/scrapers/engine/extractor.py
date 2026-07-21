@@ -25,9 +25,12 @@ async def _extract_heading_name(page: Page) -> dict:
             count = await loc.count()
             for i in range(min(count, 3)):
                 text = (await loc.nth(i).inner_text()).strip()
-                # "Profile for NAME" pattern (e.g. KS_KSBHADA)
-                if text.lower().startswith("profile for "):
-                    name = text[len("Profile for "):]
+                # "Profile for NAME" pattern (e.g. KS_KSBHADA).
+                # Use find() rather than startswith() — inner_text() concatenates child
+                # <a> link text before the text node, so the phrase may not be at index 0.
+                _pi = text.lower().find("profile for ")
+                if _pi != -1:
+                    name = text[_pi + len("profile for "):]
                     if name:
                         result["Name"] = name
                         return result

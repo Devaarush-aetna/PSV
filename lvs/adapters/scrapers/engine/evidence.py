@@ -78,8 +78,16 @@ async def capture_evidence(
     source_id: str = "unknown",
     state: str = "",
     query=None,
+    attempt: int = 1,
 ) -> dict[str, str]:
-    """Capture HTML + screenshot if stage is in config.capture_on. Returns paths dict."""
+    """Capture HTML + screenshot if stage is in config.capture_on. Returns paths dict.
+
+    When the same query is attempted multiple times (e.g. ladder retries), pass
+    attempt=N so each screenshot/HTML gets a unique filename instead of overwriting.
+    If attempt is omitted (default 1), files are named as before; attempt 2+ appends _a2, _a3, …
+    As a safety net, even if attempt=1 is passed, the writer auto-increments the suffix
+    when the target file already exists, so no attempt ever silently overwrites another.
+    """
     if stage not in config.capture_on:
         return {}
 
@@ -87,12 +95,27 @@ async def capture_evidence(
     base_path = resolve_evidence_path(source_id, run_id, state=state, query_label=ql)
     base_path.mkdir(parents=True, exist_ok=True)
 
-    # Filename: {source_id}_{query_label}_{stage}.ext  (query_label omitted if empty)
-    prefix = "_".join(filter(None, [source_id, ql, stage]))
+    # Filename: {source_id}_{query_label}_{stage}[_aN].ext  (query_label omitted if empty)
+    base_prefix = "_".join(filter(None, [source_id, ql, stage]))
+
+    def _unique_path(base_path: Path, stem: str, ext: str) -> Path:
+        """Return a path that does not yet exist, appending _a2/_a3/… as needed."""
+        candidate = base_path / f"{stem}{ext}"
+        if not candidate.exists():
+            return candidate
+        for n in range(2, 100):
+            candidate = base_path / f"{stem}_a{n}{ext}"
+            if not candidate.exists():
+                return candidate
+        return base_path / f"{stem}_a99{ext}"
+
+    # Caller-supplied attempt suffix takes priority; safety net handles same-attempt collisions.
+    attempt_suffix = f"_a{attempt}" if attempt > 1 else ""
+    prefix = f"{base_prefix}{attempt_suffix}"
     paths: dict[str, str] = {}
 
     if config.capture_html:
-        html_path = base_path / f"{prefix}.html"
+        html_path = _unique_path(base_path, prefix, ".html")
         try:
             html = await page.content()
             html_path.write_text(html, encoding="utf-8")
@@ -102,7 +125,7 @@ async def capture_evidence(
             log.warning("HTML capture failed (%s): %s", stage, e)
 
     if config.capture_screenshot:
-        shot_path = base_path / f"{prefix}.png"
+        shot_path = _unique_path(base_path, prefix, ".png")
         try:
             await page.screenshot(path=str(shot_path), full_page=True)
             paths["screenshot_path"] = str(shot_path)

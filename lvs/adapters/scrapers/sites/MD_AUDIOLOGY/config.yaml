@@ -14,6 +14,7 @@ identity:
   archetype: classic_html_form
 
 search:
+  license_digit_pad: 5
   modes:
     - mode: license_number
       input_selector: "#bodyContentPlaceHolder_licenseNoSearch"

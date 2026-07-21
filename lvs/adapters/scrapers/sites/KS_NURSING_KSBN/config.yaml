@@ -89,8 +89,8 @@ detail:
     "License": license_number
     "Last Name": last_name
     "First Name": first_name
-    "Middle Name": middle_name
-    "Expiration": expiry_date
+    "Middle Name": licensee_middle_name
+    "Expiration": expiration_date
     "Status": status
     "Professional Description": license_type
     "Original Issue Date": issue_date

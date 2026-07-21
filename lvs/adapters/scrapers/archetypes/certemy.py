@@ -53,32 +53,61 @@ async def scrape_certemy(
                 except Exception:
                     log.warning("[%s] input.search-input not visible — Angular may still loading", source_id)
 
-                await asyncio.sleep(1.5)
+                # Wait for Angular to finish loading initial table data before filtering.
+                # Without this, typing into the filter can run against an empty dataset.
+                try:
+                    await page.wait_for_selector("table tbody tr", state="visible", timeout=15_000)
+                    await asyncio.sleep(0.5)
+                except Exception:
+                    await asyncio.sleep(1.5)  # board may show empty table initially; proceed
 
-                if query.query:
+                # For last_name mode, try combined "First Last" first to reduce false positives
+                # (e.g. "Uren" would match first names like "Lauren" on a global-text filter).
+                # If the combined term returns 0 rows — which happens on boards that filter
+                # per-column (NV_MFTPC Certemy) or when the name contains an apostrophe —
+                # fall back to last_name alone so the search still works.
+                if query.mode == "last_name" and query.first_name and query.query:
+                    _search_terms = [f"{query.first_name} {query.query}", query.query]
+                else:
+                    _search_terms = [query.query]
+
+                async def _type_and_wait(term: str) -> int:
+                    """Clear the search box, type term char-by-char, return stable row count."""
                     inp = page.locator("input.search-input").first
                     await inp.click()
                     await inp.click(click_count=3)
                     await inp.fill("")
-                    for ch in query.query:
+                    for ch in term:
                         await page.keyboard.type(ch)
                         await asyncio.sleep(0.08)
-                    log.info("[%s] Typed query %r into input.search-input", source_id, query.query)
-
-                    prev_n, stable = -1, 0
+                    log.info("[%s] Typed query %r into input.search-input", source_id, term)
+                    _prev, _stable = -1, 0
                     for _ in range(50):
                         await asyncio.sleep(0.4)
                         try:
-                            n = await page.locator("table tbody tr").count()
+                            _n = await page.locator("table tbody tr").count()
                         except Exception:
-                            n = -1
-                        if n == prev_n and n >= 0:
-                            stable += 1
-                            if stable >= 2:
+                            _n = -1
+                        if _n == _prev and _n >= 0:
+                            _stable += 1
+                            if _stable >= 2:
                                 break
                         else:
-                            stable = 0
-                        prev_n = n
+                            _stable = 0
+                        _prev = _n
+                    return _prev if _prev >= 0 else 0
+
+                if _search_terms[0]:
+                    _row_count = 0
+                    for _term in _search_terms:
+                        _row_count = await _type_and_wait(_term)
+                        if _row_count > 0:
+                            break
+                        if len(_search_terms) > 1:
+                            log.info(
+                                "[%s] Combined search %r returned 0 rows, trying fallback %r",
+                                source_id, _search_terms[0], _search_terms[-1],
+                            )
                 else:
                     await page.wait_for_selector("table tbody tr", state="visible", timeout=20_000)
                     await asyncio.sleep(1.0)
