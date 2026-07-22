@@ -3,7 +3,7 @@ identity:
   board_name: New Jersey Division of Consumer Affairs — License Verification
   state: NJ
   country: US
-  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, OTA, PA, PHARM, SW, MFT, LPC, AUD, SLP, PSYCH]
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, OTA, PA, PHARM, SW, MFT, LPC, AUD, SLP, PSYCH, MT, GNC]
   # mylicense.com portal — single search form, table#datagrid_results, detail page with element IDs.
   # License search input: input[name*='license'] (searches by license number directly)
   # Name search inputs: input[name*='first'] / input[name*='last']
@@ -48,6 +48,7 @@ results:
     # mylicense.com nests a sub-table inside the Name cell — descendant 'td' would shift columns.
     cell_selector: "xpath=./td"
     skip_first_row: true
+    required_fields: [license_number]
     columns:
       0: full_name
       1: license_number
@@ -56,9 +57,9 @@ results:
       4: status
       5: city
       6: state_code
-  # Detail page navigation has frequent 60s+ timeouts on Details.aspx; results table already
-  # carries license_number/license_type/status, which is enough for verification.
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    selector: "table#datagrid_results a"
   pagination:
     enabled: false
     strategy: none

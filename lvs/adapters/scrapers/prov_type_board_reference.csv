@@ -266,6 +266,7 @@ DT,Dietitian,WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
 DT,Dietitian,WY,WY_DIETETICS,Wyoming Dietetics Licensing Board
 GNC,Genetic Counselor,FL,FL_MQA,Florida Department of Health — Medical Quality Assurance
 GNC,Genetic Counselor,KY,KY_GC,Kentucky Board of Medical Licensure - Genetic Counselor
+GNC,Genetic Counselor,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
 GNC,Genetic Counselor,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
 LAC,Licensed Acupuncturist,AZ,AZ_ACUPUNCTURE,Arizona Acupuncture Board of Examiners
 LAC,Licensed Acupuncturist,KY,KY_AP,Kentucky Board of Medical Licensure - Acupuncture
@@ -375,6 +376,7 @@ MT,Massage Therapist,MD,MD_MASSAGE,Maryland State Board of Massage Therapy Exami
 MT,Massage Therapist,ME,ME_OPLR,Maine Office of Professional and Occupational Regulation (ALMS)
 MT,Massage Therapist,MS,MS_DHPL,Mississippi State Department of Health Professional Licensure
 MT,Massage Therapist,ND,ND_AP,North Dakota Board of Integrative Health Care (AP/ABA)
+MT,Massage Therapist,NJ,NJ_DCA,New Jersey Division of Consumer Affairs — License Verification
 MT,Massage Therapist,NM,NM_RLD,New Mexico Regulation and Licensing Department
 MT,Massage Therapist,NV,NV_DIETITIAN,Nevada Division of Public and Behavioral Health — Dietitians & Music Therapists
 MT,Massage Therapist,NV,NV_MASSAGE,Nevada State Board of Massage Therapists

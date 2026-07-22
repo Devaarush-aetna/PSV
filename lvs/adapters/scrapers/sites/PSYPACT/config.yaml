@@ -1,0 +1,98 @@
+identity:
+  source_id: PSYPACT
+  board_name: "Psychology Interjurisdictional Compact (PSYPACT) Commission"
+  state: ""          # national registry — not state-specific
+  country: US
+  profession_codes: [CP]
+  # Accredible Spotlight directory ID 1160 (directory.psypact.gov)
+  # Credential pages at authorizations.psypact.gov/{uuid}
+  base_url: "https://directory.psypact.gov/"
+  archetype: psypact
+
+search:
+  modes:
+    - mode: last_name
+    - mode: license_number
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#mat-input-1"
+    search_button:
+      selector: "accredible-icon.btn-search"
+  results_wait:
+    strategy: network_idle
+    selector: "sl-profile-list-card"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "No Results"
+      - "we couldn't find any profiles"
+
+results:
+  type: card_list      # handled entirely in psypact.py via Accredible API
+  has_detail_page: true
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 15000
+  strategies: []
+  field_map: {}
+
+output:
+  license_record:
+    license_number: "{license_number}"
+    licensee_first_name: "{first_name}"
+    licensee_last_name: "{last_name}"
+    licensee_full_name: "{full_name}"
+    license_type: "{license_type}"
+    status: "{status}"
+    issue_date: "{issue_date}"
+    expiration_date: "{expiration_date}"
+  status_map:
+    "active": "active"
+    "inactive": "inactive"
+    "expired": "expired"
+  date_formats:
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1440
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/PSYPACT/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-07"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1

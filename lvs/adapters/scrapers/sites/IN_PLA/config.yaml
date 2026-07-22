@@ -5,15 +5,10 @@ identity:
   country: US
   profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, MFT, DENT]
   # Single portal covering all Indiana professions at mylicense.in.gov/EVerification/Search.aspx.
-  # Search form with multiple dropdowns (Profession, License Type, Status, State) + text inputs
-  # (License Number, First Name, Last Name, City, County, Zipcode).
-  # Results: GridView table with columns: Name(link) | License# | Profession | Type | Status | Address
-  # Detail: Opens Details.aspx?result=UUID in a new page (popup context.new_page()).
-  #         Detail sections: DEMOGRAPHIC | ADDRESS | LICENSE | LITIGATION | RELATED LICENSES
-  # LIMITATION: The engine's detail-page mechanism navigates in-page (click link → same page).
-  #             Indiana's detail pages open as popup windows (new browser context page).
-  #             The engine does NOT support popup-window detail navigation.
-  # ACTION NEEDED: either add popup_window detail support to the engine or skip detail extraction.
+  # Results: GridView table — Name(link) | License# | Profession | Type | Status | Address
+  # Detail: Details.aspx?result=UUID. Links carry target="_blank" (popup) but the engine strips
+  #         that attribute before clicking (removeAttribute('target')) so navigation stays in-page.
+  #         Detail layout: 8-cell rows (4 label-value pairs) — four_column_table strategy covers all.
   base_url: "https://mylicense.in.gov/EVerification/Search.aspx"
   archetype: classic_html_form
 
@@ -59,7 +54,9 @@ results:
       3: license_type
       4: status
       5: address
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    selector: "table#datagrid_results a[href*='Details.aspx']"
   pagination:
     enabled: true
     strategy: next_button
@@ -67,9 +64,13 @@ results:
 
 detail:
   wait:
-    strategy: delay
-    timeout_ms: 1000
-  strategies: []
+    strategy: element_visible
+    selector: "table"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "td"
+  strategies:
+    - type: four_column_table
   field_map:
     "Name": full_name
     "Lic #": license_number
@@ -112,7 +113,7 @@ transport:
 evidence:
   capture_html: true
   capture_screenshot: true
-  capture_on: ["search_results", "error"]
+  capture_on: ["search_results", "detail_page", "error"]
   storage: local
   local_path: "Evidence/IN_PLA/{run_id}/"
 

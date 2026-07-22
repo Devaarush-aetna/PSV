@@ -301,6 +301,7 @@ class ResultsTableConfig(BaseModel):
     cell_selector: str = "td"
     columns: dict[int, str] = Field(default_factory=dict)
     skip_first_row: bool = False  # skip header row when table has no <thead>
+    required_fields: list[str] = Field(default_factory=list)  # row dropped if any of these fields is empty
     table_selector: Optional[str] = None  # if set, select this element then use row_selector within it
     table_index: Optional[int] = None     # use .nth(table_index) of table_selector matches
     iframe_selector: Optional[str] = None # if set, look for the table inside this iframe

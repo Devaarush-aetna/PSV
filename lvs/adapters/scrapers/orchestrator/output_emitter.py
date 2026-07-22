@@ -24,6 +24,7 @@ from __future__ import annotations
 import csv
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from datetime import date as _date
 from pathlib import Path
@@ -34,7 +35,11 @@ from openpyxl.styles import Font, PatternFill
 
 from . import config as cfg
 from . import disambiguator as disamb
-from .disambiguator import license_numerics_match as _lic_num_match
+from .disambiguator import (
+    license_numerics_match as _lic_num_match,
+    _NAME_PREFIXES_NORM,
+    _NAME_SUFFIXES_NORM,
+)
 from .ai_agent import AiAgentResult
 from .ladder import LadderResult
 from .nppes_client import NpiDiscrepancy, NppesRecord
@@ -42,6 +47,28 @@ from .trace import RowTrace
 from engine.models import LicenseStatus as _LicenseStatus
 
 log = logging.getLogger(__name__)
+
+
+def _clean_matched_name(raw: str) -> str:
+    """Strip leading honorific prefixes (DR, MR, etc.) and trailing credential suffixes
+    (MD, DM, RN, PHD, etc.) from a board-returned name part.
+
+    Preserves the original casing and internal tokens; only whole leading/trailing
+    tokens that exactly match the prefix/suffix sets are removed.
+    """
+    if not raw:
+        return ""
+    toks = str(raw).split()
+
+    def _norm_tok(t: str) -> str:
+        return re.sub(r"[.\-]", "", t).upper()
+
+    while toks and _norm_tok(toks[0]) in _NAME_PREFIXES_NORM:
+        toks = toks[1:]
+    while toks and _norm_tok(toks[-1]) in _NAME_SUFFIXES_NORM:
+        toks = toks[:-1]
+    return " ".join(toks)
+
 
 # sites/ directory — used for lazy board_name lookups
 _SITES_DIR = Path(__file__).resolve().parents[1] / "sites"
@@ -204,6 +231,22 @@ class OutputEmitter:
     # ----- Per-row entry point -----
 
     @staticmethod
+    def _resolve_board_name_parts(rec: Optional[Any], master_last: str = "") -> tuple[str, str]:
+        """Return (first, last) from a board record, falling back to splitting
+        licensee_full_name when separate first/last fields are absent (e.g. IN_PLA).
+        Returns ("", "") when rec is None.
+        """
+        if rec is None:
+            return "", ""
+        first = (getattr(rec, "licensee_first_name", "") or "").strip()
+        last  = (getattr(rec, "licensee_last_name",  "") or "").strip()
+        if not first and not last:
+            full = (getattr(rec, "licensee_full_name", "") or "").strip()
+            if full:
+                first, last = disamb._split_full_name(full, master_last)
+        return first, last
+
+    @staticmethod
     def _name_license_mismatch_reason(outcome: "RowOutcome") -> str | None:
         """Name matched but license numbers are present on both sides and don't align."""
         bd = outcome.chosen_breakdown
@@ -216,6 +259,13 @@ class OutputEmitter:
         input_lic = (outcome.master_row.get("license_id", "") or "").strip()
         if not board_lic or not input_lic:
             return None  # one side has no license to compare
+        # Re-check numeric equivalence directly on the current record values.
+        # The ScoreBreakdown may have been computed before the detail page populated
+        # license_number (e.g. IN_PLA results table has no license in the summary row;
+        # detail page sets it later). In that case license_numerics is stale (0.0) even
+        # though board and input licenses are actually the same — avoid a false mismatch.
+        if disamb.license_numerics_match(input_lic, board_lic):
+            return None
         # National registries (IBCLCE etc.) use their own credential numbering that differs
         # from state-issued registration numbers. When both name components match perfectly
         # and the record comes from a known national registry, the license-number difference
@@ -733,8 +783,12 @@ class OutputEmitter:
             ),
             "license_expiry": _expiry_str(rec),
             "matched_license": getattr(rec, "license_number", "") or "" if rec else "",
-            "matched_first": getattr(rec, "licensee_first_name", "") or "" if rec else "",
-            "matched_last": getattr(rec, "licensee_last_name", "") or "" if rec else "",
+            "matched_first": _clean_matched_name(
+                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[0]
+            ),
+            "matched_last": _clean_matched_name(
+                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[1]
+            ),
             "board_name": _get_board_name(getattr(rec, "source_id", "") or "") if rec else "",
             "match_method": match_method,
             "fuzzy_score": (round(bd.total, 3) if bd else ""),
@@ -864,6 +918,7 @@ class OutputEmitter:
             "license_id": o.master_row.get("license_id", ""),
             "npi_no": o.master_row.get("npi_no", ""),
             "failure_reason": reason,
+            "LicenseTermDate": _expiry_str(o.chosen_record),
             "attempts_used": len(o.trace.attempts),
             "trace_path": str(self.dirs["trace"] / f"{o.master_row_id}.json"),
             "nppes_used": o.trace.nppes_used,
@@ -882,6 +937,7 @@ class OutputEmitter:
             "EPDB_PIN":         str(m.get("epdb_pin", "") or ""),
             "State":            str(m.get("lic_state", "") or ""),
             "LicenseNumber":    str(lic_num),
+            "LicenseTermDate":  _expiry_str(o.chosen_record),
             "VerificationDate": _run_date_text(self.run_id),
             "CheckedBy":        f"Automation ({self.run_id})",
             "Outcome":          failure_reason,
@@ -1062,6 +1118,7 @@ class OutputEmitter:
                     "license_id": lic,
                     "npi_no": row.get("npi_no", ""),
                     "failure_reason": _no_expiry_reason,
+                    "LicenseTermDate": "",
                     "attempts_used": row.get("attempts_used", ""),
                     "trace_path": row.get("trace_path", ""),
                 })
@@ -1078,6 +1135,7 @@ class OutputEmitter:
                 "lic_type": row.get("lic_type", ""),
                 "license_id": lic,
                 "npi_no": row.get("npi_no", ""),
+                "LicenseTermDate": expiry_iso,
                 "attempts_used": row.get("attempts_used", ""),
                 "trace_path": row.get("trace_path", ""),
             }

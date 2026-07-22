@@ -178,6 +178,10 @@ async def _extract_th_td_table(page: Page) -> dict:
 
 
 async def _extract_four_column_table(page: Page) -> dict:
+    """Extract label-value pairs from tables where cells alternate label/value.
+    Reads ALL pairs in each row (cells 0-1, 2-3, 4-5, …) so 8-cell rows
+    (e.g. Indiana Details.aspx) are fully captured. Backwards-compatible with
+    boards that only have 4 cells per row."""
     result: dict = {}
     try:
         tables = page.locator("table")
@@ -191,14 +195,13 @@ async def _extract_four_column_table(page: Page) -> dict:
                 cells = row.locator("td")
                 cell_count = await cells.count()
                 if cell_count >= 4:
-                    k1 = (await cells.nth(0).inner_text()).strip().rstrip(":")
-                    v1 = (await cells.nth(1).inner_text()).strip()
-                    k2 = (await cells.nth(2).inner_text()).strip().rstrip(":")
-                    v2 = (await cells.nth(3).inner_text()).strip()
-                    if k1 and "\n" not in k1 and "\t" not in k1:
-                        result[k1] = v1
-                    if k2 and "\n" not in k2 and "\t" not in k2:
-                        result[k2] = v2
+                    for i in range(0, cell_count - 1, 2):
+                        k = (await cells.nth(i).inner_text()).strip().rstrip(":")
+                        v = (await cells.nth(i + 1).inner_text()).strip()
+                        # First-writer-wins: primary section appears before secondary sections
+                        # (e.g. IN_PLA "Related Licenses" must not overwrite primary "Lic #").
+                        if k and "\n" not in k and "\t" not in k and k not in result:
+                            result[k] = v
     except Exception as e:
         log.debug("four_column_table strategy failed: %s", e)
     return result
@@ -677,6 +680,8 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
                 if idx < await cells.count():
                     rec[field_name] = (await cells.nth(idx).inner_text()).strip()
             if rec and any(v for v in rec.values() if isinstance(v, str) and v.strip()):
+                if any(not rec.get(f, "").strip() for f in (tbl_cfg.required_fields or [])):
+                    continue
                 records.append(rec)
     except Exception as e:
         log.warning("extract_results_table failed: %s", e)

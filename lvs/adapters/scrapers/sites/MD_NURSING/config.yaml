@@ -1,0 +1,152 @@
+identity:
+  source_id: MD_NURSING
+  board_name: Maryland Board of Nursing (MDH CHART)
+  state: MD
+  country: US
+  profession_codes: [RN, LPN, NP, APRN, CRNA, CRNP]
+  base_url: "https://mdchart.health.maryland.gov/CHART/s/license-lookup"
+  archetype: classic_html_form
+  # Note: MDH CHART is a Salesforce Experience Cloud SPA. Playwright locators pierce shadow
+  # DOM automatically so standard table/dt_dd extractors work. browser_back goes to
+  # about:blank (no history entries added). Back navigation uses breadcrumb_click instead.
+
+search:
+  # MD nursing licenses: letter R + 6 digits (e.g. R266307, R185443).
+  # Inputs with fewer digits (e.g. R12345) are zero-padded via license_digit_pad.
+  # AC-prefix licenses (Advanced Clinical/APRN) are a second valid prefix.
+  license_digit_pad: 6
+  license_digit_prefixes: [R, AC]
+  modes:
+    - mode: license_number
+      input_selector: "input[placeholder='Enter license number']"
+    - mode: last_name
+      input_selector: "input[placeholder='Enter last name']"
+    - mode: first_and_last
+      input_selector: "input[placeholder='Enter last name']"
+      extra_inputs:
+        "input[placeholder='Enter first name']": "{first}"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[placeholder='Enter license number']"
+    search_button:
+      selector: "button.mdh-license-lookup__btn--primary"
+  results_wait:
+    # MDH CHART is a Salesforce SPA — network_idle fires immediately (SPA was already idle
+    # before the click). Use element_visible on the "N result(s) found" counter text that
+    # only appears after the async API call resolves and the SPA renders results or "0 result(s)".
+    strategy: element_visible
+    selector: "text=result(s) found"
+    timeout_ms: 20000
+    no_results_indicators:
+      - "0 result(s) found"
+
+results:
+  # Results table: columns Name | License Number | Profession | License Type | Status
+  # Playwright locator pierces Salesforce shadow DOM; standard table extractor works.
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: "full_name"
+      1: "license_number"
+      2: "profession"
+      3: "license_type"
+      4: "status"
+  has_detail_page: true
+  detail_trigger:
+    type: row_click
+    selector: "table tbody tr"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  # Detail pane shows DT/DD pairs: FULL NAME, LICENSE NUMBER, STATUS, PROFESSION,
+  # LICENSE TYPE, ISSUE DATE, EXPIRATION DATE. Appears in-page (SPA — URL unchanged).
+  wait:
+    strategy: element_visible
+    selector: "dt"
+    timeout_ms: 8000
+  strategies:
+    - type: dt_dd
+  field_map:
+    "FULL NAME": full_name
+    "LICENSE NUMBER": license_number
+    "STATUS": status
+    "PROFESSION": profession
+    "LICENSE TYPE": license_type
+    "ISSUE DATE": issue_date
+    "EXPIRATION DATE": expiration_date
+  back_navigation:
+    # breadcrumb_click clicks the in-page "← Back to Search Results" button.
+    # browser_back is NOT used — SPA does not push history entries on row click.
+    strategy: breadcrumb_click
+    selector: "button.mdh-license-lookup__btn--back"
+    wait_after_ms: 2000
+
+output:
+  status_map:
+    "ACTIVE": active
+    "Active": active
+    "active": active
+    "EXPIRED": expired
+    "Expired": expired
+    "expired": expired
+    "INACTIVE": inactive
+    "Inactive": inactive
+    "inactive": inactive
+    "SUSPENDED": suspended
+    "Suspended": suspended
+    "REVOKED": revoked
+    "Revoked": revoked
+    "LAPSED": expired
+    "Lapsed": expired
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [1000, 2000, 4000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "Evidence/MD_NURSING/{run_id}/"
+
+compliance:
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "R030540"
+  expect:
+    min_records: 1
+    field_contains:
+      license_number: "R030540"
+      full_name: "BRADLEY"
+      status: "active"

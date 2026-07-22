@@ -65,6 +65,7 @@ C_LIC_STATE = 9
 C_LIC_TYPE = 10
 C_LIC_ID = 11
 C_LIC_EXPIRY = 12  # LIC_EXPRTN_DT — input expiry date used for same-expiry comparison
+C_SVC_LOC_STATE = 15  # Service Location State — license state must appear here
 
 # NPI_NO is looked up DYNAMICALLY by header name — Input.xlsx may not always
 # include it. If a header cell matches one of these names, that column index
@@ -73,6 +74,13 @@ _NPI_HEADER_ALIASES = ("NPI_NO", "NPI", "NPI ID", "NPI_ID", "NPI Number")
 
 # Browser-based archetypes (share one Playwright browser per board)
 _BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa"}
+
+# Per-(state, prov_type) combos where the state does not license that provider type.
+# Rows matching these are written as N/A — no board check is attempted.
+NA_PROV_TYPES: dict[tuple[str, str], str] = {
+    ("NJ", "DT"):  "NJ does not license Dietitians (DT) — Professional License step N/A",
+    ("NJ", "NUT"): "NJ does not license Nutritionists (NUT) — Professional License step N/A",
+}
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
 # Rows matching these are written as Fail immediately without launching a browser.
@@ -910,6 +918,20 @@ async def run_row(
             return "Pass", "Verified via PSYPACT_DIRECTORY (psypact.gov)", _exp_str
         return "Fail", "no_records", ""
 
+    # --- Cap: License State must appear in Service Location State ---
+    _svc_raw = row_data.get("svc_loc_state", "")
+    _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
+    if _svc_states and lic_state not in _svc_states:
+        return "N/A", (
+            f"License State ({lic_state}) not in Service Location State "
+            f"({_svc_raw}) — PSV step N/A"
+        ), ""
+
+    # --- N/A: state does not license this provider type ---
+    _na_reason = NA_PROV_TYPES.get((lic_state, prov_type))
+    if _na_reason:
+        return "N/A", _na_reason, ""
+
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
     if not preferred_sids:
         return "Fail", f"No board configured for prov_type '{prov_type}'", ""
@@ -1508,6 +1530,56 @@ async def run_row(
     return "Fail", last_fail_reason, ""
 
 
+def _write_remove_license(rows: list[dict], output_dir: Path) -> None:
+    """Write rows whose License State is not in Service Location State to
+    <output_dir>/RemoveLicense/RemoveLicense.xlsx.
+
+    rows may be pre-filtered (orchestrated path) or full result dicts
+    (legacy path — filtered internally by status + reason).
+    """
+    # Legacy path: rows are full result dicts (have "status"/"reason" keys).
+    # Orchestrated path: rows are raw master_row dicts, already pre-filtered.
+    if rows and "status" in rows[0]:
+        svc_na_rows = [
+            r for r in rows
+            if r.get("status") == "N/A"
+            and "not in Service Location State" in r.get("reason", "")
+        ]
+    else:
+        svc_na_rows = rows
+
+    if not svc_na_rows:
+        return
+
+    remove_dir = output_dir / "RemoveLicense"
+    remove_dir.mkdir(parents=True, exist_ok=True)
+    remove_path = remove_dir / "RemoveLicense.xlsx"
+
+    if remove_path.exists():
+        wb = openpyxl.load_workbook(str(remove_path))
+        ws = wb.active
+    else:
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "RemoveLicense"
+        ws.append(["PIN", "State", "LicenseNumber", "LicenseType", "EPDBDone"])
+        ws.append(["Input", "Input", "Input", "Input", "Acknowledgement"])
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+
+    for r in svc_na_rows:
+        ws.append([
+            r.get("epdb_pin", ""),
+            r.get("lic_state", ""),
+            r.get("license_id", ""),
+            r.get("lic_type", ""),
+            "",
+        ])
+
+    wb.save(str(remove_path))
+    log.info("RemoveLicense: wrote %d row(s) to %s", len(svc_na_rows), remove_path)
+
+
 def write_results(results: list[dict], output_path: Path, append: bool) -> None:
     if append and output_path.exists():
         wb = openpyxl.load_workbook(str(output_path))
@@ -1522,21 +1594,28 @@ def write_results(results: list[dict], output_path: Path, append: bool) -> None:
         for cell in ws[1]:
             cell.font = Font(bold=True)
 
-    green = PatternFill("solid", fgColor="C6EFCE")
-    red = PatternFill("solid", fgColor="FFC7CE")
+    green  = PatternFill("solid", fgColor="C6EFCE")
+    red    = PatternFill("solid", fgColor="FFC7CE")
+    yellow = PatternFill("solid", fgColor="FFEB9C")
 
     for r in results:
         ws.append([
             r["first_name"], r["middle_name"], r["last_name"],
             r["lic_state"], r["prov_type"], r["lic_type"], r["license_id"],
             r["status"], r.get("expiry_date", ""),
-            r["reason"] if r["status"] == "Fail" else "",
+            r["reason"] if r["status"] in ("Fail", "N/A") else "",
         ])
-        fill = green if r["status"] == "Pass" else red
+        if r["status"] == "Pass":
+            fill = green
+        elif r["status"] == "N/A":
+            fill = yellow
+        else:
+            fill = red
         for col in range(1, 11):
             ws.cell(row=ws.max_row, column=col).fill = fill
 
     wb.save(str(output_path))
+    _write_remove_license(results, output_path.parent)
 
 
 def _cell_to_iso_date(val) -> str:
@@ -1626,6 +1705,7 @@ def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") ->
             "input_expiry": _cell_to_iso_date(
                 row[C_LIC_EXPIRY] if C_LIC_EXPIRY < len(row) else None
             ),
+            "svc_loc_state": c(C_SVC_LOC_STATE),
         })
     return rows_data
 
@@ -1637,6 +1717,26 @@ _CAPTCHA_SKIP_KEYWORDS = ("captcha", "mcafee", "datadome", "cloudflare", "recapt
 
 def _is_captcha_skip(reason: str) -> bool:
     return any(kw in reason.lower() for kw in _CAPTCHA_SKIP_KEYWORDS)
+
+
+# BACB certification number format: TYPE_CODE-YY-NNNNNN
+# TYPE_CODE: RBT, BCBA, BCaBA, 1 (=BCBA), 0 (=BCaBA)
+_BACB_LICENSE_RE = re.compile(
+    r"^(RBT|BCBA|BCaBA|1|0)-\d{1,4}-\d{4,7}$",
+    re.IGNORECASE,
+)
+
+# States whose ABA prov_type routes to a state board first, then BACB as fallback.
+_BACB_FALLBACK_STATES: frozenset[str] = frozenset({"NJ", "IL", "IN"})
+
+
+def _is_bacb_license(license_id: str) -> bool:
+    """Return True when the license ID matches BACB certification number format.
+
+    Supported formats: RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCaBA-YY-NNNNNN,
+    1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA).
+    """
+    return bool(_BACB_LICENSE_RE.match((license_id or "").strip()))
 
 
 def load_configs_by_source_ids(source_ids: set[str]) -> list:
@@ -1908,6 +2008,7 @@ async def run_state_orchestrated(
     _log_proxy_plan(state, configs_list, proxy_cfg)
 
     passes = fails = skips = 0
+    _svc_loc_na_rows: list[dict] = []
 
     async with async_playwright() as pw:
         browser = None
@@ -1986,6 +2087,16 @@ async def run_state_orchestrated(
                 prov_type_upper = row.get("prov_type", "").upper()
                 key = (row["lic_state"].upper(), prov_type_upper)
                 routed_sids = _ROUTING.get(key, [])
+
+                # IL + LC conditional routing: license starting with "L-" goes to
+                # IBCLC_COMMISSION only; all other IL LC licenses go to IL_LICENSING only.
+                if (row["lic_state"].upper() == "IL" and prov_type_upper == "LC"):
+                    _lic_id = (row.get("license_id") or "").strip()
+                    if _lic_id.upper().startswith("L-"):
+                        routed_sids = [s for s in routed_sids if s == "IBCLC_COMMISSION"]
+                    else:
+                        routed_sids = [s for s in routed_sids if s == "IL_LICENSING"]
+
                 routed_configs = [cfg_by_sid[s] for s in routed_sids if s in cfg_by_sid]
 
                 # Build per-board license_type map so {type} template in extra_selects
@@ -1999,9 +2110,22 @@ async def run_state_orchestrated(
                 ladder_result = None
                 ai_result = None
 
+                # Cap: License State must appear in Service Location State
+                _svc_raw = row.get("svc_loc_state", "")
+                _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
+                if _svc_states and row["lic_state"].upper() not in _svc_states:
+                    trace.final_outcome = "N/A"
+                    trace.final_reason = (
+                        f"License State ({row['lic_state'].upper()}) not in Service Location State "
+                        f"({_svc_raw}) — PSV step N/A"
+                    )
+                    _svc_loc_na_rows.append(row)
+                # N/A: state does not license this provider type
+                elif _na_reason := NA_PROV_TYPES.get((state, prov_type_upper)):
+                    trace.final_outcome = "N/A"
+                    trace.final_reason = _na_reason
                 # CAPTCHA-blocked prov_type: skip immediately, skip all board calls
-                _captcha_reason = CAPTCHA_PROV_TYPES.get((state, prov_type_upper))
-                if _captcha_reason:
+                elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
                 elif not routed_configs:
@@ -2153,6 +2277,22 @@ async def run_state_orchestrated(
                             ladder_result = _psypact_lr
                             ai_result = None
 
+                # --- BACB secondary check for ABA prov_type in NJ / IL / IN ---
+                # When the input license ID matches the BACB certification number
+                # format (RBT-YY-NNNNNN, 1-YY-NNNNNN, etc.) and the primary state
+                # board search did not pass, the next logical check would be BACB.
+                # BACB's Certificant Registry is protected by Cloudflare captcha;
+                # surface Skip + captcha reason without attempting board access.
+                if (prov_type_upper == "ABA"
+                        and row["lic_state"].upper() in _BACB_FALLBACK_STATES
+                        and ladder_result is not None
+                        and ladder_result.status != "Pass"
+                        and trace.final_outcome != "Pass"
+                        and _is_bacb_license(row.get("license_id", ""))
+                        and "BACB" in _SKIP_REASON_BY_SID):
+                    trace.final_outcome = "Skip"
+                    trace.final_reason = "board_skip_captcha"
+
                 # nppes_used: True only when NPPES data actually drove the resolution,
                 # not merely when it was fetched.
                 trace.nppes_used = bool(
@@ -2190,6 +2330,10 @@ async def run_state_orchestrated(
         finally:
             if browser:
                 await browser.close()
+    if _svc_loc_na_rows:
+        _remove_output_dir = emitter.dirs.get("standard", Path(".")).parent
+        _write_remove_license(_svc_loc_na_rows, _remove_output_dir)
+
     log.info("[%s] State complete: %d Pass / %d Fail / %d Skip / %d Total",
              state, passes, fails, skips, len(rows))
     return passes, fails, skips

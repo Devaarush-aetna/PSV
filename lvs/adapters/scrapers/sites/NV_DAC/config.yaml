@@ -1,0 +1,131 @@
+identity:
+  source_id: NV_DAC
+  board_name: Nevada Board of State Alcohol and Drug Counselor Licensing
+  state: NV
+  country: US
+  profession_codes: [LADC, CADC, CSAC, AADC, NDCAC, DAC]
+  # Public licensee search at bsacp.nv.gov — ASP.NET WebForms portal.
+  # License number format: NNNN-L (e.g. "1195-L") where the suffix letter
+  # indicates license class (L=Licensed, C=Certified, etc.).
+  # Result columns (confirmed from user sample 2026-07-03):
+  #   license_number | last_name | first_name | city | license_type | status
+  # Selectors are approximate ASP.NET WebForms patterns — run smoke_all.py to
+  # verify after first use; update input_selector if IDs differ.
+  base_url: "https://bsacp.nv.gov/Licensees/Search"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[id*='LicenseNumber'], input[id*='txtLicense'], input[id*='licenseNumber']"
+    - mode: last_name
+      input_selector: "input[id*='LastName'], input[id*='txtLastName'], input[id*='lastName']"
+    - mode: first_and_last
+      input_selector: "input[id*='LastName'], input[id*='txtLastName'], input[id*='lastName']"
+      extra_inputs:
+        "input[id*='FirstName'], input[id*='txtFirstName'], input[id*='firstName']": "{first}"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[id*='LastName'], input[id*='txtLastName']"
+    search_button:
+      selector: "input[id*='Search'], input[id*='btnSearch'], button[id*='Search']"
+  results_wait:
+    strategy: element_visible
+    selector: "table tbody tr td, table tr td"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+      - "0 result"
+      - "not found"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr, table tr"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: license_number
+      1: last_name
+      2: first_name
+      3: city
+      4: license_type
+      5: status
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "License Number": license_number
+    "Last Name": last_name
+    "First Name": first_name
+    "City": city
+    "License Type": license_type
+    "Status": status
+    "Expiration Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+    "Provisional": active
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [1000, 2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NV_DAC/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-03"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Steve"
+  expect:
+    min_records: 1
+    license_number_contains: "1195"

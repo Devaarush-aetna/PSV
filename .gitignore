@@ -48,3 +48,13 @@ Thumbs.db
 
 # RunQueue state
 RunQueue/
+
+# Runtime NPPES lookup cache (auto-generated, not needed in repo)
+PSV/Cache/
+
+# Scraped PDF verification reports (generated output)
+PSV/PDFS/
+
+# Large state CSV downloads (Ohio individual provider file ~733MB)
+PSV/CSVS/OH_PROVIDERS_INDIVIDUAL*.csv
+lvs/adapters/scrapers/csvs/OH_PROVIDERS_INDIVIDUAL*.csv

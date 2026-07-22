@@ -1,0 +1,133 @@
+identity:
+  source_id: BACB
+  board_name: Behavior Analyst Certification Board — Certificant Registry
+  state: MULTI
+  country: US
+  profession_codes: [BCBA, BCaBA, RBT]
+  # BACB is the national certification body for Applied Behavior Analysis.
+  # Florida does not issue a separate state ABA license; practitioners must hold
+  # BACB certification under FL Statute 393.17 (effective 2018).
+  # Registry URL: https://www.bacb.com/services/o.php?page=101135
+  # The registry uses a custom WordPress plugin ("bacb_form_box") with jQuery AJAX.
+  # No CAPTCHA is required on any BACB page — confirmed 2026-07-02.
+  # SELECTOR NOTE: The form selectors below are approximate and must be validated
+  #   when the registry returns from maintenance ("unavailable until further notice"
+  #   as of 2026-07-02). Update selectors after live inspection.
+  base_url: "https://www.bacb.com/services/o.php?page=101135"
+  archetype: classic_html_form
+  skip: true
+  skip_reason: "BACB Certificant Registry under maintenance ('unavailable until further notice' as of 2026-07-02). Re-validate selectors and re-enable when live."
+
+search:
+  modes:
+    - mode: last_name
+      # Typical WordPress form field for last name — confirm when registry is live
+      input_selector: "input[name='last_name'], input[id='last_name'], input[name*='input'][placeholder*='ast']"
+    - mode: license_number
+      input_selector: "input[name='cert_number'], input[name='certificate'], input[id='cert_number'], input[name*='input'][placeholder*='ert']"
+    - mode: first_and_last
+      input_selector: "input[name='last_name'], input[id='last_name']"
+      extra_inputs:
+        "input[name='first_name'], input[id='first_name']": "{first}"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='last_name'], input[id='last_name']"
+    search_button:
+      selector: "input[type='submit'], button[type='submit'], button.search-btn"
+  results_wait:
+    strategy: network_idle
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records found"
+      - "no results found"
+      - "no certificants found"
+      - "your search returned no"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    # BACB results render in a Bootstrap table with class "table_blue"
+    row_selector: "table.table_blue tbody tr, table.table-blue tbody tr, #bacb-registry-results table tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Certificant in Good Standing": active
+    "In Good Standing": active
+    "Inactive": inactive
+    "inactive": inactive
+    "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+    "Surrendered": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 60000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [3000, 6000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/BACB/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-02"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+  # Registry is currently down for maintenance as of 2026-07-02.
+  # Re-enable and validate selectors when registry comes back online.
+  skip: true
+  skip_reason: "BACB Certificant Registry under maintenance — 'unavailable until further notice' (2026-07-02). Re-validate selectors and re-enable when live."

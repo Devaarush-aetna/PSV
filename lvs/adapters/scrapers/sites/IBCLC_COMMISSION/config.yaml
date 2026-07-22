@@ -26,9 +26,12 @@ search:
       extra_inputs:
         "input[name='name_search']": "{last}"
     - mode: first_and_last
+      # name_search accepts a full "First Last" string. The primary fill writes
+      # last_name; the extra_input below overrides it with the combined value so
+      # the board receives both names and returns a narrower result set.
       input_selector: "input[name='name_search']"
       extra_inputs:
-        "input[name='name_search']": "{last}"
+        "input[name='name_search']": "{first} {last}"
   form:
     search_by_dropdown:
       strategy: none
@@ -40,7 +43,7 @@ search:
         - "button[type='submit']"
   results_wait:
     strategy: network_idle
-    timeout_ms: 20000
+    timeout_ms: 12000
     no_results_indicators:
       - "no matching records"
       - "no records found"
@@ -100,8 +103,8 @@ transport:
   viewport:
     width: 1280
     height: 900
-  timeout_ms: 60000
-  navigation_timeout_ms: 30000
+  timeout_ms: 45000
+  navigation_timeout_ms: 20000
   rate_limit:
     delay_between_requests_ms: 1000
     max_concurrent: 1
