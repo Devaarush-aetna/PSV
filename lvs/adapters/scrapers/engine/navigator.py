@@ -633,10 +633,36 @@ async def wait_for_results(page: Page, config: SearchConfig, partial_failures: l
     rw = config.results_wait
     timeout = rw.timeout_ms
 
+    if rw.strategy == "element_visible" and rw.selector:
+        # Poll every 1s and check no-results indicators on each tick so we exit
+        # immediately when the board shows its empty-state overlay instead of
+        # burning the full timeout on every failed lookup.
+        poll_s = 1.0
+        initial_delay_s = 2.0
+        elapsed_ms = int(initial_delay_s * 1000)
+        await asyncio.sleep(initial_delay_s)
+
+        while elapsed_ms < timeout:
+            if await is_no_results(page, config):
+                log.info("No-results indicator detected early (~%dms elapsed)", elapsed_ms)
+                return False
+            try:
+                if await page.locator(rw.selector).count() > 0:
+                    return True
+            except Exception:
+                pass
+            await asyncio.sleep(poll_s)
+            elapsed_ms += int(poll_s * 1000)
+
+        log.warning("Timed out waiting for results (strategy=%s, timeout=%dms)", rw.strategy, timeout)
+        if partial_failures is not None:
+            partial_failures.append(
+                f"wait_for_results timed out (strategy={rw.strategy}, timeout={timeout}ms)"
+            )
+        return not await is_no_results(page, config)
+
     try:
-        if rw.strategy == "element_visible" and rw.selector:
-            await page.wait_for_selector(rw.selector, timeout=timeout)
-        elif rw.strategy == "network_idle":
+        if rw.strategy == "network_idle":
             await page.wait_for_load_state("networkidle", timeout=timeout)
         elif rw.strategy == "url_change":
             await page.wait_for_function(

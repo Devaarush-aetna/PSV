@@ -78,11 +78,14 @@ async def scrape_browser(
                 )
 
                 if config.results.type == "ag_grid":
-                    raw_rows = await extract_ag_grid(page, config.results.ag_grid_columns or None)
-                    for raw in raw_rows:
-                        mapped = apply_field_map(raw, config.detail.field_map)
-                        rec = map_to_license_record(mapped, config, {})
-                        records.append(rec)
+                    if config.results.has_detail_page and config.results.detail_trigger:
+                        records.extend(await _scrape_with_detail_clicks(page, config, run_id, db))
+                    else:
+                        raw_rows = await extract_ag_grid(page, config.results.ag_grid_columns or None)
+                        for raw in raw_rows:
+                            mapped = apply_field_map(raw, config.detail.field_map)
+                            rec = map_to_license_record(mapped, config, {})
+                            records.append(rec)
                 elif use_select_list:
                     records.extend(await _scrape_select_list_results(page, config, run_id, db))
                 elif config.results.type == "single_record":

@@ -39,7 +39,9 @@ def _build_socrata_combo_url(config: SiteConfig, query: SearchQuery) -> str:
         else:
             clauses.append(f"upper({col}) like upper('%{safe}%')")
 
-    _add_clause("license_number", query.license_number or (query.query if query.mode.startswith("license") else None), op="eq")
+    # _add_clause("license_number", query.license_number or (query.query if query.mode.startswith("license") else None), op="eq")
+    _lic_val = query.license_number or (query.query if query.mode.startswith("license") else None)
+    _add_clause("license_number", _lic_val, op="eq" if (_lic_val and "." in _lic_val) else "like")
     _add_clause("first_name", query.first_name, op="like")
     _add_clause("last_name", query.last_name, op="like")
     if query.license_type and config.identity.license_type_selector:

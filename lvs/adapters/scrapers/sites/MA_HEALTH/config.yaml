@@ -9,7 +9,7 @@
 
 search:
   modes:
-    - mode: "name"
+    - mode: "last_name"
       dropdown_value: "BY_LICENSEE_NAME"
     - mode: "license_number"
       dropdown_value: "BY_LICENSE_NUMBER"
@@ -35,6 +35,7 @@ search:
       - "no results found"
       - "no records found"
       - "0 results found"
+      - "no rows to show"
 
 results:
   type: "ag_grid"
@@ -51,7 +52,9 @@ results:
     - "Issue Date"
     - "Last Issue/Renewal Date"
     - "Expiration Date"
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    selector: "a.page-link[href*='/profiles/']"
   pagination:
     enabled: true
     strategy: "infinite_scroll"
@@ -59,25 +62,23 @@ results:
 detail:
   wait:
     strategy: "element_visible"
+    selector: "dt"
     timeout_ms: 15000
-  strategies: []
+  strategies:
+    - type: "dt_dd"
   field_map:
     "License Number": "license_number"
     "License Type": "license_type"
-    "License Status": "status"
-    "First Name": "first_name"
-    "Middle Name": "licensee_middle_name"
-    "Last Name": "last_name"
-    "Suffix": "licensee_suffix"
-    "Organization Name": "full_name"
+    "Status": "status"
+    "Licensee Name": "full_name"
     "Address": "address"
     "Issue Date": "issue_date"
-    "Last Issue/Renewal Date": "last_renewal_date"
+    "Last Issue/Renewal": "last_renewal_date"
     "Expiration Date": "expiration_date"
   sections: []
   back_navigation:
     strategy: "browser_back"
-    wait_after_ms: 0
+    wait_after_ms: 2000
 
 output:
   license_record:
@@ -142,7 +143,7 @@ compliance:
   robots_txt_compliant: true
 
 smoke_test:
-  mode: name
+  mode: last_name
   query: "Smith"
   expect:
     min_records: 10
