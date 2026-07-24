@@ -43,7 +43,12 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
 
     # Proxy is applied whenever PROXY (or LVS_PROXY_SERVER) env vars are set,
     # unless the board's config sets transport.proxy.enabled: false (hard bypass).
-    proxy_cfg = None if config.proxy.enabled is False else get_proxy_config()
+    if config.proxy.enabled is False:
+        proxy_cfg = None
+        launch_args = [*_STEALTH_ARGS, "--no-proxy-server"]
+    else:
+        proxy_cfg = get_proxy_config()
+        launch_args = _STEALTH_ARGS
 
     # Use a real browser UA unless config explicitly overrides it
     user_agent = config.user_agent
@@ -53,7 +58,7 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
     async with async_playwright() as pw:
         browser: Browser = await pw.chromium.launch(
             headless=headless,
-            args=_STEALTH_ARGS,
+            args=launch_args,
         )
         ctx: BrowserContext = await browser.new_context(
             viewport=config.viewport,

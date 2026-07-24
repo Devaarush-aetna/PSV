@@ -31,9 +31,16 @@ logs/
 # Large generated output (keep source code only)
 Output/
 
-# Scraper evidence cache
+# Scraper evidence cache and debug captures
 Evidence/
 evidence/
+*_detail_page.html
+*_detail_page.png
+*_search_results.html
+*_search_results.png
+
+# Temp git staging artifacts
+$path.staged
 
 # Temporary / OS
 *.tmp
@@ -58,3 +65,12 @@ PSV/PDFS/
 # Large state CSV downloads (Ohio individual provider file ~733MB)
 PSV/CSVS/OH_PROVIDERS_INDIVIDUAL*.csv
 lvs/adapters/scrapers/csvs/OH_PROVIDERS_INDIVIDUAL*.csv
+
+# CSV archive cache (old dated copies)
+PSV/CSVS/cache/
+
+# PSV run output files (generated, not source)
+PSV_Output_*.xlsx
+
+# pip install version-pinning artifacts (=1.0, =2.7, etc.)
+=*

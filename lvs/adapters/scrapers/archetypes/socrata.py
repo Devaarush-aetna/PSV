@@ -12,6 +12,7 @@ from engine.post_processors import apply_field_map
 from engine.proxy import get_proxy_config
 from ._shared import _emit_event
 
+
 log = logging.getLogger(__name__)
 
 

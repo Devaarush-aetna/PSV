@@ -1726,10 +1726,6 @@ _BACB_LICENSE_RE = re.compile(
     re.IGNORECASE,
 )
 
-# States whose ABA prov_type routes to a state board first, then BACB as fallback.
-_BACB_FALLBACK_STATES: frozenset[str] = frozenset({"NJ", "IL", "IN"})
-
-
 def _is_bacb_license(license_id: str) -> bool:
     """Return True when the license ID matches BACB certification number format.
 
@@ -2024,13 +2020,14 @@ async def run_state_orchestrated(
             """SearchExecutor: route browser boards through PsvBrowser, others
             through verify_license."""
             sid = cfg_obj.identity.source_id
+            eff_t = cfg_obj.transport.ladder_timeout_s or timeout
             if sid in psv_browsers:
                 return await psv_browsers[sid].search(
-                    query, timeout_ms=timeout * 1000, run_id=run_id_arg,
+                    query, timeout_ms=eff_t * 1000, run_id=run_id_arg,
                 )
             return await asyncio.wait_for(
                 verify_license(cfg_obj, query, db=None),
-                timeout=float(timeout),
+                timeout=float(eff_t),
             )
 
         try:
@@ -2128,6 +2125,13 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
+                # ABA rows whose license_id is a BACB certification number → always Skip.
+                # BACB format (RBT-NN-NNNNNN, 1-NN-NNNNNN, 0-NN-NNNNNN) means the credential
+                # is issued by BACB, not a state board. BACB Certificant Registry is
+                # captcha-protected — skip without attempting any board lookup.
+                elif prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", "")):
+                    trace.final_outcome = "Skip"
+                    trace.final_reason = "board_skip_captcha"
                 elif not routed_configs:
                     # Any skip:true board → Skip regardless of whether the skip reason
                     # mentions captcha keywords (e.g. BACB "Registry Down" is still a Skip).
@@ -2276,22 +2280,6 @@ async def run_state_orchestrated(
                         if _psypact_lr.status == "Pass":
                             ladder_result = _psypact_lr
                             ai_result = None
-
-                # --- BACB secondary check for ABA prov_type in NJ / IL / IN ---
-                # When the input license ID matches the BACB certification number
-                # format (RBT-YY-NNNNNN, 1-YY-NNNNNN, etc.) and the primary state
-                # board search did not pass, the next logical check would be BACB.
-                # BACB's Certificant Registry is protected by Cloudflare captcha;
-                # surface Skip + captcha reason without attempting board access.
-                if (prov_type_upper == "ABA"
-                        and row["lic_state"].upper() in _BACB_FALLBACK_STATES
-                        and ladder_result is not None
-                        and ladder_result.status != "Pass"
-                        and trace.final_outcome != "Pass"
-                        and _is_bacb_license(row.get("license_id", ""))
-                        and "BACB" in _SKIP_REASON_BY_SID):
-                    trace.final_outcome = "Skip"
-                    trace.final_reason = "board_skip_captcha"
 
                 # nppes_used: True only when NPPES data actually drove the resolution,
                 # not merely when it was fetched.

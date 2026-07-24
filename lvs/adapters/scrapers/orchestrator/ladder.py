@@ -828,13 +828,16 @@ async def _execute_one(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
     error_msg: Optional[str] = None
     records: list = []
 
+    effective_timeout = float(
+        getattr(cfg_obj.transport, "ladder_timeout_s", None) or timeout_s
+    )
     try:
         records = await asyncio.wait_for(
             executor(cfg_obj, plan.query, trace.run_id),
-            timeout=float(timeout_s),
+            timeout=effective_timeout,
         )
     except asyncio.TimeoutError:
-        error_msg = f"timeout_{timeout_s}s"
+        error_msg = f"timeout_{int(effective_timeout)}s"
         log.warning("[%s] timeout mode=%s sig=%s", src_id, plan.mode, sig)
     except Exception as exc:
         error_msg = str(exc)[:300]

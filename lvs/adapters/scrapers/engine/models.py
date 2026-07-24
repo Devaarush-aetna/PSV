@@ -438,6 +438,7 @@ class TransportConfig(BaseModel):
     retry: RetryConfig = Field(default_factory=RetryConfig)
     proxy: ProxyConfig = Field(default_factory=ProxyConfig)
     user_agent: str = "LVS-LicenseVerifier/1.0"
+    ladder_timeout_s: Optional[int] = None
 
 
 class EvidenceConfig(BaseModel):

@@ -67,6 +67,7 @@ detail:
   strategies:
     - type: "dt_dd"
   field_map:
+    # Human-readable names (detail page dt/dd keys)
     "License Number": "license_number"
     "License Type": "license_type"
     "Status": "status"
@@ -75,6 +76,27 @@ detail:
     "Issue Date": "issue_date"
     "Last Issue/Renewal": "last_renewal_date"
     "Expiration Date": "expiration_date"
+    # Human-readable AG Grid header text
+    "License Status": "status"
+    "First Name": "first_name"
+    "Middle Name": "licensee_middle_name"
+    "Last Name": "last_name"
+    "Suffix": "licensee_suffix"
+    "Organization Name": "full_name"
+    "Last Issue/Renewal Date": "last_renewal_date"
+    # camelCase col-id keys — AG Grid falls back to col-id when header text is absent
+    "licenseNumber": "license_number"
+    "licenseMetaName": "license_type"
+    "computedStatus": "status"
+    "firstName": "first_name"
+    "middleInitial": "licensee_middle_name"
+    "lastName": "last_name"
+    "suffix": "licensee_suffix"
+    "organizationName": "full_name"
+    "computedAddress": "address"
+    "issueDate": "issue_date"
+    "lastIssueRenewalDate": "last_renewal_date"
+    "expirationDate": "expiration_date"
   sections: []
   back_navigation:
     strategy: "browser_back"
@@ -126,6 +148,7 @@ transport:
     retry_on: ["timeout", "navigation_error", "network_error"]
   proxy:
     enabled: false
+  ladder_timeout_s: 90
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

@@ -59,7 +59,12 @@ async def scrape_json_api(
 
     log.info("[%s] JSON API run_id=%s  query=%s/%s", source_id, run_id, query.mode, query.query)
 
-    proxy_cfg = get_proxy_config()
+    if config.transport.proxy.enabled is False:
+        proxy_cfg = None
+        extra_launch_args = ["--no-proxy-server"]
+    else:
+        proxy_cfg = get_proxy_config()
+        extra_launch_args = []
 
     base_origin = config.identity.base_url.rstrip("/")
     headers = {
@@ -77,7 +82,7 @@ async def scrape_json_api(
     payload = None
     try:
         async with async_playwright() as pw:
-            browser = await pw.chromium.launch(headless=True)
+            browser = await pw.chromium.launch(headless=True, args=extra_launch_args)
             try:
                 ctx = await browser.new_context(
                     proxy=proxy_cfg,
