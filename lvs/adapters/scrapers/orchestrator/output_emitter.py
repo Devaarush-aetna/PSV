@@ -345,8 +345,21 @@ class OutputEmitter:
             return None
         # Strip all non-alphanumeric and compare case-insensitively
         _strip = lambda s: _re.sub(r"[^a-z0-9]", "", s.lower())
-        if _strip(input_lic) == _strip(board_lic):
+        _si = _strip(input_lic)
+        _sb = _strip(board_lic)
+        if _si == _sb:
             return None  # effectively identical — no review needed
+        # Pure-numeric leading-zero mismatch (e.g. EPDB "7278" vs board "007278")
+        if _si.isdigit() and _sb.isdigit() and _si.lstrip("0") == _sb.lstrip("0"):
+            return None
+        
+        # Letter-prefix + digit core vs double-prefix.digit.suffix
+        # (e.g. WA: "RN61176701" vs "RN.RN.61176701.MSL")
+        _digit_run = lambda s: max((_re.findall(r"\d+", s) or [""]), key=len)
+        _di = _digit_run(_si)
+        _db = _digit_run(_sb)
+        if len(_di) >= 4 and _di.lstrip("0") == _db.lstrip("0"):
+            return None
         return "Numeric License ID matched"
 
     @staticmethod
