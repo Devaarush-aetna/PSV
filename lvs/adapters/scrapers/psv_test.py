@@ -36,7 +36,7 @@ from playwright.async_api import async_playwright, Browser
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from engine.browser import _REAL_UA, _STEALTH_ARGS
+from engine.browser import _REAL_UA, _STEALTH, _STEALTH_ARGS
 from engine.evidence import capture_evidence
 from engine.extractor import extract_results_table, extract_detail, extract_th_td_multi
 from engine.post_processors import apply_field_map
@@ -122,6 +122,34 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("WY", "NP"):  "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
     ("WY", "PN"):  "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
     ("WY", "RNA"): "WY Board of Nursing (nursing.state.wy.us) — CAPTCHA-protected, automated access blocked",
+    # NC Marriage and Family Therapy Board (ncbmft.org) — CAPTCHA-protected.
+    # Previously mis-routed to NC_MENTAL_HEALTH (ncblcmhc.org) which is the wrong board.
+    # Correct URL: https://www.ncbmft.org/licensure/verify-a-licensee — CAPTCHA-blocked.
+    ("NC", "MT"):   "NC Board of Marriage and Family Therapy (ncbmft.org) — CAPTCHA-protected, automated access blocked",
+    # NC Board of Nursing (ncbon.com) — CAPTCHA-protected. Covers RN, LPN, CRNA, NP, NPB, MW.
+    ("NC", "RN"):   "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "LPN"):  "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PN"):   "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "CRNA"): "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "RNA"):  "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "NP"):   "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "NPB"):  "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    ("NC", "MW"):   "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
+    # NC ABA board — CAPTCHA-protected, no automated access.
+    ("NC", "ABA"):  "NC Applied Behavior Analyst board — CAPTCHA-protected, automated access blocked",
+    # NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected. Covers PH and PM.
+    ("NC", "PH"):   "NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PM"):   "NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected, automated access blocked",
+    # NC Medical Board (ncmedboard.org) — CAPTCHA-protected. Covers MD, DO, PA, PAS, PAH.
+    ("NC", "MD"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "DO"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PA"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PAS"):  "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PAH"):  "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    # NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, no routing configured.
+    ("NC", "SW"):   "NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, automated access blocked",
+    # NC Art Therapy — verified manually by emailing the board contact.
+    ("NC", "AP"):   "License will be verified by emailing to pat@smvt.com",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -503,19 +531,22 @@ class PsvBrowser:
         """
         src = self.config.identity.source_id
         state = self.config.identity.state
+        ua = self.config.transport.user_agent
+        if not ua or ua == "LVS-LicenseVerifier/1.0":
+            ua = _REAL_UA
         ctx = await self._browser.new_context(
             viewport={"width": 1280, "height": 900},
-            user_agent=_REAL_UA,
+            user_agent=ua,
             proxy=self._proxy,
             locale="en-US",
             timezone_id="America/New_York",
+            ignore_https_errors=self.config.transport.ignore_https_errors,
         )
         ctx.set_default_timeout(timeout_ms)
         ctx.set_default_navigation_timeout(min(timeout_ms, 30000))
+        if _STEALTH is not None:
+            await _STEALTH.apply_stealth_async(ctx)
         page = await ctx.new_page()
-        await page.add_init_script(
-            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-        )
         try:
             log.info("[%s] search mode=%s query=%s", src, query.mode, query.query)
             await navigate_to_search(page, self.config)
@@ -687,6 +718,13 @@ class PsvBrowser:
                         await _wait_for_detail_content(page, self.config)
                         raw = await extract_detail(page, self.config.detail)
                         await _try_out_of_state_tab(page, self.config, raw)
+                        # Supplement with summary-row fields not captured on the detail
+                        # page (e.g. license_type on NC_SLP_AUD lives only in the table).
+                        if _idx < len(raw_rows):
+                            _sr = raw_rows[_idx]
+                            for _k in ("license_type", "city", "state_code"):
+                                if not raw.get(_k) and _sr.get(_k):
+                                    raw[_k] = _sr[_k]
                         if run_id:
                             try:
                                 await capture_evidence(page, self.config.evidence,
@@ -961,6 +999,32 @@ async def run_row(
                 _type_kwargs = {"license_type": _type_val}
         else:
             _type_kwargs = {}
+
+        # --- License normalization: prov_type-based prefix injection ---
+        # Boards like NC_PT require a single-letter designation prefix before the number
+        # (P=PT, A=PTA). Two cases handled:
+        #   1. Bare numeric "12345" → "P12345"  (license_id[0].isdigit())
+        #   2. Prov-type-prefixed "PT12345" → "P12345"  (input has full prov_type as prefix
+        #      instead of the board's shorter letter code)
+        _cfg_for_norm = all_configs.get(src_id)
+        _pfx_map = (
+            getattr(getattr(_cfg_for_norm, "search", None), "license_prov_type_prefix_map", None) or {}
+        ) if _cfg_for_norm else {}
+        if _pfx_map and license_id:
+            _target_pfx = _pfx_map.get(prov_type.upper()) or _pfx_map.get(prov_type)
+            if _target_pfx:
+                _old_lic = license_id
+                if license_id[0].isdigit():
+                    # Case 1: bare numeric
+                    license_id = f"{_target_pfx}{license_id}"
+                elif license_id.upper().startswith(prov_type.upper()):
+                    # Case 2: prov_type-prefixed (e.g. "PT12345" when board wants "P12345")
+                    _rest = license_id[len(prov_type):]
+                    if _rest and (_rest[0].isdigit() or _rest[0] in ("-", " ")):
+                        license_id = f"{_target_pfx}{_rest.lstrip('- ')}"
+                if license_id != _old_lic:
+                    log.info("[%s] License prefix normalized: '%s' → '%s' (prov_type=%s)",
+                             src_id, _old_lic, license_id, prov_type)
 
         # --- Pass 1: search by license number ---
         q_lic = SearchQuery(
@@ -1685,8 +1749,16 @@ def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") ->
                 continue
 
         npi_val = c(npi_col_idx) if npi_col_idx is not None else ""
-        # Strip non-digits and validate as 10-digit NPI
+        # Strip non-digits and validate as 10-digit NPI.
+        # Excel stores integer NPI values as floats ("1234567890.0") — convert to int
+        # string first so the trailing ".0" doesn't inflate the digit count to 11.
         import re as _re
+        try:
+            _f = float(npi_val)
+            if _f == int(_f):
+                npi_val = str(int(_f))
+        except (ValueError, TypeError):
+            pass
         npi_clean = _re.sub(r"\D", "", npi_val)
         if len(npi_clean) != 10:
             npi_clean = ""
@@ -1882,6 +1954,7 @@ async def run_state(
     browser_configs = [c for c in configs if c.identity.archetype in _BROWSER_ARCHETYPES]
     api_configs_list = [c for c in configs if c.identity.archetype not in _BROWSER_ARCHETYPES]
     api_configs = {c.identity.source_id: c for c in api_configs_list}
+    all_configs_by_sid = {c.identity.source_id: c for c in configs}
 
     log.info("[%s] Browser boards (%d): %s  API boards (%d): %s", state,
              len(browser_configs), [c.identity.source_id for c in browser_configs],
@@ -1901,7 +1974,13 @@ async def run_state(
 
         if browser_configs:
             log.info("[%s] Launching shared browser ...", state)
-            browser = await pw.chromium.launch(headless=True, args=_STEALTH_ARGS)
+            # Respect transport settings from configs — non-headless/channel wins for any board
+            _headless = all(cfg.transport.headless for cfg in browser_configs)
+            _channel = next((cfg.transport.channel for cfg in browser_configs if cfg.transport.channel), None)
+            _launch_kw: dict = {"headless": _headless, "args": _STEALTH_ARGS}
+            if _channel:
+                _launch_kw["channel"] = _channel
+            browser = await pw.chromium.launch(**_launch_kw)
             for cfg in browser_configs:
                 board_proxy = _board_proxy(cfg, proxy_cfg)
                 psv_browsers[cfg.identity.source_id] = PsvBrowser(cfg, browser, board_proxy)
@@ -1919,10 +1998,10 @@ async def run_state(
                 if sequential:
                     outcomes = []
                     for r in batch:
-                        outcomes.append(await run_row(r, psv_browsers, api_configs, {}, timeout))
+                        outcomes.append(await run_row(r, psv_browsers, api_configs, all_configs_by_sid, timeout))
                 else:
                     outcomes = list(await asyncio.gather(*[
-                        run_row(r, psv_browsers, api_configs, {}, timeout)
+                        run_row(r, psv_browsers, api_configs, all_configs_by_sid, timeout)
                         for r in batch
                     ]))
 
@@ -2011,7 +2090,12 @@ async def run_state_orchestrated(
         psv_browsers: dict = {}
         if browser_configs:
             log.info("[%s] Launching shared browser ...", state)
-            browser = await pw.chromium.launch(headless=True, args=_STEALTH_ARGS)
+            _headless = all(cfg.transport.headless for cfg in browser_configs)
+            _channel = next((cfg.transport.channel for cfg in browser_configs if cfg.transport.channel), None)
+            _launch_kw2: dict = {"headless": _headless, "args": _STEALTH_ARGS}
+            if _channel:
+                _launch_kw2["channel"] = _channel
+            browser = await pw.chromium.launch(**_launch_kw2)
             for cfg_obj in browser_configs:
                 board_proxy = _board_proxy(cfg_obj, proxy_cfg)
                 psv_browsers[cfg_obj.identity.source_id] = PsvBrowser(cfg_obj, browser, board_proxy)
@@ -2125,11 +2209,15 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
-                # ABA rows whose license_id is a BACB certification number → always Skip.
-                # BACB format (RBT-NN-NNNNNN, 1-NN-NNNNNN, 0-NN-NNNNNN) means the credential
-                # is issued by BACB, not a state board. BACB Certificant Registry is
-                # captcha-protected — skip without attempting any board lookup.
-                elif prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", "")):
+                # ABA rows whose license_id is a BACB certification number → Skip when:
+                #   (a) no state board is routed at all, OR
+                #   (b) BACB is explicitly listed in the routing (signals the credential is
+                #       BACB-issued; the state has no separate board that carries these records).
+                # Exception: states whose routing has NO "BACB" entry (e.g. KY → KY_MULTIBOARD
+                # only) DO have a state board that holds ABA records — attempt it regardless of
+                # license format.
+                elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))
+                      and (not routed_configs or "BACB" in routed_sids)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "board_skip_captcha"
                 elif not routed_configs:
@@ -2197,10 +2285,9 @@ async def run_state_orchestrated(
                         ladder_result.status == "EscalateAi" or force_ai or _force_name_gate_ai
                     ):
                         candidate_cache: dict[str, list] = {}
-                        # Replay stored records into cache via fresh query? We
-                        # don't keep records around between rungs (the executor
-                        # returns them; ladder doesn't cache). For pick_candidate
-                        # to work, the agent must call try_search itself first.
+                        for _a in trace.attempts:
+                            if _a.candidates:
+                                candidate_cache.setdefault(_a.source_id, []).extend(_a.candidates)
                         ai_result = await ai_mod.run_ai_agent(
                             master_row=row,
                             nppes=nppes,

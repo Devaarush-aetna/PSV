@@ -19,13 +19,57 @@ identity:
 
 csv_bulk:
   download_strategy: multi_step_checkbox
-  checkbox_section: "Healthcare Practitioners"
-  practitioner_types:
-    - "Physician/Surgeon - MD/DO"
-    - "Physical Therapist"
-    - "Advanced Practice Registered Nurse"
-    - "Chiropractor"
-    - "Dentist"
+  sections:
+    - checkbox_section: "Healthcare Practitioners"
+      practitioner_types:
+        - "Acupuncturist"
+        - "Advanced Practice Registered Nurse"
+        - "APRNs Practicing Not in Collaboration with a Physician"
+        - "Athletic Trainer"
+        - "Audiologist"
+        - "Chiropractor"
+        - "Community Health Worker"
+        - "Dental Anesthesia/Conscious Sedation Permit"
+        - "Dental Conscious Sedation Permit"
+        - "Dental Hygienist"
+        - "Dentist"
+        - "Dietitian/Nutritionist"
+        - "Genetic Counselor"
+        - "Hearing Instrument Specialist"
+        - "Homeopathic Physician"
+        - "Lactation Consultant"
+        - "Licensed Practical Nurse"
+        - "Massage Therapist"
+        - "Naturopathic Physician"
+        - "Nurse Midwife"
+        - "Occupational Therapist"
+        - "Occupational Therapist Assistant"
+        - "Optician"
+        - "Optician Apprentice"
+        - "Optometrist"
+        - "Perfusionist"
+        - "Physical Therapist"
+        - "Physical Therapist Assistant"
+        - "Physician Assistant"
+        - "Physician/Surgeon - MD/DO"
+        - "Podiatrist"
+        - "Radiographer"
+        - "Registered Nurse"
+        - "Respiratory Care Practitioner"
+        - "Speech and Language Pathologist"
+        - "Veterinarian"
+    - checkbox_section: "Behavioral/Mental Health and Substance Abuse Care"
+      practitioner_types:
+        - "Behavior Analyst"
+        - "Psychologist"
+        - "Professional Counselor"
+        - "Professional Counselor Associate"
+        - "Marital and Family Therapist"
+        - "Marital and Family Therapist Associate"
+        - "Licensed Clinical Social Worker"
+    - checkbox_section: "Substance Abuse Care"
+      practitioner_types:
+        - "Licensed Alcohol and Drug Counselor"
   cache_days: 7
   cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"
@@ -101,6 +145,7 @@ transport:
     height: 900
   timeout_ms: 120000
   navigation_timeout_ms: 60000
+  ladder_timeout_s: 300
   rate_limit:
     delay_between_requests_ms: 2000
     max_concurrent: 1

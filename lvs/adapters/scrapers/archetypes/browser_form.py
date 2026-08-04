@@ -7,7 +7,7 @@ import logging
 from engine.browser import get_page
 from engine.evidence import capture_evidence
 from engine.extractor import extract_ag_grid, extract_results_table, extract_th_td_multi
-from engine.models import SearchQuery, SiteConfig
+from engine.models import LicenseStatus, SearchQuery, SiteConfig
 from engine.navigator import fill_search_form, navigate_to_search
 from engine.output import map_to_license_record, upsert_to_db
 from engine.pagination import paginate
@@ -16,6 +16,7 @@ from ._shared import (
     _emit_event,
     _navigate_back,
     _scrape_one_detail,
+    _scrape_pdf_detail,
     _set_iteration_value,
     _wait_for_detail_content,
 )
@@ -199,6 +200,40 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) 
 
                 await btn.scroll_into_view_if_needed()
                 await asyncio.sleep(0.3)
+
+                # PDF detail: if the link href points to a PDF, download and parse
+                # it directly instead of navigating the browser (avoids PDF viewer issues).
+                _href = (await btn.get_attribute("href") or "").strip()
+                _force_pdf = bool(config.results.detail_trigger and config.results.detail_trigger.force_pdf)
+                _is_pdf = _force_pdf or _href.lower().endswith(".pdf") or "pdf" in _href.lower().split("?")[0]
+                if _is_pdf and not _href:
+                    log.warning("force_pdf=True but href is empty at idx=%d — using summary row only", idx)
+                    if idx < len(_summary_rows):
+                        records.append(_summary_rows[idx])
+                    continue
+                if _is_pdf:
+                    from engine.post_processors import apply_field_map as _afm
+                    _pdf_raw = await _scrape_pdf_detail(page, _href, config)
+                    _pdf_mapped = _afm(_pdf_raw, config.detail.field_map)
+                    rec = map_to_license_record(_pdf_mapped, config, {})
+                    if idx < len(_summary_rows):
+                        _sr = _summary_rows[idx]
+                        if not rec.license_number and _sr.license_number:
+                            rec.license_number = _sr.license_number
+                        if not rec.licensee_full_name and not rec.licensee_first_name and _sr.licensee_full_name:
+                            rec.licensee_full_name = _sr.licensee_full_name
+                            rec.licensee_first_name = _sr.licensee_first_name
+                            rec.licensee_last_name = _sr.licensee_last_name
+                        if not rec.license_type and _sr.license_type:
+                            rec.license_type = _sr.license_type
+                        from engine.models import LicenseStatus as _LS
+                        if rec.status == _LS.UNKNOWN and _sr.status != _LS.UNKNOWN:
+                            rec.status = _sr.status
+                        if rec.expiration_date is None and _sr.expiration_date is not None:
+                            rec.expiration_date = _sr.expiration_date
+                    records.append(rec)
+                    continue  # no back navigation needed — browser never navigated
+
                 await btn.evaluate("el => el.removeAttribute('target')")
                 await btn.click()
 
@@ -213,11 +248,50 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) 
 
                 await _wait_for_detail_content(page, config)
 
-                raw = await _scrape_one_detail(page, config, run_id, db)
+                # Detect board-side error/session-expired pages before extracting.
+                # When any configured error_page_selector matches, skip extraction
+                # and fall through to summary-row merge so the record is not lost.
+                _err_page = False
+                for _ep_sel in (config.detail.wait.error_page_selectors or []):
+                    try:
+                        if await page.locator(_ep_sel).count() > 0:
+                            _err_page = True
+                            log.warning(
+                                "[%s] Error page detected (idx=%d, sel=%r) — "
+                                "using summary-row fallback",
+                                config.identity.source_id, idx, _ep_sel,
+                            )
+                            break
+                    except Exception:
+                        pass
+
+                if _err_page:
+                    raw = {}
+                else:
+                    raw = await _scrape_one_detail(page, config, run_id, db)
                 rec = map_to_license_record(raw, config, {
                     "html_path": raw.get("html_path"),
                     "screenshot_path": raw.get("screenshot_path"),
                 })
+                # Merge summary-row fields when detail page extraction left key
+                # fields blank (e.g. nested table race, garbled HTML, secondary
+                # "Related Licenses" table overwriting primary with non-name data,
+                # or board returning an error/session-expired page instead of the
+                # real detail — e.g. Indiana mylicense.in.gov Details.aspx).
+                if idx < len(_summary_rows):
+                    _sr = _summary_rows[idx]
+                    if not rec.license_number and _sr.license_number:
+                        rec.license_number = _sr.license_number
+                    if not rec.licensee_full_name and not rec.licensee_first_name and _sr.licensee_full_name:
+                        rec.licensee_full_name = _sr.licensee_full_name
+                        rec.licensee_first_name = _sr.licensee_first_name
+                        rec.licensee_last_name  = _sr.licensee_last_name
+                    if not rec.license_type and _sr.license_type:
+                        rec.license_type = _sr.license_type
+                    if rec.status == LicenseStatus.UNKNOWN and _sr.status != LicenseStatus.UNKNOWN:
+                        rec.status = _sr.status
+                    if rec.expiration_date is None and _sr.expiration_date is not None:
+                        rec.expiration_date = _sr.expiration_date
                 records.append(rec)
 
             except Exception as exc:

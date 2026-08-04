@@ -50,7 +50,7 @@ logging.basicConfig(
 
 # Project root: scrapers/ → adapters/ → lvs/ → PSV_DEV/
 PSV_DEV = Path(__file__).parents[3]
-DEFAULT_INPUT = PSV_DEV / "Input.xlsx"
+DEFAULT_INPUT = Path(__file__).parents[1] / "Input.xlsx"
 
 # States where every board site blocks automated access (CAPTCHA / IP-block).
 # No boards are in the inventory for these — rows will Fail with an explanation.

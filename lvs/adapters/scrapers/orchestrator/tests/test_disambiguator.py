@@ -15,6 +15,7 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from orchestrator import disambiguator as d
+from orchestrator.output_emitter import OutputEmitter
 
 
 @dataclass
@@ -234,3 +235,111 @@ def test_narrowing_ambiguous_when_two_identical():
                    licensee_last_name="Smith", license_type="Medical Doctor")
     narrowed, status = d.apply_narrowing([rec, rec2], _master())
     assert status == "ambiguous"
+
+
+# ---------------------------------------------------------------------------
+# _split_full_name — Jr./suffix edge cases (bug fix regression tests)
+# ---------------------------------------------------------------------------
+
+def test_split_full_name_name_comma_jr():
+    # Bug: "George Joseph Vesper, Jr." → used to return ("", "George Joseph Vesper")
+    # After fix: comma is detected as suffix separator, falls through to Format 2
+    first, last = d._split_full_name("George Joseph Vesper, Jr.", "Vesper")
+    assert first.upper() == "GEORGE"
+    assert last.upper() == "VESPER"
+
+
+def test_split_full_name_name_comma_sr():
+    first, last = d._split_full_name("Thomas Stephen Higgins, Sr.", "Higgins")
+    assert first.upper() == "THOMAS"
+    assert last.upper() == "HIGGINS"
+
+
+def test_split_full_name_name_comma_ii():
+    first, last = d._split_full_name("William James Carter, II", "Carter")
+    assert first.upper() == "WILLIAM"
+    assert last.upper() == "CARTER"
+
+
+def test_split_full_name_name_comma_md():
+    # Suffix after comma that is a credential, not a generational
+    first, last = d._split_full_name("Jane Ann Smith, M.D.", "Smith")
+    assert first.upper() == "JANE"
+    assert last.upper() == "SMITH"
+
+
+def test_split_full_name_last_comma_first_jr():
+    # Standard "Last, First Jr." — Jr. is after first name, should still strip
+    first, last = d._split_full_name("Smith, John Jr.", "Smith")
+    assert first.upper() == "JOHN"
+    assert last.upper() == "SMITH"
+
+
+def test_split_full_name_last_jr_comma_first():
+    # "Vesper Jr., George Joseph" — Jr. is part of last before comma
+    first, last = d._split_full_name("Vesper Jr., George Joseph", "Vesper")
+    assert first.upper() == "GEORGE"
+    assert last.upper() == "VESPER"
+
+
+def test_split_full_name_space_only_no_suffix():
+    # Plain "First Middle Last" — unchanged behaviour
+    first, last = d._split_full_name("George Joseph Vesper", "Vesper")
+    assert first.upper() == "GEORGE"
+    assert last.upper() == "VESPER"
+
+
+def test_split_full_name_space_only_with_prefix_suffix():
+    # "Dr. Jane Smith MD" → strip DR prefix + MD suffix
+    first, last = d._split_full_name("Dr. Jane Smith MD", "Smith")
+    assert first.upper() == "JANE"
+    assert last.upper() == "SMITH"
+
+
+def test_split_full_name_compound_last():
+    # Compound last name — master word count drives extraction
+    first, last = d._split_full_name("Maria Rodriguez Pestana", "Rodriguez Pestana")
+    assert first.upper() == "MARIA"
+    assert last.upper() == "RODRIGUEZ PESTANA"
+
+
+# ---------------------------------------------------------------------------
+# _resolve_board_name_parts — full name stored in licensee_last_name
+# ---------------------------------------------------------------------------
+
+def test_resolve_board_name_full_in_last_field():
+    # Bug: board stores "George Joseph Vesper" in last_name, first_name=""
+    # After fix: triggers _split_full_name on the last field
+    rec = FakeRec(licensee_first_name="", licensee_last_name="George Joseph Vesper")
+    first, last = OutputEmitter._resolve_board_name_parts(rec, master_last="Vesper")
+    assert first.upper() == "GEORGE"
+    assert last.upper() == "VESPER"
+
+
+def test_resolve_board_name_full_in_last_field_higgins():
+    rec = FakeRec(licensee_first_name="", licensee_last_name="Thomas Stephen Higgins")
+    first, last = OutputEmitter._resolve_board_name_parts(rec, master_last="Higgins")
+    assert first.upper() == "THOMAS"
+    assert last.upper() == "HIGGINS"
+
+
+def test_resolve_board_name_full_in_full_name_field_with_jr():
+    # Board stores "George Joseph Vesper, Jr." in licensee_full_name
+    rec = FakeRec(licensee_first_name="", licensee_last_name="",
+                  licensee_full_name="George Joseph Vesper, Jr.")
+    first, last = OutputEmitter._resolve_board_name_parts(rec, master_last="Vesper")
+    assert first.upper() == "GEORGE"
+    assert last.upper() == "VESPER"
+
+
+def test_resolve_board_name_normal_split_fields():
+    # Normal case: first and last already populated — no change
+    rec = FakeRec(licensee_first_name="George", licensee_last_name="Vesper")
+    first, last = OutputEmitter._resolve_board_name_parts(rec, master_last="Vesper")
+    assert first == "George"
+    assert last == "Vesper"
+
+
+def test_resolve_board_name_none_rec():
+    first, last = OutputEmitter._resolve_board_name_parts(None)
+    assert first == "" and last == ""

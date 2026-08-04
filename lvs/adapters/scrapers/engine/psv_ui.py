@@ -241,6 +241,85 @@ def _scan_queue() -> tuple[list[Path], list[str], str | None]:
     return xlsx, skipped, None
 
 
+def _count_existing_traces(run_id: str) -> int:
+    """Count trace JSON files already written for a run (used to compute resume offset)."""
+    ym = run_id[:6]  # first 6 chars are YYYYMM
+    trace_dir = OUTPUT_ROOT / ym / run_id / "Traces"
+    if not trace_dir.is_dir():
+        return 0
+    return sum(1 for f in trace_dir.iterdir() if f.suffix == ".json")
+
+
+_DISMISSED_FILE = OUTPUT_ROOT / ".dismissed_resumes.json"
+
+
+def _load_dismissed() -> set[str]:
+    try:
+        import json as _json
+        return set(_json.loads(_DISMISSED_FILE.read_text(encoding="utf-8")))
+    except Exception:
+        return set()
+
+
+def _dismiss_run(run_id: str) -> None:
+    import json as _json
+    dismissed = _load_dismissed()
+    dismissed.add(run_id)
+    _DISMISSED_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _DISMISSED_FILE.write_text(_json.dumps(sorted(dismissed), indent=2), encoding="utf-8")
+
+
+def _kill_run(run_id: str, proc: "subprocess.Popen | None" = None) -> None:
+    """Kill every run_psv.py process associated with run_id.
+
+    Three-layer approach so Stop works even after a Streamlit session reset:
+      1. In-memory Popen handle (fast path, same session)
+      2. PID sidecar file written at launch time (survives session resets)
+      3. WMI scan for any python.exe whose command line contains run_id
+         (catches multiple orphans created by repeated Resume clicks)
+    """
+    if proc:
+        try:
+            proc.terminate()
+        except Exception:
+            pass
+
+    pid_file = LOG_DIR / f"{run_id}.pid"
+    if pid_file.exists():
+        try:
+            pid = int(pid_file.read_text().strip())
+            subprocess.call(
+                ["powershell", "-Command",
+                 f"Stop-Process -Id {pid} -Force -ErrorAction SilentlyContinue"],
+                timeout=5,
+            )
+        except Exception:
+            pass
+        try:
+            pid_file.unlink(missing_ok=True)
+        except Exception:
+            pass
+
+    try:
+        result = subprocess.run(
+            ["powershell", "-Command",
+             f"Get-WmiObject Win32_Process -Filter 'Name=\"python.exe\"' | "
+             f"Where-Object {{$_.CommandLine -like '*{run_id}*'}} | "
+             f"Select-Object -ExpandProperty ProcessId"],
+            capture_output=True, text=True, timeout=8,
+        )
+        for line in result.stdout.splitlines():
+            line = line.strip()
+            if line.isdigit():
+                subprocess.call(
+                    ["powershell", "-Command",
+                     f"Stop-Process -Id {line} -Force -ErrorAction SilentlyContinue"],
+                    timeout=5,
+                )
+    except Exception:
+        pass
+
+
 def _launch_run(run: dict) -> None:
     """Start run_psv.py subprocess for a single run entry."""
     script   = PSV_DEV / "lvs/adapters/scrapers/run_psv.py"
@@ -255,9 +334,17 @@ def _launch_run(run: dict) -> None:
         "--run-id", run["run_id"],
         "--sheet",  "PSV Tab",
     ]
+    skip = run.get("skip_rows", 0)
+    if skip > 0:
+        cmd += ["--skip-rows", str(skip)]
     with open(log_path, "w", encoding="utf-8") as fh:
         proc = subprocess.Popen(cmd, cwd=str(PSV_DEV), stdout=fh, stderr=fh)
     run["_proc"] = proc
+    # Persist PID so _kill_run works even after this Streamlit session resets
+    try:
+        (LOG_DIR / f"{run['run_id']}.pid").write_text(str(proc.pid))
+    except Exception:
+        pass
 
 
 def _scheduler(runs: list[dict], max_workers: int) -> None:
@@ -276,6 +363,10 @@ def _scheduler(runs: list[dict], max_workers: int) -> None:
                     "complete" if proc.returncode == 0     else
                     "error"
                 )
+                try:
+                    (LOG_DIR / f"{r['run_id']}.pid").unlink(missing_ok=True)
+                except Exception:
+                    pass
 
         active = [r for r in runs if r["status"] == "running"]
         queued = [r for r in runs if r["status"] == "queued"]
@@ -358,21 +449,47 @@ def _run_card(run: dict, all_runs: list[dict]) -> None:
         with c3:
             if s == "running":
                 if st.button("⏹ Stop", key=f"_stop_{run['run_id']}", type="secondary"):
-                    proc = run.get("_proc")
-                    if proc:
-                        try:
-                            proc.terminate()
-                        except Exception:
-                            pass
+                    _kill_run(run["run_id"], run.get("_proc"))
                     run["_stop_requested"] = True
                     run["status"] = "stopped"
                     if not run.get("finished_at"):
                         run["finished_at"] = time.time()
                     st.rerun()
                 st.caption(f"ETA: {_fmt_eta(run)}")
-            elif s in ("complete", "stopped") and run.get("started_at") and run.get("finished_at"):
-                st.caption(f"Duration: {_fmt_dur(run['finished_at'] - run['started_at'])}")
-            elif s == "error" and run.get("started_at") and run.get("finished_at"):
+            elif s in ("stopped", "error"):
+                if run.get("started_at") and run.get("finished_at"):
+                    st.caption(f"Duration: {_fmt_dur(run['finished_at'] - run['started_at'])}")
+                existing = _count_existing_traces(run["run_id"])
+                if existing > 0 and existing < run.get("total", 0):
+                    if st.button(
+                        f"▶ Resume from row {existing}",
+                        key=f"_resume_{run['run_id']}",
+                        type="primary",
+                    ):
+                        # Kill any still-running process with this run_id before resuming
+                        _kill_run(run["run_id"], run.get("_proc"))
+                        resume_run = {
+                            **{k: v for k, v in run.items() if k != "_proc"},
+                            "status":     "queued",
+                            "skip_rows":  existing,
+                            "done":       0,
+                            "passes":     0,
+                            "fails":      0,
+                            "skips":      0,
+                            "started_at": None,
+                            "finished_at": None,
+                            "_proc":      None,
+                        }
+                        runs_list = st.session_state.get("_runs", [])
+                        runs_list.append(resume_run)
+                        st.session_state._runs        = runs_list
+                        st.session_state._runs_active = True
+                        max_workers = st.session_state.get("_max_workers", 3)
+                        threading.Thread(
+                            target=_scheduler, args=(runs_list, max_workers), daemon=True
+                        ).start()
+                        st.rerun()
+            elif s == "complete" and run.get("started_at") and run.get("finished_at"):
                 st.caption(f"Duration: {_fmt_dur(run['finished_at'] - run['started_at'])}")
             elif s == "queued":
                 q_list = [r for r in all_runs if r["status"] == "queued"]
@@ -424,6 +541,7 @@ def page_run_manager() -> None:
             help="Max input files processed simultaneously. "
                  "Finished workers auto-pick the next queued file.",
         )
+        st.session_state["_max_workers"] = max_workers
         st.divider()
         st.markdown(
             f"**Input folder**  \n"
@@ -467,6 +585,118 @@ def page_run_manager() -> None:
             f"Free up disk space (empty Recycle Bin, clear Windows Temp, "
             f"remove large files from Downloads) before starting."
         )
+
+    # --- Resume previous incomplete run (cross-session) ---------------------------
+    # Scan Output/ for runs whose Traces/ count is less than the input row total.
+    # Match the run's state to an input file in RunQueue/ for resumption.
+    _dismissed = _load_dismissed()
+    _incomplete: list[dict] = []
+    if OUTPUT_ROOT.exists():
+        for yyyymm_dir in sorted(OUTPUT_ROOT.iterdir(), reverse=True):
+            if not yyyymm_dir.is_dir():
+                continue
+            for run_dir in sorted(yyyymm_dir.iterdir(), reverse=True):
+                if run_dir.name in _dismissed:
+                    continue
+                trace_dir = run_dir / "Traces"
+                if not trace_dir.is_dir():
+                    continue
+                existing = sum(1 for f in trace_dir.iterdir() if f.suffix == ".json")
+                if existing == 0:
+                    continue
+                # Infer state from run_id (e.g. 20260727_1630_CT_001 → CT)
+                _m = re.search(r"_([A-Z]{2})_\d+$", run_dir.name)
+                inferred_state = _m.group(1) if _m else "??"
+                # Find a matching RunQueue input for this state
+                _input_match: Path | None = None
+                for _xlsx in sorted(RUN_QUEUE.iterdir()):
+                    if _xlsx.suffix.lower() == ".xlsx" and not _xlsx.name.startswith("~$"):
+                        if _detect_state(_xlsx) == inferred_state:
+                            _input_match = _xlsx
+                            break
+                if _input_match is None:
+                    continue
+                # Count total rows in the matched input file
+                try:
+                    import openpyxl as _oxl2
+                    _wb2 = _oxl2.load_workbook(str(_input_match), read_only=True, data_only=True)
+                    _ws2 = _wb2.active
+                    _total2 = sum(1 for _ in _ws2.iter_rows(min_row=2, max_col=1))
+                    _wb2.close()
+                except Exception:
+                    _total2 = 0
+                if _total2 > 0 and existing < _total2:
+                    _incomplete.append({
+                        "run_id":     run_dir.name,
+                        "state":      inferred_state,
+                        "existing":   existing,
+                        "total":      _total2,
+                        "input_file": str(_input_match),
+                        "filename":   _input_match.name,
+                    })
+
+    if _incomplete:
+        with st.expander(
+            f"⏮ Resume incomplete run{'s' if len(_incomplete) > 1 else ''} "
+            f"({len(_incomplete)} found)",
+            expanded=True,
+        ):
+            for _inc in _incomplete:
+                _left, _mid, _right = st.columns([6, 3, 2])
+                with _left:
+                    st.markdown(
+                        f"**{_inc['run_id']}** · State `{_inc['state']}` · "
+                        f"Input: `{_inc['filename']}`  \n"
+                        f"Completed **{_inc['existing']:,}** / **{_inc['total']:,}** rows — "
+                        f"**{_inc['total'] - _inc['existing']:,}** remaining"
+                    )
+                with _mid:
+                    _btn_key = f"_resume_prev_{_inc['run_id']}"
+                    if st.button(
+                        f"▶ Resume from row {_inc['existing']}",
+                        key=_btn_key,
+                        type="primary",
+                        use_container_width=True,
+                    ):
+                        # Kill any orphaned process still running for this run_id
+                        _kill_run(_inc["run_id"])
+                        resume_run = {
+                            "input_file":  _inc["input_file"],
+                            "filename":    _inc["filename"],
+                            "state":       _inc["state"],
+                            "run_id":      _inc["run_id"],
+                            "skip_rows":   _inc["existing"],
+                            "log_path":    "",
+                            "_proc":       None,
+                            "status":      "queued",
+                            "done":        0,
+                            "total":       _inc["total"] - _inc["existing"],
+                            "passes":      0,
+                            "fails":       0,
+                            "skips":       0,
+                            "started_at":  None,
+                            "finished_at": None,
+                        }
+                        runs_list = st.session_state.get("_runs", [])
+                        runs_list.append(resume_run)
+                        st.session_state._runs        = runs_list
+                        st.session_state._runs_active = True
+                        _max_w = st.session_state.get("_max_workers", 3)
+                        threading.Thread(
+                            target=_scheduler, args=(runs_list, _max_w), daemon=True
+                        ).start()
+                        st.rerun()
+                with _right:
+                    if st.button(
+                        "✕ Dismiss",
+                        key=f"_dismiss_{_inc['run_id']}",
+                        type="secondary",
+                        use_container_width=True,
+                        help="Permanently hide this run from the resume list",
+                    ):
+                        _dismiss_run(_inc["run_id"])
+                        st.rerun()
+    # --- End resume section -------------------------------------------------------
 
     runs_active = st.session_state.get("_runs_active", False)
     # Also check the actual runs list — guards against _runs_active flag getting

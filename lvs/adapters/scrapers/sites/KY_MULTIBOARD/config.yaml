@@ -59,12 +59,13 @@ results:
     # col4 (License Number) is the current/active board license number (always present).
     columns:
       0: full_name
-      1: license_type
+      2: license_type
       3: legacy_license_number
       4: license_number
       6: status
       7: issue_date
       8: expiration_date
+    required_fields: [license_number]
   has_detail_page: false
   pagination:
     enabled: false

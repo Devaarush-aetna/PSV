@@ -49,14 +49,64 @@ results:
       1: full_name
       2: status
       3: city
-  has_detail_page: false
+  # Detail page enabled to capture Renewal Date (= expiration_date).
+  # The AJAX table resets on back-navigation when there are multiple results —
+  # the engine pre-extracts summary rows and falls back to them for subsequent
+  # rows, so only the first matched row gets full detail data. For license_number
+  # searches (1 result) this is never an issue.
+  # When a license_number search returns a unique match, the site navigates
+  # directly to result.aspx (no multi-result table). single_result_url_pattern
+  # detects this and calls _scrape_one_detail instead of _scrape_with_detail_clicks.
+  single_result_url_pattern: "result.aspx"
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "table#MultiResultsList tbody tr td:nth-child(2) a"
+  pagination:
+    enabled: false
+    strategy: none
 
 detail:
   wait:
-    strategy: delay
-    timeout_ms: 1000
-  strategies: []
-  field_map: {}
+    strategy: element_visible
+    selector: "table tr td, dl dt, span.field-value"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "table tr td"
+      - "dl dt"
+      - "h2"
+      - "span"
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: dt_dd
+    - type: label_sibling
+    - type: field_label_value
+  field_map:
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "Name": full_name
+    "Full Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "License Type": license_type
+    "Profession": license_type
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "Exp Date": expiration_date
+    "Expire Date": expiration_date
+    "License Expiration": expiration_date
+    "License Exp Date": expiration_date
+    "Renewal Date": expiration_date
+    "Issue Date": issue_date
+    "Issued": issue_date
+    "City": city
 
 output:
   status_map:

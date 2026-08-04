@@ -60,7 +60,7 @@ SearchExecutor = Callable[[SiteConfig, SearchQuery, str], Awaitable[list]]
 # The "name_match_no_license" guard only fires for these — when the board found
 # a record via a license-number search, that's already implicit confirmation.
 _NAME_MODES: frozenset[str] = frozenset({
-    "first_name", "last_name", "first_and_last", "first_and_last_typed",
+    "first_name", "last_name", "last_name_last_word", "first_and_last", "first_and_last_typed",
 })
 
 
@@ -137,6 +137,8 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         query_str = first or ""
     elif mode == "last_name":
         query_str = last or ""
+    elif mode == "last_name_last_word":
+        query_str = (last or "").rsplit(" ", 1)[-1]
     elif mode in ("first_and_last", "first_and_last_typed"):
         query_str = f"{first} {last}".strip() if first and last else (last or first or "")
     else:
@@ -148,6 +150,8 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         actual_mode = "license_number"
     elif mode == "first_and_last_typed":
         actual_mode = "first_and_last"
+    elif mode == "last_name_last_word":
+        actual_mode = "last_name"
     else:
         actual_mode = mode
 
@@ -195,6 +199,13 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
             master_row.get("license_id") or ""
         ):
             continue
+
+        # last_name_last_word only adds value when the last name is compound (has a space).
+        # Skip it when the last token equals the full last name (no transformation needed).
+        if mode == "last_name_last_word":
+            ln = (master_row.get("last_name") or "").strip()
+            if " " not in ln:
+                continue
 
         query, norm = _build_query(mode, master_row, provider_type_override=pt_override,
                                    license_type_override=license_type)
@@ -266,12 +277,21 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
     # Synthetic: license_formatted — try prefix-dash format when board specifies
     # license_prefix_dash and the raw license matches ^([A-Za-z]+)(\d+)$
     # (e.g. "L301745" → "L-301745" for IBCLC_COMMISSION).
+    # Also handles pure-numeric inputs (e.g. "288572" → "L-288572") when the board
+    # is known to use L-XXXXXX style credentials (license_prefix_dash implies "L-" prefix).
+    _LICENSE_BEARING_MODES = {"license_number", "license_numeric_only", "license_and_last"}
     if getattr(config.search, "license_prefix_dash", False) and \
-            "license_number" in capability.supported_modes(config):
+            _LICENSE_BEARING_MODES & capability.supported_modes(config):
         raw_lic = master_row.get("license_id") or ""
-        m = re.match(r'^([A-Za-z]+)(\d+)$', raw_lic)
-        if m:
-            formatted = f"{m.group(1)}-{m.group(2)}"
+        m_alpha = re.match(r'^([A-Za-z]+)(\d+)$', raw_lic)
+        m_digit = re.match(r'^\d+$', raw_lic)
+        _fmt_candidates = []
+        if m_alpha:
+            _fmt_candidates.append(f"{m_alpha.group(1)}-{m_alpha.group(2)}")
+        elif m_digit:
+            # Pure-numeric input on a prefix-dash board → try "L-{digits}"
+            _fmt_candidates.append(f"L-{raw_lic}")
+        for formatted in _fmt_candidates:
             if formatted != raw_lic:
                 override = {"license_id": formatted}
                 fq, fnorm = _build_query("license_formatted", master_row, override,
@@ -281,7 +301,8 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
                     seen_norms.add(fkey)
                     last_lic_idx = max(
                         (i for i, p in enumerate(plans)
-                         if p.mode in ("license_number", "license_numeric_only")),
+                         if p.mode in ("license_number", "license_numeric_only",
+                                       "license_and_last")),
                         default=-1,
                     )
                     plans.insert(last_lic_idx + 1,
@@ -425,6 +446,7 @@ def build_targeted_retry_plan(config: SiteConfig, master_row: dict,
                               ) -> list[PlannedAttempt]:
     """Build NPPES retry rungs — only test the fields that differ."""
     plans: list[PlannedAttempt] = []
+    _seen_norms: set[tuple[str, str]] = set()   # (mode, normalized_query) dedup
     caps = capability.supported_modes(config)
 
     # First-name diff: try first_and_last with NPPES first
@@ -448,24 +470,35 @@ def build_targeted_retry_plan(config: SiteConfig, master_row: dict,
             plans.append(PlannedAttempt(mode="first_and_last", query=sq,
                                          normalized_query=norm, driving_field="last_name"))
 
-    # Extra NPPES licenses: try license_number for each
-    if "license_number" in caps:
+    # Extra NPPES licenses: try all license-based search modes the board supports.
+    # Some boards (e.g. IBCLC_COMMISSION) don't expose a bare 'license_number' mode
+    # but do support 'license_and_last' or 'license_formatted' — use those instead.
+    _lic_retry_modes = [m for m in ("license_number", "license_and_last", "license_formatted")
+                        if m in caps]
+
+    def _add_plan(mode: str, sq: str, norm: str, field: str) -> None:
+        key = (mode, norm)
+        if key in _seen_norms:
+            return
+        _seen_norms.add(key)
+        plans.append(PlannedAttempt(mode=mode, query=sq, normalized_query=norm,
+                                     driving_field=field))
+
+    for _mode in _lic_retry_modes:
         for lic_entry in discrepancy.extra_nppes_licenses[:5]:  # cap at 5 to bound work
             num = (lic_entry.get("number") or "").strip()
             if not num:
                 continue
             override = {"license_id": num}
-            sq, norm = _build_query("license_number", master_row, override)
-            plans.append(PlannedAttempt(mode="license_number", query=sq,
-                                         normalized_query=norm, driving_field="license_number"))
-            # Also try numeric-only form
-            num_only = re.sub(r"\D", "", num)
-            if num_only and num_only != num:
-                override2 = {"license_id": num_only}
-                sq2, norm2 = _build_query("license_number", master_row, override2)
-                plans.append(PlannedAttempt(mode="license_number", query=sq2,
-                                             normalized_query=norm2,
-                                             driving_field="license_number"))
+            sq, norm = _build_query(_mode, master_row, override)
+            _add_plan(_mode, sq, norm, "license_number")
+            # Also try numeric-only form (license_number mode only)
+            if _mode == "license_number":
+                num_only = re.sub(r"\D", "", num)
+                if num_only and num_only != num:
+                    override2 = {"license_id": num_only}
+                    sq2, norm2 = _build_query(_mode, master_row, override2)
+                    _add_plan(_mode, sq2, norm2, "license_number")
 
     return plans
 
@@ -563,6 +596,11 @@ async def run_ladder(
     # more boards remain.  We store it and keep searching for an exact-license
     # hit on a later board; if nothing better is found, we return this.
     soft_match: Optional[LadderResult] = None
+    # Deferred fail: name was found but license didn't match.  We defer the
+    # return so the NPPES retry section can try the correct credential number
+    # (e.g. IBCLC input has state-level ID; NPPES has the real L-XXXXXX).
+    deferred_fail: Optional[LadderResult] = None
+    _stop_boards = False
 
     blm = board_license_type_map or {}
 
@@ -633,13 +671,16 @@ async def run_ladder(
                     _input_lic = (master_row.get("license_id") or "").strip()
                     if not (_detail_lic and disamb.license_numerics_match(_input_lic, _detail_lic)):
                         attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
-                        trace.final_outcome = "Fail"
-                        return LadderResult(
+                        # Defer: NPPES retry may hold the correct credential number
+                        # (e.g. input has a state license ID; NPPES has the real L-XXXXXX).
+                        deferred_fail = LadderResult(
                             status="Fail",
                             best_breakdown=bd,
                             reason=REASON_NAME_MATCH_NO_LICENSE,
                             weight_profile_used=bd.weight_profile if bd else "name_only",
                         )
+                        _stop_boards = True
+                        break  # break rung loop; outer board loop checks _stop_boards
                 attempt.outcome = OUTCOME_MATCH_EXACT
                 trace.final_outcome = "Pass"
                 return LadderResult(
@@ -675,13 +716,14 @@ async def run_ladder(
                         if not (_nrw_detail_lic and disamb.license_numerics_match(
                                 _nrw_input_lic, _nrw_detail_lic)):
                             attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
-                            trace.final_outcome = "Fail"
-                            return LadderResult(
+                            deferred_fail = LadderResult(
                                 status="Fail",
                                 best_breakdown=bd,
                                 reason=REASON_NAME_MATCH_NO_LICENSE,
                                 weight_profile_used=bd.weight_profile if bd else "name_only",
                             )
+                            _stop_boards = True
+                            break  # break rung loop
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                     trace.final_outcome = "Pass"
                     return LadderResult(
@@ -691,6 +733,7 @@ async def run_ladder(
                     )
                 # Still ambiguous → escalate to AI
                 attempt.outcome = OUTCOME_AMBIGUOUS
+                attempt.candidates = verdict.gate_passers[:10]
                 trace.escalate_to_ai_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 last_specific_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 # Fall through to next rung to give it another shot? No — per spec,
@@ -701,20 +744,20 @@ async def run_ladder(
                 if records:
                     attempt.outcome = _diagnose_failure_outcome(records, master_row, cfg_obj.identity.source_id)
                     last_specific_reason = _outcome_to_reason(attempt.outcome)
+                    attempt.candidates = records[:10]
                 else:
                     attempt.outcome = OUTCOME_NO_RECORDS
                 # try next rung on this board
 
             if verdict.status == "ambiguous":
                 attempt.outcome = OUTCOME_AMBIGUOUS
+                attempt.candidates = records[:10]
                 trace.escalate_to_ai_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 last_specific_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 break  # stop this board
 
         # end of rung loop for this board
-        if trace.escalate_to_ai_reason:
-            # Don't bother with remaining boards if narrowing was already ambiguous
-            # — go to NPPES retry path. (Could also try other boards; conservative.)
+        if trace.escalate_to_ai_reason or _stop_boards:
             break
 
     # If a soft-match (name-only, zero license score) was stored and no exact
@@ -776,6 +819,29 @@ async def run_ladder(
                         weight_profile_used=verdict.best_breakdown.weight_profile,
                         reason=_out_of_state_reason(best),
                     )
+                if verdict.status == "ambiguous" and verdict.best_breakdown is not None:
+                    # NPPES retry found a candidate that passed the gate but scored below
+                    # threshold solely because the INPUT license ≠ board license (license_numerics=0).
+                    # The board license was confirmed by the NPPES-guided search itself, so if
+                    # first + last name match strongly, accept the record.
+                    _abd = verdict.best_breakdown
+                    if _abd.first_name >= 0.85 and _abd.last_name >= 0.85:
+                        best = verdict.best
+                        if getattr(best, "expiration_date", None) is None:
+                            best = await _fetch_detail_record(
+                                cfg_obj, best, trace, executor, timeout_s,
+                            )
+                        attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
+                        trace.final_outcome = "Pass"
+                        return LadderResult(
+                            status="Pass", best_record=best,
+                            best_breakdown=_abd,
+                            npi_substituted=True,
+                            weight_profile_used=_abd.weight_profile,
+                            reason=_out_of_state_reason(best),
+                        )
+                    attempt.outcome = OUTCOME_AMBIGUOUS
+                    attempt.candidates = verdict.gate_passers[:10]
                 if verdict.status == "narrow":
                     narrowed_pool, narrowed_status = disamb.apply_narrowing(
                         verdict.gate_passers, master_row,
@@ -795,11 +861,19 @@ async def run_ladder(
                             reason=_out_of_state_reason(chosen),
                         )
                     attempt.outcome = OUTCOME_AMBIGUOUS
+                    attempt.candidates = verdict.gate_passers[:10]
                 if verdict.status == "no_gate_pass":
                     if records:
                         attempt.outcome = _diagnose_failure_outcome(records, master_row, cfg_obj.identity.source_id)
+                        attempt.candidates = records[:10]
                     else:
                         attempt.outcome = OUTCOME_NO_RECORDS
+
+    # NPPES retry exhausted — if a name_match_no_license was deferred, return it now.
+    if deferred_fail is not None:
+        trace.final_outcome = "Fail"
+        trace.final_reason = REASON_NAME_MATCH_NO_LICENSE
+        return deferred_fail
 
     # Both ladders exhausted.
     final_reason = (trace.escalate_to_ai_reason

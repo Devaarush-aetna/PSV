@@ -74,8 +74,26 @@ async def scrape_csv_bulk(
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(exc))
         return []
 
+    _parse_col = getattr(csv_cfg, "parse_combined_name_column", None)
+    if _parse_col and _parse_col in df.columns:
+        try:
+            def _split_combined_name(s):
+                if isinstance(s, str) and "," in s:
+                    last, rest = s.split(",", 1)
+                    parts = rest.strip().split(None, 1)
+                    return last.strip(), (parts[0] if parts else ""), (parts[1] if len(parts) > 1 else "")
+                return (s.strip() if isinstance(s, str) else ""), "", ""
+            _parsed = df[_parse_col].apply(_split_combined_name)
+            df["_parsed_last"] = _parsed.apply(lambda x: x[0])
+            df["_parsed_first"] = _parsed.apply(lambda x: x[1])
+            df["_parsed_middle"] = _parsed.apply(lambda x: x[2])
+            log.info("[%s] Parsed combined name column '%s' into _parsed_last/first/middle", source_id, _parse_col)
+        except Exception as _exc:
+            log.warning("[%s] parse_combined_name_column failed: %s", source_id, _exc)
+
+    _lic_col_raw = csv_cfg.search_columns.get("license_number")
     col_map = {
-        "license_number": csv_cfg.search_columns.get("license_number") if isinstance(csv_cfg.search_columns.get("license_number"), str) else None,
+        "license_number": _lic_col_raw if isinstance(_lic_col_raw, (str, list)) else None,
         "first_name": csv_cfg.search_columns.get("first_name") if isinstance(csv_cfg.search_columns.get("first_name"), str) else None,
         "last_name": csv_cfg.search_columns.get("last_name") if isinstance(csv_cfg.search_columns.get("last_name"), str) else None,
         "license_type": csv_cfg.license_type_column,

@@ -42,6 +42,7 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("ANTHONY", "TONY"),
     ("DONALD", "DON"), ("DONALD", "DONNIE"),
     ("STEPHEN", "STEVE"), ("STEVEN", "STEVE"),
+    ("JOSEPH", "JOE"), ("JOSEPH", "JOEY"),
     ("ANDREW", "ANDY"), ("ANDREW", "DREW"),
     ("KATHRYN", "KATHY"), ("KATHRYN", "KATE"), ("KATHRYN", "KATIE"),
     ("KATHERINE", "KATHY"), ("KATHERINE", "KATE"), ("KATHERINE", "KATIE"),
@@ -149,19 +150,24 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         raw_last = full_name[:comma_idx].strip()
         rest = full_name[comma_idx + 1:].strip()
 
-        last_toks = raw_last.upper().split()
-        while last_toks and re.sub(r"[.\-]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
-            last_toks = last_toks[:-1]
-
         rest_toks = rest.upper().split()
         while rest_toks and re.sub(r"[.\-]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
         while rest_toks and re.sub(r"[.\-]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
             rest_toks = rest_toks[1:]
 
-        first_tok = rest_toks[0] if rest_toks else ''
-        last_str = ' '.join(last_toks) if last_toks else ''
-        return first_tok, last_str
+        # If everything after the comma was a suffix (e.g. "George Joseph Vesper, Jr."),
+        # the comma is separating a suffix, not Last from First.  Fall through to Format 2
+        # using raw_last (the name before the comma) as the full name.
+        if not rest_toks:
+            full_name = raw_last
+        else:
+            last_toks = raw_last.upper().split()
+            while last_toks and re.sub(r"[.\-]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
+                last_toks = last_toks[:-1]
+            first_tok = rest_toks[0]
+            last_str = ' '.join(last_toks) if last_toks else ''
+            return first_tok, last_str
 
     # ---- Format 2: "First [Middle] Last" ----
     toks = full_name.upper().split()
@@ -321,7 +327,10 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         # penalize. Return True (vacuous match).
         return True
     combined = " ".join(blobs)
-    if pt in combined:
+    # Also check with periods stripped so dotted abbreviations like "D.C.", "O.T.",
+    # "P.T.", "D.P.M." match their code equivalents ("DC", "OT", "PT", "DP").
+    combined_nodot = combined.replace(".", "")
+    if pt in combined or pt in combined_nodot:
         return True
     # PSV prov_type code → full-name expansions seen on board license_type fields.
     # Codes match board_routing_master.csv 2-3 letter abbreviations.
@@ -333,43 +342,43 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "DN": ("DENTIST", "DENTAL"),
         "OD": ("OPTOMETRIST", "OPTOMETRY"),
         "DPM": ("PODIATRIC", "PODIATRY"),
-        "DP": ("PODIATRIC", "PODIATRY"),
+        "DP": ("PODIATRIC", "PODIATRY", "PODIATRIST"),
         "PA": ("PHYSICIAN ASSISTANT",),
         "PAS": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
         "PAB": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
         "RN": ("REGISTERED NURSE", "NURSING", "NURSE REGISTERED"),
-        "RNA": ("NURSE ANESTHETIST", "ANESTHESIA", "CRNA"),
-        "NP": ("NURSE PRACTITIONER", "ADVANCED PRACTICE", "ARNP", "APRN", "ADVANCED REGISTERED"),
-        "NPB": ("ADVANCED PRACTICE", "ARNP", "APRN"),
-        "NPS": ("PSYCHIATRIC", "MENTAL HEALTH", "ADVANCED PRACTICE"),
-        "PN": ("PRACTICAL NURSE", "LPN", "LICENSED PRACTICAL"),
-        "GNC": ("NURSING ASSISTANT", "CERTIFIED NURSING", "CNA"),
+        "RNA": ("NURSE ANESTHETIST", "ANESTHESIA", "CRNA", "REGISTERED NURSE", "ADVANCED PRACTICE REGISTERED NURSE"),
+        "NP": ("NURSE PRACTITIONER", "ADVANCED PRACTICE", "ARNP", "APRN", "PRESCRIPTIVE AUTHORITY", "ADVANCED REGISTERED", "REGISTERED NURSE PRACTITIONER", "REGISTERED NURSE","DELEGATING NURSE","ADVANCED PRACTICE REGISTERED NURSE"),
+        "NPB": ("ADVANCED PRACTICE", "ARNP", "APRN", "ADVANCED PRACTICE REGISTERED NURSE", "REGISTERED NURSE"),
+        "NPS": ("PSYCHIATRIC", "MENTAL HEALTH", "ADVANCED PRACTICE", "PSYCHOLOGIST"),
+        "PN": ("PRACTICAL NURSE", "LPN", "LICENSED PRACTICAL", "ADVANCED PRACTICE REGISTERED NURSE", "REGISTERED NURSE"),
+        "GNC": ("NURSING ASSISTANT", "CERTIFIED NURSING", "CNA","GENETIC COUNSELOR", "GENETIC COUNSELING"),
         "PT": ("PHYSICAL THERAPIST", "PHYSICAL THERAPY"),
         "OT": ("OCCUPATIONAL THERAPIST", "OCCUPATIONAL THERAPY"),
         "SW": ("SOCIAL WORKER", "SOCIAL WORK", "LCSW", "LCSWA", "LMSW"),
         "LCSW": ("LICENSED CLINICAL SOCIAL", "SOCIAL WORK"),
-        "LPC": ("PROFESSIONAL COUNSELOR", "MENTAL HEALTH COUNSEL", "COUNSEL", "CPC"),
-        "LC": ("LICENSED COUNSEL", "COUNSEL", "MENTAL HEALTH COUNSEL"),
-        "MFT": ("MARRIAGE", "FAMILY THERAPIST"),
+        "LPC": ("PROFESSIONAL COUNSELOR", "PROFESSIONAL COUNSELOR ASSOCIATE", "MENTAL HEALTH COUNSEL", "MENTAL HEALTH ASSOC", "COUNSEL", "CPC", "LICENSED ALCOHOL AND DRUG COUNSELOR"),
+        "LC": ("LICENSED COUNSEL", "COUNSEL", "MENTAL HEALTH COUNSEL", "REGISTERED NURSE"),
+        "MFT": ("MASSAGE", "MARRIAGE", "MARITAL", "FAMILY THERAPIST", "MFT"),
         "DC": ("CHIROPRACT",),
         "DAC": ("ADDICTION COUNSEL", "DRUG ABUSE", "SUBSTANCE ABUSE", "ALCOHOL AND DRUG", "DRUG AND ALCOHOL"),
         "AP": ("ACUPUNCTUR", "ORIENTAL MEDICINE", "LAC", "DOM", "OMD"),
         "AU": ("AUDIOLOGIST", "AUDIOLOGY"),
-        "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST"),
+        "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST", "SPEECH AND LANGUAGE PATHOLOGIST", "SPEECH LANGUAGE", "SLP"),
         "ST": ("SPEECH", "SPEECH-LANGUAGE", "SPEECH LANGUAGE"),
-        "CP": ("PSYCHOLOGIST", "PSYCHOLOGY"),
+        "CP": ("PSYCHOLOGIST", "PSYCHOLOGY", "PROFESSIONAL COUNSELOR", "LICENSED ALCOHOL AND DRUG COUNSELOR"),
         "PC": ("PSYCHOLOGIST", "PSYCHOLOGY"),
         "PH": ("PHARMACIST", "PHARMACY",
                "MEDICAL DOCTOR", "PHYSICIAN", "OSTEOPATHIC"),  # WY routes PH to WY_PHYSICIAN (MD/DO board)
         "PM": ("PHARMACY",),
         "DT": ("DIETITIAN", "DIETETICS", "NUTRITIONIST", "NUTRITION"),
         "NUT": ("NUTRITIONIST", "NUTRITION"),
-        "MT": ("MASSAGE", "MARRIAGE", "FAMILY THERAPIST", "MFT"),
-        "MW": ("MIDWIFE", "MIDWIFERY", "ADV PRACTICE", "APRN", "CNM", "NMW"),
+        "MT": ("MASSAGE", "MARRIAGE", "MARITAL", "FAMILY THERAPIST", "MFT"),
+        "MW": ("MIDWIFE", "MIDWIFERY", "NURSE MIDWIFE", "ADV PRACTICE", "APRN", "CNM", "NMW", "REGISTERED NURSE"),
         "MST": ("MASSAGE",),
         "ABA": ("APPLIED BEHAVIOR", "BEHAVIOR ANALYST", "BEHAVIORAL ANALYST"),
-        "OP": ("OPTICIAN",),
-        "OR": ("OPTICIAN",),
+        "OP": ("OPTICIAN", "OPTOMETRIST", "OPTOMETRY"),
+        "OR": ("OPTICIAN", "DENTIST", "DENTAL", "ORAL SURGERY", "ORALOGY"),
         "PE": ("PERFUSIONIST", "PERFUSION"),
         "ND": ("NATUROPATH",),
         "NSA": ("ANESTHESIOLOGIST ASSISTANT",),
@@ -642,7 +651,39 @@ def evaluate(candidates: list[Any], master_row: dict,
                     gate_passers=[c for c, _ in gate_passers],
                     all_breakdowns=breakdowns, tiebreaker_used=True,
                 )
-        # Tiebreaker 2: candidate whose provider_type matches wins.
+        # Tiebreaker 2: middle initial match. When the input has a middle name/initial
+        # and one candidate's full name carries the matching initial, prefer that candidate.
+        # This resolves same-first-last ties like "Sarah C Fuller" where one board record
+        # is "Sarah Catherine Fuller" and another is "Sarah Elizabeth Fuller".
+        m_mid = (master_row.get("middle_name") or "").strip()
+        if m_mid:
+            m_mid_initial = m_mid[0].upper()
+            _m_last_words = len((master_row.get("last_name") or "").split())
+
+            def _cand_middle_initial(cand) -> str:
+                full = (getattr(cand, "licensee_full_name", "") or "").strip()
+                if not full:
+                    return ""
+                parts = full.split()
+                # middle tokens: after first token, before last _m_last_words tokens
+                mid_tokens = parts[1: max(1, len(parts) - _m_last_words)]
+                return mid_tokens[0][0].upper() if mid_tokens else ""
+
+            top_mid_ok = _cand_middle_initial(top_cand) == m_mid_initial
+            sec_mid_ok = _cand_middle_initial(second_cand) == m_mid_initial
+            if top_mid_ok and not sec_mid_ok:
+                return DisambiguationVerdict(
+                    status="selected", best=top_cand, best_breakdown=top_bd,
+                    gate_passers=[c for c, _ in gate_passers],
+                    all_breakdowns=breakdowns, tiebreaker_used=True,
+                )
+            if sec_mid_ok and not top_mid_ok:
+                return DisambiguationVerdict(
+                    status="selected", best=second_cand, best_breakdown=second_bd,
+                    gate_passers=[c for c, _ in gate_passers],
+                    all_breakdowns=breakdowns, tiebreaker_used=True,
+                )
+        # Tiebreaker 3: candidate whose provider_type matches wins.
         m_pt = (master_row.get("prov_type") or "").upper()
         if m_pt:
             top_pt_ok = top_bd.provider_type >= 1.0
@@ -659,7 +700,7 @@ def evaluate(candidates: list[Any], master_row: dict,
                     gate_passers=[c for c, _ in gate_passers],
                     all_breakdowns=breakdowns, tiebreaker_used=True,
                 )
-        # Close scores AND both tiebreakers indeterminate → narrow; ladder may apply_narrowing.
+        # Close scores AND all tiebreakers indeterminate → narrow; ladder may apply_narrowing.
         return DisambiguationVerdict(
             status="narrow", best=None,
             gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,

@@ -68,6 +68,13 @@ results:
       4: disciplinary_actions
       5: specialty
       6: status
+    # Col 3 ("Licensed Dates") contains both dates in one cell, e.g.:
+    #   "Issued: 01/26/2013\n\nExpires: 12/31/2026"
+    # column_patterns extracts each labeled date into its proper field.
+    column_patterns:
+      3:
+        issue_date: "Issued:\\s*(\\d{1,2}/\\d{1,2}/\\d{4})"
+        expiration_date: "Expires:\\s*(\\d{1,2}/\\d{1,2}/\\d{4})"
   has_detail_page: false
   pagination:
     enabled: true

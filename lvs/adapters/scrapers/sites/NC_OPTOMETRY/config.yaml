@@ -7,31 +7,65 @@ identity:
   base_url: "https://www.ncoptometry.org/verify-a-license"
   archetype: classic_html_form
 
+# 2026-07-29: The licensee search form is embedded inside a deeply nested iframe chain:
+#   main (ncoptometry.org) → gstatic.com intermediate → googleusercontent.com inner
+#   → about:blank (contains the actual search input and results table)
+# content_frame() cannot traverse this chain. Use search_frame_probe_selector +
+# iframe_probe_selector to scan all page.frames for the frame containing the input.
+# Live verified: frame URL=about:blank, input placeholder="Enter License Number or Doctor Name",
+# results table has columns: Name | License Number | Initial License Date | License Expires | Status | Disciplines
 search:
+  # Board accepts: Last Name | First Name | "Last Name, First Name" | License Number.
+  # first_and_last / first_mid_last modes use query_template to format "Last, First"
+  # so the board returns a precise single-person result rather than a broad last-name list.
   modes:
-    - mode: last_name
     - mode: license_number
+      input_selector: "input[placeholder='Enter License Number or Doctor Name']"
+      button_selector: "button"
+    - mode: last_name
+      input_selector: "input[placeholder='Enter License Number or Doctor Name']"
+      button_selector: "button"
+    - mode: first_name
+      input_selector: "input[placeholder='Enter License Number or Doctor Name']"
+      button_selector: "button"
+    - mode: first_and_last
+      input_selector: "input[placeholder='Enter License Number or Doctor Name']"
+      button_selector: "button"
+      query_template: "{last}, {first}"
+    - mode: first_mid_last
+      input_selector: "input[placeholder='Enter License Number or Doctor Name']"
+      button_selector: "button"
+      query_template: "{last}, {first}"
+  search_frame_probe_selector: "input[placeholder='Enter License Number or Doctor Name']"
   form:
     search_by_dropdown:
       strategy: none
     search_input:
-      selector: "input[type='text']"
+      selector: "input[placeholder='Enter License Number or Doctor Name']"
     search_button:
-      selector: "button[type='submit']"
+      selector: "button"
   results_wait:
     strategy: delay
     timeout_ms: 5000
-    no_results_indicators: []
+    no_results_indicators:
+      - "no results"
+      - "no records"
+      - "no match"
 
 results:
   type: table
   table:
     row_selector: "table tbody tr"
     cell_selector: "td"
+    # Verified columns (live): Name | License Number | Initial License Date | License Expires | Status | Disciplines
     columns:
       0: full_name
       1: license_number
-      2: status
+      2: issue_date
+      3: expiration_date
+      4: status
+      5: license_type
+    iframe_probe_selector: "input[placeholder='Enter License Number or Doctor Name']"
   has_detail_page: false
   pagination:
     enabled: false
@@ -50,8 +84,10 @@ detail:
 output:
   status_map:
     "Active": active
+    "active": active
     "Inactive": inactive
     "Expired": expired
+    "expired": expired
   date_formats:
     - "%m/%d/%Y"
 
@@ -80,7 +116,7 @@ evidence:
   local_path: "Evidence/NC_OPTOMETRY/{run_id}/"
 
 compliance:
-  tos_review_date: "2026-06-15"
+  tos_review_date: "2026-07-29"
   requires_captcha: false
   requires_login: false
   robots_txt_compliant: true
@@ -91,16 +127,3 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
-  skip: true
-  # 2026-06-15 (session 28): NOT an engine gap — this is an external data-access
-  # blocker. The licensee roster is a cross-origin Google Drive "atari" iframe at
-  # gstatic.com/atari/embeds/<id>. Playwright's content_frame() returns None for
-  # cross-origin iframes (same-origin policy), so iframe_selector + table extraction
-  # cannot read it. The atari ID itself is opaque (not a Google Sheets ID).
-  # ENGINE WORK CANNOT FIX THIS. Unblock paths require external action:
-  #   (a) ask NCSBEO for the underlying Google Sheets share URL → then csv_bulk
-  #       with download_strategy: google_sheet_link (already supported by engine), OR
-  #   (b) ask NCSBEO for a static CSV/PDF roster URL → then csv_bulk/pdf_bulk, OR
-  #   (c) reverse-engineer the atari ID → underlying Sheets ID via Google Sites
-  #       structure inspection (low confidence, ToS-grey).
-  skip_reason: "external_data_access: cross-origin Google Drive atari iframe (gstatic.com/atari/embeds/<id>) on ncoptometry.org/verify-a-license. Cross-origin policy blocks Playwright content_frame() — not an engine gap. Unblock requires NCSBEO providing a public Sheets/CSV/PDF URL OR reverse-engineering the atari→Sheets ID mapping."

@@ -244,6 +244,10 @@ class OutputEmitter:
             full = (getattr(rec, "licensee_full_name", "") or "").strip()
             if full:
                 first, last = disamb._split_full_name(full, master_last)
+        elif not first and last and " " in last:
+            # Board stored full name in licensee_last_name (e.g. "George Joseph Vesper").
+            # Split it so first/last columns are populated correctly in output.
+            first, last = disamb._split_full_name(last, master_last)
         return first, last
 
     @staticmethod
@@ -345,8 +349,26 @@ class OutputEmitter:
             return None
         # Strip all non-alphanumeric and compare case-insensitively
         _strip = lambda s: _re.sub(r"[^a-z0-9]", "", s.lower())
-        if _strip(input_lic) == _strip(board_lic):
+        _si = _strip(input_lic)
+        _sb = _strip(board_lic)
+        if _si == _sb:
             return None  # effectively identical — no review needed
+        # Pure-numeric leading-zero mismatch (e.g. EPDB "7278" vs board "007278")
+        if _si.isdigit() and _sb.isdigit() and _si.lstrip("0") == _sb.lstrip("0"):
+            return None
+        # Dot-prefix artifact in input (e.g. EPDB "14.015029" vs board "015029")
+        if "." in input_lic and _sb.isdigit():
+            for _seg in input_lic.split("."):
+                _ss = _strip(_seg)
+                if _ss.isdigit() and _ss.lstrip("0") == _sb.lstrip("0"):
+                    return None
+        # Letter-prefix + digit core vs double-prefix.digit.suffix
+        # (e.g. WA: "RN61176701" vs "RN.RN.61176701.MSL")
+        _digit_run = lambda s: max((_re.findall(r"\d+", s) or [""]), key=len)
+        _di = _digit_run(_si)
+        _db = _digit_run(_sb)
+        if len(_di) >= 4 and _di.lstrip("0") == _db.lstrip("0"):
+            return None
         return "Numeric License ID matched"
 
     @staticmethod
@@ -766,6 +788,7 @@ class OutputEmitter:
                 bd and bd.license_numerics >= 1.0
             ) else "exact_name"
 
+        _ml = _matched_license(rec, m, o.status)
         row = {
             "master_row_id": o.master_row_id,
             "first_name": m.get("first_name", ""),
@@ -782,13 +805,10 @@ class OutputEmitter:
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
-            "matched_license": getattr(rec, "license_number", "") or "" if rec else "",
-            "matched_first": _clean_matched_name(
-                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[0]
-            ),
-            "matched_last": _clean_matched_name(
-                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[1]
-            ),
+            "matched_license": _ml,
+            "license_id_mismatch": _license_id_mismatch(m.get("license_id", ""), _ml, o.status),
+            "matched_first": _matched_name_part(rec, m, o.status, 0),
+            "matched_last":  _matched_name_part(rec, m, o.status, 1),
             "board_name": _get_board_name(getattr(rec, "source_id", "") or "") if rec else "",
             "match_method": match_method,
             "fuzzy_score": (round(bd.total, 3) if bd else ""),
@@ -1460,6 +1480,43 @@ class OutputEmitter:
 
 
 # ----- Helpers ------------------------------------------------------------
+
+def _matched_license(rec: Optional[Any], master_row: dict, status: str) -> str:
+    """Board license number; falls back to master-row license_id on Pass when blank."""
+    val = (getattr(rec, "license_number", "") or "").strip() if rec else ""
+    if not val and status == "Pass":
+        val = (master_row.get("license_id", "") or "").strip()
+    return val
+
+
+def _license_id_mismatch(input_lic: str, matched_lic: str, status: str) -> bool:
+    """True when a Pass row's board-returned license differs from the input license_id.
+
+    Flags cases where the system matched by name and the board record carries a
+    different license number (e.g. IL old 041xxx vs current 209xxx format).
+    Does NOT change Pass/Fail — purely informational.
+    """
+    if status != "Pass":
+        return False
+    inp = (input_lic or "").strip()
+    mat = (matched_lic or "").strip()
+    if not inp or not mat or inp == mat:
+        return False
+    return not _lic_num_match(inp, mat)
+
+
+def _matched_name_part(rec: Optional[Any], master_row: dict, status: str, idx: int) -> str:
+    """Board first (idx=0) or last (idx=1) name; validates and falls back on Pass when blank/garbage."""
+    raw_val = OutputEmitter._resolve_board_name_parts(rec, master_row.get("last_name", ""))[idx]
+    cleaned = _clean_matched_name(raw_val)
+    # Reject pure-numeric tokens (e.g. '1' from garbled detail-page extraction).
+    if cleaned and cleaned.strip().isdigit():
+        cleaned = ""
+    if not cleaned and status == "Pass":
+        fallback_key = "first_name" if idx == 0 else "last_name"
+        cleaned = (master_row.get(fallback_key, "") or "").strip()
+    return cleaned
+
 
 def _expiry_str(rec: Optional[Any]) -> str:
     """ISO date string — used for standard output channel."""

@@ -1,0 +1,110 @@
+identity:
+  source_id: "NC_PASTORAL_COUNSELING"
+  board_name: "North Carolina Board of Pastoral Counseling"
+  state: "NC"
+  country: "US"
+  profession_codes: ["PC"]
+  # PDF roster ("List of certified pastoral counselors by city") published at:
+  # https://www.ncpastoralcounseling.org/find-pastoral-counselors.html
+  # The page embeds a single PDF; page_link strategy discovers the current href
+  # so the config survives when the board publishes an updated file.
+  base_url: "https://www.ncpastoralcounseling.org/find-pastoral-counselors.html"
+  archetype: pdf_bulk
+
+pdf_bulk:
+  download_strategy: page_link
+  link_selector: "a[href*='.pdf']"
+  cache_days: 7
+  cache_dir: "./PSV/PDFS/NC_PASTORAL_COUNSELING"
+
+search:
+  # pdf_bulk searches the in-memory PDF table by NUMBER column for license_number mode,
+  # or by NAME column for last_name/first_name modes.
+  modes:
+    - mode: license_number
+    - mode: last_name
+    - mode: first_name
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 1000
+    no_results_indicators: []
+
+results:
+  type: table
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  # PDF columns (confirmed from roster): NAME | CITY | PHONE | NUMBER
+  # All records in the PDF are active certified counselors — no status column.
+  # NUMBER is the board-assigned certification number used as license_number.
+  field_map:
+    "NAME": full_name
+    "CITY": city
+    "PHONE": phone
+    "NUMBER": license_number
+
+output:
+  # No status column in PDF — all listed counselors are active/certified.
+  status_map:
+    "Active": active
+    "active": active
+    "Certified": active
+    "certified": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: ["error"]
+  storage: local
+  local_path: "Evidence/NC_PASTORAL_COUNSELING/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-28"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 from typing import Any
 
 from playwright.async_api import Page
@@ -20,7 +21,8 @@ async def _extract_heading_name(page: Page) -> dict:
     """Extract licensee name from page heading (Angular ng-binding or generic h1/h2)."""
     result: dict = {}
     try:
-        for sel in ("h1.ng-binding", "h2.ng-binding", "h3.ng-binding", "h1", "h2", "h3"):
+        for sel in ("h1.ng-binding", "h2.ng-binding", "h3.ng-binding", "h1", "h2", "h3",
+                    ".panel-heading"):
             loc = page.locator(sel)
             count = await loc.count()
             for i in range(min(count, 3)):
@@ -42,7 +44,10 @@ async def _extract_heading_name(page: Page) -> dict:
                                "health", "credentialing", "optometry", "pharmacy", "dental", "profile",
                                "directory", "psycholog", "registry", "lookup", "definition")
                 ):
-                    result["Name"] = text
+                    # Strip "Name - Credential" pattern (e.g. "Katlyn Crisp - Permanent AUD")
+                    # so suffix-stripping in split_full_name doesn't corrupt the last name.
+                    name_text = text.split(" - ")[0].strip() if " - " in text else text
+                    result["Name"] = name_text
                     return result
     except Exception as e:
         log.debug("heading_name extraction failed: %s", e)
@@ -88,12 +93,20 @@ async def _extract_label_sibling(page: Page) -> dict:
                     result[label_text] = (await target.first.inner_text()).strip()
                     continue
 
-            # following-sibling
+            # following-sibling of the label itself
             sibling = lbl.locator("xpath=following-sibling::*[1]")
             if await sibling.count() > 0:
                 sib_tag = await sibling.first.evaluate("el => el.tagName.toLowerCase()")
                 if sib_tag not in ("label", "th"):
                     result[label_text] = (await sibling.first.inner_text()).strip()
+                    continue
+            # Bootstrap col-* pattern: label is alone in a col div; value is in
+            # the parent's next sibling div (e.g. NC_SLP_AUD viewer.aspx).
+            parent_sibling = lbl.locator("xpath=../following-sibling::div[1]")
+            if await parent_sibling.count() > 0:
+                ps_text = (await parent_sibling.first.inner_text()).strip()
+                if ps_text and "\n" not in ps_text:
+                    result[label_text] = ps_text
     except Exception as e:
         log.debug("label_sibling strategy failed: %s", e)
     return result
@@ -664,6 +677,20 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
         except Exception as e:
             log.warning("iframe_selector '%s' resolution failed: %s", tbl_cfg.iframe_selector, e)
 
+    if tbl_cfg.iframe_probe_selector:
+        # Scan all live frames for the first one containing the probe selector.
+        # Handles deeply nested frames (e.g. about:blank inside googleusercontent)
+        # where content_frame() traversal cannot reach.
+        probe_sel = tbl_cfg.iframe_probe_selector
+        for frm in page.frames:
+            try:
+                if await frm.locator(probe_sel).count() > 0:
+                    ctx = frm
+                    log.info("iframe_probe_selector matched frame: %s", frm.url[:80])
+                    break
+            except Exception:
+                continue
+
     try:
         if tbl_cfg.table_selector is not None and tbl_cfg.table_index is not None:
             table = ctx.locator(tbl_cfg.table_selector).nth(tbl_cfg.table_index)
@@ -679,6 +706,14 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
             for idx, field_name in tbl_cfg.columns.items():
                 if idx < await cells.count():
                     rec[field_name] = (await cells.nth(idx).inner_text()).strip()
+            # Apply column_patterns: extract additional fields via regex from cell text.
+            for idx, pattern_map in (tbl_cfg.column_patterns or {}).items():
+                if idx < await cells.count():
+                    cell_text = (await cells.nth(idx).inner_text()).strip()
+                    for extra_field, pattern in pattern_map.items():
+                        m = re.search(pattern, cell_text)
+                        if m:
+                            rec[extra_field] = m.group(1).strip()
             if rec and any(v for v in rec.values() if isinstance(v, str) and v.strip()):
                 if any(not rec.get(f, "").strip() for f in (tbl_cfg.required_fields or [])):
                     continue

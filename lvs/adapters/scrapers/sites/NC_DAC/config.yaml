@@ -38,29 +38,68 @@ results:
   table:
     row_selector: "table tbody tr"
     cell_selector: "td"
-    skip_first_row: true
+    skip_first_row: false
+    # Verified columns (live site): Name | Credential | NCSAPPB ID | City | State
+    # The table uses <thead> for column headers so "table tbody tr" already excludes
+    # them — skip_first_row must be false or the single data row is dropped.
+    # The Name cell (col 0) anchor links to an HTML credential-verification page;
+    # the engine navigates the browser there and lets AI fallback extract the fields.
     columns:
       0: full_name
-      1: license_number
-      2: license_type
-      3: status
-  has_detail_page: false
+      1: license_type
+      2: license_number
+      3: city
+      4: state
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "table tbody tr td:nth-child(1) a"
   pagination:
-    enabled: false
-    strategy: none
+    enabled: true
+    strategy: next_button
+    next_selector: "a[href*='_p='][href*='_o=LastName']:last-of-type"
 
 detail:
   wait:
-    strategy: delay
-    timeout_ms: 1000
+    strategy: element_visible
+    selector: "p, div.body, div.content"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "p"
+      - "body"
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 2000
   strategies: []
+  # AI fallback handles extraction from the LearningBuilder HTML verification page
+  # (the page contains a paragraph like "...confirm that NAME received CREDENTIAL
+  #  LCAS-NNNNN on MM/DD/YYYY. This credential will expire on MM/DD/YYYY...").
   field_map:
     "License Number": license_number
+    "NCSAPPB ID": license_number
+    "Certificate No.": license_number
+    "Certificate No": license_number
+    "License No": license_number
     "Name": full_name
-    "Status": status
-    "License Type": license_type
+    "Full Name": full_name
     "First Name": first_name
     "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "Credential": license_type
+    "License Type": license_type
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "Exp Date": expiration_date
+    "Renewal Date": expiration_date
+    "Expires": expiration_date
+    "Certificate Expiration": expiration_date
+    "Issue Date": issue_date
+    "Issued": issue_date
+    "Issued Date": issue_date
+    "Approved": issue_date
+    "City": city
+    "State": state
 
 output:
   status_map:

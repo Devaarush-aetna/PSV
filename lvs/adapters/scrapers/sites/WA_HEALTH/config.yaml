@@ -20,6 +20,8 @@ search:
   modes:
     - mode: license_number
       input_selector: "credentialnumber"
+    - mode: license_numeric_only
+      input_selector: "credentialnumber"
     - mode: last_name
       input_selector: "lastname"
     - mode: first_name

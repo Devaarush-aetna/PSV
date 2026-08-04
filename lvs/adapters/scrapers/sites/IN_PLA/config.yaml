@@ -69,6 +69,11 @@ detail:
     timeout_ms: 15000
     fallback_selectors:
       - "td"
+    # Indiana's Details.aspx returns a session-expired/internal error page that
+    # contains a <span id="label_pagetitle"> showing "Error".  Detect it so the
+    # scraper falls back to summary-row data instead of extracting garbage.
+    error_page_selectors:
+      - "span#label_pagetitle:has-text('Error')"
   strategies:
     - type: four_column_table
   field_map:
