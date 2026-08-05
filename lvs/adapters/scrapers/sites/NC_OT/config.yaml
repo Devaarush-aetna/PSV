@@ -38,16 +38,21 @@ results:
   table:
     row_selector: "#ctl00_MainContentPlaceHolder_LicenseRadGrid table tbody tr"
     cell_selector: "td"
-    skip_first_row: true
+    skip_first_row: false
+    # Verified columns (live site): Last Name | First Name | License | Designation | License Issued | Expiration Date | Standing
     columns:
-      0: full_name
-      1: license_number
-      2: license_type
-      3: status
+      0: last_name
+      1: first_name
+      2: license_number
+      3: license_type
+      4: issue_date
+      5: expiration_date
+      6: status
   has_detail_page: false
   pagination:
-    enabled: false
-    strategy: none
+    enabled: true
+    strategy: next_button
+    next_selector: "a.rgPageNext"
 
 detail:
   wait:
@@ -56,17 +61,28 @@ detail:
   strategies: []
   field_map:
     "License Number": license_number
+    "License": license_number
     "Name": full_name
-    "Status": status
-    "License Type": license_type
     "First Name": first_name
     "Last Name": last_name
+    "Status": status
+    "Standing": status
+    "License Type": license_type
+    "Designation": license_type
+    "License Issued": issue_date
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
 
 output:
   status_map:
     "Active": active
     "active": active
     "ACTIVE": active
+    "Good standing": active
+    "Good Standing": active
+    "Operating": active
+    "OPERATING": active
+    "operating": active
     "Inactive": inactive
     "Expired": expired
     "Suspended": suspended

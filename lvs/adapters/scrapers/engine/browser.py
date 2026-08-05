@@ -16,6 +16,12 @@ from playwright.async_api import (
 from .models import TransportConfig
 from .proxy import get_proxy_config  # remove this import (and the call below) to disable proxy
 
+try:
+    from playwright_stealth import Stealth as _Stealth
+    _STEALTH = _Stealth(chrome_runtime=True)
+except ImportError:
+    _STEALTH = None
+
 
 _REAL_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -56,10 +62,10 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
         user_agent = _REAL_UA
 
     async with async_playwright() as pw:
-        browser: Browser = await pw.chromium.launch(
-            headless=headless,
-            args=launch_args,
-        )
+        launch_kwargs: dict = {"headless": headless, "args": launch_args}
+        if config.channel:
+            launch_kwargs["channel"] = config.channel
+        browser: Browser = await pw.chromium.launch(**launch_kwargs)
         ctx: BrowserContext = await browser.new_context(
             viewport=config.viewport,
             user_agent=user_agent,
@@ -67,15 +73,15 @@ async def get_page(config: TransportConfig, headless_override: bool | None = Non
             locale="en-US",
             timezone_id="America/New_York",
             java_script_enabled=True,
+            ignore_https_errors=config.ignore_https_errors,
         )
         ctx.set_default_timeout(config.timeout_ms)
         ctx.set_default_navigation_timeout(config.navigation_timeout_ms)
 
+        if _STEALTH is not None:
+            await _STEALTH.apply_stealth_async(ctx)
+
         page: Page = await ctx.new_page()
-        # Remove the webdriver property that headless detection checks
-        await page.add_init_script(
-            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-        )
         try:
             yield page
         finally:

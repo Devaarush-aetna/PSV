@@ -4,12 +4,11 @@ identity:
   state: "NC"
   country: "US"
   profession_codes: ["DPM"]
-  # iMIS ASP.NET portal at ncbpe.org.
-  # From North_Carolina_Board_of_Podiatry_Examiners_web_Scraping.py:
-  #   Hardcoded ASP.NET field IDs (ctl01_TemplateBody_WebPartManager1_...).
-  #   Results rendered as h2/h3 provider cards with DPM suffix — NOT a table.
-  #   Only ACTIVE licensees are listed.
-  base_url: "https://ncbpe.org/NCBPE/Search_Podiatrist/NCBPE/Content/Search_Podiatrist.aspx?hkey=705606f6-1696-4b7c-9e5e-f0f674514263"
+  # iMIS ASP.NET portal at ncbpe.org. Form has 3 fields: Last Name, City, License Number.
+  # Results rendered as <table class="result"> cards with h1 name, h2 org, and a <p> block
+  # containing "License Number: N\nStatus: Active\nLicense issued on: ...\nRenewed until: ...".
+  # custom_js extracts all fields directly from the card DOM without needing a detail page.
+  base_url: "https://ncbpe.org/NCBPE/Search_Podiatrist/NCBPE/Content/Search_Podiatrist.aspx"
   archetype: state_portal
 
 # 2026-06-15 (session 28 / iter 2): drop submit_via_enter — iMIS WebForms button
@@ -42,33 +41,44 @@ search:
       - "no records to display"
       - "0 records found"
 
-# Confirmed from live evidence (session 28 smoke run 2):
-# Each licensee block is a <table class="result"> wrapped inside an iMIS Grid row:
-#   <table class="result">
-#     <tbody>
-#       <tr><td colspan="2">
-#         <h1>Renee Elizabeth Shepherd-Smith, DPM</h1>
-#         <h2>Brunswick Foot &amp; Ankle Surgery</h2>
-#       </td></tr>
-#       <tr>
-#         <td><p>Wilmington NC</p>...</td>
-#         <td><p>License Number: 851<br>Status: Active<br>...</p></td>
-#       </tr>
-#     </tbody>
-#   </table>
-# Use h1 as the row "cell" — full_name (with ", DPM" suffix) is sufficient for smoke.
-# License/status fields are concatenated in a single <p>; a future enhancement could
-# parse them via post-processing, but the canonical contract is satisfied with name+
-# license number visible on the card.
+# Each licensee block is a <table class="result"> with:
+#   <tr><td colspan="2"><h1>Name, DPM</h1><h2>Org Name</h2></td></tr>
+#   <tr>
+#     <td><p>City ST</p></td>
+#     <td><p>License Number: N\nStatus: Active\nLicense issued on: M/D/YYYY\nRenewed until: M/D/YYYY</p></td>
+#   </tr>
+# custom_js parses all fields from the card DOM directly.
 results:
   type: table
   table:
     row_selector: "table.result"
-    cell_selector: "h1, h2"
+    cell_selector: "h1"
     skip_first_row: false
     columns:
       0: full_name
-      1: license_type
+    custom_js: |
+      () => {
+        const cards = document.querySelectorAll('table.result');
+        return Array.from(cards).map(card => {
+          const h1 = card.querySelector('h1');
+          const rows = card.querySelectorAll('tr');
+          const infoTd = rows.length > 1 ? rows[1].querySelectorAll('td') : [];
+          const infoText = infoTd.length > 1 ? (infoTd[1].innerText || '') : '';
+          const addrText = infoTd.length > 0 ? (infoTd[0].innerText || '') : '';
+          const licMatch = infoText.match(/License Number[:\s]+(\S+)/i);
+          const statusMatch = infoText.match(/Status[:\s]+([^\n]+)/i);
+          const issuedMatch = infoText.match(/License issued on[:\s]+([^\n]+)/i);
+          const renewedMatch = infoText.match(/Renewed until[:\s]+([^\n]+)/i);
+          return {
+            full_name: h1 ? h1.innerText.replace(/,\s*DPM\s*$/i, '').trim() : '',
+            license_number: licMatch ? licMatch[1].trim() : '',
+            status: statusMatch ? statusMatch[1].trim() : '',
+            issue_date: issuedMatch ? issuedMatch[1].trim() : '',
+            expiration_date: renewedMatch ? renewedMatch[1].trim() : '',
+            address: addrText.trim()
+          };
+        });
+      }
   has_detail_page: false
   pagination:
     enabled: false
@@ -84,14 +94,26 @@ detail:
     "License issued on": issue_date
     "Status": status
     "Renewed until": expiration_date
+    "Expiration Date": expiration_date
+    "Renewal Date": expiration_date
+    "Name": full_name
     "Privileges": privileges
     "Disciplinary Action": disciplinary_actions
 
 output:
   status_map:
     "Active": active
+    "active": active
+    "ACTIVE": active
     "Inactive": inactive
     "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%-m/%-d/%Y"
+    - "%Y-%m-%d"
   date_formats:
     - "%m/%d/%Y"
     - "%Y-%m-%d"
@@ -114,6 +136,8 @@ transport:
   proxy:
     enabled: true
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+  # ncbpe.org SSL certificate is expired — bypass TLS validation so Playwright can connect.
+  ignore_https_errors: true
 
 evidence:
   capture_html: true

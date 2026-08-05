@@ -48,10 +48,10 @@ $path.staged
 .DS_Store
 Thumbs.db
 
-# Excel lock files
-~$*.xlsx
-~$*.xls
-~$*.docx
+# Excel files (input/output data — not source code)
+*.xlsx
+*.xls
+*.docx
 
 # RunQueue state
 RunQueue/
@@ -62,8 +62,9 @@ PSV/Cache/
 # Scraped PDF verification reports (generated output)
 PSV/PDFS/
 
-# Large state CSV downloads (Ohio individual provider file ~733MB)
+# Large state CSV downloads and run outputs
 PSV/CSVS/OH_PROVIDERS_INDIVIDUAL*.csv
+PSV/CSVS/*.csv
 lvs/adapters/scrapers/csvs/OH_PROVIDERS_INDIVIDUAL*.csv
 
 # CSV archive cache (old dated copies)

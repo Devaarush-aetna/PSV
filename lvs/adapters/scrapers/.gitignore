@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+Usersn676150psv_venv/
+*venv*/
+
+# Excel input/output files
+*.xlsx
+*.xls
+
+# Large CSVs (state data dumps)
+**/CSVS/*.csv
+
+# Evidence / browser screenshots / run artifacts
+evidence/
+*.png
+*.jpg
+*.jpeg
+
+# Output files
+Output_*.xlsx
+output_*.xlsx
+
+# Temp / one-off debug scripts
+temp_*.py
+debug_*.py
+
+# Test output files
+test_*_output.xlsx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log

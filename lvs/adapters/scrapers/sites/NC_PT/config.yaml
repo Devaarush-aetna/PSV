@@ -7,73 +7,147 @@ identity:
   base_url: "https://www2.ncptboard.org/app/OnlineServices/VerifyTherapist/VerifyTherapist.php"
   archetype: classic_html_form
 
-# 2026-06-15 (session 29): NOT actually behind Cloudflare. Live probe shows public
-# Licensee Lookup form at /app/OnlineServices/VerifyTherapist/VerifyTherapist.php
-# with inputs LicenseNumber / FirstName / LastName (PascalCase). Prior session 28
-# saw a Cloudflare challenge, but corporate proxy now passes through.
+# 2026-08-03: Cloudflare WAF blocks the corporate proxy IP (Ray ID a2555bdf1fb2ef9d).
+# AJAX form submit returns CF block page → #verifyresults never populates.
+# Proxy disabled so browser connects directly with a non-flagged IP.
 search:
   modes:
     - mode: last_name
       input_selector: "input[name='LastName']"
-      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+      button_selector: "button#submitButton, button[type='submit']"
     - mode: first_name
       input_selector: "input[name='FirstName']"
-      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+      button_selector: "button#submitButton, button[type='submit']"
     - mode: license_number
       input_selector: "input[name='LicenseNumber']"
-      button_selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+      button_selector: "button#submitButton, button[type='submit']"
+  # NC PT board license designation prefixes (from ncptboard.org):
+  #   P  = Physical Therapist (PT)
+  #   A  = Physical Therapist Assistant (PTA)
+  #   CP = Compact Privilege Holder (last char T=PT, A=PTA), e.g. CP024411T
+  #   T  = Temporary Military Permit
+  #   M  = Military Privilege
+  #   O  = Temporary Privilege
+  # The board search form requires the prefix: "Enter a 'P' for PT or 'A' for PTA
+  # before the license number, e.g. P1234 or A1234."
+  # Bare numeric inputs from the data are normalized here; licenses that already
+  # start with a letter (CP024411T, P1234, A567, T123…) are passed through unchanged.
+  license_prov_type_prefix_map:
+    PT: "P"
+    PTA: "A"
   form:
     search_by_dropdown:
       strategy: none
     search_input:
       selector: "input[name='LastName']"
     search_button:
-      selector: "input[type='submit'][value*='Search'], input[type='submit'][value*='Submit'], button[type='submit']"
+      selector: "button#submitButton, button[type='submit']"
       fallback_selectors:
-        - "input[type='submit']"
+        - "button[type='submit']"
+    # Cloudflare JS challenge runs in a hidden iframe after DOMContentLoaded.
+    # Wait 20s after navigation to allow the challenge to complete before submitting.
+    post_navigate_wait_ms: 20000
   results_wait:
     strategy: element_visible
-    selector: "table tbody tr td"
-    timeout_ms: 25000
+    # Results are injected by AJAX into #verifyresults — wait for that div to contain rows.
+    # The generic "table tbody tr td" must NOT be used: it matches Google Site Search
+    # widget tables already on the page before any search is run, causing instant false hits.
+    # 45s: CF JS challenge can take 10-20s to complete before AJAX fires.
+    selector: "#verifyresults table tbody tr"
+    timeout_ms: 45000
     no_results_indicators:
       - "no records found"
       - "no matching records"
       - "no results found"
+      - "no licensees found"
 
 results:
   type: table
   table:
-    row_selector: "table tbody tr"
+    row_selector: "#verifyresults table tbody tr"
     cell_selector: "td"
+    # Results table injected by AJAX — no repeated header row inside tbody.
+    skip_first_row: false
     columns:
-      0: full_name
-      1: license_number
-      2: status
-  has_detail_page: false
+      0: license_number
+      1: status
+      2: full_name
+  # Row click triggers ShowLicenseeDetails(licenseId) → AJAX fills .modal-body.
+  has_detail_page: true
+  detail_trigger:
+    type: row_click
+    selector: "#verifyresults table tbody tr"
   pagination:
     enabled: false
     strategy: none
 
 detail:
   wait:
-    strategy: delay
-    timeout_ms: 1000
-  strategies: []
+    strategy: element_visible
+    # Bootstrap modal — AJAX fills .modal-body via ShowLicenseeDetails(licenseId).
+    # Wait for .modal-body to contain a table or dl before extracting.
+    selector: ".modal-body table tr, .modal-body dl dt, .modal-body .field-label"
+    timeout_ms: 12000
+    fallback_selectors:
+      - ".modal-body"
+      - ".modal.show .modal-body"
+      - ".modal.in .modal-body"
+  strategies:
+    - type: two_column_table
+    - type: four_column_table
+    - type: dt_dd
+    - type: label_sibling
+    - type: field_label_value
   field_map:
     "License Number": license_number
+    "License No": license_number
+    "License #": license_number
     "Name": full_name
+    "Full Name": full_name
+    "First Name": first_name
+    "Last Name": last_name
+    "Status": status
+    "License Status": status
+    "License Type": license_type
+    "Profession": license_type
+    "Designation": license_type
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "Exp Date": expiration_date
+    "Expire Date": expiration_date
+    "Renewal Date": expiration_date
+    "License Expires": expiration_date
+    "Expires": expiration_date
+    "Issue Date": issue_date
+    "Initial License Date": issue_date
+    "Issued": issue_date
+    "Address": address
+    "City": city
+    "State": state_code
+  back_navigation:
+    # Press Escape to close the modal before moving to the next row.
+    strategy: escape_key
+    wait_after_ms: 600
 
 output:
   status_map:
     "Active": active
+    "active": active
+    "ACTIVE": active
     "Inactive": inactive
+    "inactive": inactive
     "Expired": expired
+    "expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
   date_formats:
     - "%m/%d/%Y"
+    - "%Y-%m-%d"
 
 transport:
   browser: chromium
-  headless: true
+  channel: "chrome"
+  headless: false
   viewport: {width: 1280, height: 900}
   timeout_ms: 60000
   navigation_timeout_ms: 30000
@@ -85,7 +159,7 @@ transport:
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
   proxy:
-    enabled: true
+    enabled: false
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
@@ -107,13 +181,3 @@ smoke_test:
   expect:
     min_records: 1
     full_name_contains: "Smith"
-  skip: true
-  # 2026-06-15 (session 29 iter 2): RE-skipped. First probe got the public form
-  # (PascalCase LicenseNumber/FirstName/LastName), but a smoke run plus a second
-  # probe both encountered the Cloudflare "Click to reveal" challenge. NC_PT
-  # appears to have an intermittent / rate-limited Cloudflare WAF that lets some
-  # requests through and challenges others. Engine cannot solve the JS challenge
-  # reliably. Selector config preserved (PascalCase) so the moment Cloudflare
-  # whitelists this exit path again, smoke can lift the skip with no rework.
-  # Unblock: cf-clearance cookie injection, residential UA, or board allowlist.
-  skip_reason: "cloudflare_intermittent_extraction: form submits and results load when Cloudflare passes (9.7s, 2026-07-01 with proxy), but full_name returns empty — table structure may differ from col-0=full_name assumption. Run headed with --force-skip to verify row structure when Cloudflare is not blocking."

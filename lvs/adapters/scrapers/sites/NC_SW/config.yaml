@@ -1,0 +1,120 @@
+identity:
+  source_id: "NC_SW"
+  board_name: "NC Social Work Certification and Licensure Board"
+  state: "NC"
+  country: "US"
+  profession_codes: ["SW"]
+  # Portal is captcha-protected — automated scraping is not possible.
+  base_url: "https://www.ncswboard.gov"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input[name='license'], input[id*='license'], input[id*='License']"
+      button_selector: "input[type='submit'], button[type='submit']"
+    - mode: last_name
+      input_selector: "input[name='last'], input[id*='last'], input[id*='Last']"
+      button_selector: "input[type='submit'], button[type='submit']"
+    - mode: first_name
+      input_selector: "input[name='first'], input[id*='first'], input[id*='First']"
+      button_selector: "input[type='submit'], button[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[name='last']"
+    search_button:
+      selector: "input[type='submit'], button[type='submit']"
+  results_wait:
+    strategy: network_idle
+    selector: "table tr"
+    timeout_ms: 25000
+    no_results_indicators:
+      - "no records found"
+      - "no matching"
+      - "no results"
+      - "0 records"
+
+results:
+  type: table
+  table:
+    row_selector: "table tbody tr"
+    cell_selector: "td"
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies:
+    - type: two_column_table
+    - type: dt_dd
+  field_map:
+    "License Number": license_number
+    "Name": full_name
+    "Status": status
+    "License Type": license_type
+    "Expiration Date": expiration_date
+    "Renewal Date": expiration_date
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "Expired": expired
+    "Suspended": suspended
+    "Revoked": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/NC_SW/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-30"
+  requires_captcha: true
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  skip_reason: "captcha_protected: NC Social Work board uses captcha — automated scraping not possible; route NC SW to manual verification"

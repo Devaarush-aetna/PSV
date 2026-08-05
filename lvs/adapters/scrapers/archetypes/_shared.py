@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import asyncio
+import io
 import logging
+import re
 import time
 
 from engine.evidence import capture_evidence
@@ -87,6 +89,94 @@ async def _try_out_of_state_tab(page, config: SiteConfig, raw: dict) -> None:
                   config.identity.source_id, license_num, exc)
 
 
+async def _scrape_pdf_detail(page, href: str, config: SiteConfig) -> dict:
+    """Download a PDF linked from the results table and extract key-value fields via PyMuPDF."""
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        log.warning("PyMuPDF not installed — cannot extract PDF detail for '%s'", href)
+        return {}
+
+    try:
+        from urllib.parse import urljoin
+        abs_url = href if href.startswith("http") else urljoin(page.url, href)
+        resp = await page.request.get(abs_url)
+        if resp.status != 200:
+            log.warning("PDF download failed for '%s': HTTP %d", href, resp.status)
+            return {}
+        pdf_bytes = await resp.body()
+    except Exception as exc:
+        log.warning("PDF download failed for '%s': %s", href, exc)
+        return {}
+
+    try:
+        doc = fitz.open(stream=io.BytesIO(pdf_bytes), filetype="pdf")
+        # Primary: default text extraction (preserves inline layout order)
+        text = "\n".join(p.get_text() for p in doc)
+        # Fallback: block-sort mode reconstructs reading order for multi-column
+        # certificate PDFs where labels and values land on separate content streams.
+        text_blocks = "\n".join(
+            b[4] for p in doc for b in sorted(p.get_text("blocks"), key=lambda b: (round(b[1], 1), b[0]))
+            if isinstance(b[4], str)
+        )
+    except Exception as exc:
+        log.warning("PDF parse failed for '%s': %s", href, exc)
+        return {}
+
+    raw: dict = {}
+    for candidate_text in (text, text_blocks):
+        for line in candidate_text.splitlines():
+            line = line.strip()
+            if ":" in line:
+                key, _, value = line.partition(":")
+                key = key.strip().rstrip(".")
+                value = value.strip()
+                if key and value and key not in raw:
+                    raw[key] = value
+
+    # Supplement with regex patterns for date fields not captured as key:value lines.
+    # Run against both text variants so label+date on adjacent lines are caught.
+    # Patterns cover two layouts:
+    #   (a) label then date on same or next line  — e.g. "Expires\n3/1/2028"
+    #   (b) date then label on next line          — e.g. "3/1/2028\nExpires"
+    #       (NCASPPB/LearningBuilder certificates list the date row above the label row)
+    combined_text = text + "\n" + text_blocks
+    _DATE_RE = r"\d{1,2}/\d{1,2}/\d{4}"
+    for patterns, field in [
+        (
+            [
+                r"[Ee]xpir(?:ation|es?)[\s\S]{0,20}?(" + _DATE_RE + r")",
+                r"(" + _DATE_RE + r")\s*\n\s*[Ee]xpir(?:ation|es?)",
+            ],
+            "Expiration Date",
+        ),
+        (
+            [
+                r"[Rr]enewal[^:\n]{0,40}?(" + _DATE_RE + r")",
+                r"(" + _DATE_RE + r")\s*\n\s*[Rr]enewal",
+            ],
+            "Renewal Date",
+        ),
+        (
+            [
+                r"[Ii]ssue[d]?[\s\S]{0,15}?(" + _DATE_RE + r")",
+                r"[Aa]pprove[d]?[\s\S]{0,5}?(" + _DATE_RE + r")",
+                r"(" + _DATE_RE + r")\s*\n\s*(?:[Ii]ssue[d]?|[Aa]pprove[d]?)",
+            ],
+            "Issue Date",
+        ),
+    ]:
+        if field not in raw:
+            for pattern in patterns:
+                m = re.search(pattern, combined_text)
+                if m:
+                    raw[field] = m.group(1)
+                    break
+
+    log.info("PDF detail extracted %d field(s) from '%s'", len(raw), abs_url)
+    return raw
+
+
 async def _scrape_one_detail(page, config: SiteConfig, run_id: str, db) -> dict:
     evidence = await capture_evidence(
         page, config.evidence, stage="detail_page", run_id=run_id,
@@ -143,6 +233,8 @@ async def _navigate_back(page, config: SiteConfig) -> None:
         base = config.identity.base_url
         target = base.rstrip("/").rsplit("/", 1)[0] + "/" + nav.url_fragment.lstrip("/")
         await page.goto(target)
+    elif nav.strategy == "escape_key":
+        await page.keyboard.press("Escape")
     else:
         await page.go_back()
 

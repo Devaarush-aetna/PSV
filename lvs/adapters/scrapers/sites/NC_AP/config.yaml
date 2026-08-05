@@ -1,0 +1,89 @@
+identity:
+  source_id: "NC_AP"
+  board_name: "NC Acupuncture Licensing Board"
+  state: "NC"
+  country: "US"
+  profession_codes: ["AP"]
+  # No automatable public web portal. Verification is by email only.
+  # Contact: pat@smvt.com for manual verification requests.
+  base_url: ""
+  archetype: classic_html_form
+
+search:
+  modes: []
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    selector: ""
+    timeout_ms: 5000
+    no_results_indicators: []
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map: {}
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 1
+    backoff_ms: [2000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: []
+  storage: local
+  local_path: "Evidence/NC_AP/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-07-30"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+  # NOTE: manual_verification_required = true — no automatable web portal exists.
+  # All NC AP records must be routed to manual verification. Email: pat@smvt.com
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 0
+  skip: true
+  skip_reason: "manual_verification_required: NC AP has no web portal; verification by email only (pat@smvt.com)"

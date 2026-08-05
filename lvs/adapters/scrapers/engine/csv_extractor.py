@@ -17,6 +17,15 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# In-process DataFrame + index caches
+# Eliminates re-reading large CSVs (e.g. OH 776 MB / 2.38M rows) on every
+# per-record call.  Keyed by (str(path), encoding, header_row, sep).
+# _LIC_IDX_CACHE is keyed by id(df) so a refreshed download auto-rebuilds.
+# ---------------------------------------------------------------------------
+_DF_CACHE: dict[tuple, "pd.DataFrame"] = {}
+_LIC_IDX_CACHE: dict[int, dict] = {}
+
 
 # ---------------------------------------------------------------------------
 # Cache helpers
@@ -311,6 +320,8 @@ async def _download_multi_step_checkbox(
     base_url: str,
     section_text: str,
     practitioner_types: list[str],
+    proxy_cfg=None,
+    timeout_ms: int = 300_000,
 ) -> str:
     """
     CT eLicense multi-step roster download:
@@ -324,8 +335,6 @@ async def _download_multi_step_checkbox(
     import io
     import pandas as pd
     from playwright.async_api import async_playwright
-    from .proxy import get_proxy_config
-    proxy_cfg = get_proxy_config()
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
@@ -333,11 +342,14 @@ async def _download_multi_step_checkbox(
         page = await ctx.new_page()
         try:
             log.info("multi_step_checkbox: navigating to %s", base_url)
-            await page.goto(base_url, wait_until="commit", timeout=120_000)
-            await page.wait_for_selector(f"text={section_text}", timeout=90_000)
+            await page.goto(base_url, wait_until="commit", timeout=timeout_ms)
+            # Use exact-match selector so e.g. "Substance Abuse Care" does NOT accidentally
+            # match the broader "Behavioral/Mental Health and Substance Abuse Care" header.
+            _section_selector = f'text="{section_text}"'
+            await page.wait_for_selector(_section_selector, timeout=30_000)
 
             # Click the section header to expand checkboxes
-            await page.locator(f"text={section_text}").first.click()
+            await page.locator(_section_selector).first.click()
 
             # Wait until the checkboxes in this section become visible
             # (panel expansion is CSS-animated; offsetParent flips from null → non-null)
@@ -385,10 +397,10 @@ async def _download_multi_step_checkbox(
 
             # Submit — navigates to DownloadRoster.aspx
             submit = page.locator("input[type='submit'], button[type='submit']").first
-            async with page.expect_navigation(wait_until="commit", timeout=120_000):
+            async with page.expect_navigation(wait_until="commit", timeout=timeout_ms):
                 await submit.click()
 
-            await page.wait_for_selector("text=Roster download", timeout=90_000)
+            await page.wait_for_selector("text=Roster download", timeout=timeout_ms)
 
             # Discover all roster blocks on the download page
             roster_info = await page.evaluate("""() => {
@@ -484,6 +496,13 @@ async def _download_multi_step_checkbox(
                 )
                 df.columns = df.columns.str.strip()
                 df = df.fillna("")
+                # Some types (e.g. Occupational Therapist) publish "LICENSE" instead
+                # of "LICENSE NO." — normalize so all types share the same column name.
+                if (
+                    "LICENSE NO." not in df.columns
+                    or df["LICENSE NO."].str.strip().eq("").all()
+                ) and "LICENSE" in df.columns:
+                    df["LICENSE NO."] = df["LICENSE"]
                 df["_practitioner_type"] = match["displayName"]
                 dfs.append(df)
                 log.info("multi_step_checkbox: '%s' → %d rows", match["displayName"], len(df))
@@ -518,6 +537,7 @@ def _build_httpx_proxy_url(proxy_cfg: dict) -> Optional[str]:
 async def _download_google_sheet_link(
     base_url: str, link_selector: str, link_selector_nth: int = 0,
     download_timeout_ms: int = 120_000,
+    proxy_cfg: Optional[dict] = "AUTO",
 ) -> str:
     """
     Wyoming-style Google Sheets roster download:
@@ -535,12 +555,16 @@ async def _download_google_sheet_link(
             the corporate proxy blocks docs.google.com as "Personal Network Storage".
          c) page.inner_text("body") — some configurations render the CSV inline rather than
             triggering a download event; captured as plain text.
+
+    proxy_cfg: pass None to force direct (no-proxy) connection; pass a Playwright proxy dict
+               to force that proxy; omit (default "AUTO") to resolve from environment.
     """
     import os as _os
     import tempfile as _tempfile
     from playwright.async_api import async_playwright
-    from .proxy import get_proxy_config
-    proxy_cfg = get_proxy_config()
+    if proxy_cfg == "AUTO":
+        from .proxy import get_proxy_config
+        proxy_cfg = get_proxy_config()
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
@@ -1491,13 +1515,23 @@ async def _download_post_form(url: str) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
-async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
+async def get_csv(
+    base_url: str, source_id: str, csv_cfg,
+    proxy_cfg: Optional[dict] = "AUTO",
+) -> tuple[Path, int]:
     """Return (path, effective_header_row) for a fresh (possibly cached) CSV file.
 
     effective_header_row is 0 when the file was produced by a multi-sheet merge or
     local_merge (clean DataFrame dump); otherwise equals csv_cfg.header_row.
+
+    proxy_cfg: "AUTO" (default) resolves from environment; None forces direct (no-proxy);
+               pass a dict to use a specific proxy for all download strategies.
     """
-    from .proxy import get_proxy_config
+    if proxy_cfg == "AUTO":
+        from .proxy import get_proxy_config
+        _resolved_proxy = get_proxy_config()
+    else:
+        _resolved_proxy = proxy_cfg
 
     _raw_cache = Path(csv_cfg.cache_dir)
     if not _raw_cache.is_absolute():
@@ -1630,40 +1664,56 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
     if strategy == "link_text":
         text = await _download_link_text(base_url, csv_cfg.link_text or "")
     elif strategy == "direct_url":
-        proxy_cfg = get_proxy_config()
-        text = await _download_direct_url(base_url, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
+        text = await _download_direct_url(base_url, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout)
     elif strategy == "multi_direct_url":
-        proxy_cfg = get_proxy_config()
         urls = getattr(csv_cfg, "multi_urls", []) or [base_url]
-        text = await _download_multi_direct_url(urls, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
+        text = await _download_multi_direct_url(urls, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout)
     elif strategy == "link_text_xlsx":
-        proxy_cfg = get_proxy_config()
         text = await _download_link_text_xlsx(
             base_url,
             csv_cfg.link_text or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
             header_row=getattr(csv_cfg, "xlsx_header_row", 0),
         )
     elif strategy == "ohio_data_portal_csv":
-        proxy_cfg = get_proxy_config()
         text = await _download_ohio_data_portal_csv(
-            base_url, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout,
+            base_url, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout,
         )
     elif strategy == "post_form":
         text = await _download_post_form(base_url)
     elif strategy == "multi_step_checkbox":
-        text = await _download_multi_step_checkbox(
-            base_url,
-            csv_cfg.checkbox_section or "",
-            list(csv_cfg.practitioner_types),
-        )
+        import asyncio as _asyncio
+        import io as _io
+        import pandas as _pd
+        _sections = csv_cfg.sections
+        if _sections:
+            _sec_texts = await _asyncio.gather(*[
+                _download_multi_step_checkbox(
+                    base_url, _sec.checkbox_section, list(_sec.practitioner_types),
+                    proxy_cfg=_resolved_proxy, timeout_ms=300_000,
+                )
+                for _sec in _sections
+            ])
+            _dfs = [
+                _pd.read_csv(_io.StringIO(_t), dtype=str, on_bad_lines="skip").fillna("")
+                for _t in _sec_texts
+            ]
+            text = _pd.concat(_dfs, ignore_index=True).to_csv(index=False)
+        else:
+            text = await _download_multi_step_checkbox(
+                base_url,
+                csv_cfg.checkbox_section or "",
+                list(csv_cfg.practitioner_types),
+                proxy_cfg=_resolved_proxy, timeout_ms=300_000,
+            )
     elif strategy == "google_sheet_link":
         text = await _download_google_sheet_link(
             base_url,
             csv_cfg.link_selector or "",
             link_selector_nth=getattr(csv_cfg, "link_selector_nth", 0),
             download_timeout_ms=dl_timeout,
+            proxy_cfg=_resolved_proxy,
         )
         extra_selectors = getattr(csv_cfg, "additional_link_selectors", [])
         if extra_selectors:
@@ -1678,6 +1728,7 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
                 try:
                     extra_text = await _download_google_sheet_link(
                         base_url, extra_sel, download_timeout_ms=dl_timeout,
+                        proxy_cfg=_resolved_proxy,
                     )
                     extra_df = pd.read_csv(
                         io.StringIO(extra_text), dtype=str, header=csv_cfg.header_row, on_bad_lines="skip"
@@ -1699,33 +1750,29 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
             _archive_old_cache_files(cache_dir, source_id, save_path)
             return save_path, 0
     elif strategy == "aithent_portal_xls":
-        proxy_cfg = get_proxy_config()
         text = await _download_aithent_portal_xls(
             base_url,
             csv_cfg.business_unit or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "nvbop_angular_xlsx":
-        proxy_cfg = get_proxy_config()
         text = await _download_nvbop_angular_xlsx(
             base_url,
             csv_cfg.license_type_filter or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "onedrive_excel":
-        proxy_cfg = get_proxy_config()
         text = await _download_onedrive_excel(
             base_url,
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "mopro_zip":
-        proxy_cfg = get_proxy_config()
         text = await _download_mopro_zip(
             csv_cfg.board_label or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     else:
@@ -1747,16 +1794,25 @@ def load_csv(path: Path, encoding: str = "utf-8-sig", header_row: int = 0, sep: 
 
     header_row: 0-based row index of the CSV header.
     sep: column separator — use "\\t" for mopro_zip tab-delimited files.
+
+    Results are cached in _DF_CACHE so large files (e.g. OH 776 MB) are only
+    parsed once per process regardless of how many records are processed.
     """
     import pandas as pd
+    cache_key = (str(path), encoding, header_row, sep)
+    if cache_key in _DF_CACHE:
+        log.debug("load_csv: cache hit %s", Path(str(path)).name)
+        return _DF_CACHE[cache_key]
     for enc in (encoding, "utf-8-sig", "latin-1"):
         try:
             df = pd.read_csv(
                 path, dtype=str, encoding=enc, on_bad_lines="skip",
-                header=header_row, sep=sep,
+                header=header_row, sep=sep, na_filter=False,
             )
             df.columns = df.columns.str.strip()
-            return df.fillna("")
+            _DF_CACHE[cache_key] = df
+            log.info("load_csv: loaded %s (%d rows) — cached for this run", Path(str(path)).name, len(df))
+            return df
         except UnicodeDecodeError:
             continue
     raise RuntimeError(f"Cannot decode {path.name} — tried utf-8-sig and latin-1")
@@ -1770,28 +1826,152 @@ def _find_col(df, name: str) -> str:
     raise KeyError(f"Column {name!r} not found (available: {list(df.columns)})")
 
 
-def search_by_license_number(df, col: str, num: str) -> list[dict]:
+def _build_lic_index(df, col: str) -> dict:
+    """Build three sorted-array indexes for O(log n) license number lookup.
+
+    Uses numpy argsort + searchsorted instead of pandas groupby so the index
+    builds in ~2-5 s on a 2.38M-row DataFrame rather than 3-4 minutes.
+
+    Each index entry is {"sorted": np.array, "order": np.array} where
+      sorted — values sorted lexicographically (for searchsorted)
+      order  — original integer positions (iloc indices) in sorted order
+    """
+    import numpy as np
     c = _find_col(df, col)
-    col_s = df[c].str.strip()
-    # 1. Exact match (case-insensitive)
-    result = df[col_s.str.upper() == num.strip().upper()]
+
+    def _sorted_index(arr: "np.ndarray") -> dict:
+        order = np.argsort(arr, kind="stable")
+        return {"sorted": arr[order], "order": order}
+
+    upper = df[c].str.strip().str.upper().values
+
+    norm = df[c].str.strip().str.upper().str.lstrip("0").values
+    norm = np.where(norm == "", "0", norm)
+
+    stripped = df[c].str.strip().str.upper().str.replace(r"[-\s]", "", regex=True).values
+
+    return {
+        "col": c,
+        "exact": _sorted_index(upper),
+        "norm": _sorted_index(norm),
+        "stripped": _sorted_index(stripped),
+    }
+
+
+def _idx_lookup(entry: dict, value: str) -> list:
+    """O(log n) lookup into a sorted-array index entry.  Returns iloc positions."""
+    import numpy as np
+    if not value:
+        return []
+    arr = entry["sorted"]
+    lo = np.searchsorted(arr, value, side="left")
+    hi = np.searchsorted(arr, value, side="right")
+    if lo >= hi:
+        return []
+    return entry["order"][lo:hi].tolist()
+
+
+def _get_lic_index(df, col: str) -> dict:
+    """Return cached license index for *df* + *col*, building it on first access."""
+    key = (id(df), col)
+    if key not in _LIC_IDX_CACHE:
+        log.info("Building license-number index (%d rows) for column '%s'...", len(df), col)
+        _LIC_IDX_CACHE[key] = _build_lic_index(df, col)
+        log.info("License-number index ready.")
+    return _LIC_IDX_CACHE[key]
+
+
+def search_by_license_number(df, col, num: str) -> list[dict]:
+    """Search for num in col (str) or any column in col (list of str).
+
+    When col is a list, each column is searched independently and results are
+    merged (deduplicated by row position) so a record matching any column is
+    returned. This supports boards like OH where the primary license number
+    sits in LICENSE_NUMBER but endorsement/secondary licenses live in
+    ENDORSEMENT_NUMBER_1 … ENDORSEMENT_NUMBER_7.
+    """
+    if isinstance(col, list):
+        # Collect iloc positions across all columns, then materialise once.
+        # Also track which column each position was matched via so we can
+        # override LICENSE_NUMBER/STATUS/EXPIRATION_DATE for endorsement hits.
+        import numpy as np
+        all_pos: list[int] = []
+        seen_pos: set[int] = set()
+        pos_to_col: dict[int, str] = {}  # iloc pos → matched column name
+        num_u = num.strip().upper()
+        for c_name in col:
+            try:
+                idx = _get_lic_index(df, c_name)
+                c_actual = idx["col"]
+                positions: list[int] = []
+                positions.extend(_idx_lookup(idx["exact"], num_u))
+                if not positions:
+                    positions.extend(_idx_lookup(idx["norm"], num_u.lstrip("0") or "0"))
+                if not positions:
+                    mask_col = df[c_actual].str.strip().str.upper().str.contains(num_u, regex=False, na=False)
+                    positions = list(np.where(mask_col.values)[0])
+                if not positions:
+                    positions.extend(_idx_lookup(idx["stripped"], re.sub(r"[-\s]", "", num_u)))
+                for p in positions:
+                    if p not in seen_pos:
+                        seen_pos.add(p)
+                        all_pos.append(p)
+                        pos_to_col[p] = c_name
+            except (KeyError, Exception):
+                continue
+        if not all_pos:
+            return []
+        rows = df.iloc[all_pos].to_dict(orient="records")
+        # For records matched via an endorsement column, override the primary
+        # license/status/expiry fields so downstream scoring sees the endorsement
+        # value rather than the base license (e.g. RN.364874 → APRN.CNP.0026867).
+        primary_col = col[0]  # typically LICENSE_NUMBER
+        for i, pos in enumerate(all_pos):
+            matched_col = pos_to_col.get(pos, primary_col)
+            if matched_col == primary_col:
+                continue
+            # Derive endorsement index from column name (ENDORSEMENT_NUMBER_N → N)
+            end_idx = None
+            try:
+                end_idx = int(matched_col.rsplit("_", 1)[-1])
+            except (ValueError, AttributeError):
+                pass
+            row = rows[i]
+            # Always override LICENSE_NUMBER with the searched endorsement value
+            row["LICENSE_NUMBER"] = num.strip()
+            if end_idx is not None:
+                end_status = row.get(f"ENDORSEMENT_STATUS_{end_idx}", "")
+                end_expiry = row.get(f"ENDORSEMENT_EXPIRATION_DATE_{end_idx}", "")
+                if end_status:
+                    row["STATUS"] = end_status
+                if end_expiry:
+                    row["EXPIRATION_DATE"] = end_expiry
+        return rows
+
+    idx = _get_lic_index(df, col)
+    c = idx["col"]
+    num_u = num.strip().upper()
+
+    # Stage 1: Exact  O(log n)
+    rows = _idx_lookup(idx["exact"], num_u)
+    if rows:
+        return df.iloc[rows].to_dict(orient="records")
+
+    # Stage 2: Leading-zero normalized  O(log n)
+    rows = _idx_lookup(idx["norm"], num_u.lstrip("0") or "0")
+    if rows:
+        return df.iloc[rows].to_dict(orient="records")
+
+    # Stage 3: Substring — can't be indexed; vectorized pandas scan
+    result = df[df[c].str.strip().str.upper().str.contains(num_u, regex=False, na=False)]
     if not result.empty:
         return result.to_dict(orient="records")
-    # 2. Leading-zero normalized (e.g. "82619" matches "082619" and vice versa)
-    target_norm = num.strip().lstrip("0") or "0"
-    result = df[col_s.str.lstrip("0").str.upper() == target_norm.upper()]
-    if not result.empty:
-        return result.to_dict(orient="records")
-    # 3. Substring match — handles prefix/suffix variants (e.g. "1198" matches "LPC-1198")
-    result = df[col_s.str.upper().str.contains(num.strip().upper(), regex=False, na=False)]
-    if not result.empty:
-        return result.to_dict(orient="records")
-    # 4. Dash/space-stripped match — "PT1414" finds "PT-1414", "LPC1336" finds "LPC-1336",
-    #    and the reverse: "PT-1414" finds "PT1414" in boards that store without a dash.
-    target_stripped = re.sub(r"[-\s]", "", num.strip()).upper()
-    result = df[col_s.str.replace(r"[-\s]", "", regex=True).str.upper() == target_stripped]
-    if not result.empty:
-        return result.to_dict(orient="records")
+
+    # Stage 4: Dash/space-stripped  O(log n)
+    rows = _idx_lookup(idx["stripped"], re.sub(r"[-\s]", "", num_u))
+    if rows:
+        return df.iloc[rows].to_dict(orient="records")
+
     return []
 
 
@@ -1842,14 +2022,32 @@ def search_by_multi_column(
             return None
 
     if license_number:
-        c = _safe_col("license_number")
-        if c is not None:
-            col_s = df[c].str.strip()
+        lic_col = col_map.get("license_number")
+        if isinstance(lic_col, list):
+            # OR-match across all columns in the list
+            import pandas as _pd
+            lic_mask = _pd.Series([False] * len(df), index=df.index)
             target = license_number.strip()
-            exact = col_s.str.upper() == target.upper()
-            norm = col_s.str.lstrip("0").str.upper() == (target.lstrip("0") or "0").upper()
-            mask &= (exact | norm)
+            target_u = target.upper()
+            target_norm = (target_u.lstrip("0") or "0")
+            for _cn in lic_col:
+                try:
+                    _c = _find_col(df, _cn)
+                    _s = df[_c].str.strip()
+                    lic_mask |= (_s.str.upper() == target_u) | (_s.str.lstrip("0").str.upper() == target_norm)
+                except KeyError:
+                    log.warning("search_by_multi_column: column %r not found; skipping", _cn)
+            mask &= lic_mask
             applied += 1
+        else:
+            c = _safe_col("license_number")
+            if c is not None:
+                col_s = df[c].str.strip()
+                target = license_number.strip()
+                exact = col_s.str.upper() == target.upper()
+                norm = col_s.str.lstrip("0").str.upper() == (target.lstrip("0") or "0").upper()
+                mask &= (exact | norm)
+                applied += 1
 
     if first_name:
         c = _safe_col("first_name")

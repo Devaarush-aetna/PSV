@@ -205,6 +205,10 @@ class SearchMode(BaseModel):
     # Use when the submit button's click event is intercepted by JS (Spring Web Flow, etc.)
     # and a direct form.submit() is needed. Example: "document.querySelector('#myForm form').submit()"
     submit_js: Optional[str] = None
+    # When set, apply this template to produce the value typed into the primary search input.
+    # Supports the same tokens as extra_inputs: {first}, {last}, {license}, {q}, etc.
+    # Example: "{last}, {first}" for boards that require "LastName, FirstName" format.
+    query_template: Optional[str] = None
 
 
 class ElementSelector(BaseModel):
@@ -235,6 +239,9 @@ class SearchForm(BaseModel):
     search_button: ElementSelector = Field(default_factory=lambda: ElementSelector(selector="button[type='submit']"))
     # Angular reactive forms don't pick up Playwright fill() — use keyboard.type() to fire real key events
     use_keyboard_type: bool = False
+    # Extra wait (ms) after navigation before filling the form. Used for boards where a JS
+    # challenge (e.g. Cloudflare managed challenge) must complete before form submission.
+    post_navigate_wait_ms: int = 0
 
 
 class SearchConfig(BaseModel):
@@ -277,16 +284,31 @@ class SearchConfig(BaseModel):
     # For pure-digit inputs with no prefix list, simply zero-pads to digit_pad digits
     # (e.g. "12345".zfill(10) → "0000012345"). Used for VA_DHP (license_digit_pad=10).
     license_digit_pad: Optional[int] = None
+    # Maps psv_prov_type → prefix to prepend when the input license number is a bare digit
+    # string (no leading alpha characters). When the license already starts with any letter,
+    # it is assumed to carry its own designation prefix and is left unchanged.
+    # Used for NC_PT where the search form requires 'P' (PT) or 'A' (PTA) before the number,
+    # e.g. bare "1234" → "P1234" for PT, "A1234" for PTA. Compact/Military/Temp licenses
+    # (CP024411T, T1234, M1234, O1234) start with letters and are passed through unchanged.
+    license_prov_type_prefix_map: Optional[dict[str, str]] = None
     # CSS selector for an <iframe> that contains the search form. When set, the engine
     # switches to the iframe's content frame for set_search_by / fill_search_input /
     # fill_extra_inputs / click_search_button, then reverts to the main page for
     # wait_for_results. Used for Clarus-embedded boards (e.g. IBCLC_COMMISSION).
     iframe_search_selector: Optional[str] = None
+    # When set, scan ALL page.frames (including deeply nested ones) for the first frame
+    # that contains an element matching this selector, and use it for form fill/submit.
+    # Unlike iframe_search_selector (which calls content_frame() on a DOM element and
+    # fails for cross-origin multi-level nesting), this probe scans the live frame list
+    # directly. Use for boards where the form is buried in a nested about:blank iframe
+    # that cannot be reached via CSS-based content_frame() traversal (e.g. NC_OPTOMETRY).
+    search_frame_probe_selector: Optional[str] = None
 
 
 class DetailTrigger(BaseModel):
     type: Literal["view_button", "row_click", "link_in_cell"] = "view_button"
     selector: str = "a:has-text('View'), button:has-text('View')"
+    force_pdf: bool = False  # treat all linked hrefs as PDFs regardless of URL pattern
 
 
 class PaginationConfig(BaseModel):
@@ -302,6 +324,7 @@ class ResultsTableConfig(BaseModel):
     columns: dict[int, str] = Field(default_factory=dict)
     skip_first_row: bool = False  # skip header row when table has no <thead>
     required_fields: list[str] = Field(default_factory=list)  # row dropped if any of these fields is empty
+    deduplicate_by: list[str] = Field(default_factory=list)  # keep first row per unique combo of these fields
     table_selector: Optional[str] = None  # if set, select this element then use row_selector within it
     table_index: Optional[int] = None     # use .nth(table_index) of table_selector matches
     iframe_selector: Optional[str] = None # if set, look for the table inside this iframe
@@ -315,6 +338,18 @@ class ResultsTableConfig(BaseModel):
     # When set, page.evaluate(custom_js) is called and results are returned directly,
     # bypassing all other table/vertical_kv extraction. Use for non-standard layouts.
     custom_js: Optional[str] = None
+    # When set, scan ALL page.frames for the first frame containing an element matching
+    # this selector and use it for table extraction. Complements search_frame_probe_selector
+    # on SearchConfig — use the same selector value for both so that the same frame
+    # handles both form fill and results reading.
+    iframe_probe_selector: Optional[str] = None
+    # column_patterns: per-column regex extractions. Maps column_index → {field_name: pattern}.
+    # Each pattern is applied to the raw cell text; the first capture group is assigned to
+    # field_name. Multiple fields can be extracted from the same cell (e.g. a "Licensed Dates"
+    # cell that contains both "Issued: MM/DD/YYYY" and "Expires: MM/DD/YYYY").
+    # If column_patterns is set for a column that also appears in `columns`, the `columns`
+    # mapping still runs first (providing a raw fallback), then patterns overlay any matched fields.
+    column_patterns: dict[int, dict[str, str]] = Field(default_factory=dict)
 
 
 class VerticalKvConfig(BaseModel):
@@ -365,6 +400,10 @@ class DetailWait(BaseModel):
     selector: Optional[str] = None
     timeout_ms: int = 15000
     fallback_selectors: list[str] = Field(default_factory=list)
+    # CSS selectors that indicate an error/session-expired page rather than a real
+    # detail page.  When any matches, _scrape_one_detail raises DetailPageError so
+    # _scrape_with_detail_clicks falls through to the summary-row merge fallback.
+    error_page_selectors: list[str] = Field(default_factory=list)
 
 
 class DetailSection(BaseModel):
@@ -376,7 +415,7 @@ class DetailSection(BaseModel):
 
 
 class BackNavigation(BaseModel):
-    strategy: Literal["browser_back", "breadcrumb_click", "url_navigate"] = "browser_back"
+    strategy: Literal["browser_back", "breadcrumb_click", "url_navigate", "escape_key"] = "browser_back"
     selector: Optional[str] = None   # for breadcrumb_click: CSS selector to click
     url_fragment: Optional[str] = None
     wait_after_ms: int = 1500
@@ -430,6 +469,7 @@ class ProxyConfig(BaseModel):
 
 class TransportConfig(BaseModel):
     browser: str = "chromium"
+    channel: Optional[str] = None  # e.g. "chrome" to use system Google Chrome
     headless: bool = True
     viewport: dict[str, int] = Field(default_factory=lambda: {"width": 1920, "height": 1080})
     timeout_ms: int = 60000
@@ -439,6 +479,7 @@ class TransportConfig(BaseModel):
     proxy: ProxyConfig = Field(default_factory=ProxyConfig)
     user_agent: str = "LVS-LicenseVerifier/1.0"
     ladder_timeout_s: Optional[int] = None
+    ignore_https_errors: bool = False
 
 
 class EvidenceConfig(BaseModel):
@@ -488,6 +529,11 @@ class MergeSourceEntry(BaseModel):
     columns: dict[str, str] = Field(default_factory=dict)
 
 
+class CheckboxSectionConfig(BaseModel):
+    checkbox_section: str = ""
+    practitioner_types: list[str] = Field(default_factory=list)
+
+
 class CsvBulkConfig(BaseModel):
     download_strategy: Literal[
         "link_text", "link_text_xlsx", "direct_url", "multi_direct_url", "post_form",
@@ -503,6 +549,7 @@ class CsvBulkConfig(BaseModel):
     xlsx_header_row: int = 0              # row index of the XLSX header (0-based) for link_text_xlsx; the converted CSV always has header at row 0 so csv read uses header_row above
     checkbox_section: Optional[str] = None        # for multi_step_checkbox: section header text to click
     practitioner_types: list[str] = Field(default_factory=list)  # for multi_step_checkbox: types to download
+    sections: list[CheckboxSectionConfig] = Field(default_factory=list)  # for multi_step_checkbox: multiple sections
     business_unit: Optional[str] = None   # for aithent_portal_xls: Business Unit dropdown text to match
     license_type_filter: Optional[str] = None  # for nvbop_angular_xlsx: license type to select before export
     # mopro_zip: Missouri MOPRO Salesforce LWC portal (mopro.mo.gov/license/s/license-downloads).
@@ -530,6 +577,8 @@ class CsvBulkConfig(BaseModel):
     # local_merge: read + normalize already-cached CSVs from other source boards and merge them.
     # Used by combined boards like WY_ALL.  Does not download from the web.
     merge_sources: list["MergeSourceEntry"] = Field(default_factory=list)
+    # OH-style combined name column: "LAST , FIRST MIDDLE" → _parsed_last/_parsed_first/_parsed_middle.
+    parse_combined_name_column: Optional[str] = None
 
 
 class SmokeTestExpect(BaseModel):

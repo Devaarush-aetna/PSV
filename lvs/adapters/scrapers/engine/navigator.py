@@ -35,7 +35,8 @@ async def navigate_to_search(page: Page, config: SiteConfig) -> None:
             log.debug("Pega networkidle timeout (non-fatal): %s", e)
         await asyncio.sleep(5)
     else:
-        await asyncio.sleep(2)
+        extra_ms = getattr(config.search.form, "post_navigate_wait_ms", 0)
+        await asyncio.sleep(max(2, extra_ms / 1000))
 
 
 # ---------------------------------------------------------------------------
@@ -194,6 +195,15 @@ async def fill_search_input(page: Page, config: SearchConfig, query: SearchQuery
             return True
         log.warning("Angular FormGroup set failed (%s), falling back to DOM fill", result)
 
+    # Apply per-mode query_template if configured (e.g. "{last}, {first}" for boards
+    # that require "LastName, FirstName" format in a single search field).
+    mode_cfg_for_template = next((m for m in config.modes if m.mode == query.mode), None)
+    fill_value = (
+        _resolve_template(mode_cfg_for_template.query_template, query)
+        if mode_cfg_for_template and mode_cfg_for_template.query_template
+        else query.query
+    )
+
     for sel in selectors:
         try:
             await page.wait_for_selector(sel, state="visible", timeout=5000)
@@ -202,11 +212,11 @@ async def fill_search_input(page: Page, config: SearchConfig, query: SearchQuery
                 await loc.click()
                 await page.keyboard.press("Control+a")
                 await page.keyboard.press("Delete")
-                await page.keyboard.type(query.query, delay=30)
+                await page.keyboard.type(fill_value, delay=30)
             else:
                 await loc.clear()
-                await loc.fill(query.query)
-            log.info("Filled search input '%s' with '%s'", sel, query.query)
+                await loc.fill(fill_value)
+            log.info("Filled search input '%s' with '%r'", sel, fill_value)
             return True
         except Exception:
             continue
@@ -680,6 +690,7 @@ async def wait_for_results(page: Page, config: SearchConfig, partial_failures: l
             max_iters = max(1, int(timeout / 1000 / poll))
             prev = -1
             stable = 0
+            initial_url = page.url
             for _ in range(max_iters):
                 try:
                     n = await page.locator(sel).count()
@@ -692,6 +703,15 @@ async def wait_for_results(page: Page, config: SearchConfig, partial_failures: l
                 else:
                     stable = 0
                 prev = n
+                # Early exit: board navigated directly to a detail page (e.g. single
+                # license-number match → result.aspx) rather than populating an AJAX
+                # table. Avoids burning the full timeout waiting for a table that will
+                # never appear. Only exit if no no-results indicator is present.
+                try:
+                    if page.url != initial_url and not await is_no_results(page, config):
+                        break
+                except Exception:
+                    pass
                 await asyncio.sleep(poll)
         elif rw.strategy == "delay":
             await asyncio.sleep(rw.timeout_ms / 1000.0)
@@ -796,6 +816,26 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
             log.warning("[%s] iframe_search_selector failed, using main page: %s",
                         config.identity.source_id, e)
 
+    if config.search.search_frame_probe_selector:
+        # Scan all page frames (including deeply nested about:blank frames) for the
+        # first frame whose DOM contains the probe selector. Needed when the form is
+        # embedded several levels deep (e.g. NC_OPTOMETRY: main→gstatic→googleusercontent
+        # →about:blank) where content_frame() traversal cannot reach it.
+        probe_sel = config.search.search_frame_probe_selector
+        await page.wait_for_timeout(3000)  # let nested frames finish loading
+        for frm in page.frames:
+            try:
+                if await frm.locator(probe_sel).count() > 0:
+                    search_target = frm
+                    log.info("[%s] search_frame_probe found frame: %s",
+                             config.identity.source_id, frm.url[:80])
+                    break
+            except Exception:
+                continue
+        if search_target is page:
+            log.warning("[%s] search_frame_probe_selector '%s' found no matching frame, using main page",
+                        config.identity.source_id, probe_sel)
+
     # Combo mode synthesis: when the requested mode is a recognised combo and the
     # config has no explicit entry for it, synthesise one from the existing single-
     # field modes and inject it into config.search.modes for this call.
@@ -864,6 +904,19 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     # Use the original `query` (not effective_query) so {first}/{last}/{license}
     # substitutions in extra_inputs see the full structured fields.
     await fill_extra_inputs(search_target, mode_cfg, query, partial_failures=partial_failures)
+    # Combo-mode re-fill guard: some boards (e.g. KY GenSearch ASP.NET) have JS event
+    # handlers on secondary fields that clear the primary input when they receive a value.
+    # After filling extra_inputs, re-fill the primary field so it is always the last write.
+    if query.mode in COMBO_MODES and mode_cfg and mode_cfg.input_selector:
+        primary_value = _primary_value_for_mode(query.mode, query)
+        if primary_value:
+            try:
+                loc = search_target.locator(mode_cfg.input_selector).first
+                await loc.clear()
+                await loc.fill(primary_value)
+                log.debug("combo re-fill primary '%s' = '%s'", mode_cfg.input_selector, primary_value)
+            except Exception as e:
+                log.warning("combo re-fill primary '%s' failed: %s", mode_cfg.input_selector, e)
     # Apply orthogonal license_type / provider_type filters from SiteIdentity.
     await apply_orthogonal_filters(page, config, query, partial_failures=partial_failures)
     if mode_cfg and mode_cfg.submit_js:
@@ -902,16 +955,29 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     has_results = await wait_for_results(page, config.search, partial_failures=partial_failures)
     # Post-search click: some boards show results in a list/card view first and
     # require clicking a toggle (e.g. grid radio button) to switch to table view.
-    # 1s settle delay lets the ASP.NET UpdatePanel finish DOM mutation after networkidle.
+    # Wrap the click inside expect_navigation so Playwright registers a navigation
+    # listener BEFORE the click fires — this handles ASP.NET PostBacks triggered via
+    # setTimeout(0) where the navigation starts one JS tick after the click, which
+    # causes a bare wait_for_load_state("networkidle") to resolve too early (on the
+    # pre-PostBack idle state) and leaves page.content() racing the navigation.
     if has_results and config.search.post_search_click:
         await asyncio.sleep(1.0)
         try:
             await page.wait_for_selector(
                 config.search.post_search_click, state="visible", timeout=8000
             )
-            await page.locator(config.search.post_search_click).first.click()
-            log.info("post_search_click: clicked '%s'", config.search.post_search_click)
-            await asyncio.sleep(2.0)
+            try:
+                async with page.expect_navigation(timeout=10000, wait_until="networkidle"):
+                    await page.locator(config.search.post_search_click).first.click()
+                log.info("post_search_click: clicked and navigation settled '%s'", config.search.post_search_click)
+            except Exception:
+                # No full-page navigation triggered (XHR / UpdatePanel partial update).
+                # Fall back to networkidle wait then a brief settle delay.
+                log.info("post_search_click: no navigation detected, waiting for networkidle '%s'", config.search.post_search_click)
+                try:
+                    await page.wait_for_load_state("networkidle", timeout=8000)
+                except Exception:
+                    await asyncio.sleep(2.0)
         except Exception as e:
             log.warning("post_search_click '%s' failed: %s", config.search.post_search_click, e)
             if partial_failures is not None:

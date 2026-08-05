@@ -43,7 +43,7 @@ from .trace import (
     OUTCOME_AI_BOARD_HIT, OUTCOME_MATCH_EXACT, OUTCOME_NO_RECORDS,
     REASON_AI_CIRCUIT_BREAKER_OPEN, REASON_AI_GAVE_UP,
     REASON_AI_MAX_TURNS_EXCEEDED, REASON_AI_TOOL_ERROR,
-    make_signature, normalize_query_value,
+    make_signature, normalize_query_value, serialize_candidate,
 )
 
 log = logging.getLogger(__name__)
@@ -251,6 +251,8 @@ Available tools:
   folder. Use this when you suspect a layout change or parsing failure.
 - pick_candidate(source_id, candidate_index): commit a candidate from a prior
   attempt. Use this when you can identify the right row in already-returned data.
+  The `pool_index` field on each matched_candidate is the exact candidate_index
+  to pass — no try_search needed for records already in matched_candidates.
 - report_site_drift(source_id, suspected_change, fix_hint): emit a drift report.
   Do NOT call this unless evidence strongly suggests the board's HTML changed.
 - give_up(reason): terminate. reason MUST be one of:
@@ -306,6 +308,19 @@ def _build_context_message(
     trace: RowTrace,
     routing: list[dict],
 ) -> str:
+    # Compute per-source pool offsets so each matched_candidate carries the
+    # exact pool_index the AI should pass to pick_candidate().
+    pool_offset: dict[str, int] = {}
+    attempts_summary = []
+    for a in trace.attempts:
+        d = _summarize_attempt(a)
+        if a.candidates and "matched_candidates" in d:
+            start = pool_offset.get(a.source_id, 0)
+            for i, cand in enumerate(d["matched_candidates"]):
+                cand["pool_index"] = start + i
+            pool_offset[a.source_id] = start + len(a.candidates)
+        attempts_summary.append(d)
+
     payload = {
         "escalate_to_ai_reason": trace.escalate_to_ai_reason,
         "master_row": {
@@ -320,7 +335,7 @@ def _build_context_message(
         },
         "nppes_record": _summarize_nppes(nppes),
         "npi_discrepancy": discrepancy.to_dict() if discrepancy else None,
-        "attempts": [_summarize_attempt(a) for a in trace.attempts],
+        "attempts": attempts_summary,
         "routing": routing,
     }
     return json.dumps(payload, indent=2, default=str)
@@ -343,7 +358,7 @@ def _summarize_nppes(nppes: Optional[NppesRecord]) -> Optional[dict]:
 
 
 def _summarize_attempt(a: AttemptRecord) -> dict:
-    return {
+    d = {
         "seq": a.seq,
         "source_id": a.source_id,
         "mode": a.mode,
@@ -356,6 +371,9 @@ def _summarize_attempt(a: AttemptRecord) -> dict:
         "evidence_dir": a.evidence_dir,
         "error_msg": a.error_msg,
     }
+    if a.candidates:
+        d["matched_candidates"] = [serialize_candidate(r) for r in a.candidates]
+    return d
 
 
 # ----- Mock-mode loader (for --ai-mock testing) --------------------------
@@ -483,7 +501,16 @@ async def run_ai_agent(
 
         except Exception as exc:
             _record_failure(exc)
-            log.error("AI agent turn %d errored: %s", turn + 1, exc)
+            log.warning(
+                "AI agent turn %d API error (%d turns remaining): %s",
+                turn + 1, cfg.AI_MAX_TURNS - turn - 1, exc,
+            )
+            # The assistant message was never appended so the conversation state
+            # is still consistent — retry on the next turn if one is available.
+            if turn < cfg.AI_MAX_TURNS - 1:
+                await asyncio.sleep(3)
+                continue
+            log.error("AI agent: all %d turns exhausted after API errors", cfg.AI_MAX_TURNS)
             result.outcome = "errored"
             result.reason = REASON_AI_TOOL_ERROR
             return result

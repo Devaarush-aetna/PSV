@@ -25,9 +25,25 @@ csv_bulk:
   # specialty groups, and 5 NATIONAL_CERTIFICATION_* groups. LICENSEE_NAME is
   # the only person-name column; substring search on it matches either last
   # or first name.
+  # parse_combined_name_column: splits "LAST , FIRST MIDDLE" into _parsed_last,
+  # _parsed_first, _parsed_middle so last-name searches are precise and
+  # first-name searches also match middle-name-as-preferred-name cases.
+  parse_combined_name_column: "LICENSEE_NAME"
   search_columns:
-    license_number: "LICENSE_NUMBER"
-    last_name: "LICENSEE_NAME"
+    # LICENSE_NUMBER holds the base license (e.g. RN.364874); APRN / endorsement
+    # designations (e.g. APRN.CNP.0026867) live in ENDORSEMENT_NUMBER_1..7.
+    # Listing all 8 as a list triggers OR-search across all columns so either
+    # the base license number or any endorsement number finds the record.
+    license_number:
+      - "LICENSE_NUMBER"
+      - "ENDORSEMENT_NUMBER_1"
+      - "ENDORSEMENT_NUMBER_2"
+      - "ENDORSEMENT_NUMBER_3"
+      - "ENDORSEMENT_NUMBER_4"
+      - "ENDORSEMENT_NUMBER_5"
+      - "ENDORSEMENT_NUMBER_6"
+      - "ENDORSEMENT_NUMBER_7"
+    last_name: "_parsed_last"
     first_name: "LICENSEE_NAME"
   # AND-filter columns: applied when the corresponding SearchQuery field is set
   license_type_column: "TYPE"      # e.g. "License", "Certificate", "Registration"

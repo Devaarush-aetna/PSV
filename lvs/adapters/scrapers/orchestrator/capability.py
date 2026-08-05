@@ -17,9 +17,11 @@ from engine.models import COMBO_MODES, SiteConfig
 CANONICAL_LADDER: tuple[str, ...] = (
     "license_number",
     "license_numeric_only",
+    "license_and_last",       # license + last name (e.g. IBCLC credential_number search)
     "first_and_last_typed",   # first+last WITH profession/board dropdown pre-set
     "first_and_last",
     "last_name",
+    "last_name_last_word",    # compound last name → last token only (e.g. "Murphy Andruk" → "Andruk")
     "first_name",
 )
 
@@ -44,10 +46,16 @@ def required_fields_for(mode: str) -> tuple[str, ...]:
     """
     mapping = {
         "license_number": ("license_id",),
+        "license_number_exact": ("license_id",),
         "license_numeric_only": ("license_id",),
+        "license_formatted": ("license_id",),
+        "license_first_last": ("license_id", "first_name", "last_name"),
+        "license_and_last": ("license_id", "last_name"),
+        "license_and_first": ("license_id", "first_name"),
         "first_and_last_typed": ("first_name", "last_name"),
         "first_and_last": ("first_name", "last_name"),
         "last_name": ("last_name",),
+        "last_name_last_word": ("last_name",),
         "first_name": ("first_name",),
     }
     return mapping.get(mode, ())

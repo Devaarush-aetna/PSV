@@ -90,6 +90,7 @@ transport:
     height: 900
   timeout_ms: 60000
   navigation_timeout_ms: 30000
+  ladder_timeout_s: 120
   rate_limit:
     delay_between_requests_ms: 2000
     max_concurrent: 1

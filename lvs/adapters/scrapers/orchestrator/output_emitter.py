@@ -244,6 +244,10 @@ class OutputEmitter:
             full = (getattr(rec, "licensee_full_name", "") or "").strip()
             if full:
                 first, last = disamb._split_full_name(full, master_last)
+        elif not first and last and " " in last:
+            # Board stored full name in licensee_last_name (e.g. "George Joseph Vesper").
+            # Split it so first/last columns are populated correctly in output.
+            first, last = disamb._split_full_name(last, master_last)
         return first, last
 
     @staticmethod
@@ -352,7 +356,12 @@ class OutputEmitter:
         # Pure-numeric leading-zero mismatch (e.g. EPDB "7278" vs board "007278")
         if _si.isdigit() and _sb.isdigit() and _si.lstrip("0") == _sb.lstrip("0"):
             return None
-        
+        # Dot-prefix artifact in input (e.g. EPDB "14.015029" vs board "015029")
+        if "." in input_lic and _sb.isdigit():
+            for _seg in input_lic.split("."):
+                _ss = _strip(_seg)
+                if _ss.isdigit() and _ss.lstrip("0") == _sb.lstrip("0"):
+                    return None
         # Letter-prefix + digit core vs double-prefix.digit.suffix
         # (e.g. WA: "RN61176701" vs "RN.RN.61176701.MSL")
         _digit_run = lambda s: max((_re.findall(r"\d+", s) or [""]), key=len)
@@ -450,7 +459,8 @@ class OutputEmitter:
             self._standard_rows[-1]["match_method"] = "name_license_mismatch"
             self._standard_rows[-1]["reason"] = manual_reason
         elif manual_reason == "Temporary License ID":
-            self._standard_rows[-1]["status"] = "Fail"
+            # Keep status as Pass — temp cert holders are verified by name match.
+            # Route to Manual so reviewers can record the board's permanent license.
             self._standard_rows[-1]["match_method"] = "temporary_license_id"
             self._standard_rows[-1]["reason"] = manual_reason
         elif manual_reason == "Expired and same as input":
@@ -631,11 +641,17 @@ class OutputEmitter:
                 return "License matched but Name mismatched"
             return _fail_reason_code
 
-        # 5.5. Temporary/training license prefix (TC###) — these are KY training
-        # credentials that the state board lists under a different permanent number.
-        # Name may match perfectly; the TC number itself is unverifiable via scrape.
+        # 5.5. KY temporary/internal license prefix — TC###, TP###, TSA### are client
+        # tracking codes that never appear on the public board.  The board stores a
+        # different permanent number (e.g. PA3822, 06248, SA464); name-only match is
+        # the best we can do.  Surface as "Temporary License ID" so reviewers have the
+        # board's actual license and expiry available.
         _input_lic = (outcome.master_row.get("license_id", "") or "").strip().upper()
-        if _input_lic.startswith("TC"):
+        if _input_lic.startswith("TC") or (
+            _input_lic.startswith("TP") and _input_lic[2:].isdigit()
+        ) or (
+            _input_lic.startswith("TSA") and _input_lic[3:].isdigit()
+        ):
             return "Temporary License ID"
 
         # 5. Name ↔ license cross-validation (Pass rows only beyond this point)
@@ -779,6 +795,7 @@ class OutputEmitter:
                 bd and bd.license_numerics >= 1.0
             ) else "exact_name"
 
+        _ml = _matched_license(rec, m, o.status)
         row = {
             "master_row_id": o.master_row_id,
             "first_name": m.get("first_name", ""),
@@ -795,13 +812,9 @@ class OutputEmitter:
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
-            "matched_license": getattr(rec, "license_number", "") or "" if rec else "",
-            "matched_first": _clean_matched_name(
-                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[0]
-            ),
-            "matched_last": _clean_matched_name(
-                OutputEmitter._resolve_board_name_parts(rec, m.get("last_name", ""))[1]
-            ),
+            "matched_license": _ml,
+            "matched_first": _matched_name_part(rec, m, o.status, 0),
+            "matched_last":  _matched_name_part(rec, m, o.status, 1),
             "board_name": _get_board_name(getattr(rec, "source_id", "") or "") if rec else "",
             "match_method": match_method,
             "fuzzy_score": (round(bd.total, 3) if bd else ""),
@@ -1473,6 +1486,28 @@ class OutputEmitter:
 
 
 # ----- Helpers ------------------------------------------------------------
+
+def _matched_license(rec: Optional[Any], master_row: dict, status: str) -> str:
+    """Board license number; falls back to master-row license_id on Pass when blank."""
+    val = (getattr(rec, "license_number", "") or "").strip() if rec else ""
+    if not val and status == "Pass":
+        val = (master_row.get("license_id", "") or "").strip()
+    return val
+
+
+
+def _matched_name_part(rec: Optional[Any], master_row: dict, status: str, idx: int) -> str:
+    """Board first (idx=0) or last (idx=1) name; validates and falls back on Pass when blank/garbage."""
+    raw_val = OutputEmitter._resolve_board_name_parts(rec, master_row.get("last_name", ""))[idx]
+    cleaned = _clean_matched_name(raw_val)
+    # Reject pure-numeric tokens (e.g. '1' from garbled detail-page extraction).
+    if cleaned and cleaned.strip().isdigit():
+        cleaned = ""
+    if not cleaned and status == "Pass":
+        fallback_key = "first_name" if idx == 0 else "last_name"
+        cleaned = (master_row.get(fallback_key, "") or "").strip()
+    return cleaned
+
 
 def _expiry_str(rec: Optional[Any]) -> str:
     """ISO date string — used for standard output channel."""
