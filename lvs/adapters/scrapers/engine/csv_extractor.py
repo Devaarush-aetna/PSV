@@ -537,6 +537,7 @@ def _build_httpx_proxy_url(proxy_cfg: dict) -> Optional[str]:
 async def _download_google_sheet_link(
     base_url: str, link_selector: str, link_selector_nth: int = 0,
     download_timeout_ms: int = 120_000,
+    proxy_cfg: Optional[dict] = "AUTO",
 ) -> str:
     """
     Wyoming-style Google Sheets roster download:
@@ -554,12 +555,16 @@ async def _download_google_sheet_link(
             the corporate proxy blocks docs.google.com as "Personal Network Storage".
          c) page.inner_text("body") — some configurations render the CSV inline rather than
             triggering a download event; captured as plain text.
+
+    proxy_cfg: pass None to force direct (no-proxy) connection; pass a Playwright proxy dict
+               to force that proxy; omit (default "AUTO") to resolve from environment.
     """
     import os as _os
     import tempfile as _tempfile
     from playwright.async_api import async_playwright
-    from .proxy import get_proxy_config
-    proxy_cfg = get_proxy_config()
+    if proxy_cfg == "AUTO":
+        from .proxy import get_proxy_config
+        proxy_cfg = get_proxy_config()
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
@@ -1510,13 +1515,23 @@ async def _download_post_form(url: str) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
-async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
+async def get_csv(
+    base_url: str, source_id: str, csv_cfg,
+    proxy_cfg: Optional[dict] = "AUTO",
+) -> tuple[Path, int]:
     """Return (path, effective_header_row) for a fresh (possibly cached) CSV file.
 
     effective_header_row is 0 when the file was produced by a multi-sheet merge or
     local_merge (clean DataFrame dump); otherwise equals csv_cfg.header_row.
+
+    proxy_cfg: "AUTO" (default) resolves from environment; None forces direct (no-proxy);
+               pass a dict to use a specific proxy for all download strategies.
     """
-    from .proxy import get_proxy_config
+    if proxy_cfg == "AUTO":
+        from .proxy import get_proxy_config
+        _resolved_proxy = get_proxy_config()
+    else:
+        _resolved_proxy = proxy_cfg
 
     _raw_cache = Path(csv_cfg.cache_dir)
     if not _raw_cache.is_absolute():
@@ -1649,25 +1664,21 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
     if strategy == "link_text":
         text = await _download_link_text(base_url, csv_cfg.link_text or "")
     elif strategy == "direct_url":
-        proxy_cfg = get_proxy_config()
-        text = await _download_direct_url(base_url, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
+        text = await _download_direct_url(base_url, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout)
     elif strategy == "multi_direct_url":
-        proxy_cfg = get_proxy_config()
         urls = getattr(csv_cfg, "multi_urls", []) or [base_url]
-        text = await _download_multi_direct_url(urls, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout)
+        text = await _download_multi_direct_url(urls, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout)
     elif strategy == "link_text_xlsx":
-        proxy_cfg = get_proxy_config()
         text = await _download_link_text_xlsx(
             base_url,
             csv_cfg.link_text or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
             header_row=getattr(csv_cfg, "xlsx_header_row", 0),
         )
     elif strategy == "ohio_data_portal_csv":
-        proxy_cfg = get_proxy_config()
         text = await _download_ohio_data_portal_csv(
-            base_url, proxy_cfg=proxy_cfg, download_timeout_ms=dl_timeout,
+            base_url, proxy_cfg=_resolved_proxy, download_timeout_ms=dl_timeout,
         )
     elif strategy == "post_form":
         text = await _download_post_form(base_url)
@@ -1675,13 +1686,12 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
         import asyncio as _asyncio
         import io as _io
         import pandas as _pd
-        _msc_proxy = get_proxy_config()
         _sections = csv_cfg.sections
         if _sections:
             _sec_texts = await _asyncio.gather(*[
                 _download_multi_step_checkbox(
                     base_url, _sec.checkbox_section, list(_sec.practitioner_types),
-                    proxy_cfg=_msc_proxy, timeout_ms=300_000,
+                    proxy_cfg=_resolved_proxy, timeout_ms=300_000,
                 )
                 for _sec in _sections
             ])
@@ -1695,7 +1705,7 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
                 base_url,
                 csv_cfg.checkbox_section or "",
                 list(csv_cfg.practitioner_types),
-                proxy_cfg=_msc_proxy, timeout_ms=300_000,
+                proxy_cfg=_resolved_proxy, timeout_ms=300_000,
             )
     elif strategy == "google_sheet_link":
         text = await _download_google_sheet_link(
@@ -1703,6 +1713,7 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
             csv_cfg.link_selector or "",
             link_selector_nth=getattr(csv_cfg, "link_selector_nth", 0),
             download_timeout_ms=dl_timeout,
+            proxy_cfg=_resolved_proxy,
         )
         extra_selectors = getattr(csv_cfg, "additional_link_selectors", [])
         if extra_selectors:
@@ -1717,6 +1728,7 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
                 try:
                     extra_text = await _download_google_sheet_link(
                         base_url, extra_sel, download_timeout_ms=dl_timeout,
+                        proxy_cfg=_resolved_proxy,
                     )
                     extra_df = pd.read_csv(
                         io.StringIO(extra_text), dtype=str, header=csv_cfg.header_row, on_bad_lines="skip"
@@ -1738,33 +1750,29 @@ async def get_csv(base_url: str, source_id: str, csv_cfg) -> tuple[Path, int]:
             _archive_old_cache_files(cache_dir, source_id, save_path)
             return save_path, 0
     elif strategy == "aithent_portal_xls":
-        proxy_cfg = get_proxy_config()
         text = await _download_aithent_portal_xls(
             base_url,
             csv_cfg.business_unit or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "nvbop_angular_xlsx":
-        proxy_cfg = get_proxy_config()
         text = await _download_nvbop_angular_xlsx(
             base_url,
             csv_cfg.license_type_filter or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "onedrive_excel":
-        proxy_cfg = get_proxy_config()
         text = await _download_onedrive_excel(
             base_url,
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     elif strategy == "mopro_zip":
-        proxy_cfg = get_proxy_config()
         text = await _download_mopro_zip(
             csv_cfg.board_label or "",
-            proxy_cfg=proxy_cfg,
+            proxy_cfg=_resolved_proxy,
             download_timeout_ms=dl_timeout,
         )
     else:

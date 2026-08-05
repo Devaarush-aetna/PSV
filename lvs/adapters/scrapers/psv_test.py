@@ -2209,15 +2209,8 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
-                # ABA rows whose license_id is a BACB certification number → Skip when:
-                #   (a) no state board is routed at all, OR
-                #   (b) BACB is explicitly listed in the routing (signals the credential is
-                #       BACB-issued; the state has no separate board that carries these records).
-                # Exception: states whose routing has NO "BACB" entry (e.g. KY → KY_MULTIBOARD
-                # only) DO have a state board that holds ABA records — attempt it regardless of
-                # license format.
-                elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))
-                      and (not routed_configs or "BACB" in routed_sids)):
+                # ABA rows whose license_id is a BACB certification number → always Skip.
+                elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "board_skip_captcha"
                 elif not routed_configs:
@@ -2317,6 +2310,7 @@ async def run_state_orchestrated(
                             ):
                                 trace.final_outcome = "Fail"
                                 trace.final_reason = "AI found License ID mismatched"
+                                ai_result.outcome = "gave_up"
                             else:
                                 trace.final_outcome = "Pass"
                                 # Back-fill expiry from detail page when the AI chose a

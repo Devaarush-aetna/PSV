@@ -718,8 +718,20 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
                 if any(not rec.get(f, "").strip() for f in (tbl_cfg.required_fields or [])):
                     continue
                 records.append(rec)
+
     except Exception as e:
         log.warning("extract_results_table failed: %s", e)
         return records, f"extract_results_table failed: {e}"
+
+    # Deduplicate rows that differ only by an unmapped column (e.g. supervising physician).
+    if tbl_cfg.deduplicate_by:
+        _seen_keys: set[tuple] = set()
+        _deduped: list = []
+        for rec in records:
+            key = tuple((rec.get(f) or "").strip().upper() for f in tbl_cfg.deduplicate_by)
+            if key not in _seen_keys:
+                _seen_keys.add(key)
+                _deduped.append(rec)
+        records = _deduped
 
     return records, None

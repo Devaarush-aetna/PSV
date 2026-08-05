@@ -904,6 +904,19 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     # Use the original `query` (not effective_query) so {first}/{last}/{license}
     # substitutions in extra_inputs see the full structured fields.
     await fill_extra_inputs(search_target, mode_cfg, query, partial_failures=partial_failures)
+    # Combo-mode re-fill guard: some boards (e.g. KY GenSearch ASP.NET) have JS event
+    # handlers on secondary fields that clear the primary input when they receive a value.
+    # After filling extra_inputs, re-fill the primary field so it is always the last write.
+    if query.mode in COMBO_MODES and mode_cfg and mode_cfg.input_selector:
+        primary_value = _primary_value_for_mode(query.mode, query)
+        if primary_value:
+            try:
+                loc = search_target.locator(mode_cfg.input_selector).first
+                await loc.clear()
+                await loc.fill(primary_value)
+                log.debug("combo re-fill primary '%s' = '%s'", mode_cfg.input_selector, primary_value)
+            except Exception as e:
+                log.warning("combo re-fill primary '%s' failed: %s", mode_cfg.input_selector, e)
     # Apply orthogonal license_type / provider_type filters from SiteIdentity.
     await apply_orthogonal_filters(page, config, query, partial_failures=partial_failures)
     if mode_cfg and mode_cfg.submit_js:
@@ -942,16 +955,29 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     has_results = await wait_for_results(page, config.search, partial_failures=partial_failures)
     # Post-search click: some boards show results in a list/card view first and
     # require clicking a toggle (e.g. grid radio button) to switch to table view.
-    # 1s settle delay lets the ASP.NET UpdatePanel finish DOM mutation after networkidle.
+    # Wrap the click inside expect_navigation so Playwright registers a navigation
+    # listener BEFORE the click fires — this handles ASP.NET PostBacks triggered via
+    # setTimeout(0) where the navigation starts one JS tick after the click, which
+    # causes a bare wait_for_load_state("networkidle") to resolve too early (on the
+    # pre-PostBack idle state) and leaves page.content() racing the navigation.
     if has_results and config.search.post_search_click:
         await asyncio.sleep(1.0)
         try:
             await page.wait_for_selector(
                 config.search.post_search_click, state="visible", timeout=8000
             )
-            await page.locator(config.search.post_search_click).first.click()
-            log.info("post_search_click: clicked '%s'", config.search.post_search_click)
-            await asyncio.sleep(2.0)
+            try:
+                async with page.expect_navigation(timeout=10000, wait_until="networkidle"):
+                    await page.locator(config.search.post_search_click).first.click()
+                log.info("post_search_click: clicked and navigation settled '%s'", config.search.post_search_click)
+            except Exception:
+                # No full-page navigation triggered (XHR / UpdatePanel partial update).
+                # Fall back to networkidle wait then a brief settle delay.
+                log.info("post_search_click: no navigation detected, waiting for networkidle '%s'", config.search.post_search_click)
+                try:
+                    await page.wait_for_load_state("networkidle", timeout=8000)
+                except Exception:
+                    await asyncio.sleep(2.0)
         except Exception as e:
             log.warning("post_search_click '%s' failed: %s", config.search.post_search_click, e)
             if partial_failures is not None:

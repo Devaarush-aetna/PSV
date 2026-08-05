@@ -46,6 +46,7 @@ results:
       2: license_type
       7: license_number
       9: expiration_date
+    deduplicate_by: [license_number]
   has_detail_page: false
   pagination:
     enabled: false

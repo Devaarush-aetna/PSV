@@ -73,15 +73,31 @@ class PlannedAttempt:
 
 
 def _is_temp_permit(license_id: str) -> bool:
-    """True when the license ID is a known temporary permit that will never match
-    the board's permanent license number.
+    """True when the license ID is a known internal tracking code that will never
+    match the board's permanent license number.
 
     KY Medical Board: "TP" prefix (e.g. TP318, TP768) = Kentucky Temporary Permit.
-    The board stores permanent license numbers (e.g. 59975); TP numbers only appear
-    in the issuing agency's internal records, not in the public verification database.
-    For these, name-match alone is sufficient to verify.
+    KY Physician Assistant: "TC" prefix (e.g. TC145, TC165) = Temporary Certification.
+    KY Surgical Anesthetist: "TSA" prefix (e.g. TSA083) = Temporary SA permit.
+    The board stores permanent license numbers (e.g. PA3822, SA464, 59975); these
+    tracking codes only appear in internal client records, not the public database.
+    For these, name-match alone is sufficient to verify — no license-numerics check.
     """
-    return bool(license_id) and license_id.upper().startswith("TP") and license_id[2:].isdigit()
+    if not license_id:
+        return False
+    upper = license_id.upper()
+    # TP### — KY Temporary Physician
+    if upper.startswith("TP") and upper[2:].isdigit():
+        return True
+    # TC### or TCO### — KY Temporary PA Certification (O vs 0 OCR variant included)
+    if upper.startswith("TC") and len(upper) > 2:
+        suffix = upper[2:]
+        if suffix.isdigit() or (suffix.startswith("O") and suffix[1:].isdigit()):
+            return True
+    # TSA### — KY Temporary Surgical Anesthetist
+    if upper.startswith("TSA") and upper[3:].isdigit():
+        return True
+    return False
 
 
 def _apply_dash_format(digits: str, fmt: str) -> str:
@@ -141,6 +157,13 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
         query_str = (last or "").rsplit(" ", 1)[-1]
     elif mode in ("first_and_last", "first_and_last_typed"):
         query_str = f"{first} {last}".strip() if first and last else (last or first or "")
+    elif mode == "license_and_last":
+        query_str = f"{lic}+{last}" if lic and last else (lic or last or "")
+    elif mode == "license_and_first":
+        query_str = f"{lic}+{first}" if lic and first else (lic or first or "")
+    elif mode in ("license_first_last", "license_first_mid_last"):
+        parts = [p for p in (lic, first, last) if p]
+        query_str = "+".join(parts) if parts else ""
     else:
         query_str = lic or last or first or ""
 
@@ -669,16 +692,14 @@ async def run_ladder(
                 if has_lic_id and lic_numerics == 0.0 and plan.mode in _NAME_MODES:
                     _detail_lic = (getattr(best, "license_number", "") or "").strip()
                     _input_lic = (master_row.get("license_id") or "").strip()
-                    if not (_detail_lic and disamb.license_numerics_match(_input_lic, _detail_lic)):
+                    # Temp/internal tracking codes (TC, TP, TSA prefix) never appear
+                    # on the board — name match alone is sufficient for these.
+                    if not _is_temp_permit(_input_lic) and not (
+                        _detail_lic and disamb.license_numerics_match(_input_lic, _detail_lic)
+                    ):
                         attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
-                        # Defer: NPPES retry may hold the correct credential number
-                        # (e.g. input has a state license ID; NPPES has the real L-XXXXXX).
-                        deferred_fail = LadderResult(
-                            status="Fail",
-                            best_breakdown=bd,
-                            reason=REASON_NAME_MATCH_NO_LICENSE,
-                            weight_profile_used=bd.weight_profile if bd else "name_only",
-                        )
+                        attempt.candidates = verdict.gate_passers[:10]
+                        trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                         _stop_boards = True
                         break  # break rung loop; outer board loop checks _stop_boards
                 attempt.outcome = OUTCOME_MATCH_EXACT
@@ -713,15 +734,13 @@ async def run_ladder(
                     if _nrw_has_lic and _nrw_lic_num == 0.0 and plan.mode in _NAME_MODES:
                         _nrw_detail_lic = (getattr(chosen, "license_number", "") or "").strip()
                         _nrw_input_lic = (master_row.get("license_id") or "").strip()
-                        if not (_nrw_detail_lic and disamb.license_numerics_match(
-                                _nrw_input_lic, _nrw_detail_lic)):
+                        if not _is_temp_permit(_nrw_input_lic) and not (
+                            _nrw_detail_lic and disamb.license_numerics_match(
+                                _nrw_input_lic, _nrw_detail_lic)
+                        ):
                             attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
-                            deferred_fail = LadderResult(
-                                status="Fail",
-                                best_breakdown=bd,
-                                reason=REASON_NAME_MATCH_NO_LICENSE,
-                                weight_profile_used=bd.weight_profile if bd else "name_only",
-                            )
+                            attempt.candidates = narrowed_pool[:10]
+                            trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                             _stop_boards = True
                             break  # break rung loop
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
@@ -765,7 +784,7 @@ async def run_ladder(
     # on the detail-enriched record before accepting it.
     if soft_match is not None:
         _sm_input_lic = (master_row.get("license_id") or "").strip()
-        if _sm_input_lic:
+        if _sm_input_lic and not _is_temp_permit(_sm_input_lic):
             _sm_detail_lic = (getattr(soft_match.best_record, "license_number", "") or "").strip()
             if not (_sm_detail_lic and disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)):
                 trace.final_outcome = "Fail"

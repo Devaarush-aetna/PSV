@@ -459,7 +459,8 @@ class OutputEmitter:
             self._standard_rows[-1]["match_method"] = "name_license_mismatch"
             self._standard_rows[-1]["reason"] = manual_reason
         elif manual_reason == "Temporary License ID":
-            self._standard_rows[-1]["status"] = "Fail"
+            # Keep status as Pass — temp cert holders are verified by name match.
+            # Route to Manual so reviewers can record the board's permanent license.
             self._standard_rows[-1]["match_method"] = "temporary_license_id"
             self._standard_rows[-1]["reason"] = manual_reason
         elif manual_reason == "Expired and same as input":
@@ -640,11 +641,17 @@ class OutputEmitter:
                 return "License matched but Name mismatched"
             return _fail_reason_code
 
-        # 5.5. Temporary/training license prefix (TC###) — these are KY training
-        # credentials that the state board lists under a different permanent number.
-        # Name may match perfectly; the TC number itself is unverifiable via scrape.
+        # 5.5. KY temporary/internal license prefix — TC###, TP###, TSA### are client
+        # tracking codes that never appear on the public board.  The board stores a
+        # different permanent number (e.g. PA3822, 06248, SA464); name-only match is
+        # the best we can do.  Surface as "Temporary License ID" so reviewers have the
+        # board's actual license and expiry available.
         _input_lic = (outcome.master_row.get("license_id", "") or "").strip().upper()
-        if _input_lic.startswith("TC"):
+        if _input_lic.startswith("TC") or (
+            _input_lic.startswith("TP") and _input_lic[2:].isdigit()
+        ) or (
+            _input_lic.startswith("TSA") and _input_lic[3:].isdigit()
+        ):
             return "Temporary License ID"
 
         # 5. Name ↔ license cross-validation (Pass rows only beyond this point)
@@ -806,7 +813,6 @@ class OutputEmitter:
             ),
             "license_expiry": _expiry_str(rec),
             "matched_license": _ml,
-            "license_id_mismatch": _license_id_mismatch(m.get("license_id", ""), _ml, o.status),
             "matched_first": _matched_name_part(rec, m, o.status, 0),
             "matched_last":  _matched_name_part(rec, m, o.status, 1),
             "board_name": _get_board_name(getattr(rec, "source_id", "") or "") if rec else "",
@@ -1488,21 +1494,6 @@ def _matched_license(rec: Optional[Any], master_row: dict, status: str) -> str:
         val = (master_row.get("license_id", "") or "").strip()
     return val
 
-
-def _license_id_mismatch(input_lic: str, matched_lic: str, status: str) -> bool:
-    """True when a Pass row's board-returned license differs from the input license_id.
-
-    Flags cases where the system matched by name and the board record carries a
-    different license number (e.g. IL old 041xxx vs current 209xxx format).
-    Does NOT change Pass/Fail — purely informational.
-    """
-    if status != "Pass":
-        return False
-    inp = (input_lic or "").strip()
-    mat = (matched_lic or "").strip()
-    if not inp or not mat or inp == mat:
-        return False
-    return not _lic_num_match(inp, mat)
 
 
 def _matched_name_part(rec: Optional[Any], master_row: dict, status: str, idx: int) -> str:
