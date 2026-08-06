@@ -2,6 +2,7 @@
 .env
 *.env
 .env.*
+!.env.example
 
 # Claude Code settings (user-specific, may contain sensitive paths/tokens)
 .claude/
@@ -48,10 +49,12 @@ $path.staged
 .DS_Store
 Thumbs.db
 
-# Excel files (input/output data — not source code)
+# Excel files (run outputs and scratch — not source code)
 *.xlsx
 *.xls
 *.docx
+!Input_Sample_KYNV.xlsx
+!lvs/adapters/scrapers/board_inventory.xlsx
 
 # RunQueue state
 RunQueue/
@@ -62,9 +65,10 @@ PSV/Cache/
 # Scraped PDF verification reports (generated output)
 PSV/PDFS/
 
-# Large state CSV downloads and run outputs
+# Large state CSV downloads and run outputs (auto-generated at runtime)
 PSV/CSVS/OH_PROVIDERS_INDIVIDUAL*.csv
 PSV/CSVS/*.csv
+PSV/CSVS/mo_*/
 lvs/adapters/scrapers/csvs/OH_PROVIDERS_INDIVIDUAL*.csv
 
 # CSV archive cache (old dated copies)
