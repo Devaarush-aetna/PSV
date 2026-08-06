@@ -1952,15 +1952,24 @@ def search_by_license_number(df, col, num: str) -> list[dict]:
     c = idx["col"]
     num_u = num.strip().upper()
 
-    # Stage 1: Exact  O(log n)
-    rows = _idx_lookup(idx["exact"], num_u)
-    if rows:
-        return df.iloc[rows].to_dict(orient="records")
-
-    # Stage 2: Leading-zero normalized  O(log n)
-    rows = _idx_lookup(idx["norm"], num_u.lstrip("0") or "0")
-    if rows:
-        return df.iloc[rows].to_dict(orient="records")
+    # Stage 1 + 2 merged: exact match AND leading-zero-normalized match are combined
+    # so that boards assigning the same numeric value with different zero-padding
+    # (e.g. "5026" for one provider and "005026" for another) both surface together.
+    # Previously Stage 2 only ran when Stage 1 returned nothing, silently skipping
+    # zero-padded variants whenever an exact hit existed on a different provider.
+    seen: set[int] = set()
+    merged: list[int] = []
+    for pos in _idx_lookup(idx["exact"], num_u):
+        if pos not in seen:
+            seen.add(pos)
+            merged.append(pos)
+    norm_key = num_u.lstrip("0") or "0"
+    for pos in _idx_lookup(idx["norm"], norm_key):
+        if pos not in seen:
+            seen.add(pos)
+            merged.append(pos)
+    if merged:
+        return df.iloc[merged].to_dict(orient="records")
 
     # Stage 3: Substring — can't be indexed; vectorized pandas scan
     result = df[df[c].str.strip().str.upper().str.contains(num_u, regex=False, na=False)]
