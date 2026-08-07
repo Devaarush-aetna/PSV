@@ -147,6 +147,9 @@ class RowOutcome:
     @property
     def status(self) -> str:
         if self.ai_result and self.ai_result.outcome == "resolved":
+            bd = self.ai_result.chosen_breakdown
+            if bd is not None and not bd.gate_passed:
+                return "Fail"
             return "Pass"
         if self.ladder_result and self.ladder_result.status == "Pass":
             return "Pass"
@@ -174,6 +177,9 @@ class RowOutcome:
             # Surface the out-of-state verification state when applicable (FL T-licenses).
             if self.ladder_result and self.ladder_result.reason and self.ladder_result.reason.startswith("out_of_state:"):
                 return self.ladder_result.reason
+            # Surface the no-licensure-required reason even for Pass rows (e.g. CT DT/NUT).
+            if getattr(self.trace, "no_licensure_required", False) and self.trace.final_reason:
+                return self.trace.final_reason
             return ""
         if self.ai_result and self.ai_result.reason:
             return self.ai_result.reason
@@ -325,6 +331,10 @@ class OutputEmitter:
         first_fail = input_first and bd.first_name < _THRESHOLD
         last_fail = input_last and bd.last_name < _THRESHOLD
         if first_fail or last_fail:
+            # Very low last name (< 0.40) means a completely different person, not a
+            # name variant — route to Manual, not AIAddLicense.
+            if input_last and bd.last_name < 0.40:
+                return "Wrong provider matched: license matched but last name is completely different"
             return "License matched but Name mismatched"
         return None
 
@@ -364,10 +374,15 @@ class OutputEmitter:
                     return None
         # Letter-prefix + digit core vs double-prefix.digit.suffix
         # (e.g. WA: "RN61176701" vs "RN.RN.61176701.MSL")
+        # Do NOT suppress when input is pure digits but board has a letter prefix
+        # (e.g. input "2391" vs board "LCPC 2391") — the prefix is significant.
         _digit_run = lambda s: max((_re.findall(r"\d+", s) or [""]), key=len)
         _di = _digit_run(_si)
         _db = _digit_run(_sb)
-        if len(_di) >= 4 and _di.lstrip("0") == _db.lstrip("0"):
+        _input_pure_digit = _si.isdigit()
+        _board_has_letters = not _sb.isdigit()
+        if (len(_di) >= 4 and _di.lstrip("0") == _db.lstrip("0")
+                and not (_input_pure_digit and _board_has_letters)):
             return None
         return "Numeric License ID matched"
 
@@ -597,6 +612,13 @@ class OutputEmitter:
                     "verification result before use"
                 )
             else:
+                # If the AI picked a candidate whose name doesn't match the input
+                # (gate_passed=False), don't route to AIAddLicense — send to Manual.
+                _ai_bd_check = outcome.ai_result.chosen_breakdown
+                if _ai_bd_check is not None and not _ai_bd_check.gate_passed:
+                    _ai_fail_reason = (outcome.ai_result.reason or "no_candidates")
+                    _ai_fail_reason = _ai_fail_reason.replace("—", "-").replace(";", ",")
+                    return f"AI fallback failed - manual review required ({_ai_fail_reason})"
                 # When the root cause was a license-found-but-name-mismatch, report
                 # that directly so analysts see WHY rather than a generic AI fail.
                 if (_final_reason == "name_mismatch"
@@ -626,6 +648,15 @@ class OutputEmitter:
         # 4.5. Post-license name gate: max(nppes_score, epdb_score) < 0.70 — manual only
         _gate_reason = getattr(outcome.trace, "name_gate_reason", None)
         if outcome.status == "Pass" and _gate_reason == "name_gate_manual":
+            # When the last name score is very low (< 0.40) the matched record is almost
+            # certainly a different person, not a name-variant of the same person.
+            # Return a reason NOT in _REASONS_FOR_AI_ADD_LICENSE so it routes to Manual.
+            _gate_bd = outcome.chosen_breakdown
+            _gate_input_last = (outcome.master_row.get("last_name", "") or "").strip()
+            if _gate_bd is not None and _gate_input_last and _gate_bd.last_name < 0.40:
+                return (
+                    "Wrong provider matched: license matched but last name is completely different"
+                )
             return (
                 "Name mismatch after license match: "
                 "EPDB and NPPES name scores both below 0.70 threshold"
@@ -827,6 +858,9 @@ class OutputEmitter:
             "nppes_used": o.trace.nppes_used,
             "secondary_check_passed": bool(bd and bd.gate_passed),
             "provider_type_matched": bool(bd and bd.provider_type >= 1.0),
+            "board_provider_type": (
+                getattr(rec, "license_type", "") or getattr(rec, "profession_code", "") or ""
+            ) if rec else "",
             "attempts_used": len(o.trace.attempts),
             "evidence_dir": ev,
             "trace_path": str(self.dirs["trace"] / f"{o.master_row_id}.json"),
@@ -1261,6 +1295,13 @@ class OutputEmitter:
                 continue
             if key in ambiguous_keys or key not in pass_lookup:
                 continue
+            # Do not override rows that failed for a definitive business reason.
+            # These rows were reached on the board and rejected deliberately.
+            _BLOCK_RECONCILE = {
+                "Provider fetch after Expiry",
+            }
+            if row.get("reason") in _BLOCK_RECONCILE:
+                continue
             src = pass_lookup[key]
             # Guard: license IDs must be compatible before promoting via name-only.
             # Two-stage comparison:
@@ -1276,6 +1317,13 @@ class OutputEmitter:
                 import re as _re
                 _alnum = lambda s: _re.sub(r"[-\s]", "", s.lower())
                 if _alnum(_input_lic) != _alnum(_src_board_lic):
+                    # Block digit-only fallback when both licenses end with a
+                    # different letter — the suffix is meaningful, not a format variant.
+                    _trail = lambda s: _re.search(r"[A-Za-z]$", s.strip())
+                    _tA = _trail(_input_lic)
+                    _tB = _trail(_src_board_lic)
+                    if _tA and _tB and _input_lic.strip()[-1].upper() != _src_board_lic.strip()[-1].upper():
+                        continue
                     if not _lic_num_match(_input_lic, _src_board_lic):
                         continue
             row["status"] = "Pass"
@@ -1392,7 +1440,7 @@ class OutputEmitter:
                 if k not in seen:
                     seen.add(k)
                     keys.append(k)
-        with open(out, "w", newline="", encoding="utf-8") as f:
+        with open(out, "w", newline="", encoding="utf-8-sig") as f:
             w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()
             for r in rows:

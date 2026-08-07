@@ -57,7 +57,10 @@ csv_bulk:
         - "Registered Nurse"
         - "Respiratory Care Practitioner"
         - "Speech and Language Pathologist"
-        - "Veterinarian"
+        - "Behavioral/Mental Health and Substance Abuse Care"
+        - "Master's Level Social Worker"
+        - "Art Therapist"
+        - "Music Therapist"
     - checkbox_section: "Behavioral/Mental Health and Substance Abuse Care"
       practitioner_types:
         - "Behavior Analyst"
@@ -70,6 +73,7 @@ csv_bulk:
     - checkbox_section: "Substance Abuse Care"
       practitioner_types:
         - "Licensed Alcohol and Drug Counselor"
+        - "Certified Alcohol and Drug Counselor"
   cache_days: 7
   cache_dir: "./PSV/CSVS"
   encoding: "utf-8-sig"

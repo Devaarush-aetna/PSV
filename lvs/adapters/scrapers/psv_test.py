@@ -73,13 +73,17 @@ C_SVC_LOC_STATE = 15  # Service Location State — license state must appear her
 _NPI_HEADER_ALIASES = ("NPI_NO", "NPI", "NPI ID", "NPI_ID", "NPI Number")
 
 # Browser-based archetypes (share one Playwright browser per board)
-_BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa"}
+_BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa", "ag_grid_spa"}
 
 # Per-(state, prov_type) combos where the state does not license that provider type.
-# Rows matching these are written as N/A — no board check is attempted.
+# The board is still routed and visited, but the outcome is forced to N/A after
+# the scrape completes — the message below is written to the output regardless of
+# what the board returns.
 NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NJ", "DT"):  "NJ does not license Dietitians (DT) — Professional License step N/A",
     ("NJ", "NUT"): "NJ does not license Nutritionists (NUT) — Professional License step N/A",
+    ("CT", "DT"):  "The state of Connecticut does not require DT/NUT to hold state licensure",
+    ("CT", "NUT"): "The state of Connecticut does not require DT/NUT to hold state licensure",
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -875,6 +879,10 @@ async def _try_first_and_last_psv(
             last_only = [r for r in lic_hits if _name_matches(r, l, "")]
             if last_only:
                 return "Pass", f"Verified via {src_id} ({label}, license+last name match)", _get_expiry(last_only[0])
+            # License numerics matched but name didn't — route to AIAddLicense via
+            # the "license match — name on board differs" reason so output_emitter
+            # catches it as "License matched but Name mismatched".
+            return "Pass", f"Verified via {src_id} ({label}, license match — name on board differs)", _get_expiry(lic_hits[0])
         return None
 
     result = await _run_fal(first_name, last_name, "first+last search")
@@ -956,6 +964,10 @@ async def run_row(
             return "Pass", "Verified via PSYPACT_DIRECTORY (psypact.gov)", _exp_str
         return "Fail", "no_records", ""
 
+    # --- ABA + BACB certification number: skip immediately (registry is CAPTCHA/maintenance-blocked) ---
+    if prov_type == "ABA" and _is_bacb_license(license_id):
+        return "Skip", "BACB Certificant Registry — CAPTCHA-based board (registry unavailable)", ""
+
     # --- Cap: License State must appear in Service Location State ---
     _svc_raw = row_data.get("svc_loc_state", "")
     _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
@@ -964,11 +976,6 @@ async def run_row(
             f"License State ({lic_state}) not in Service Location State "
             f"({_svc_raw}) — PSV step N/A"
         ), ""
-
-    # --- N/A: state does not license this provider type ---
-    _na_reason = NA_PROV_TYPES.get((lic_state, prov_type))
-    if _na_reason:
-        return "N/A", _na_reason, ""
 
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
     if not preferred_sids:
@@ -1591,6 +1598,9 @@ async def run_row(
         if not expiry and s_id in psv_browsers:
             expiry = await _fetch_detail_expiry(psv_browsers[s_id], s_rec, timeout)
         return "Pass", f"Verified via {s_id} (name match — PSV license class not in this search type)", expiry
+    # Post-scrape N/A override: board was visited but state does not license this type.
+    if _post_na := NA_PROV_TYPES.get((lic_state, prov_type)):
+        return "N/A", _post_na, ""
     return "Fail", last_fail_reason, ""
 
 
@@ -1793,16 +1803,17 @@ def _is_captcha_skip(reason: str) -> bool:
 
 # BACB certification number format: TYPE_CODE-YY-NNNNNN
 # TYPE_CODE: RBT, BCBA, BCaBA, 1 (=BCBA), 0 (=BCaBA)
+# BCBA\d* handles variants like "BCBA1-24-70814" where a digit is appended to BCBA.
 _BACB_LICENSE_RE = re.compile(
-    r"^(RBT|BCBA|BCaBA|1|0)-\d{1,4}-\d{4,7}$",
+    r"^(RBT|BCBA\d*|BCaBA|1|0)-\d{1,4}-\d{4,7}$",
     re.IGNORECASE,
 )
 
 def _is_bacb_license(license_id: str) -> bool:
     """Return True when the license ID matches BACB certification number format.
 
-    Supported formats: RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCaBA-YY-NNNNNN,
-    1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA).
+    Supported formats: RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCBA1-YY-NNNNNN,
+    BCaBA-YY-NNNNNN, 1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA).
     """
     return bool(_BACB_LICENSE_RE.match((license_id or "").strip()))
 
@@ -2201,10 +2212,6 @@ async def run_state_orchestrated(
                         f"({_svc_raw}) — PSV step N/A"
                     )
                     _svc_loc_na_rows.append(row)
-                # N/A: state does not license this provider type
-                elif _na_reason := NA_PROV_TYPES.get((state, prov_type_upper)):
-                    trace.final_outcome = "N/A"
-                    trace.final_reason = _na_reason
                 # CAPTCHA-blocked prov_type: skip immediately, skip all board calls
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
@@ -2361,6 +2368,15 @@ async def run_state_orchestrated(
                         if _psypact_lr.status == "Pass":
                             ladder_result = _psypact_lr
                             ai_result = None
+
+                # Post-scrape N/A override: board was visited but state does not license this type.
+                # The board result (Pass/Fail) is kept; only the reason is overridden so the
+                # output explains why licensure was not expected rather than showing "no_records".
+                if _post_na := NA_PROV_TYPES.get((state, prov_type_upper)):
+                    trace.final_reason = _post_na
+                    trace.no_licensure_required = True
+                    if ladder_result is not None:
+                        ladder_result.reason = ""  # clear so trace.final_reason surfaces
 
                 # nppes_used: True only when NPPES data actually drove the resolution,
                 # not merely when it was fetched.

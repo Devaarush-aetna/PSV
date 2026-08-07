@@ -23,6 +23,7 @@ import asyncio
 import json
 import logging
 import os
+import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Optional
@@ -636,6 +637,15 @@ async def _dispatch_tool(
         if 0 <= idx < len(pool):
             chosen = pool[idx]
             bd = disamb.score_candidate(chosen, master_row, weight_profile="license_present")
+            if not bd.gate_passed:
+                return {
+                    "ok": False,
+                    "error": (
+                        f"candidate {idx} failed gate (score={bd.total:.3f}, "
+                        "gate_passed=False). Board data may be corrupted — give_up."
+                    ),
+                    "score_breakdown": bd.to_dict(),
+                }
             result.outcome = "resolved"
             result.chosen_candidate = chosen
             result.chosen_breakdown = bd
@@ -667,16 +677,19 @@ async def _dispatch_tool(
         sig = make_signature(sid, mode, norm)
         if trace.has_signature(sig):
             return {"ok": True, "skipped_duplicate": True, "record_count": 0}
+        _t0 = time.monotonic()
         try:
             records = await executor(cfg_obj, sq, trace.run_id)
         except Exception as exc:
             return {"ok": False, "error": str(exc)[:200]}
+        _duration_ms = int((time.monotonic() - _t0) * 1000)
         seq = len(trace.attempts) + 1
         attempt = AttemptRecord(
             seq=seq, source_id=sid, board_url=cfg_obj.identity.base_url,
             mode=mode, query_repr=sq.query[:80], query_signature=sig,
             used_npi_data=False, record_count=len(records),
             outcome=OUTCOME_AI_BOARD_HIT if records else OUTCOME_NO_RECORDS,
+            duration_ms=_duration_ms,
             evidence_dir="",
         )
         trace.append(attempt)

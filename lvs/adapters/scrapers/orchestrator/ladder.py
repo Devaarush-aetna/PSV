@@ -787,9 +787,9 @@ async def run_ladder(
         if _sm_input_lic and not _is_temp_permit(_sm_input_lic):
             _sm_detail_lic = (getattr(soft_match.best_record, "license_number", "") or "").strip()
             if not (_sm_detail_lic and disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)):
-                trace.final_outcome = "Fail"
+                trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                 return LadderResult(
-                    status="Fail",
+                    status="EscalateAi",
                     best_breakdown=soft_match.best_breakdown,
                     reason=REASON_NAME_MATCH_NO_LICENSE,
                     weight_profile_used=soft_match.weight_profile_used,
@@ -824,6 +824,22 @@ async def run_ladder(
 
                 if verdict.status == "selected":
                     best = verdict.best
+                    _sel_bd = verdict.best_breakdown
+                    # Guard: NPI retry is using a DIFFERENT license (license_numerics=0.0)
+                    # but the input license was already found on the board in a prior attempt
+                    # (ambiguous due to duplicate CSV rows, not a missing record).
+                    # Substituting a different license here would show the wrong license as
+                    # verified — escalate to AI instead so it can pick the right record.
+                    if (plan.driving_field == "license_number"
+                            and _sel_bd is not None and _sel_bd.license_numerics == 0.0):
+                        _input_lic = (master_row.get("license_id") or "").strip()
+                        if _input_lic and _input_license_found_in_prior_attempts(trace, _input_lic, master_row):
+                            attempt.outcome = OUTCOME_AMBIGUOUS
+                            attempt.candidates = [best] if best else []
+                            trace.escalate_to_ai_reason = (
+                                trace.escalate_to_ai_reason or trace_mod.REASON_AMBIGUOUS_AFTER_NARROWING
+                            )
+                            continue
                     if getattr(best, "expiration_date", None) is None:
                         best = await _fetch_detail_record(
                             cfg_obj, best, trace, executor, timeout_s,
@@ -843,8 +859,19 @@ async def run_ladder(
                     # threshold solely because the INPUT license ≠ board license (license_numerics=0).
                     # The board license was confirmed by the NPPES-guided search itself, so if
                     # first + last name match strongly, accept the record.
+                    # Same guard as above: if the input license was already on the board,
+                    # don't substitute a different license — escalate to AI.
                     _abd = verdict.best_breakdown
                     if _abd.first_name >= 0.85 and _abd.last_name >= 0.85:
+                        if (plan.driving_field == "license_number" and _abd.license_numerics == 0.0):
+                            _input_lic = (master_row.get("license_id") or "").strip()
+                            if _input_lic and _input_license_found_in_prior_attempts(trace, _input_lic, master_row):
+                                attempt.outcome = OUTCOME_AMBIGUOUS
+                                attempt.candidates = verdict.gate_passers[:10]
+                                trace.escalate_to_ai_reason = (
+                                    trace.escalate_to_ai_reason or trace_mod.REASON_AMBIGUOUS_AFTER_NARROWING
+                                )
+                                continue
                         best = verdict.best
                         if getattr(best, "expiration_date", None) is None:
                             best = await _fetch_detail_record(
@@ -907,6 +934,32 @@ async def run_ladder(
 # --------------------------------------------------------------------------
 # Internals
 # --------------------------------------------------------------------------
+
+def _input_license_found_in_prior_attempts(
+    trace: RowTrace, input_lic: str, master_row: dict
+) -> bool:
+    """Return True if any non-NPI attempt already returned a candidate whose license
+    matches the input license AND whose last name matches the input person.
+
+    Both conditions are required: license-only would fire on a different person who
+    happens to share the same license number (different type), incorrectly blocking a
+    legitimate NPI substitution."""
+    norm_input = input_lic.lstrip("0") or "0"
+    input_last = (master_row.get("last_name") or "").strip().upper()
+    for attempt in trace.attempts:
+        if attempt.used_npi_data:
+            continue
+        for cand in (attempt.candidates or []):
+            cand_lic = (getattr(cand, "license_number", "") or "").strip()
+            if not cand_lic:
+                continue
+            if (cand_lic.lstrip("0") or "0") != norm_input:
+                continue
+            cand_last = (getattr(cand, "licensee_last_name", "") or "").strip().upper()
+            if input_last and cand_last and input_last == cand_last:
+                return True
+    return False
+
 
 async def _execute_one(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
                        master_row: dict, trace: RowTrace,

@@ -30,7 +30,7 @@ search:
   results_wait:
     strategy: "element_visible"
     selector: "div.ag-row:not(.ag-header-row)"
-    timeout_ms: 30000
+    timeout_ms: 90000
     no_results_indicators:
       - "no results found"
       - "no records found"

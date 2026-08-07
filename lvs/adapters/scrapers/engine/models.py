@@ -154,6 +154,7 @@ class SiteIdentity(BaseModel):
     state: str
     country: str = "US"
     profession_codes: list[str] = Field(default_factory=list)
+    profession_code_map: dict[str, str] = Field(default_factory=dict)
     base_url: str
     archetype: Literal[
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",

@@ -3,7 +3,31 @@ identity:
   board_name: Indiana Professional Licensing Agency
   state: IN
   country: US
-  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, MFT, DENT]
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, MFT, DENT, DT, ABA, LPC]
+  profession_code_map:
+    "DIETITIAN": DT
+    "REGISTERED DIETITIAN": DT
+    "REGISTERED DIETITIAN NUTRITIONIST": DT
+    "BEHAVIOR ANALYST": ABA
+    "LICENSED BEHAVIOR ANALYST": ABA
+    "LICENSED PROFESSIONAL COUNSELOR": LPC
+    "LICENSED CLINICAL SOCIAL WORKER": SW
+    "MARRIAGE AND FAMILY THERAPIST": MFT
+    "MARRIAGE & FAMILY THERAPIST": MFT
+    "PHYSICIAN": MD
+    "PHYSICIAN ASSISTANT": PA
+    "REGISTERED NURSE": RN
+    "LICENSED PRACTICAL NURSE": LPN
+    "PHARMACIST": PHARM
+    "PHYSICAL THERAPIST": PT
+    "PHYSICAL THERAPIST ASSISTANT": PTA
+    "OCCUPATIONAL THERAPIST": OT
+    "AUDIOLOGIST": AUD
+    "SPEECH-LANGUAGE PATHOLOGIST": SLP
+    "DENTIST": DENT
+    "OPTOMETRIST": OD
+    "CHIROPRACTOR": DC
+    "PSYCHOLOGIST": PSYCH
   # Single portal covering all Indiana professions at mylicense.in.gov/EVerification/Search.aspx.
   # Results: GridView table — Name(link) | License# | Profession | Type | Status | Address
   # Detail: Details.aspx?result=UUID. Links carry target="_blank" (popup) but the engine strips
@@ -47,6 +71,7 @@ results:
     # be matched by descendant 'td', shifting all column indices.
     cell_selector: "xpath=./td"
     skip_first_row: true
+    required_fields: [license_number]
     columns:
       0: full_name
       1: license_number

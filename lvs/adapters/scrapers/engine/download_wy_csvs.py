@@ -243,10 +243,13 @@ async def download_board(board: dict) -> bool:
 
 async def main():
     log.info("Downloading %d WY CSV boards to %s", len(WY_BOARDS), CSVS_DIR)
-    results = {}
-    for board in WY_BOARDS:
-        ok = await download_board(board)
-        results[board["source_id"]] = "OK" if ok else "FAILED"
+    outcomes = await asyncio.gather(
+        *(download_board(board) for board in WY_BOARDS), return_exceptions=False
+    )
+    results = {
+        board["source_id"]: ("OK" if ok else "FAILED")
+        for board, ok in zip(WY_BOARDS, outcomes)
+    }
 
     print("\n=== Results ===")
     passed = [k for k, v in results.items() if v == "OK"]

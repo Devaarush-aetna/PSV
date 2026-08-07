@@ -102,14 +102,37 @@ async def scrape_csv_bulk(
 
     if is_combo or has_type_filter:
         if is_combo:
+            _mode_includes_license = "license" in query.mode
+            _combo_lic = (
+                query.license_number or (query.query if query.mode.startswith("license") else None)
+            ) if _mode_includes_license else query.license_number
             raw_results = search_by_multi_column(
                 df, col_map,
-                license_number=query.license_number or (query.query if query.mode.startswith("license") else None),
+                license_number=_combo_lic,
                 first_name=query.first_name,
                 last_name=query.last_name,
                 license_type=query.license_type,
                 provider_type=query.provider_type,
             )
+            # For name-primary combo modes (first_and_last, first_mid_last): if the
+            # license_number AND-filter produced 0 results, retry with name only.
+            # The license still acts as a tiebreaker when it matches; this fallback
+            # handles the common case where the board's license format differs from
+            # the master_row value (e.g. different state, leading zeros, prefix).
+            if not raw_results and _combo_lic and not _mode_includes_license:
+                raw_results = search_by_multi_column(
+                    df, col_map,
+                    license_number=None,
+                    first_name=query.first_name,
+                    last_name=query.last_name,
+                    license_type=query.license_type,
+                    provider_type=query.provider_type,
+                )
+                if raw_results:
+                    log.info(
+                        "[%s] first_and_last: license filter produced 0 — name-only fallback returned %d record(s)",
+                        source_id, len(raw_results),
+                    )
         else:
             field_for_mode = {
                 "license_number": "license_number",
