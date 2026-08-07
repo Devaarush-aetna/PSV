@@ -1783,7 +1783,7 @@ def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") ->
             "npi_no": npi_clean,
             "lic_state": lic_state,
             "lic_type": c(C_LIC_TYPE),
-            "license_id": c(C_LIC_ID),
+            "license_id": c(C_LIC_ID).rstrip("_ "),
             "input_expiry": _cell_to_iso_date(
                 row[C_LIC_EXPIRY] if C_LIC_EXPIRY < len(row) else None
             ),
@@ -2465,8 +2465,8 @@ def main() -> None:
     p.add_argument("--state", required=True, help="State abbreviation (e.g. MD, WY)")
     p.add_argument("--batch-size", type=int, default=10,
                    help="Rows to process per batch before writing (default: 10)")
-    p.add_argument("--timeout", type=int, default=45,
-                   help="Per-board per-mode timeout in seconds (default: 45)")
+    p.add_argument("--timeout", type=int, default=120,
+                   help="Per-board per-mode timeout in seconds (default: 120)")
     p.add_argument("--skip-rows", type=int, default=0,
                    help="Skip the first N rows of the filtered input (default: 0)")
     p.add_argument("--max-rows", type=int, default=0,

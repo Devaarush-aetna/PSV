@@ -216,13 +216,22 @@ async def _navigate_back(page, config: SiteConfig) -> None:
                 btn = close_btn.nth(i)
                 try:
                     if await btn.is_visible():
-                        await btn.click(timeout=5000)
+                        # force=True bypasses pointer-event checks for buttons above overlays
+                        await btn.click(timeout=5000, force=True)
                         clicked = True
                         break
                 except Exception:
                     continue
             if clicked:
                 log.info("breadcrumb_click: clicked '%s'", nav.selector)
+                # Remove any Kendo/Bootstrap overlays that persist after animated dialog close.
+                # The overlay div blocks subsequent clicks even after the dialog hides itself.
+                try:
+                    await page.evaluate(
+                        "document.querySelectorAll('.k-overlay').forEach(el => el.remove())"
+                    )
+                except Exception:
+                    pass
             elif count > 0:
                 log.warning("breadcrumb_click: no visible instance of '%s' found — skipping back", nav.selector)
             else:

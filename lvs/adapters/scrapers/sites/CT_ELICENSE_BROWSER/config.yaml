@@ -1,0 +1,203 @@
+identity:
+  source_id: CT_ELICENSE_BROWSER
+  board_name: Connecticut eLicense — Live Lookup (secondary/fallback)
+  state: CT
+  country: US
+  profession_codes: [ABA, AP, AU, CP, DAC, DC, DN, DO, DP, DT, GNC, LC, LPC, MD, MT, MW, ND, NP, NPB, NPS, NUT, OD, OP, OT, PA, PAB, PAS, PH, PN, PT, RNA, SH, ST, SW]
+  # CAVU eLicense live lookup at elicense.ct.gov/Lookup/LicenseLookup.aspx
+  # Secondary/fallback board — only reached when CT_ELICENSE (csv_bulk) fails.
+  # Key use case: CSV only contains active licenses; this board finds INACTIVE
+  # licenses that are missing from the CSV roster.
+  # ASP.NET UpdatePanel-based form. Clicking Search fires ClickSearchLicenses(0)
+  # via JS → AJAX postback → results injected into UpdtPanelGridLookup div.
+  # Results render as Bootstrap card divs (not an HTML table).
+  # Each card has a "Details" button that opens an inline ASP.NET modal overlay
+  # (URL does not change) with the full credential record including expiry date.
+  # No CAPTCHA fires in real browser sessions (confirmed 2026-08-07).
+  base_url: "https://elicense.ct.gov/Lookup/LicenseLookup.aspx"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_ctl03_tbLicenseNumber"
+      button_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_btnLookup"
+    - mode: last_name
+      input_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_ctl03_tbLastName_Contact"
+      button_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_btnLookup"
+    - mode: first_name
+      input_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_ctl03_tbFirstName_Contact"
+      button_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_btnLookup"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_ctl03_tbLastName_Contact"
+    search_button:
+      selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_btnLookup"
+    # CT eLicense (ASP.NET UpdatePanel) renders form inputs after the page load event.
+    # Wait for networkidle so the UpdatePanel is fully initialized before form fill.
+    wait_for_networkidle: true
+  results_wait:
+    # element_visible polls for the selector — required because CT eLicense uses an
+    # ASP.NET UpdatePanel that injects results into the DOM AFTER networkidle fires.
+    # network_idle fires too early (XHR completes but DOM update is still in-flight).
+    strategy: element_visible
+    # Wait for Details buttons — their presence confirms card results are loaded.
+    # Button is an <a> element (confirmed from live browser inspection 2026-08-07).
+    selector: "a:has-text('Details'), button:has-text('Details')"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records found"
+      - "no results"
+      - "0 results"
+      - "no matching"
+      - "0 result(s)"
+
+results:
+  # Results are Bootstrap/Forge card divs (not an HTML table).
+  # The UpdatePanel div DOES have a <table> wrapper but each row has ONE <td>
+  # containing the full card text — columns 1/2/3 are never populated.
+  # row_selector targets a non-existent descendant so pre-extraction returns
+  # 0 summary rows; all data comes from the Detail popup.
+  type: table
+  table:
+    row_selector: "#ctl00_MainContentPlaceHolder_ucLicenseLookup_UpdtPanelGridLookup table tr td[data-col]"
+    cell_selector: "xpath=./td"
+    skip_first_row: false
+    columns:
+      0: full_name
+      1: license_type
+      2: license_number
+      3: status
+  has_detail_page: true
+  detail_trigger:
+    type: view_button
+    # CAVU eLicense "Details" is an <a class="btn btn-outline-primary"> element (confirmed from live browser).
+    # a:has-text first — avoids strict-mode ambiguity if a <button> also exists.
+    selector: "a:has-text('Details'), button:has-text('Details')"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  # Scope all extraction to the Kendo UI Window content div.
+  # Without this, page.locator() scans the entire document including the CT eLicense
+  # search form's "Status" filter (rendered as forge-typography--headline5 labels with
+  # "ACTIVE\nINACTIVE\nPENDING" text), which overwrites the popup's License Status.
+  scope_selector: "[data-role='window']"
+  # The Details popup is an ASP.NET UpdatePanel modal — URL stays the same.
+  # The URL-change wait in _scrape_with_detail_clicks times out (timeout_ms)
+  # then network_idle in _wait_for_detail_content catches the AJAX response.
+  # After extraction, Escape closes the modal and returns to the results list.
+  wait:
+    strategy: delay
+    timeout_ms: 1500
+    fallback_selectors:
+      - "[id*='LookupDetail']"
+      - "[class*='modal-body']"
+      - "[id*='ModalPopup']"
+  back_navigation:
+    # Kendo UI Window — close via the Close action button.
+    # Confirmed from live browser: <a class="k-window-action k-link"><span class="k-i-close">Close</span></a>
+    # .k-window-action:has-text('Close') uniquely matches Close (Pin/Min/Max have different text).
+    # k-overlay disappears ~800ms after click; wait_after_ms ensures overlay is gone before next click.
+    strategy: breadcrumb_click
+    selector: ".k-window-action:has-text('Close')"
+    wait_after_ms: 1200
+  strategies:
+    # CT eLicense uses Tyler Technologies Forge UI (forge-card / forge-typography--headline5).
+    # Labels: <p class="mb-1 forge-typography--headline5">License Type</p>
+    # Values: <p class="mb-1 text-wrap">Licensed Clinical Social Worker</p> (next sibling)
+    # field_label_value handles this via [class*='forge-typography--headline5'] selector.
+    - type: field_label_value
+    - type: label_sibling
+    - type: four_column_table
+    - type: two_column_table
+  field_map:
+    # Detail popup field labels (confirmed from live screenshot 2026-08-07):
+    "Name": full_name
+    "License Name": full_name
+    "License Type": license_type
+    "Credential Description": license_type
+    "Credential Type": license_type
+    "License Number": license_number
+    "Credential": license_number
+    "License No": license_number
+    "License Status": status
+    "Status": status
+    "Expiration Date": expiration_date
+    "Granted Date": issue_date
+    "Issue Date": issue_date
+    "Effective Date": effective_date
+    "Status Reason": status_reason
+    "Address": address
+
+output:
+  status_map:
+    "Active": active
+    "ACTIVE": active
+    "active": active
+    "Inactive": inactive
+    "INACTIVE": inactive
+    "inactive": inactive
+    "Expired": expired
+    "EXPIRED": expired
+    "expired": expired
+    "Suspended": suspended
+    "SUSPENDED": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "REVOKED": revoked
+    "revoked": revoked
+    "Pending": inactive
+    "PENDING": inactive
+
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m/%d/%y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 120000
+  navigation_timeout_ms: 60000
+  ladder_timeout_s: 300
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/CT_ELICENSE_BROWSER/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-07"
+  # No CAPTCHA in real Playwright browser sessions (confirmed via screenshot 2026-08-07).
+  # Text-input CAPTCHA (CaptchaSecurity1_txtCAPTCHA) only fires for HTTP-only
+  # requests (curl without JS execution).
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  # Search by license number — should return 1 card, click Details, extract full record.
+  # Adjust expected values after first live Playwright run confirms exact field layout.
+  mode: license_number
+  query: "82619"
+  expect:
+    min_records: 1
+    full_name_contains: "Ahmed"
+  skip: false
