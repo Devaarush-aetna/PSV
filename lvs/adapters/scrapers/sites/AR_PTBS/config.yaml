@@ -1,0 +1,152 @@
+identity:
+  source_id: AR_PTBS
+  board_name: Arkansas State Board of Physical Therapy
+  state: AR
+  country: US
+  profession_codes: [PT, PTA]
+  # WordPress/Elementor/MetForm site. Form inputs confirmed from live DOM (2026-08-06):
+  #   input#first_name  (name='first_name', type='text', class='form-control')
+  #   input#last_name   (name='last_name',  type='text', class='form-control')
+  #   submit: button#metl_submit (text='Submit')
+  # Search strategy order: first_and_last → last_name → first_name.
+  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/physical-therapy-arkansas-state-board/physical-therapy-board-roster-search/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: first_and_last
+      # Fill last name as primary; extra_inputs fills first name simultaneously.
+      # Query format: "FirstName LastName" (e.g. "Sarah Brown")
+      input_selector: "input#last_name"
+      extra_inputs:
+        "input#first_name": "{first}"
+    - mode: last_name
+      input_selector: "input#last_name"
+    - mode: first_name
+      input_selector: "input#first_name"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#last_name"
+    search_button:
+      selector: "button#metl_submit"
+  results_wait:
+    # Form POSTs and page reloads with results — network_idle waits for full render.
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "0 results"
+      - "no matching"
+      - "nothing found"
+
+results:
+  # VALIDATE: confirm table vs card layout and update row_selector/cell_selector/columns on live site.
+  type: table
+  table:
+    row_selector: "table tbody tr, .sf-results tr, .licensee-row"
+    cell_selector: "td"
+    skip_first_row: true
+    columns:
+      0: full_name
+      1: license_number
+      2: license_type
+      3: status
+      4: expiration_date
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "First Name": first_name
+    "Last Name": last_name
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "Issue Date": issue_date
+    "Issued": issue_date
+    "Address": address
+    "City": city
+    "State": state_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Lapsed": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Surrendered": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  proxy:
+    enabled: false
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/AR_PTBS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-06"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: first_and_last
+  query: "Jane Smith"
+  first_name: "Jane"
+  last_name: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false
+  skip_reason: ""

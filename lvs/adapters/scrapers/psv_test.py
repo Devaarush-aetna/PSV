@@ -150,6 +150,16 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NC", "SW"):   "NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, automated access blocked",
     # NC Art Therapy — verified manually by emailing the board contact.
     ("NC", "AP"):   "License will be verified by emailing to pat@smvt.com",
+    # AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 explicit on
+    # every search; blocks all headless/automated access (site key 6LdG0VIUA...).
+    ("AR", "RN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "LPN"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "APRN"): "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "CRNA"): "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "NP"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.

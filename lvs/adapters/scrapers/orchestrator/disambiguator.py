@@ -150,7 +150,7 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         raw_last = full_name[:comma_idx].strip()
         rest = full_name[comma_idx + 1:].strip()
 
-        rest_toks = rest.upper().split()
+        rest_toks = [t.rstrip(',') for t in rest.upper().split()]
         while rest_toks and re.sub(r"[.\-]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
         while rest_toks and re.sub(r"[.\-]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
@@ -162,15 +162,21 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         if not rest_toks:
             full_name = raw_last
         else:
-            last_toks = raw_last.upper().split()
+            last_toks = [t.rstrip(',') for t in raw_last.upper().split()]
             while last_toks and re.sub(r"[.\-]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
                 last_toks = last_toks[:-1]
             first_tok = rest_toks[0]
             last_str = ' '.join(last_toks) if last_toks else ''
+            if not first_tok and len(last_toks) >= 2:
+                master_last_norm = _normalize_name(master_last or "")
+                master_last_words = len(master_last_norm.split()) if master_last_norm else 1
+                if master_last_words >= 2 and len(last_toks) > master_last_words:
+                    return last_toks[0], " ".join(last_toks[-master_last_words:])
+                return last_toks[0], last_toks[-1]
             return first_tok, last_str
 
     # ---- Format 2: "First [Middle] Last" ----
-    toks = full_name.upper().split()
+    toks = [t.rstrip(',') for t in full_name.upper().split()]
     while toks and re.sub(r"[.\-]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
         toks = toks[:-1]
     while toks and re.sub(r"[.\-]", "", toks[0]) in _NAME_PREFIXES_NORM:
@@ -344,8 +350,8 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "DPM": ("PODIATRIC", "PODIATRY"),
         "DP": ("PODIATRIC", "PODIATRY", "PODIATRIST"),
         "PA": ("PHYSICIAN ASSISTANT",),
-        "PAS": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
-        "PAB": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
+        "PAS": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT", "PHYSICIAN ASSOCIATE"),
+        "PAB": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT", "PHYSICIAN ASSOCIATE"),
         "RN": ("REGISTERED NURSE", "NURSING", "NURSE REGISTERED"),
         "RNA": ("NURSE ANESTHETIST", "ANESTHESIA", "CRNA", "REGISTERED NURSE", "ADVANCED PRACTICE REGISTERED NURSE"),
         "NP": ("NURSE PRACTITIONER", "ADVANCED PRACTICE", "ARNP", "APRN", "PRESCRIPTIVE AUTHORITY", "ADVANCED REGISTERED", "REGISTERED NURSE PRACTITIONER", "REGISTERED NURSE","DELEGATING NURSE","ADVANCED PRACTICE REGISTERED NURSE"),
@@ -364,7 +370,7 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "DAC": ("ADDICTION COUNSEL", "DRUG ABUSE", "SUBSTANCE ABUSE", "ALCOHOL AND DRUG", "DRUG AND ALCOHOL"),
         "AP": ("ACUPUNCTUR", "ORIENTAL MEDICINE", "LAC", "DOM", "OMD"),
         "AU": ("AUDIOLOGIST", "AUDIOLOGY"),
-        "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST", "SPEECH AND LANGUAGE PATHOLOGIST", "SPEECH LANGUAGE", "SLP"),
+        "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST", "SPEECH AND LANGUAGE PATHOLOGIST", "SPEECH LANGUAGE", "SLP", "SPEECH-LANGUAGE PATHOLOGIST"),
         "ST": ("SPEECH", "SPEECH-LANGUAGE", "SPEECH LANGUAGE"),
         "CP": ("PSYCHOLOGIST", "PSYCHOLOGY", "PROFESSIONAL COUNSELOR", "LICENSED ALCOHOL AND DRUG COUNSELOR"),
         "PC": ("PSYCHOLOGIST", "PSYCHOLOGY"),
@@ -504,6 +510,13 @@ def score_candidate(candidate: Any, master_row: dict,
         if full.strip():
             c_first_new, c_last_new = _split_full_name(full, m_last)
             if c_last_new:
+                c_first, c_last = c_first_new, c_last_new
+
+    if c_first and re.sub(r"[.\-]", "", c_first.strip()).upper() in _NAME_SUFFIXES_NORM:
+        full = getattr(candidate, "licensee_full_name", "") or ""
+        if full.strip():
+            c_first_new, c_last_new = _split_full_name(full, m_last)
+            if c_first_new and c_first_new.upper() not in _NAME_SUFFIXES_NORM:
                 c_first, c_last = c_first_new, c_last_new
 
     # If candidate has full name but no parsed first/last, split intelligently:
