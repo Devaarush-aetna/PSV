@@ -55,13 +55,17 @@ search:
     search_button:
       selector: "input[value='Search'], input[type='submit']"
   results_wait:
-    strategy: network_idle
+    strategy: element_visible
     selector: "table tr a[href*='Details.aspx']"
     timeout_ms: 30000
     no_results_indicators:
       - "no records"
       - "0 records"
       - "no results"
+      - "Server Error"
+      - "An error occurred"
+      - "Application Error"
+      - "Object moved"
 
 results:
   type: table

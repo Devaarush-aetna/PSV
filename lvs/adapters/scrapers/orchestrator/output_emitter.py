@@ -61,7 +61,7 @@ def _clean_matched_name(raw: str) -> str:
     toks = str(raw).split()
 
     def _norm_tok(t: str) -> str:
-        return re.sub(r"[.\-]", "", t).upper()
+        return re.sub(r"[.\-,]", "", t).upper()
 
     while toks and _norm_tok(toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
@@ -94,6 +94,8 @@ _REASONS_FOR_AI_ADD_LICENSE: frozenset[str] = frozenset({
     # cross-name match without license confirmation must go to Manual, not AIAddLicense.
     "NPI used to fetch - manual review required",
     "Name mismatch after license match: EPDB and NPPES name scores both below 0.70 threshold",
+    "Name verified: board record does not expose license number",
+    "Name match accepted: board uses different license numbering",
 })
 
 # BACB boards are captcha-blocked — skip automated verification for any row
@@ -173,13 +175,13 @@ class RowOutcome:
 
     @property
     def reason(self) -> str:
+        # No-licensure-required always wins — overrides ai_result/ladder reason codes.
+        if getattr(self.trace, "no_licensure_required", False) and self.trace.final_reason:
+            return self.trace.final_reason
         if self.status == "Pass":
             # Surface the out-of-state verification state when applicable (FL T-licenses).
             if self.ladder_result and self.ladder_result.reason and self.ladder_result.reason.startswith("out_of_state:"):
                 return self.ladder_result.reason
-            # Surface the no-licensure-required reason even for Pass rows (e.g. CT DT/NUT).
-            if getattr(self.trace, "no_licensure_required", False) and self.trace.final_reason:
-                return self.trace.final_reason
             return ""
         if self.ai_result and self.ai_result.reason:
             return self.ai_result.reason
@@ -684,6 +686,36 @@ class OutputEmitter:
             _input_lic.startswith("TSA") and _input_lic[3:].isdigit()
         ):
             return "Temporary License ID"
+
+        # 5a. Name-only match: input has a license_id but the board record carries no
+        #     license number at all (some boards don't surface it on the results table).
+        #     Name + provider type were confirmed by the disambiguator; route to
+        #     AIAddLicense so a reviewer can confirm identity before upload.
+        if outcome.status == "Pass":
+            _no_lic_bd = outcome.chosen_breakdown
+            _no_lic_rec = outcome.chosen_record
+            _no_lic_input = (outcome.master_row.get("license_id", "") or "").strip()
+            _no_lic_board = (getattr(_no_lic_rec, "license_number", "") or "").strip() if _no_lic_rec else ""
+            if (_no_lic_bd is not None
+                    and _no_lic_bd.license_numerics < 1.0
+                    and _no_lic_input
+                    and not _no_lic_board):
+                return "Name verified: board record does not expose license number"
+
+        # 5b. Name-only high-confidence match: board returned a license number that
+        #     doesn't match the input (different board numbering system). The
+        #     disambiguator still accepted the name (gate_passed=True, score >=
+        #     threshold). Route to AIAddLicense so a reviewer can confirm identity.
+        if outcome.status == "Pass":
+            _diff_bd = outcome.chosen_breakdown
+            _diff_rec = outcome.chosen_record
+            _diff_input = (outcome.master_row.get("license_id", "") or "").strip()
+            _diff_board = (getattr(_diff_rec, "license_number", "") or "").strip() if _diff_rec else ""
+            if (_diff_bd is not None
+                    and _diff_bd.license_numerics < 1.0
+                    and _diff_input
+                    and _diff_board):
+                return "Name match accepted: board uses different license numbering"
 
         # 5. Name ↔ license cross-validation (Pass rows only beyond this point)
         mismatch = (
@@ -1634,6 +1666,16 @@ def _ai_add_license_reason_label(
         return (
             f"Name exact match: license on board differs "
             f"(input: {input_lic!r}: board: {board_lic!r})"
+        )
+    if manual_reason == "Name verified: board record does not expose license number":
+        return (
+            f"Name-only verified (board has no license field): "
+            f"confirm {input_name!r} is the correct provider before upload"
+        )
+    if manual_reason == "Name match accepted: board uses different license numbering":
+        return (
+            f"Name match: board license {board_lic!r} differs from input {input_lic!r}. "
+            f"Confirm {input_name!r} is the correct provider before upload"
         )
     if manual_reason.startswith("NPI used to fetch"):
         return "NPI-verified match - confirm license before upload"

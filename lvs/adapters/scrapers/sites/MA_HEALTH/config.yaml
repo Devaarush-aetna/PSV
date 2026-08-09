@@ -9,8 +9,17 @@
 
 search:
   modes:
+    - mode: "first_and_last"
+      dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-last-name-input"
+      extra_inputs:
+        "#licensee-first-name-or-organization-input": "{first}"
     - mode: "last_name"
       dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-last-name-input"
+    - mode: "first_name"
+      dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-first-name-or-organization-input"
     - mode: "license_number"
       dropdown_value: "BY_LICENSE_NUMBER"
   form:

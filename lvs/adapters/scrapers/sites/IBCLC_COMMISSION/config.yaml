@@ -17,8 +17,10 @@ search:
   # license_prefix_dash adds a synthetic license_formatted attempt for these inputs.
   license_prefix_dash: true
   modes:
-    - mode: last_name
-      input_selector: "input[name='name_search']"
+    - mode: license_number
+      input_selector: "input[name='credential_number']"
+    - mode: license_numeric_only
+      input_selector: "input[name='credential_number']"
     - mode: license_and_last
       # license_* modes use license_number as primary → fill credential_number directly.
       # last name goes into name_search as an extra_input so both filters are applied.
@@ -32,6 +34,8 @@ search:
       input_selector: "input[name='name_search']"
       extra_inputs:
         "input[name='name_search']": "{first} {last}"
+    - mode: last_name
+      input_selector: "input[name='name_search']"
   form:
     search_by_dropdown:
       strategy: none
