@@ -38,6 +38,7 @@ search:
       - "no records found"
       - "no matching"
       - "no licensees"
+      - "no results found for your search criteria"
 
 results:
   type: table

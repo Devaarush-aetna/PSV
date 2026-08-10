@@ -968,6 +968,17 @@ async def run_row(
     if prov_type == "ABA" and _is_bacb_license(license_id):
         return "Skip", "BACB Certificant Registry — CAPTCHA-based board (registry unavailable)", ""
 
+    # --- NC LPC + LCAS prefix: wrong board (NCASPPB, not NC_MENTAL_HEALTH) ---
+    # LCAS-##### is an NC Licensed Clinical Addiction Specialist credential issued by
+    # the NC Addictions Specialist Professional Practice Board (NCASPPB), not by the
+    # NC Board of Licensed Clinical Mental Health Counselors routed via NC_MENTAL_HEALTH.
+    # No NCASPPB board config is available yet; return Fail with an actionable message.
+    if lic_state == "NC" and prov_type == "LPC" and license_id.upper().startswith("LCAS"):
+        return "Fail", (
+            "License prefix LCAS indicates NC Addictions Specialist Professional Practice Board "
+            "(NCASPPB) — no board config available for this credential type"
+        ), ""
+
     # --- Cap: License State must appear in Service Location State ---
     _svc_raw = row_data.get("svc_loc_state", "")
     _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]

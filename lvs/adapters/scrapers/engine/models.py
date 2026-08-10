@@ -250,6 +250,8 @@ class SearchConfig(BaseModel):
     form: SearchForm = Field(default_factory=SearchForm)
     results_wait: ResultsWait = Field(default_factory=ResultsWait)
     pre_search_click: Optional[str] = None   # selector to click before filling (e.g. expand collapse form)
+    pre_search_click_timeout_ms: int = 8000  # how long to wait for pre_search_click element to become visible
+    post_pre_search_click_wait_ms: int = 15000  # networkidle timeout after pre_search_click; raise for CF-protected sites
     post_search_click: Optional[str] = None  # selector to click after results load (e.g. grid toggle)
     # Like post_search_click but clicks EVERY visible match — used for accordion-grouped
     # results where each profession panel must be expanded to load its rows (e.g. LA_DIETETICS,
