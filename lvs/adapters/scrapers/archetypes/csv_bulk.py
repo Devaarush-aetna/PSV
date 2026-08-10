@@ -67,8 +67,31 @@ async def scrape_csv_bulk(
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(last_exc))
         return []
 
+    # Build the minimal set of columns needed so wide CSVs (e.g. OH: 154 cols,
+    # 2.38M rows → 5-6 GB if all columns are loaded) only consume RAM for the
+    # ~20 columns actually used for searching and output.
+    _needed_cols: set[str] = set()
+    for _v in csv_cfg.search_columns.values():
+        if isinstance(_v, list):
+            _needed_cols.update(_v)
+        elif isinstance(_v, str):
+            _needed_cols.add(_v)
+    _parse_col_name = getattr(csv_cfg, "parse_combined_name_column", None)
+    if _parse_col_name:
+        _needed_cols.add(_parse_col_name)
+    if csv_cfg.license_type_column:
+        _needed_cols.add(csv_cfg.license_type_column)
+    if csv_cfg.provider_type_column:
+        _needed_cols.add(csv_cfg.provider_type_column)
+    if config.detail.field_map:
+        _needed_cols.update(config.detail.field_map.keys())
+    # Only apply column filtering when field_map is configured — sites without
+    # a field_map rely on passing all raw CSV columns through to map_to_license_record,
+    # so filtering would silently drop output data for those boards.
+    _usecols = list(_needed_cols) if (_needed_cols and config.detail.field_map) else None
+
     try:
-        df = load_csv(csv_path, csv_cfg.encoding, effective_header_row, csv_cfg.separator)
+        df = load_csv(csv_path, csv_cfg.encoding, effective_header_row, csv_cfg.separator, usecols=_usecols)
     except Exception as exc:
         log.error("[%s] CSV parse failed: %s", source_id, exc)
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(exc))
@@ -102,14 +125,37 @@ async def scrape_csv_bulk(
 
     if is_combo or has_type_filter:
         if is_combo:
+            _mode_includes_license = "license" in query.mode
+            _combo_lic = (
+                query.license_number or (query.query if query.mode.startswith("license") else None)
+            ) if _mode_includes_license else query.license_number
             raw_results = search_by_multi_column(
                 df, col_map,
-                license_number=query.license_number or (query.query if query.mode.startswith("license") else None),
+                license_number=_combo_lic,
                 first_name=query.first_name,
                 last_name=query.last_name,
                 license_type=query.license_type,
                 provider_type=query.provider_type,
             )
+            # For name-primary combo modes (first_and_last, first_mid_last): if the
+            # license_number AND-filter produced 0 results, retry with name only.
+            # The license still acts as a tiebreaker when it matches; this fallback
+            # handles the common case where the board's license format differs from
+            # the master_row value (e.g. different state, leading zeros, prefix).
+            if not raw_results and _combo_lic and not _mode_includes_license:
+                raw_results = search_by_multi_column(
+                    df, col_map,
+                    license_number=None,
+                    first_name=query.first_name,
+                    last_name=query.last_name,
+                    license_type=query.license_type,
+                    provider_type=query.provider_type,
+                )
+                if raw_results:
+                    log.info(
+                        "[%s] first_and_last: license filter produced 0 — name-only fallback returned %d record(s)",
+                        source_id, len(raw_results),
+                    )
         else:
             field_for_mode = {
                 "license_number": "license_number",

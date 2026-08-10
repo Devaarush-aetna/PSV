@@ -9,8 +9,17 @@
 
 search:
   modes:
+    - mode: "first_and_last"
+      dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-last-name-input"
+      extra_inputs:
+        "#licensee-first-name-or-organization-input": "{first}"
     - mode: "last_name"
       dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-last-name-input"
+    - mode: "first_name"
+      dropdown_value: "BY_LICENSEE_NAME"
+      input_selector: "#licensee-first-name-or-organization-input"
     - mode: "license_number"
       dropdown_value: "BY_LICENSE_NUMBER"
   form:
@@ -30,7 +39,7 @@ search:
   results_wait:
     strategy: "element_visible"
     selector: "div.ag-row:not(.ag-header-row)"
-    timeout_ms: 30000
+    timeout_ms: 90000
     no_results_indicators:
       - "no results found"
       - "no records found"

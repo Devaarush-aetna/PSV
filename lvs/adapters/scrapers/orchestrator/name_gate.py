@@ -116,13 +116,29 @@ def _name_pair_score(f1: str, l1: str, f2: str, l2: str) -> float:
 
     Falls back to the single available component when one side is empty.
     Returns 0.0 when both sides have no usable content.
+
+    Hyphenated-last-name rescue: _normalize_name converts hyphens to spaces before
+    this function is called, so last_name_score's own hyphen-component fallback never
+    fires.  We replicate it here by trying each space-separated token of l1/l2 against
+    the other side and keeping the best component score.
     """
     has_first = bool(f1 and f2)
     has_last = bool(l1 and l2)
     if not has_first and not has_last:
         return 0.0
     if has_first and has_last:
-        return (disamb.first_name_score(f1, f2) + disamb.last_name_score(l1, l2)) / 2.0
+        base_last = disamb.last_name_score(l1, l2)
+        # Try each token of a multi-word last name (originally hyphenated) vs the other
+        if base_last < 0.95:
+            for src, tgt in ((l1, l2), (l2, l1)):
+                parts = src.split()
+                if len(parts) > 1:
+                    for part in parts:
+                        if len(part) > 2:
+                            component = disamb.last_name_score(part, tgt)
+                            if component > base_last:
+                                base_last = component
+        return (disamb.first_name_score(f1, f2) + base_last) / 2.0
     if has_last:
         return disamb.last_name_score(l1, l2)
     return disamb.first_name_score(f1, f2)
@@ -251,7 +267,14 @@ def evaluate_name_gate(
     elif max_score >= ai_band_low:
         verdict = "ai_review"
     else:
-        verdict = "manual"
+        # Name-change rescue: if the EPDB first name exactly matches the board first
+        # name (≥ 0.95), route to AI review rather than pure manual.  Covers
+        # married/maiden-name changes where the board carries a different last name
+        # but the first name is unambiguous.
+        if disamb.first_name_score(epdb_first, board_first) >= 0.95:
+            verdict = "ai_review"
+        else:
+            verdict = "manual"
 
     return NameGateResult(
         epdb_score=round(epdb_score, 4),

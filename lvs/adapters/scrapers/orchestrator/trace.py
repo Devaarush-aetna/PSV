@@ -194,6 +194,7 @@ class RowTrace:
     nppes_discrepancy: Optional[dict] = None
     final_outcome: str = ""           # "Pass" | "Fail" | "Skip" | "EscalatedAi" | "Resolved"
     final_reason: Optional[str] = None  # one of REASON_* codes when not Pass
+    no_licensure_required: bool = False  # True when state does not require this prov_type
     # Post-license name gate (set by run_state_orchestrated after ladder, before emitter)
     epdb_name_score: Optional[float] = None
     nppes_name_score: Optional[float] = None

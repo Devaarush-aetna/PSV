@@ -46,21 +46,25 @@ def _json_default(obj):
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
 
-def _derive_profession_code(license_type: str, profession_codes: list[str]) -> str | None:
-    """Return the best-matching profession code from the board's license_type string.
-
-    When a board covers multiple provider types (e.g. NC_SLP_AUD: ["SLP","AUD"]),
-    the license_type value (e.g. "Permanent AUD") tells us the actual type.
-    Falls back to profession_codes[0] when no match is found or there's only one code.
-    """
+def _derive_profession_code(
+    license_type: str,
+    profession_codes: list[str],
+    profession_code_map: dict[str, str] | None = None,
+) -> str | None:
     if not profession_codes:
         return None
-    if len(profession_codes) > 1 and license_type:
-        lt_upper = license_type.upper()
+    lt_upper = (license_type or "").upper().strip()
+    if profession_code_map and lt_upper:
+        mapped = profession_code_map.get(lt_upper)
+        if mapped:
+            return mapped
+    if len(profession_codes) > 1 and lt_upper:
         for pc in profession_codes:
             if pc.upper() in lt_upper:
                 return pc
-    return profession_codes[0]
+    if len(profession_codes) == 1:
+        return profession_codes[0]
+    return None
 
 
 def map_to_license_record(
@@ -122,6 +126,7 @@ def map_to_license_record(
         profession_code=_derive_profession_code(
             resolve(mapping.get("license_type", "")) or raw.get("license_type") or "",
             config.identity.profession_codes,
+            profession_code_map=getattr(config.identity, "profession_code_map", None),
         ),
         status=normalize_status(status_raw, out.status_map),
         effective_date=parse_date(eff_raw, out.date_formats),

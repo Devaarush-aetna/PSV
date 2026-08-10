@@ -73,13 +73,17 @@ C_SVC_LOC_STATE = 15  # Service Location State — license state must appear her
 _NPI_HEADER_ALIASES = ("NPI_NO", "NPI", "NPI ID", "NPI_ID", "NPI Number")
 
 # Browser-based archetypes (share one Playwright browser per board)
-_BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa"}
+_BROWSER_ARCHETYPES = {"classic_html_form", "aspnet_webforms", "angular_spa", "react_spa", "ag_grid_spa"}
 
 # Per-(state, prov_type) combos where the state does not license that provider type.
-# Rows matching these are written as N/A — no board check is attempted.
+# The board is still routed and visited, but the outcome is forced to N/A after
+# the scrape completes — the message below is written to the output regardless of
+# what the board returns.
 NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NJ", "DT"):  "NJ does not license Dietitians (DT) — Professional License step N/A",
     ("NJ", "NUT"): "NJ does not license Nutritionists (NUT) — Professional License step N/A",
+    ("CT", "DT"):  "The state of Connecticut does not require DT/NUT to hold state licensure",
+    ("CT", "NUT"): "The state of Connecticut does not require DT/NUT to hold state licensure",
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -311,6 +315,7 @@ _SOCRATA_TYPE_MAP: dict[tuple[str, str], str] = {
     # IL_LICENSING — board-level category (safe 1:1 mapping)
     ("IL_LICENSING", "ABA"): "ADVISORY BD OF BEHAV",
     ("IL_LICENSING", "AP"):  "ACUPUNCTURE",
+    ("IL_LICENSING", "AU"):  "SPEECH-LANGUAGE PATH",
     ("IL_LICENSING", "CP"):  "CLIN PSYCHOLOGIST",
     ("IL_LICENSING", "DDS"): "DENTAL",
     ("IL_LICENSING", "DMD"): "DENTAL",
@@ -331,8 +336,11 @@ _SOCRATA_TYPE_MAP: dict[tuple[str, str], str] = {
     ("IL_LICENSING", "PAB"): "PHYSICIAN ASSISTANT",
     ("IL_LICENSING", "PAS"): "PHYSICIAN ASSISTANT",
     ("IL_LICENSING", "PH"):  "MEDICAL BOARD",
+    ("IL_LICENSING", "MW"):  "NURSING BOARD",
     ("IL_LICENSING", "PN"):  "NURSING BOARD",
     ("IL_LICENSING", "PT"):  "PHYSICAL THERAPY",
+    ("IL_LICENSING", "RN"):  "NURSING BOARD",
+    ("IL_LICENSING", "RNA"): "NURSING BOARD",
     ("IL_LICENSING", "SH"):  "SPEECH-LANGUAGE PATH",
     ("IL_LICENSING", "SW"):  "SOCIAL WORKER",
     # WA_HEALTH — credential type string (exact match)
@@ -607,6 +615,11 @@ class PsvBrowser:
             raw_rows, _warn = await extract_results_table(page, self.config.results)
             if _warn:
                 log.warning("[%s] extract_results_table partial: %s", src, _warn)
+            # AG-Grid returns rows keyed by column-header text ("License Number", "First Name", …).
+            # apply_field_map normalises these to snake_case so targeting and map_to_license_record
+            # can find them via the expected keys ("license_number", "first_name", …).
+            if self.config.results.type == "ag_grid" and self.config.detail.field_map:
+                raw_rows = [apply_field_map(r, self.config.detail.field_map) for r in raw_rows]
             if run_id:
                 try:
                     await capture_evidence(page, self.config.evidence,
@@ -885,6 +898,10 @@ async def _try_first_and_last_psv(
             last_only = [r for r in lic_hits if _name_matches(r, l, "")]
             if last_only:
                 return "Pass", f"Verified via {src_id} ({label}, license+last name match)", _get_expiry(last_only[0])
+            # License numerics matched but name didn't — route to AIAddLicense via
+            # the "license match — name on board differs" reason so output_emitter
+            # catches it as "License matched but Name mismatched".
+            return "Pass", f"Verified via {src_id} ({label}, license match — name on board differs)", _get_expiry(lic_hits[0])
         return None
 
     result = await _run_fal(first_name, last_name, "first+last search")
@@ -966,6 +983,10 @@ async def run_row(
             return "Pass", "Verified via PSYPACT_DIRECTORY (psypact.gov)", _exp_str
         return "Fail", "no_records", ""
 
+    # --- ABA + BACB certification number: skip immediately (registry is CAPTCHA/maintenance-blocked) ---
+    if prov_type == "ABA" and _is_bacb_license(license_id):
+        return "Skip", "BACB Certificant Registry — CAPTCHA-based board (registry unavailable)", ""
+
     # --- Cap: License State must appear in Service Location State ---
     _svc_raw = row_data.get("svc_loc_state", "")
     _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
@@ -974,11 +995,6 @@ async def run_row(
             f"License State ({lic_state}) not in Service Location State "
             f"({_svc_raw}) — PSV step N/A"
         ), ""
-
-    # --- N/A: state does not license this provider type ---
-    _na_reason = NA_PROV_TYPES.get((lic_state, prov_type))
-    if _na_reason:
-        return "N/A", _na_reason, ""
 
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
     if not preferred_sids:
@@ -1037,6 +1053,10 @@ async def run_row(
                              src_id, _old_lic, license_id, prov_type)
 
         # --- Pass 1: search by license number ---
+        # Do NOT pass _type_kwargs here: the license number uniquely identifies
+        # the record, and a board-level type filter causes misses when the input
+        # prov_type differs from the actual license_type on the board (e.g. PN
+        # input but APRN on board after a credential upgrade).
         q_lic = SearchQuery(
             mode="license_number",
             query=license_id,
@@ -1044,7 +1064,6 @@ async def run_row(
             first_name=first_name or None,
             middle_name=middle_name or None,
             last_name=last_name or None,
-            **_type_kwargs,
         )
         if is_browser:
             records = await _try_search_psv(psv_b, q_lic, timeout)
@@ -1455,10 +1474,12 @@ async def run_row(
         if not last_name:
             continue
         log.info("[%s] License search empty, trying last_name fallback for %s", src_id, license_id)
+        # Pass 2 is a genuine name-only search: omit license_number so the Socrata
+        # combo URL doesn't repeat the same AND clause that already returned 0 results.
+        # _type_kwargs (board-level type filter) is kept to narrow name results.
         q_name = SearchQuery(
             mode="last_name",
             query=last_name,
-            license_number=license_id,
             first_name=first_name or None,
             middle_name=middle_name or None,
             last_name=last_name or None,
@@ -1601,6 +1622,9 @@ async def run_row(
         if not expiry and s_id in psv_browsers:
             expiry = await _fetch_detail_expiry(psv_browsers[s_id], s_rec, timeout)
         return "Pass", f"Verified via {s_id} (name match — PSV license class not in this search type)", expiry
+    # Post-scrape N/A override: board was visited but state does not license this type.
+    if _post_na := NA_PROV_TYPES.get((lic_state, prov_type)):
+        return "N/A", _post_na, ""
     return "Fail", last_fail_reason, ""
 
 
@@ -1783,7 +1807,7 @@ def load_input_rows(input_path: str, state_filter: str, sheet_name: str = "") ->
             "npi_no": npi_clean,
             "lic_state": lic_state,
             "lic_type": c(C_LIC_TYPE),
-            "license_id": c(C_LIC_ID),
+            "license_id": c(C_LIC_ID).rstrip("_ "),
             "input_expiry": _cell_to_iso_date(
                 row[C_LIC_EXPIRY] if C_LIC_EXPIRY < len(row) else None
             ),
@@ -1801,20 +1825,36 @@ def _is_captcha_skip(reason: str) -> bool:
     return any(kw in reason.lower() for kw in _CAPTCHA_SKIP_KEYWORDS)
 
 
-# BACB certification number format: TYPE_CODE-YY-NNNNNN
-# TYPE_CODE: RBT, BCBA, BCaBA, 1 (=BCBA), 0 (=BCaBA)
+# BACB certification number format: TYPE_CODE(-LEVEL)-YY-NNNNNN
+# TYPE_CODE: RBT, BCBA, BCaBA (or BCABA), 1 (=BCBA), 0 (=BCaBA)
+# BCBA\d* handles variants like "BCBA1-24-70814" where a digit is appended to BCBA.
+# BCaBA with IGNORECASE also matches BCABA (e.g. "BCABA-0-24-15058" 4-segment format
+# where an extra level/type segment sits between the type code and the year).
+# The bare YY-NNNNN alternative catches certs stored without a type-code prefix
+# (e.g. "23-261946") — safe because this check is only called for prov_type=="ABA"
+# and Indiana/IL/NC/NJ state ABA licenses use pure-numeric formats (no hyphens).
 _BACB_LICENSE_RE = re.compile(
-    r"^(RBT|BCBA|BCaBA|1|0)-\d{1,4}-\d{4,7}$",
+    r"^(RBT|BCBA\d*|BCaBA|1|0)(-\d{1,4}){1,2}-\d{4,7}$"  # TYPE(-LEVEL)-YY-NNNNN
+    r"|^\d{2}-\d{4,7}$",  # bare YY-NNNNN (cert stored without type prefix, ABA-only)
     re.IGNORECASE,
 )
 
 def _is_bacb_license(license_id: str) -> bool:
     """Return True when the license ID matches BACB certification number format.
 
-    Supported formats: RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCaBA-YY-NNNNNN,
-    1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA).
+    Supported formats:
+      RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCBA1-YY-NNNNNN,
+      BCaBA-YY-NNNNNN (also BCABA, case-insensitive),
+      BCaBA-LEVEL-YY-NNNNNN (4-segment, e.g. BCABA-0-24-15058),
+      1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA),
+      YY-NNNNNN (bare, no type prefix, e.g. 23-261946).
     """
     return bool(_BACB_LICENSE_RE.match((license_id or "").strip()))
+
+
+# States where ABA is licensed via a state board AND BACB (captcha-blocked fallback).
+# FL is excluded — FL ABA routes to BACB only (no state board).
+_BACB_FALLBACK_STATES: frozenset[str] = frozenset({"IL", "IN", "NC", "NJ"})
 
 
 def load_configs_by_source_ids(source_ids: set[str]) -> list:
@@ -2065,6 +2105,7 @@ async def run_state_orchestrated(
     from orchestrator import ladder as ladder_mod
     from orchestrator import nppes_client as nppes_mod
     from orchestrator import ai_agent as ai_mod
+    from orchestrator import disambiguator as disamb_mod
     from orchestrator.output_emitter import RowOutcome
     from orchestrator.trace import RowTrace, make_master_row_id, REASON_PROVIDER_TYPE_MISMATCH
 
@@ -2211,10 +2252,6 @@ async def run_state_orchestrated(
                         f"({_svc_raw}) — PSV step N/A"
                     )
                     _svc_loc_na_rows.append(row)
-                # N/A: state does not license this provider type
-                elif _na_reason := NA_PROV_TYPES.get((state, prov_type_upper)):
-                    trace.final_outcome = "N/A"
-                    trace.final_reason = _na_reason
                 # CAPTCHA-blocked prov_type: skip immediately, skip all board calls
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
@@ -2283,6 +2320,34 @@ async def run_state_orchestrated(
                         elif _ng.verdict == "manual":
                             trace.name_gate_reason = "name_gate_manual"
 
+                    # --- Cross-state routing: if NPPES shows the license belongs to a
+                    # different state, add that state's boards to the AI's routing.
+                    # Example: master lic_state=IN but NPPES identifier state=IL.
+                    _ai_routed_configs = list(routed_configs)
+                    if nppes and nppes.license_numbers:
+                        _master_lic_digits = re.sub(r"\D", "", (row.get("license_id") or ""))
+                        for _nl in nppes.license_numbers:
+                            _nl_state = (_nl.get("state") or "").upper().strip()
+                            _nl_digits = re.sub(r"\D", "", str(_nl.get("number") or ""))
+                            if (
+                                _nl_state
+                                and _nl_state != row.get("lic_state", "").upper()
+                                and _master_lic_digits
+                                and _nl_digits == _master_lic_digits
+                            ):
+                                _cross_key = (_nl_state, prov_type_upper)
+                                _cross_sids = _ROUTING.get(_cross_key, [])
+                                _existing_sids = {c.identity.source_id for c in _ai_routed_configs}
+                                for _csid in _cross_sids:
+                                    if _csid not in _existing_sids and _csid in psv_browsers:
+                                        _ai_routed_configs.append(psv_browsers[_csid].config)
+                                        log.info(
+                                            "[%s] Cross-state routing: adding %s (NPPES "
+                                            "license state=%s differs from lic_state=%s)",
+                                            state, _csid, _nl_state, row.get("lic_state"),
+                                        )
+                                break
+
                     # --- AI agent fallback ---
                     if enable_ai and (
                         ladder_result.status == "EscalateAi" or force_ai or _force_name_gate_ai
@@ -2295,7 +2360,7 @@ async def run_state_orchestrated(
                             master_row=row,
                             nppes=nppes,
                             discrepancy=discrepancy,
-                            routed_configs=routed_configs,
+                            routed_configs=_ai_routed_configs,
                             trace=trace,
                             executor=executor,
                             candidate_cache=candidate_cache,
@@ -2354,6 +2419,40 @@ async def run_state_orchestrated(
                             )
                             trace.final_outcome = "Pass"
                             trace.name_gate_reason = f"name_gate_ai_fallback:{ai_result.outcome}"
+                        elif ai_result.outcome == "errored":
+                            # AI API errored (e.g. transient failure on last turn).
+                            # Before failing, check if the ladder already accumulated a
+                            # candidate with an exact license match — if so, use it.
+                            _err_input_lic = (row.get("license_id") or "").strip()
+                            _err_best = None
+                            _err_bd = None
+                            for _a in trace.attempts:
+                                for _cand in (_a.candidates or []):
+                                    _cand_lic = (getattr(_cand, "license_number", "") or "").strip()
+                                    if (_err_input_lic and _cand_lic
+                                            and disamb_mod.license_numerics_match(
+                                                _err_input_lic, _cand_lic)):
+                                        _bd_try = disamb_mod.score_candidate(_cand, row)
+                                        if _bd_try.gate_passed:
+                                            _err_best = _cand
+                                            _err_bd = _bd_try
+                                            break
+                                if _err_best:
+                                    break
+                            if _err_best is not None:
+                                log.warning(
+                                    "[%s] AI errored (%s) — falling back to ladder "
+                                    "candidate with exact license match",
+                                    state, ai_result.reason,
+                                )
+                                trace.final_outcome = "Pass"
+                                ai_result.outcome = "resolved"
+                                ai_result.chosen_candidate = _err_best
+                                ai_result.chosen_breakdown = _err_bd
+                                ai_result.reason = "ai_error_ladder_fallback"
+                            else:
+                                trace.final_outcome = "Fail"
+                                trace.final_reason = ai_result.reason
                         else:
                             trace.final_outcome = "Fail"
                             trace.final_reason = ai_result.reason
@@ -2371,6 +2470,15 @@ async def run_state_orchestrated(
                         if _psypact_lr.status == "Pass":
                             ladder_result = _psypact_lr
                             ai_result = None
+
+                # Post-scrape N/A override: board was visited but state does not license this type.
+                # The board result (Pass/Fail) is kept; only the reason is overridden so the
+                # output explains why licensure was not expected rather than showing "no_records".
+                if _post_na := NA_PROV_TYPES.get((state, prov_type_upper)):
+                    trace.final_reason = _post_na
+                    trace.no_licensure_required = True
+                    if ladder_result is not None:
+                        ladder_result.reason = ""  # clear so trace.final_reason surfaces
 
                 # nppes_used: True only when NPPES data actually drove the resolution,
                 # not merely when it was fetched.
@@ -2459,8 +2567,8 @@ def main() -> None:
     p.add_argument("--state", required=True, help="State abbreviation (e.g. MD, WY)")
     p.add_argument("--batch-size", type=int, default=10,
                    help="Rows to process per batch before writing (default: 10)")
-    p.add_argument("--timeout", type=int, default=45,
-                   help="Per-board per-mode timeout in seconds (default: 45)")
+    p.add_argument("--timeout", type=int, default=120,
+                   help="Per-board per-mode timeout in seconds (default: 120)")
     p.add_argument("--skip-rows", type=int, default=0,
                    help="Skip the first N rows of the filtered input (default: 0)")
     p.add_argument("--max-rows", type=int, default=0,

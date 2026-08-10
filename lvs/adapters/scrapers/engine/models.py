@@ -154,6 +154,7 @@ class SiteIdentity(BaseModel):
     state: str
     country: str = "US"
     profession_codes: list[str] = Field(default_factory=list)
+    profession_code_map: dict[str, str] = Field(default_factory=dict)
     base_url: str
     archetype: Literal[
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
@@ -242,6 +243,9 @@ class SearchForm(BaseModel):
     # Extra wait (ms) after navigation before filling the form. Used for boards where a JS
     # challenge (e.g. Cloudflare managed challenge) must complete before form submission.
     post_navigate_wait_ms: int = 0
+    # Wait for networkidle after navigation before filling the form. Needed for ASP.NET
+    # UpdatePanel boards (e.g. CT eLicense) where form inputs render after page load fires.
+    wait_for_networkidle: bool = False
 
 
 class SearchConfig(BaseModel):
@@ -438,6 +442,10 @@ class DetailConfig(BaseModel):
     sections: list[DetailSection] = Field(default_factory=list)
     back_navigation: BackNavigation = Field(default_factory=BackNavigation)
     out_of_state_tab: OutOfStateTabConfig = Field(default_factory=OutOfStateTabConfig)
+    # When set, all extraction strategies are scoped to this CSS selector rather than
+    # the full page. Use for inline popup/modal boards (e.g. Kendo UI Window) where the
+    # search form's labels contaminate page-wide extractions.
+    scope_selector: Optional[str] = None
 
 
 class OutputConfig(BaseModel):

@@ -1789,29 +1789,71 @@ async def get_csv(
     return save_path, effective_header_row
 
 
-def load_csv(path: Path, encoding: str = "utf-8-sig", header_row: int = 0, sep: str = ","):
+def load_csv(
+    path: Path,
+    encoding: str = "utf-8-sig",
+    header_row: int = 0,
+    sep: str = ",",
+    usecols: Optional[list[str]] = None,
+):
     """Load CSV (or tab-delimited TXT) into a DataFrame, trying multiple encodings.
 
     header_row: 0-based row index of the CSV header.
     sep: column separator — use "\\t" for mopro_zip tab-delimited files.
+    usecols: optional list of column names to load.  When provided only those
+        columns are read from disk — critical for very wide CSVs like OH
+        (154 columns, 2.38M rows) where loading all columns consumes 5-6 GB
+        RAM.  Columns not present in the file are silently ignored.  Defaults
+        to None (load all columns, preserving backward compatibility).
 
     Results are cached in _DF_CACHE so large files (e.g. OH 776 MB) are only
     parsed once per process regardless of how many records are processed.
     """
     import pandas as pd
-    cache_key = (str(path), encoding, header_row, sep)
+    _usecols_key = tuple(sorted(usecols)) if usecols else None
+    cache_key = (str(path), encoding, header_row, sep, _usecols_key)
     if cache_key in _DF_CACHE:
         log.debug("load_csv: cache hit %s", Path(str(path)).name)
         return _DF_CACHE[cache_key]
     for enc in (encoding, "utf-8-sig", "latin-1"):
         try:
+            # When usecols is provided, first read the header row to resolve
+            # which requested columns actually exist (handles case differences
+            # and columns the caller listed that this CSV doesn't have).
+            _read_usecols: Optional[list[str]] = None
+            if usecols:
+                try:
+                    _hdr = pd.read_csv(
+                        path, encoding=enc, nrows=0, sep=sep,
+                        on_bad_lines="skip",
+                    )
+                    _avail = {c.strip().upper(): c.strip() for c in _hdr.columns}
+                    _read_usecols = [
+                        _avail[u.strip().upper()]
+                        for u in usecols
+                        if u.strip().upper() in _avail
+                    ]
+                    if not _read_usecols:
+                        _read_usecols = None  # no overlap — fall back to all cols
+                    else:
+                        log.info(
+                            "load_csv: column filter active — loading %d/%d columns for %s",
+                            len(_read_usecols), len(_avail), Path(str(path)).name,
+                        )
+                except Exception:
+                    _read_usecols = None
+
             df = pd.read_csv(
                 path, dtype=str, encoding=enc, on_bad_lines="skip",
                 header=header_row, sep=sep, na_filter=False,
+                usecols=_read_usecols,
             )
             df.columns = df.columns.str.strip()
             _DF_CACHE[cache_key] = df
-            log.info("load_csv: loaded %s (%d rows) — cached for this run", Path(str(path)).name, len(df))
+            log.info(
+                "load_csv: loaded %s (%d rows, %d cols) — cached for this run",
+                Path(str(path)).name, len(df), len(df.columns),
+            )
             return df
         except UnicodeDecodeError:
             continue
@@ -1889,6 +1931,11 @@ def search_by_license_number(df, col, num: str) -> list[dict]:
     returned. This supports boards like OH where the primary license number
     sits in LICENSE_NUMBER but endorsement/secondary licenses live in
     ENDORSEMENT_NUMBER_1 … ENDORSEMENT_NUMBER_7.
+
+    Memory optimization: the sorted numpy index is only built for the PRIMARY
+    column (col[0]).  Secondary/endorsement columns are searched with a fast
+    vectorized pandas scan so we never allocate ~1.5 GB of numpy arrays for
+    each of the 7 OH endorsement columns (which was crashing 8–16 GB machines).
     """
     if isinstance(col, list):
         # Collect iloc positions across all columns, then materialise once.
@@ -1899,25 +1946,44 @@ def search_by_license_number(df, col, num: str) -> list[dict]:
         seen_pos: set[int] = set()
         pos_to_col: dict[int, str] = {}  # iloc pos → matched column name
         num_u = num.strip().upper()
-        for c_name in col:
+        num_norm = num_u.lstrip("0") or "0"
+        num_stripped = re.sub(r"[-\s]", "", num_u)
+        for col_idx, c_name in enumerate(col):
             try:
-                idx = _get_lic_index(df, c_name)
-                c_actual = idx["col"]
+                c_actual = _find_col(df, c_name)
+            except KeyError:
+                continue
+            try:
                 positions: list[int] = []
-                positions.extend(_idx_lookup(idx["exact"], num_u))
-                if not positions:
-                    positions.extend(_idx_lookup(idx["norm"], num_u.lstrip("0") or "0"))
-                if not positions:
-                    mask_col = df[c_actual].str.strip().str.upper().str.contains(num_u, regex=False, na=False)
-                    positions = list(np.where(mask_col.values)[0])
-                if not positions:
-                    positions.extend(_idx_lookup(idx["stripped"], re.sub(r"[-\s]", "", num_u)))
+                if col_idx == 0:
+                    # Primary column: use the sorted numpy index for O(log n) lookup.
+                    idx = _get_lic_index(df, c_name)
+                    positions.extend(_idx_lookup(idx["exact"], num_u))
+                    if not positions:
+                        positions.extend(_idx_lookup(idx["norm"], num_norm))
+                    if not positions:
+                        mask_col = df[c_actual].str.strip().str.upper().str.contains(num_u, regex=False, na=False)
+                        positions = list(np.where(mask_col.values)[0])
+                    if not positions:
+                        positions.extend(_idx_lookup(idx["stripped"], num_stripped))
+                else:
+                    # Endorsement / secondary columns: vectorized pandas scan to avoid
+                    # building a ~1.5 GB sorted numpy index per column.  O(n) but no
+                    # persistent RAM — the temporary boolean Series is GC'd immediately.
+                    col_s = df[c_actual].str.strip().str.upper()
+                    mask = (
+                        (col_s == num_u)
+                        | (col_s.str.lstrip("0") == num_norm)
+                        | col_s.str.contains(num_u, regex=False, na=False)
+                        | (col_s.str.replace(r"[-\s]", "", regex=True) == num_stripped)
+                    )
+                    positions = list(np.where(mask.values)[0])
                 for p in positions:
                     if p not in seen_pos:
                         seen_pos.add(p)
                         all_pos.append(p)
                         pos_to_col[p] = c_name
-            except (KeyError, Exception):
+            except Exception:
                 continue
         if not all_pos:
             return []
@@ -1952,15 +2018,24 @@ def search_by_license_number(df, col, num: str) -> list[dict]:
     c = idx["col"]
     num_u = num.strip().upper()
 
-    # Stage 1: Exact  O(log n)
-    rows = _idx_lookup(idx["exact"], num_u)
-    if rows:
-        return df.iloc[rows].to_dict(orient="records")
-
-    # Stage 2: Leading-zero normalized  O(log n)
-    rows = _idx_lookup(idx["norm"], num_u.lstrip("0") or "0")
-    if rows:
-        return df.iloc[rows].to_dict(orient="records")
+    # Stage 1 + 2 merged: exact match AND leading-zero-normalized match are combined
+    # so that boards assigning the same numeric value with different zero-padding
+    # (e.g. "5026" for one provider and "005026" for another) both surface together.
+    # Previously Stage 2 only ran when Stage 1 returned nothing, silently skipping
+    # zero-padded variants whenever an exact hit existed on a different provider.
+    seen: set[int] = set()
+    merged: list[int] = []
+    for pos in _idx_lookup(idx["exact"], num_u):
+        if pos not in seen:
+            seen.add(pos)
+            merged.append(pos)
+    norm_key = num_u.lstrip("0") or "0"
+    for pos in _idx_lookup(idx["norm"], norm_key):
+        if pos not in seen:
+            seen.add(pos)
+            merged.append(pos)
+    if merged:
+        return df.iloc[merged].to_dict(orient="records")
 
     # Stage 3: Substring — can't be indexed; vectorized pandas scan
     result = df[df[c].str.strip().str.upper().str.contains(num_u, regex=False, na=False)]
