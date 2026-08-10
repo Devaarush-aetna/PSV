@@ -64,24 +64,35 @@ search:
 results:
   type: table
   table:
-    row_selector: "#verifyresults table tbody tr"
+    # Match ONLY real data rows, NOT the header row. The results <tbody> holds a header
+    # <tr> of <th> cells followed by data <tr data-toggle="modal" onclick="ShowLicenseeDetails(...)">
+    # rows. A bare "…tbody tr" selector includes the header at index 0, but extraction drops
+    # it (no <td>), so raw_rows and the click locator fell out of sync by one — the detail
+    # loop clicked the header (no modal) and scraped the cookie banner instead. Scoping to
+    # tr[data-toggle='modal'] keeps both in lockstep.
+    row_selector: "#verifyresults table tbody tr[data-toggle='modal']"
     cell_selector: "td"
-    # Results table injected by AJAX — no repeated header row inside tbody.
     skip_first_row: false
     columns:
       0: license_number
       1: status
       2: full_name
-  # Row click triggers ShowLicenseeDetails(licenseId) → AJAX fills .modal-body.
+  # Clicking a data row fires ShowLicenseeDetails(licenseId) → AJAX fills the Bootstrap
+  # modal .modal-body with the full record incl. Current Expiration Date (required output).
   has_detail_page: true
   detail_trigger:
     type: row_click
-    selector: "#verifyresults table tbody tr"
+    # Same data-row selector as above so nth(idx) lines up with the extracted rows.
+    selector: "#verifyresults table tbody tr[data-toggle='modal']"
+    # Modal, not a page navigation: fire the row's onclick via JS (overlay-proof) and wait
+    # for .modal-body — don't wait for a URL change that never happens.
+    opens_modal: true
   pagination:
     enabled: false
     strategy: none
 
 detail:
+  scope_selector: ".modal-body"
   wait:
     strategy: element_visible
     # Bootstrap modal — AJAX fills .modal-body via ShowLicenseeDetails(licenseId).
@@ -102,6 +113,8 @@ detail:
     "License Number": license_number
     "License No": license_number
     "License #": license_number
+    # NC PT modal shows the license under a bare "License" label.
+    "License": license_number
     "Name": full_name
     "Full Name": full_name
     "First Name": first_name
@@ -118,10 +131,15 @@ detail:
     "Renewal Date": expiration_date
     "License Expires": expiration_date
     "Expires": expiration_date
+    # NC PT modal label for the expiry (strict output requirement).
+    "Current Expiration Date": expiration_date
     "Issue Date": issue_date
     "Initial License Date": issue_date
     "Issued": issue_date
+    # NC PT modal label for the initial-issue date.
+    "Initial NC License Date": issue_date
     "Address": address
+    "Work Address": address
     "City": city
     "State": state_code
   back_navigation:
@@ -147,7 +165,7 @@ output:
 transport:
   browser: chromium
   channel: "chrome"
-  headless: false
+  headless: true
   viewport: {width: 1280, height: 900}
   timeout_ms: 60000
   navigation_timeout_ms: 30000
