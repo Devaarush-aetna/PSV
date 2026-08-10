@@ -210,7 +210,15 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
 
     # ---- Format 2: "First [Middle] Last" ----
     toks = full_name.upper().split()
+    # Pre-compute master_last_norm so the suffix loop can protect the last name token.
+    # Without this, a last name like "Do" (Vietnamese) would be stripped as the
+    # credential abbreviation "DO" (Doctor of Osteopathy) and the record would fail.
+    master_last_norm = _normalize_name(master_last or "")
     while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+        # Never strip the last token when it exactly matches master_last — it IS the
+        # last name, not a trailing credential (e.g. last="Do" vs suffix "DO").
+        if master_last_norm and _normalize_name(toks[-1]) == master_last_norm:
+            break
         toks = toks[:-1]
     while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
@@ -219,11 +227,19 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
     if len(toks) == 1:
         return toks[0], toks[0]
 
-    master_last_norm = _normalize_name(master_last or "")
     master_last_words = len(master_last_norm.split()) if master_last_norm else 1
 
     if master_last_words >= 2 and len(toks) > master_last_words:
         return toks[0], " ".join(toks[-master_last_words:])
+
+    # Some boards display short last names first without a comma (e.g. "DO JESSICA"
+    # instead of "DO, JESSICA").  When exactly 2 tokens and the first token matches
+    # master_last exactly (but the last token does not), treat it as "Last First" order.
+    if len(toks) == 2 and master_last_norm:
+        first_tok_norm = _normalize_name(toks[0])
+        last_tok_norm = _normalize_name(toks[-1])
+        if first_tok_norm == master_last_norm and last_tok_norm != master_last_norm:
+            return toks[1], toks[0]
 
     return toks[0], toks[-1]
 
@@ -559,6 +575,18 @@ def score_candidate(candidate: Any, master_row: dict,
         if full.strip():
             c_first_new, c_last_new = _split_full_name(full, m_last)
             if c_last_new:
+                c_first, c_last = c_first_new, c_last_new
+
+    # Defense-in-depth: c_first empty + c_last set is the fingerprint of a
+    # single-token collapse — the extraction-layer split_full_name (no master_last)
+    # stripped the last-name token as a credential suffix (e.g. "Jessica Do" →
+    # strip "DO" → ["Jessica"] → returns ("", "Jessica")).
+    # Re-split from the raw full name using master_last to recover the real split.
+    if not c_first and c_last:
+        full = getattr(candidate, "licensee_full_name", "") or ""
+        if full.strip():
+            c_first_new, c_last_new = _split_full_name(full, m_last)
+            if c_first_new and c_last_new:
                 c_first, c_last = c_first_new, c_last_new
 
     # Defense-in-depth: if c_first was stored as a credential type (e.g. "D.C.,"

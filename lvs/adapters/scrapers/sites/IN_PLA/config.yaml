@@ -135,6 +135,7 @@ transport:
     height: 900
   timeout_ms: 60000
   navigation_timeout_ms: 30000
+  ladder_timeout_s: 60
   rate_limit:
     delay_between_requests_ms: 1500
     max_concurrent: 1

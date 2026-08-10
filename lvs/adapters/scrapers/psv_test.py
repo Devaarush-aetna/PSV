@@ -1815,19 +1815,29 @@ def _is_captcha_skip(reason: str) -> bool:
     return any(kw in reason.lower() for kw in _CAPTCHA_SKIP_KEYWORDS)
 
 
-# BACB certification number format: TYPE_CODE-YY-NNNNNN
-# TYPE_CODE: RBT, BCBA, BCaBA, 1 (=BCBA), 0 (=BCaBA)
+# BACB certification number format: TYPE_CODE(-LEVEL)-YY-NNNNNN
+# TYPE_CODE: RBT, BCBA, BCaBA (or BCABA), 1 (=BCBA), 0 (=BCaBA)
 # BCBA\d* handles variants like "BCBA1-24-70814" where a digit is appended to BCBA.
+# BCaBA with IGNORECASE also matches BCABA (e.g. "BCABA-0-24-15058" 4-segment format
+# where an extra level/type segment sits between the type code and the year).
+# The bare YY-NNNNN alternative catches certs stored without a type-code prefix
+# (e.g. "23-261946") — safe because this check is only called for prov_type=="ABA"
+# and Indiana/IL/NC/NJ state ABA licenses use pure-numeric formats (no hyphens).
 _BACB_LICENSE_RE = re.compile(
-    r"^(RBT|BCBA\d*|BCaBA|1|0)-\d{1,4}-\d{4,7}$",
+    r"^(RBT|BCBA\d*|BCaBA|1|0)(-\d{1,4}){1,2}-\d{4,7}$"  # TYPE(-LEVEL)-YY-NNNNN
+    r"|^\d{2}-\d{4,7}$",  # bare YY-NNNNN (cert stored without type prefix, ABA-only)
     re.IGNORECASE,
 )
 
 def _is_bacb_license(license_id: str) -> bool:
     """Return True when the license ID matches BACB certification number format.
 
-    Supported formats: RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCBA1-YY-NNNNNN,
-    BCaBA-YY-NNNNNN, 1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA).
+    Supported formats:
+      RBT-YY-NNNNNN, BCBA-YY-NNNNNN, BCBA1-YY-NNNNNN,
+      BCaBA-YY-NNNNNN (also BCABA, case-insensitive),
+      BCaBA-LEVEL-YY-NNNNNN (4-segment, e.g. BCABA-0-24-15058),
+      1-YY-NNNNNN (BCBA), 0-YY-NNNNNN (BCaBA),
+      YY-NNNNNN (bare, no type prefix, e.g. 23-261946).
     """
     return bool(_BACB_LICENSE_RE.match((license_id or "").strip()))
 
