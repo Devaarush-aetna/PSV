@@ -267,7 +267,10 @@ Rules:
   skipped if you re-issue them. Look at attempts already in the log first.
 - Middle name is unreliable on board sites; do not use it as a distinguishing
   signal.
-- The master row's prov_type is a strong tiebreaker between candidates.
+- Provider type is a useful hint but NOT a blocking criterion. Different boards
+  label the same profession with different type codes (e.g. "State Medical Board"
+  vs prov_type "PH"). If name and/or license match strongly, prefer
+  pick_candidate over give_up(provider_type_mismatch).
 - You have at most {max_turns} turns.
 """
 
@@ -553,7 +556,11 @@ async def run_ai_agent(
                 "content": json.dumps(tool_result, default=str)[:4000],
             })
 
-            if name in ("pick_candidate", "give_up") or result.outcome == "resolved":
+            # Terminate on give_up or a successful pick_candidate (outcome==resolved).
+            # Do NOT terminate on a failed pick_candidate (gate check returned ok=False):
+            # feed the error back to the AI so it can retry or give_up cleanly, which
+            # produces outcome="gave_up" rather than the misleading "errored" default.
+            if name == "give_up" or result.outcome == "resolved":
                 terminated = True
                 break
 

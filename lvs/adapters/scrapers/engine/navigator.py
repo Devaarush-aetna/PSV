@@ -54,6 +54,11 @@ async def navigate_to_search(page: Page, config: SiteConfig) -> None:
             log.debug("Pega networkidle timeout (non-fatal): %s", e)
         await asyncio.sleep(5)
     else:
+        if getattr(config.search.form, "wait_for_networkidle", False):
+            try:
+                await page.wait_for_load_state("networkidle", timeout=15000)
+            except Exception as e:
+                log.debug("networkidle timeout after navigation (non-fatal): %s", e)
         extra_ms = getattr(config.search.form, "post_navigate_wait_ms", 0)
         await asyncio.sleep(max(2, extra_ms / 1000))
 

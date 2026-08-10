@@ -46,6 +46,8 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("ANDREW", "ANDY"), ("ANDREW", "DREW"),
     ("KATHRYN", "KATHY"), ("KATHRYN", "KATE"), ("KATHRYN", "KATIE"),
     ("KATHERINE", "KATHY"), ("KATHERINE", "KATE"), ("KATHERINE", "KATIE"),
+    ("KATHLEEN", "KATHY"), ("KATHLEEN", "KATHIE"), ("KATHLEEN", "KATE"), ("KATHLEEN", "KATIE"),
+    ("KATHLEEN", "KATH"),
     ("ELIZABETH", "LIZ"), ("ELIZABETH", "BETH"), ("ELIZABETH", "BETTY"), ("ELIZABETH", "LIZZY"),
     ("MARGARET", "MAGGIE"), ("MARGARET", "PEGGY"), ("MARGARET", "MEG"),
     ("PATRICIA", "PAT"), ("PATRICIA", "PATTY"), ("PATRICIA", "TRISH"),
@@ -62,6 +64,38 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("BENJAMIN", "BEN"),
     ("NATHANIEL", "NATHAN"), ("NATHANIEL", "NAT"),
     ("DEIRDRE", "DIERDRE"),
+    ("GREGORY", "GREG"),
+    ("TIMOTHY", "TIM"), ("TIMOTHY", "TIMMY"),
+    ("NICHOLAS", "NICK"), ("NICHOLAS", "NICKY"),
+    ("NICHOLAS", "NIKLOS"), ("NICHOLAS", "NIKOLAS"), ("NICHOLAS", "NIKOLAOS"),
+    ("NICK", "NIKLOS"), ("NICK", "NIKOLAS"),
+    ("RICHARD", "RICK"), ("RICHARD", "RICH"), ("RICHARD", "DICK"),
+    ("GERALD", "JERRY"),
+    ("LAWRENCE", "LARRY"),
+    ("RAYMOND", "RAY"),
+    ("FREDRICK", "FRED"), ("FREDERICK", "FRED"),
+    ("GERALD", "GERRY"),
+    ("EUGENE", "GENE"),
+    ("PHILLIP", "PHIL"), ("PHILIP", "PHIL"),
+    ("JAMES", "JIM"), ("JAMES", "JIMMY"),
+    ("WILLIAM", "WILL"), ("WILLIAM", "BILL"), ("WILLIAM", "BILLY"),
+    ("MICHAEL", "MIKE"), ("MICHAEL", "MIKEY"),
+    ("ROBERT", "BOB"), ("ROBERT", "BOBBY"), ("ROBERT", "ROB"),
+    ("JOHN", "JOHNNY"), ("JOHN", "JACK"),
+    ("DAVID", "DAVE"),
+    ("RICHARD", "RICKY"),
+    ("JESSICA", "JESS"),
+    ("KIMBERLY", "KIM"),
+    ("MELISSA", "MISSY"),
+    ("AMANDA", "MANDY"),
+    ("STEPHANIE", "STEPH"),
+    ("CHRISTINA", "CHRIS"), ("CHRISTINE", "CHRIS"),
+    ("JACQUELINE", "JACKIE"),
+    ("CAROL", "CARRIE"),
+    ("DOROTHY", "DOTTIE"), ("DOROTHY", "DOT"),
+    ("VIRGINIA", "GINNY"),
+    ("EVELYN", "EVIE"),
+    ("BEVERLY", "BEV"),
 ]
 _NICK_MAP: dict[str, set[str]] = {}
 for _a, _b in _NICKNAME_PAIRS:
@@ -126,9 +160,9 @@ def _strip_name_affixes(tokens: list[str]) -> list[str]:
     Returns a new list; never mutates the input.
     """
     toks = list(tokens)
-    while toks and re.sub(r"[.\-]", "", toks[0]) in _NAME_PREFIXES_NORM:
+    while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
-    while toks and re.sub(r"[.\-]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
         toks = toks[:-1]
     return toks
 
@@ -149,11 +183,16 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         comma_idx = full_name.index(',')
         raw_last = full_name[:comma_idx].strip()
         rest = full_name[comma_idx + 1:].strip()
+        # "Last, First, Suffix" (two commas) — replace the second comma so
+        # "Joseph, III" becomes "Joseph  III" before tokenising.  Without this
+        # the first token becomes "JOSEPH," with a trailing comma that leaks
+        # into c_first and can corrupt the matched_first output field.
+        rest = re.sub(r",", " ", rest)
 
         rest_toks = rest.upper().split()
-        while rest_toks and re.sub(r"[.\-]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
+        while rest_toks and re.sub(r"[.\-,]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
-        while rest_toks and re.sub(r"[.\-]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
+        while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
             rest_toks = rest_toks[1:]
 
         # If everything after the comma was a suffix (e.g. "George Joseph Vesper, Jr."),
@@ -163,7 +202,7 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
             full_name = raw_last
         else:
             last_toks = raw_last.upper().split()
-            while last_toks and re.sub(r"[.\-]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
+            while last_toks and re.sub(r"[.\-,]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
                 last_toks = last_toks[:-1]
             first_tok = rest_toks[0]
             last_str = ' '.join(last_toks) if last_toks else ''
@@ -171,20 +210,36 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
 
     # ---- Format 2: "First [Middle] Last" ----
     toks = full_name.upper().split()
-    while toks and re.sub(r"[.\-]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+    # Pre-compute master_last_norm so the suffix loop can protect the last name token.
+    # Without this, a last name like "Do" (Vietnamese) would be stripped as the
+    # credential abbreviation "DO" (Doctor of Osteopathy) and the record would fail.
+    master_last_norm = _normalize_name(master_last or "")
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+        # Never strip the last token when it exactly matches master_last — it IS the
+        # last name, not a trailing credential (e.g. last="Do" vs suffix "DO").
+        if master_last_norm and _normalize_name(toks[-1]) == master_last_norm:
+            break
         toks = toks[:-1]
-    while toks and re.sub(r"[.\-]", "", toks[0]) in _NAME_PREFIXES_NORM:
+    while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
     if not toks:
         return "", ""
     if len(toks) == 1:
         return toks[0], toks[0]
 
-    master_last_norm = _normalize_name(master_last or "")
     master_last_words = len(master_last_norm.split()) if master_last_norm else 1
 
     if master_last_words >= 2 and len(toks) > master_last_words:
         return toks[0], " ".join(toks[-master_last_words:])
+
+    # Some boards display short last names first without a comma (e.g. "DO JESSICA"
+    # instead of "DO, JESSICA").  When exactly 2 tokens and the first token matches
+    # master_last exactly (but the last token does not), treat it as "Last First" order.
+    if len(toks) == 2 and master_last_norm:
+        first_tok_norm = _normalize_name(toks[0])
+        last_tok_norm = _normalize_name(toks[-1])
+        if first_tok_norm == master_last_norm and last_tok_norm != master_last_norm:
+            return toks[1], toks[0]
 
     return toks[0], toks[-1]
 
@@ -211,6 +266,15 @@ def first_name_matches(master_first: str, candidate_first: str) -> bool:
     aliases = _NICK_MAP.get(m_tok, {m_tok})
     if c_tok in aliases:
         return True
+    # Apostrophe/hyphen join: "De'Andrea" normalises to ["DE", "ANDREA"] while
+    # the board stores the concatenated form "DeAndrea" → "DEANDREA".
+    # Joining all master tokens gives the same string and should match exactly.
+    m_joined = "".join(m_toks)
+    c_joined = "".join(c_toks)
+    if m_joined == c_joined:
+        return True
+    if m_joined and c_joined and fuzz.token_sort_ratio(m_joined, c_joined) >= cfg.NAME_FUZZ_MIN:
+        return True
     return False
 
 
@@ -227,6 +291,11 @@ def first_name_score(master_first: str, candidate_first: str) -> float:
     if m_tok == c_tok:
         return 1.0
     if c_tok in _NICK_MAP.get(m_tok, set()):
+        return 1.0
+    # Apostrophe/hyphen join (see first_name_matches for explanation)
+    m_joined = "".join(m_toks)
+    c_joined = "".join(c_toks)
+    if m_joined and c_joined and m_joined == c_joined:
         return 1.0
     return fuzz.token_sort_ratio(m_tok, c_tok) / 100.0
 
@@ -290,10 +359,11 @@ def license_numerics_match(master_lic: str, candidate_lic: str) -> bool:
         return True
     # Center-digits match: board stores only the core of a prefixed/suffixed input
     # e.g. KSBN "5384002" (input) vs "84002" (board), or "5378516022" vs "78516".
-    # Require shorter side ≥ 5 digits and at most 5 extra digits in the longer side
-    # to prevent spurious matches on unrelated short license IDs.
-    shorter, longer = (m, c) if len(m) <= len(c) else (c, m)
-    if len(shorter) >= 5 and shorter in longer and len(longer) - len(shorter) <= 5:
+    # Check is intentionally asymmetric: the board value (c) must be a substring of
+    # the input (m), not the reverse.  The reverse direction ("input digits appear
+    # inside the board's longer number") fires on unrelated licenses that happen to
+    # share a short digit run (e.g. DC-03919 → "03919" inside "35039195").
+    if len(c) >= 5 and c in m and len(m) - len(c) <= 5:
         return True
     # Versioned credential match: both sides share a leading ≥ 5-digit group regardless of
     # renewal suffix (e.g. "40215-DI-1" vs "40215-DI-3" where the trailing cycle changes).
@@ -369,7 +439,8 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "CP": ("PSYCHOLOGIST", "PSYCHOLOGY", "PROFESSIONAL COUNSELOR", "LICENSED ALCOHOL AND DRUG COUNSELOR", "SOCIAL WORKER INDEPENDENT CLINICAL LICENSE"),
         "PC": ("PSYCHOLOGIST", "PSYCHOLOGY"),
         "PH": ("PHARMACIST", "PHARMACY",
-               "MEDICAL DOCTOR", "PHYSICIAN", "OSTEOPATHIC"),  # WY routes PH to WY_PHYSICIAN (MD/DO board)
+               "MEDICAL DOCTOR", "PHYSICIAN", "OSTEOPATHIC",
+               "MEDICAL BOARD"),  # OH/WY: "State Medical Board" columns for physician rows
         "PM": ("PHARMACY", "PHARMACIST"),
         "DT": ("DIETITIAN", "DIETETICS", "NUTRITIONIST", "NUTRITION","DIETETIC TECHNICIAN", "DIETITIAN CERTIFICATION"),
         "NUT": ("NUTRITIONIST", "NUTRITION"),
@@ -499,12 +570,32 @@ def score_candidate(candidate: Any, master_row: dict,
     # Defense-in-depth: if c_last was stored as a bare credential suffix (e.g. "DPM",
     # "M.D."), the initial parse grabbed the wrong token. Re-split from the original
     # full name using the master last-name word count to get the real last name.
-    if c_last and re.sub(r"[.\-]", "", c_last.strip()).upper() in _NAME_SUFFIXES_NORM:
+    if c_last and re.sub(r"[.\-,]", "", c_last.strip()).upper() in _NAME_SUFFIXES_NORM:
         full = getattr(candidate, "licensee_full_name", "") or ""
         if full.strip():
             c_first_new, c_last_new = _split_full_name(full, m_last)
             if c_last_new:
                 c_first, c_last = c_first_new, c_last_new
+
+    # Defense-in-depth: c_first empty + c_last set is the fingerprint of a
+    # single-token collapse — the extraction-layer split_full_name (no master_last)
+    # stripped the last-name token as a credential suffix (e.g. "Jessica Do" →
+    # strip "DO" → ["Jessica"] → returns ("", "Jessica")).
+    # Re-split from the raw full name using master_last to recover the real split.
+    if not c_first and c_last:
+        full = getattr(candidate, "licensee_full_name", "") or ""
+        if full.strip():
+            c_first_new, c_last_new = _split_full_name(full, m_last)
+            if c_first_new and c_last_new:
+                c_first, c_last = c_first_new, c_last_new
+
+    # Defense-in-depth: if c_first was stored as a credential type (e.g. "D.C.,"
+    # for chiropractors on boards that put the credential in the first_name column),
+    # fall back to the master-row first name. Normalize with the same raw-token
+    # approach as _clean_matched_name (not via _normalize_name which converts dots
+    # to spaces, splitting "D.C." into ["D", "C"] before the suffix check can fire).
+    if c_first and re.sub(r"[.\-,]", "", c_first.strip()).upper() in _NAME_SUFFIXES_NORM:
+        c_first = m_first
 
     # If candidate has full name but no parsed first/last, split intelligently:
     # strip suffixes, use master last-name word count for compound last names.
@@ -512,6 +603,27 @@ def score_candidate(candidate: Any, master_row: dict,
         full = getattr(candidate, "licensee_full_name", "") or ""
         if full.strip():
             c_first, c_last = _split_full_name(full, m_last)
+
+    # Single-letter initial: some boards store a bare first-name initial in the
+    # first_name column.  Two sub-cases:
+    # (a) Board has "LESSLER, R. WILLIAM" — the full name contains the real first
+    #     name "WILLIAM" verbatim so we expand c_first to m_first for scoring.
+    # (b) Board has "HAMLET , M. Lynnette" — master first "MARY" does NOT appear in
+    #     the full name (only "M." does), but the initial "M" is the first letter of
+    #     "MARY".  We still expand c_first → m_first so gate and scoring see the match.
+    #     Safety: the gate below still requires license OR last_name to also match.
+    if (m_first and c_first
+            and len(re.sub(r"[.\-,\s]", "", c_first)) == 1):
+        _initial_char = re.sub(r"[.\-,\s]", "", c_first).upper()
+        _full_name = (getattr(candidate, "licensee_full_name", "") or "").upper()
+        _m_first_norm_toks = _strip_name_affixes(_normalize_name(m_first).split())
+        if m_first.upper() in _full_name.split():
+            # Case (a): full first name found verbatim in board's combined name
+            c_first = m_first
+        elif (_initial_char and _m_first_norm_toks
+              and _m_first_norm_toks[0].startswith(_initial_char)):
+            # Case (b): initial matches first letter of master's first name
+            c_first = m_first
 
     breakdown = ScoreBreakdown(weight_profile=effective_profile)
 
@@ -538,6 +650,32 @@ def score_candidate(candidate: Any, master_row: dict,
         or (bool(m_lic and c_lic_legacy) and license_numerics_match(m_lic, c_lic_legacy))
     )
     breakdown.gate_passed = bool(first_ok and (lic_ok or last_ok))
+
+    # Swapped-name: input(first,last) == candidate(last,first), gated on license match.
+    if not breakdown.gate_passed and lic_ok:
+        _sw_first = first_name_matches(m_first, c_last)
+        _sw_last = last_name_matches(m_last, c_first)
+        if _sw_first and _sw_last:
+            breakdown.gate_passed = True
+            breakdown.first_name = first_name_score(m_first, c_last)
+            breakdown.last_name = last_name_score(m_last, c_first)
+            breakdown.total = round(
+                sum(getattr(breakdown, k) * w for k, w in weights.items()), 4
+            )
+
+    # Middle-name-as-first: some boards store middle name in the first_name field
+    # (e.g. OH CSV has "HAMLET , LYNNETTE M" when master is "MARY LYNNETTE HAMLET").
+    # Accept when: gate still fails, license matches, last matches, master middle = c_first.
+    if not breakdown.gate_passed and lic_ok:
+        _m_mid = (master_row.get("middle_name") or "").strip()
+        _last_ok = last_name_matches(m_last, c_last)
+        if _m_mid and first_name_matches(_m_mid, c_first) and _last_ok:
+            breakdown.gate_passed = True
+            breakdown.first_name = first_name_score(_m_mid, c_first)
+            breakdown.last_name = last_name_score(m_last, c_last)
+            breakdown.total = round(
+                sum(getattr(breakdown, k) * w for k, w in weights.items()), 4
+            )
 
     return breakdown
 
@@ -594,9 +732,15 @@ def evaluate(candidates: list[Any], master_row: dict,
         # License anchor: exact license + partial first name match → accept regardless
         # of last name. Handles name-change cases (e.g. "Duric Zinka" → board has
         # "LEWANDOWSKI, ZINKA D") where last name differs but license is definitive.
+        # Requires last_name >= 0.4: prevents anchoring on a completely different person
+        # (e.g. "BAILEY" vs "IAMS", or "BENNETT" vs "LESSLER") when multiple licenses
+        # share the same numeric digits but different type prefixes (e.g. "FD.009648"
+        # vs "PT.009648"). A last_name score of 0.286 or 0.2 is not a name variant —
+        # it is a different person.
         if (top_bd.weight_profile == "license_present"
                 and top_bd.license_numerics == 1.0
-                and top_bd.first_name >= 0.5):
+                and top_bd.first_name >= 0.5
+                and top_bd.last_name >= 0.4):
             return DisambiguationVerdict(
                 status="selected", best=top_cand, best_breakdown=top_bd,
                 gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,
@@ -808,4 +952,37 @@ def apply_narrowing(candidates: list[Any], master_row: dict
         return pool, "selected"
     if len(pool) == 0:
         return [], "no_gate_pass"
+
+    # Step 4: prefer active/non-expired over inactive/expired candidates.
+    # When the same person has two records (e.g. an active OH license and an
+    # expired out-of-state one), the active record is the correct match.
+    import datetime as _dt
+    _today = _dt.date.today()
+
+    def _is_active(c: Any) -> bool:
+        status = (getattr(c, "status", None) or "").upper()
+        if status in ("ACTIVE", "ACTIVE - CURRENT", "CURRENT"):
+            return True
+        exp = getattr(c, "expiration_date", None)
+        if exp:
+            try:
+                if isinstance(exp, str):
+                    for _fmt in ("%Y-%m-%d", "%m/%d/%Y", "%m-%d-%Y"):
+                        try:
+                            exp = _dt.datetime.strptime(exp, _fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                if isinstance(exp, (_dt.date, _dt.datetime)):
+                    return exp >= _today
+            except Exception:
+                pass
+        return False
+
+    step4 = [c for c in pool if _is_active(c)]
+    if len(step4) == 1:
+        return step4, "selected"
+    if step4:
+        pool = step4
+
     return pool, "ambiguous"

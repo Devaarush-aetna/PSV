@@ -67,8 +67,31 @@ async def scrape_csv_bulk(
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(last_exc))
         return []
 
+    # Build the minimal set of columns needed so wide CSVs (e.g. OH: 154 cols,
+    # 2.38M rows → 5-6 GB if all columns are loaded) only consume RAM for the
+    # ~20 columns actually used for searching and output.
+    _needed_cols: set[str] = set()
+    for _v in csv_cfg.search_columns.values():
+        if isinstance(_v, list):
+            _needed_cols.update(_v)
+        elif isinstance(_v, str):
+            _needed_cols.add(_v)
+    _parse_col_name = getattr(csv_cfg, "parse_combined_name_column", None)
+    if _parse_col_name:
+        _needed_cols.add(_parse_col_name)
+    if csv_cfg.license_type_column:
+        _needed_cols.add(csv_cfg.license_type_column)
+    if csv_cfg.provider_type_column:
+        _needed_cols.add(csv_cfg.provider_type_column)
+    if config.detail.field_map:
+        _needed_cols.update(config.detail.field_map.keys())
+    # Only apply column filtering when field_map is configured — sites without
+    # a field_map rely on passing all raw CSV columns through to map_to_license_record,
+    # so filtering would silently drop output data for those boards.
+    _usecols = list(_needed_cols) if (_needed_cols and config.detail.field_map) else None
+
     try:
-        df = load_csv(csv_path, csv_cfg.encoding, effective_header_row, csv_cfg.separator)
+        df = load_csv(csv_path, csv_cfg.encoding, effective_header_row, csv_cfg.separator, usecols=_usecols)
     except Exception as exc:
         log.error("[%s] CSV parse failed: %s", source_id, exc)
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(exc))

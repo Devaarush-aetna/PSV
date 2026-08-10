@@ -55,13 +55,17 @@ search:
     search_button:
       selector: "input[value='Search'], input[type='submit']"
   results_wait:
-    strategy: network_idle
+    strategy: element_visible
     selector: "table tr a[href*='Details.aspx']"
     timeout_ms: 30000
     no_results_indicators:
       - "no records"
       - "0 records"
       - "no results"
+      - "Server Error"
+      - "An error occurred"
+      - "Application Error"
+      - "Object moved"
 
 results:
   type: table
@@ -131,6 +135,7 @@ transport:
     height: 900
   timeout_ms: 60000
   navigation_timeout_ms: 30000
+  ladder_timeout_s: 60
   rate_limit:
     delay_between_requests_ms: 1500
     max_concurrent: 1

@@ -230,8 +230,14 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
             if " " not in ln:
                 continue
 
+        # License-number rungs identify the record by number alone; adding a
+        # board-level type filter causes misses when the input prov_type differs
+        # from the actual license_type on the board (e.g. PN input but APRN on
+        # board after a credential upgrade).  Only apply the type filter on
+        # name-based rungs where it narrows an otherwise large result set.
+        lt_for_mode = license_type if mode in _NAME_MODES else None
         query, norm = _build_query(mode, master_row, provider_type_override=pt_override,
-                                   license_type_override=license_type)
+                                   license_type_override=lt_for_mode)
         if not norm:
             continue
         # Skip if license_numeric_only would produce identical value to plain license_number
@@ -512,6 +518,11 @@ def build_targeted_retry_plan(config: SiteConfig, master_row: dict,
             num = (lic_entry.get("number") or "").strip()
             if not num:
                 continue
+            # Guard: combo modes need non-license fields present in master_row;
+            # without them _build_query degrades to a plain license search (duplicate).
+            _extra_required = [f for f in capability.required_fields_for(_mode) if f != "license_id"]
+            if not all(master_row.get(f) for f in _extra_required):
+                continue
             override = {"license_id": num}
             sq, norm = _build_query(_mode, master_row, override)
             _add_plan(_mode, sq, norm, "license_number")
@@ -647,7 +658,8 @@ async def run_ladder(
             )
             trace.append(attempt)
 
-            verdict = await _evaluate_records(records, master_row, trace)
+            verdict = await _evaluate_records(records, master_row, trace,
+                                              current_mode=plan.mode)
             attempt.confidence = verdict.best_breakdown.total if verdict.best_breakdown else None
             attempt.weight_profile_used = verdict.best_breakdown.weight_profile if verdict.best_breakdown else None
 
@@ -675,6 +687,7 @@ async def run_ladder(
                             tiebreaker_used=verdict.tiebreaker_used,
                             weight_profile_used=bd.weight_profile,
                         )
+                    attempt.candidates = [best]
                     attempt.outcome = OUTCOME_MATCH_EXACT
                     break  # stop rungs on this board; continue to next board
                 if getattr(best, "expiration_date", None) is None:
@@ -689,19 +702,52 @@ async def run_ladder(
                 # license that doesn't match — an absent board license stays Fail.
                 # Skip for license-mode searches: the board confirmed the match
                 # by returning the record in response to a license query.
+                _name_only_rescore = False
                 if has_lic_id and lic_numerics == 0.0 and plan.mode in _NAME_MODES:
                     _detail_lic = (getattr(best, "license_number", "") or "").strip()
                     _input_lic = (master_row.get("license_id") or "").strip()
                     # Temp/internal tracking codes (TC, TP, TSA prefix) never appear
                     # on the board — name match alone is sufficient for these.
-                    if not _is_temp_permit(_input_lic) and not (
-                        _detail_lic and disamb.license_numerics_match(_input_lic, _detail_lic)
-                    ):
+                    # Only escalate when the board returns a license number that
+                    # conflicts with the input. When the board exposes NO license at
+                    # all (_detail_lic is empty), accept the name match — the board
+                    # simply doesn't surface license numbers on its results table.
+                    # Also accept when the name-only verdict is high-confidence
+                    # (gate_passed=True AND score >= name_only threshold): different
+                    # boards may use different license numbering systems; the identity
+                    # is confirmed by name. Output_emitter routes these to AIAddLicense.
+                    _name_high_conf = (
+                        bd.gate_passed and bd.total >= cfg.THRESHOLD_NAME_PROFILE
+                    )
+                    # Fallback: when the board returns a different license format but
+                    # the name + provider type match is perfect (license_numerics==0.0
+                    # because the board uses its own numbering), re-score with name_only
+                    # weights. Rows 0007/0191: board has different license; name score
+                    # with license_present profile is 0.65 (below threshold), but
+                    # name_only score is 1.0 — accept as high-confidence name match.
+                    # Set _name_only_rescore so the breakdown gets updated before
+                    # return — output_emitter step 1.7 checks total against 0.70,
+                    # and we need the name_only total (1.0) not the license_present
+                    # total (0.65) so step 5b routes to AIAddLicense instead of Manual.
+                    if not _name_high_conf and bd.gate_passed and bd.license_numerics == 0.0:
+                        _name_only_total = (
+                            bd.first_name * 0.40 + bd.last_name * 0.30
+                            + bd.provider_type * 0.25 + bd.state * 0.05
+                        )
+                        if _name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
+                            _name_high_conf = True
+                            _name_only_rescore = True
+                    if (not _is_temp_permit(_input_lic)
+                            and _detail_lic
+                            and not disamb.license_numerics_match(_input_lic, _detail_lic)
+                            and not _name_high_conf):
                         attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
                         attempt.candidates = verdict.gate_passers[:10]
                         trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                         _stop_boards = True
                         break  # break rung loop; outer board loop checks _stop_boards
+                if _name_only_rescore:
+                    bd = disamb.score_candidate(best, master_row, weight_profile="name_only")
                 attempt.outcome = OUTCOME_MATCH_EXACT
                 trace.final_outcome = "Pass"
                 return LadderResult(
@@ -731,18 +777,33 @@ async def run_ladder(
                     )
                     _nrw_lic_num = bd.license_numerics if bd else 1.0
                     _nrw_has_lic = bool(master_row.get("license_id"))
+                    _nrw_name_only_rescore = False
                     if _nrw_has_lic and _nrw_lic_num == 0.0 and plan.mode in _NAME_MODES:
                         _nrw_detail_lic = (getattr(chosen, "license_number", "") or "").strip()
                         _nrw_input_lic = (master_row.get("license_id") or "").strip()
-                        if not _is_temp_permit(_nrw_input_lic) and not (
-                            _nrw_detail_lic and disamb.license_numerics_match(
-                                _nrw_input_lic, _nrw_detail_lic)
-                        ):
+                        _nrw_high_conf = (
+                            bd.gate_passed and bd.total >= cfg.THRESHOLD_NAME_PROFILE
+                        )
+                        if not _nrw_high_conf and bd.gate_passed and bd.license_numerics == 0.0:
+                            _nrw_name_only_total = (
+                                bd.first_name * 0.40 + bd.last_name * 0.30
+                                + bd.provider_type * 0.25 + bd.state * 0.05
+                            )
+                            if _nrw_name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
+                                _nrw_high_conf = True
+                                _nrw_name_only_rescore = True
+                        if (not _is_temp_permit(_nrw_input_lic)
+                                and _nrw_detail_lic
+                                and not disamb.license_numerics_match(
+                                    _nrw_input_lic, _nrw_detail_lic)
+                                and not _nrw_high_conf):
                             attempt.outcome = OUTCOME_NAME_MATCH_NO_LICENSE
                             attempt.candidates = narrowed_pool[:10]
                             trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                             _stop_boards = True
                             break  # break rung loop
+                    if _nrw_name_only_rescore:
+                        bd = disamb.score_candidate(chosen, master_row, weight_profile="name_only")
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                     trace.final_outcome = "Pass"
                     return LadderResult(
@@ -786,7 +847,25 @@ async def run_ladder(
         _sm_input_lic = (master_row.get("license_id") or "").strip()
         if _sm_input_lic and not _is_temp_permit(_sm_input_lic):
             _sm_detail_lic = (getattr(soft_match.best_record, "license_number", "") or "").strip()
-            if not (_sm_detail_lic and disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)):
+            _sm_bd = soft_match.best_breakdown
+            _sm_high_conf = bool(
+                _sm_bd is not None
+                and _sm_bd.gate_passed
+                and _sm_bd.total >= cfg.THRESHOLD_NAME_PROFILE
+            )
+            _sm_name_only_rescore = False
+            if (not _sm_high_conf and _sm_bd is not None
+                    and _sm_bd.gate_passed and _sm_bd.license_numerics == 0.0):
+                _sm_name_only_total = (
+                    _sm_bd.first_name * 0.40 + _sm_bd.last_name * 0.30
+                    + _sm_bd.provider_type * 0.25 + _sm_bd.state * 0.05
+                )
+                if _sm_name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
+                    _sm_high_conf = True
+                    _sm_name_only_rescore = True
+            if (_sm_detail_lic
+                    and not disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)
+                    and not _sm_high_conf):
                 trace.escalate_to_ai_reason = REASON_NAME_MATCH_NO_LICENSE
                 return LadderResult(
                     status="EscalateAi",
@@ -794,6 +873,12 @@ async def run_ladder(
                     reason=REASON_NAME_MATCH_NO_LICENSE,
                     weight_profile_used=soft_match.weight_profile_used,
                 )
+            if _sm_name_only_rescore and soft_match.best_record is not None:
+                _sm_new_bd = disamb.score_candidate(
+                    soft_match.best_record, master_row, weight_profile="name_only"
+                )
+                soft_match.best_breakdown = _sm_new_bd
+                soft_match.weight_profile_used = "name_only"
         trace.final_outcome = "Pass"
         if soft_match.best_record and not soft_match.reason:
             soft_match.reason = _out_of_state_reason(soft_match.best_record)
@@ -818,7 +903,8 @@ async def run_ladder(
                     used_npi=True, differing_field=plan.driving_field,
                 )
                 trace.append(attempt)
-                verdict = await _evaluate_records(records, master_row, trace)
+                verdict = await _evaluate_records(records, master_row, trace,
+                                                  current_mode=plan.mode)
                 attempt.confidence = verdict.best_breakdown.total if verdict.best_breakdown else None
                 attempt.weight_profile_used = verdict.best_breakdown.weight_profile if verdict.best_breakdown else None
 
@@ -1038,23 +1124,31 @@ def _skipped_attempt(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
     )
 
 
-def _pick_profile(trace: RowTrace, master_row: Optional[dict] = None) -> str:
+def _pick_profile(trace: RowTrace, master_row: Optional[dict] = None,
+                  current_mode: Optional[str] = None) -> str:
     """Choose disambiguator weight profile based on whether license-based
     attempts have returned any records yet.
 
     Temp-permit licenses (TP prefix) always use name_only: the board only
     stores the permanent license number, so license matching is meaningless.
+
+    Name-mode searches always use name_only regardless of whether a prior
+    license search found a different person (license-number collision with a
+    different provider contaminates license_attempts_returned_records).
     """
     if master_row and _is_temp_permit(master_row.get("license_id") or ""):
+        return "name_only"
+    if current_mode in _NAME_MODES:
         return "name_only"
     return "license_present" if trace.license_attempts_returned_records() else "name_only"
 
 
-async def _evaluate_records(records: list, master_row: dict, trace: RowTrace
+async def _evaluate_records(records: list, master_row: dict, trace: RowTrace,
+                             current_mode: Optional[str] = None,
                             ) -> disamb.DisambiguationVerdict:
     if not records:
         return disamb.DisambiguationVerdict(status="no_gate_pass")
-    profile = _pick_profile(trace, master_row)
+    profile = _pick_profile(trace, master_row, current_mode=current_mode)
     return disamb.evaluate(records, master_row, weight_profile=profile)
 
 

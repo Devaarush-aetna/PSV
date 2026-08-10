@@ -40,9 +40,13 @@ def _build_socrata_combo_url(config: SiteConfig, query: SearchQuery) -> str:
         else:
             clauses.append(f"upper({col}) like upper('%{safe}%')")
 
-    # _add_clause("license_number", query.license_number or (query.query if query.mode.startswith("license") else None), op="eq")
     _lic_val = query.license_number or (query.query if query.mode.startswith("license") else None)
-    _add_clause("license_number", _lic_val, op="eq" if (_lic_val and "." in _lic_val) else "like")
+    # Dotted inputs (e.g. "149.029942") are visual-separator formats; the board
+    # stores the bare digits ("149029942").  Strip dots and use LIKE so both
+    # "149.029942" and "149029942" resolve to the same dataset row.
+    if _lic_val and "." in _lic_val:
+        _lic_val = _lic_val.replace(".", "")
+    _add_clause("license_number", _lic_val, op="like")
     _add_clause("first_name", query.first_name, op="like")
     _add_clause("last_name", query.last_name, op="like")
     if query.license_type and config.identity.license_type_selector:
@@ -151,14 +155,13 @@ async def scrape_socrata_bulk_csv(
         base = config.identity.base_url.rstrip("?&")
 
         if query.mode in ("license_number", "credential_number"):
+            # Dots in license numbers are visual separators; strip them so
+            # "149.029942" searches as "%149029942%" matching the bare-digit form.
             if "." in q:
-                params = urllib.parse.urlencode({field: q, "$limit": "500"})
-            elif _re.match(r"^\d+$", q):
-                where = f"upper({field}) like upper('%{safe}%')"
-                params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
-            else:
-                where = f"upper({field}) like upper('%{safe}%')"
-                params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
+                q = q.replace(".", "")
+                safe = q.replace("'", "''")
+            where = f"upper({field}) like upper('%{safe}%')"
+            params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
         else:
             where = f"upper({field}) like upper('%{safe}%')"
             params = urllib.parse.urlencode({"$where": where, "$limit": "500"})

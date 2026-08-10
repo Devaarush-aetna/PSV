@@ -243,6 +243,9 @@ class SearchForm(BaseModel):
     # Extra wait (ms) after navigation before filling the form. Used for boards where a JS
     # challenge (e.g. Cloudflare managed challenge) must complete before form submission.
     post_navigate_wait_ms: int = 0
+    # Wait for networkidle after navigation before filling the form. Needed for ASP.NET
+    # UpdatePanel boards (e.g. CT eLicense) where form inputs render after page load fires.
+    wait_for_networkidle: bool = False
 
 
 class SearchConfig(BaseModel):
@@ -312,6 +315,12 @@ class DetailTrigger(BaseModel):
     type: Literal["view_button", "row_click", "link_in_cell"] = "view_button"
     selector: str = "a:has-text('View'), button:has-text('View')"
     force_pdf: bool = False  # treat all linked hrefs as PDFs regardless of URL pattern
+    # When the trigger opens an in-page modal/dialog (no navigation, URL stays the same),
+    # set this so the engine skips the "wait for URL change" step (which would otherwise
+    # burn the full detail timeout every row) and instead fires the row's own click
+    # handler via JS — immune to overlays (e.g. a cookie-consent banner) intercepting the
+    # pointer — before waiting for the modal body to populate.
+    opens_modal: bool = False
 
 
 class PaginationConfig(BaseModel):
@@ -441,6 +450,10 @@ class DetailConfig(BaseModel):
     sections: list[DetailSection] = Field(default_factory=list)
     back_navigation: BackNavigation = Field(default_factory=BackNavigation)
     out_of_state_tab: OutOfStateTabConfig = Field(default_factory=OutOfStateTabConfig)
+    # When set, all extraction strategies are scoped to this CSS selector rather than
+    # the full page. Use for inline popup/modal boards (e.g. Kendo UI Window) where the
+    # search form's labels contaminate page-wide extractions.
+    scope_selector: Optional[str] = None
 
 
 class OutputConfig(BaseModel):

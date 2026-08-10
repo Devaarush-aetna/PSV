@@ -281,8 +281,8 @@ def cli() -> None:
         help="Rows per batch before writing results (default: 10)",
     )
     p.add_argument(
-        "--timeout", type=int, default=45,
-        help="Per-board search timeout in seconds (default: 45)",
+        "--timeout", type=int, default=120,
+        help="Per-board search timeout in seconds (default: 120)",
     )
     p.add_argument(
         "--sequential", action="store_true",

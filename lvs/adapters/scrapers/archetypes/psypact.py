@@ -18,6 +18,7 @@ from engine.evidence import capture_evidence
 from engine.models import LicenseRecord, LicenseStatus, SearchQuery, SiteConfig
 from engine.output import upsert_to_db
 from engine.proxy import get_proxy_config
+from orchestrator.disambiguator import first_name_matches
 from ._shared import _emit_event
 
 log = logging.getLogger(__name__)
@@ -142,8 +143,8 @@ async def scrape_psypact(
                     # Last name must match (last word in profile name)
                     if parts[-1] != last_name:
                         return False
-                    # If first name available, check it
-                    if first_name and parts[0] != first_name:
+                    # If first name available, use nickname-aware comparison
+                    if first_name and not first_name_matches(first_name, parts[0]):
                         return False
                     return True
 

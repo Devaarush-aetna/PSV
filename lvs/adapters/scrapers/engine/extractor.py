@@ -18,11 +18,11 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 async def _extract_heading_name(page: Page) -> dict:
-    """Extract licensee name from page heading (Angular ng-binding or generic h1/h2)."""
+    """Extract licensee name from page heading (Angular ng-binding or generic h1/h2/h6)."""
     result: dict = {}
     try:
         for sel in ("h1.ng-binding", "h2.ng-binding", "h3.ng-binding", "h1", "h2", "h3",
-                    ".panel-heading"):
+                    "h6[class*='headline6']", ".panel-heading"):
             loc = page.locator(sel)
             count = await loc.count()
             for i in range(min(count, 3)):
@@ -115,7 +115,8 @@ async def _extract_label_sibling(page: Page) -> dict:
 async def _extract_field_label_value(page: Page) -> dict:
     result: dict = {}
     try:
-        labels = page.locator("[class*='field-label'],[class*='fieldLabel'],[class*='fieldlabel'],[class*='infoTitle'],[class*='rlabel']")
+        # forge-typography--headline5 covers Tyler Technologies Forge UI (used by CAVU eLicense / CT eLicense)
+        labels = page.locator("[class*='field-label'],[class*='fieldLabel'],[class*='fieldlabel'],[class*='infoTitle'],[class*='rlabel'],[class*='forge-typography--headline5']")
         count = await labels.count()
         for i in range(count):
             lbl = labels.nth(i)
@@ -467,8 +468,18 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
     """Run strategy cascade and section extraction; return merged field dict."""
     combined: dict = {}
 
+    # Scope all extractions to a sub-element when configured (e.g. Kendo UI Window popup
+    # at [data-role='window']).  This prevents the page's search-form labels from
+    # contaminating popup-only field extractions.
+    ctx: Any = page
+    if config.scope_selector:
+        scoped = page.locator(config.scope_selector)
+        if await scoped.count() > 0:
+            ctx = scoped.first
+            log.debug("detail extraction scoped to '%s'", config.scope_selector)
+
     # First: extract name from heading (works for Angular/Thentia Cloud sites)
-    heading_data = await _extract_heading_name(page)
+    heading_data = await _extract_heading_name(ctx)
     if heading_data:
         combined.update(heading_data)
 
@@ -487,24 +498,24 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
         stype = strategy.get("type", "")
         fn = strategy_fns.get(stype)
         if fn:
-            data = await fn(page)
+            data = await fn(ctx)
             if data:
                 combined.update(data)
                 log.debug("Strategy '%s' yielded %d fields", stype, len(data))
         elif stype == "header_mapped_table":
-            records = await _extract_header_mapped_table(page)
+            records = await _extract_header_mapped_table(ctx)
             if records:
                 combined["_table_records"] = records
         elif stype == "element_ids":
             id_map = strategy.get("id_map", {})
-            data = await _extract_element_ids(page, id_map)
+            data = await _extract_element_ids(ctx, id_map)
             if data:
                 combined.update(data)
                 log.debug("Strategy 'element_ids' yielded %d fields", len(data))
 
-    # Section tables
+    # Section tables (always scoped via ctx)
     for section in config.sections:
-        records = await _extract_section_table(page, section)
+        records = await _extract_section_table(ctx, section)
         combined[section.field] = records
         # If columns mapping was provided, flatten the first record's fields into
         # the top-level combined dict so they're available for output.license_record
