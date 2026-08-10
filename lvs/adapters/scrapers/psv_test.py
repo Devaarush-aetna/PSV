@@ -727,17 +727,28 @@ class PsvBrowser:
                         btn = page.locator(trigger_sel).nth(_idx)
                         if not await btn.is_visible(timeout=3000):
                             break
-                        await btn.evaluate("el => el.removeAttribute('target')")
-                        url_before = page.url
-                        await btn.click()
-                        try:
-                            await page.wait_for_function(
-                                "url => window.location.href !== url",
-                                url_before,
-                                timeout=self.config.detail.wait.timeout_ms,
-                            )
-                        except Exception:
-                            pass
+                        if getattr(self.config.results.detail_trigger, "opens_modal", False):
+                            # Modal detail (no navigation): fire the row's own click handler
+                            # via JS so a cookie/consent overlay can't intercept the pointer,
+                            # then wait directly for the modal body to fill. Skips the
+                            # URL-change wait, which never fires for a modal and would burn
+                            # the full detail timeout on every row.
+                            try:
+                                await btn.evaluate("el => el.click()")
+                            except Exception:
+                                await btn.click()
+                        else:
+                            await btn.evaluate("el => el.removeAttribute('target')")
+                            url_before = page.url
+                            await btn.click()
+                            try:
+                                await page.wait_for_function(
+                                    "url => window.location.href !== url",
+                                    url_before,
+                                    timeout=self.config.detail.wait.timeout_ms,
+                                )
+                            except Exception:
+                                pass
                         await _wait_for_detail_content(page, self.config)
                         raw = await extract_detail(page, self.config.detail)
                         await _try_out_of_state_tab(page, self.config, raw)

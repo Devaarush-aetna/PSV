@@ -313,6 +313,12 @@ class DetailTrigger(BaseModel):
     type: Literal["view_button", "row_click", "link_in_cell"] = "view_button"
     selector: str = "a:has-text('View'), button:has-text('View')"
     force_pdf: bool = False  # treat all linked hrefs as PDFs regardless of URL pattern
+    # When the trigger opens an in-page modal/dialog (no navigation, URL stays the same),
+    # set this so the engine skips the "wait for URL change" step (which would otherwise
+    # burn the full detail timeout every row) and instead fires the row's own click
+    # handler via JS — immune to overlays (e.g. a cookie-consent banner) intercepting the
+    # pointer — before waiting for the modal body to populate.
+    opens_modal: bool = False
 
 
 class PaginationConfig(BaseModel):
