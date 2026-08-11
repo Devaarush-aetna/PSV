@@ -96,6 +96,13 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("VIRGINIA", "GINNY"),
     ("EVELYN", "EVIE"),
     ("BEVERLY", "BEV"),
+    ("ZACHARY", "ZACH"),
+    ("JONATHAN", "JON"), ("JONATHAN", "JONNY"),
+    ("NATHANIEL", "NATE"),
+    ("ALLISON", "ALLIE"),
+    ("BRITTANY", "BRIT"), ("BRITTANY", "BRITT"),
+    ("HEATHER", "HEATH"),
+    ("MEREDITH", "MERI"),
 ]
 _NICK_MAP: dict[str, set[str]] = {}
 for _a, _b in _NICKNAME_PAIRS:
@@ -193,6 +200,12 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
+            rest_toks = rest_toks[1:]
+        # Strip leading generational/credential suffixes that appear before the first name
+        # when boards write "Last, Jr., First" (two-comma format).
+        # e.g. "Slaughter, Jr., Dale Jeffery" → rest_toks=["JR.", "DALE", "JEFFERY"]
+        # Without this, first_tok would be "JR." instead of "DALE".
+        while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[1:]
 
         # If everything after the comma was a suffix (e.g. "George Joseph Vesper, Jr."),

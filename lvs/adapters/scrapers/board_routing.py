@@ -490,7 +490,6 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'DT'): ['NC_DIETETICS'],
     ('NC', 'LC'): ['IBCLC_COMMISSION', 'NC_MENTAL_HEALTH', 'NC_DAC'],
     ('NC', 'LPC'): ['NC_MENTAL_HEALTH'],
-    ('NC', 'MT'): ['NC_MASSAGE'],
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
     ('NC', 'OP'): ['NC_OPTOMETRY'],

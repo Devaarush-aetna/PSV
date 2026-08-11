@@ -496,6 +496,13 @@ class OutputEmitter:
             "EPDB and NPPES name scores both below 0.70 threshold"
         ):
             self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason and manual_reason.startswith("Low match score"):
+            self._standard_rows[-1]["reason"] = manual_reason
+        elif manual_reason == (
+            "AI fallback passed: manual review required to confirm "
+            "verification result before use"
+        ):
+            self._standard_rows[-1]["reason"] = manual_reason
 
         # Route: manual XOR add_license; AI_ADD_LICENSE rows are excluded from manual
         # (AIAddLicense IS the manual file for these — reviewers only need one place to look).
@@ -536,6 +543,11 @@ class OutputEmitter:
                     self._standard_rows[-1]["reason"] = _no_expiry_reason
                     self._collect_manual(outcome, failure_reason=_no_expiry_reason)
                     went_manual = True
+
+        # Catch-all: if any manual_reason was not matched by the explicit override block
+        # above, backfill it now so no future reason string silently slips through.
+        if went_manual and manual_reason and not self._standard_rows[-1].get("reason"):
+            self._standard_rows[-1]["reason"] = manual_reason
 
         # Tag the standard row with its routing destination
         if went_ai_add_license:

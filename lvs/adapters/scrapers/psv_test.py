@@ -141,15 +141,16 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NC", "MW"):   "NC Board of Nursing (ncbon.com) — CAPTCHA-protected, automated access blocked",
     # NC ABA board — CAPTCHA-protected, no automated access.
     ("NC", "ABA"):  "NC Applied Behavior Analyst board — CAPTCHA-protected, automated access blocked",
-    # NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected. Covers PH and PM.
-    ("NC", "PH"):   "NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected, automated access blocked",
+    # NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected. Covers PM.
     ("NC", "PM"):   "NC Board of Pharmacy (ncbop.org) — CAPTCHA-protected, automated access blocked",
-    # NC Medical Board (ncmedboard.org) — CAPTCHA-protected. Covers MD, DO, PA, PAS, PAH.
+    # NC Medical Board (ncmedboard.org) — CAPTCHA-protected. Covers MD, DO, PA, PAS, PAH, PAB, PH.
     ("NC", "MD"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
     ("NC", "DO"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
     ("NC", "PA"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
     ("NC", "PAS"):  "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
     ("NC", "PAH"):  "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PAB"):  "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
+    ("NC", "PH"):   "NC Medical Board (ncmedboard.org) — CAPTCHA-protected, automated access blocked",
     # NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, no routing configured.
     ("NC", "SW"):   "NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, automated access blocked",
     # NC Art Therapy — verified manually by emailing the board contact.

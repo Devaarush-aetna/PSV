@@ -205,9 +205,25 @@ def evaluate_name_gate(
         )
 
     # ================================================================
+    # Pre-compute EPDB name (needed for NPPES short-circuit guard below)
+    # When last name is blank, fall back to middle name as a proxy last name.
+    # This catches cases where the last name was mis-coded as the middle name
+    # (e.g. input first="William", middle="Franklin", last="" should NOT match
+    # a board record for "William Thorne" just because first names match).
+    # ================================================================
+    epdb_first_raw = (master_row.get("first_name") or "").strip()
+    epdb_last_raw = (master_row.get("last_name") or "").strip()
+    if not epdb_last_raw:
+        epdb_last_raw = (master_row.get("middle_name") or "").strip()
+    epdb_first, epdb_last = _clean_pair(epdb_first_raw, epdb_last_raw)
+
+    # ================================================================
     # Step 1: NPPES name (checked FIRST — short-circuits on approve)
     # ================================================================
     nppes_score: Optional[float] = None
+    # Track whether the NPPES short-circuit was blocked by a clear EPDB/board
+    # last-name conflict (so nppes_score is excluded from the final max).
+    _nppes_shortcircuit_blocked = False
     if nppes is not None and getattr(nppes, "fetch_status", None) == "ok":
         n_first_raw = (nppes.first_name or "").strip()
         n_last_raw = (nppes.last_name or "").strip()
@@ -227,8 +243,20 @@ def evaluate_name_gate(
                     if other_score > (nppes_score or 0.0):
                         nppes_score = other_score
 
+            # Guard: when EPDB last name (or middle-name proxy) clearly conflicts
+            # with board last name, the NPPES short-circuit is unreliable — the NPI
+            # substitution path may have matched a different person's license.
+            # Example: input "William Franklin" (NPI resolves to license for
+            # "William Thorne") → NPPES/board both say "Thorne" → nppes_score=1.0,
+            # but Franklin ≠ Thorne, so this should NOT auto-approve.
+            if (epdb_last and board_last
+                    and disamb.last_name_score(epdb_last, board_last) < 0.40):
+                _nppes_shortcircuit_blocked = True
+
             # Short-circuit: NPPES alone clears the threshold
-            if nppes_score is not None and nppes_score >= approve_threshold:
+            if (nppes_score is not None
+                    and nppes_score >= approve_threshold
+                    and not _nppes_shortcircuit_blocked):
                 return NameGateResult(
                     epdb_score=None,
                     nppes_score=round(nppes_score, 4),
@@ -237,11 +265,15 @@ def evaluate_name_gate(
                 )
 
     # ================================================================
-    # Step 2: EPDB name (from master_row)
+    # Step 2: EPDB name (from master_row) — already computed above
     # ================================================================
-    epdb_first_raw = (master_row.get("first_name") or "").strip()
-    epdb_last_raw = (master_row.get("last_name") or "").strip()
-    epdb_first, epdb_last = _clean_pair(epdb_first_raw, epdb_last_raw)
+    # epdb_first / epdb_last are already set (with middle-name proxy when last is blank).
+    # Keep the proxy for scoring — a blank last name that the proxy filled should still
+    # influence the EPDB score so that a completely different last name isn't ignored.
+
+    # When the NPPES short-circuit was blocked, exclude nppes_score from final scoring
+    # so it cannot override a clearly mismatching EPDB score.
+    _nppes_score_for_max = None if _nppes_shortcircuit_blocked else nppes_score
 
     # Skip gate when EPDB name already exactly matches the cleaned board name
     if (epdb_first == board_first and epdb_last == board_last
@@ -259,7 +291,7 @@ def evaluate_name_gate(
     # ================================================================
     # Determine verdict from max of available scores
     # ================================================================
-    scores = [s for s in [nppes_score, epdb_score] if s is not None]
+    scores = [s for s in [_nppes_score_for_max, epdb_score] if s is not None]
     max_score = max(scores) if scores else 0.0
 
     if max_score >= approve_threshold:

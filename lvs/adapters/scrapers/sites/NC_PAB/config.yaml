@@ -1,6 +1,6 @@
 identity:
   source_id: "NC_PAB"
-  board_name: "North Carolina Psychology Board (Provisional)"
+  board_name: "North Carolina Medical Board"
   state: "NC"
   country: "US"
   profession_codes: ["PAB"]
