@@ -150,7 +150,7 @@ def download_pdf(url: str, cache_dir: str, cache_days: int) -> str:
 # Page-link PDF URL discovery
 # ---------------------------------------------------------------------------
 
-def discover_pdf_url(base_url: str, link_selector: str = "a[href*='.pdf']", proxy_cfg=None) -> str:
+def discover_pdf_url(base_url: str, link_selector: str = "a[href*='.pdf']", proxy_cfg=None, no_proxy: bool = False) -> str:
     """Navigate to base_url, find anchor matching link_selector, return absolute PDF URL.
 
     Used by pdf_bulk download_strategy: page_link — boards that don't publish a
@@ -164,7 +164,8 @@ def discover_pdf_url(base_url: str, link_selector: str = "a[href*='.pdf']", prox
     async def _find_url() -> str:
         from playwright.async_api import async_playwright as _async_playwright
         async with _async_playwright() as pw:
-            browser = await pw.chromium.launch(headless=True)
+            launch_args = ["--no-proxy-server"] if no_proxy else []
+            browser = await pw.chromium.launch(headless=True, args=launch_args)
             try:
                 ctx_kwargs = {}
                 if proxy_cfg:
@@ -296,7 +297,7 @@ def normalize_output(row: dict[str, Any], pdf_format: str) -> dict[str, Any]:
     for key, value in row.items():
         if value is None:
             continue
-        kl = key.lower().strip().rstrip(".").strip()
+        kl = key.lower().replace("\n", " ").strip().rstrip(".").strip()
         vs = str(value).strip()
 
         if kl in ("license #", "license", "lic. no", "license no", "license number",
@@ -334,11 +335,26 @@ def normalize_output(row: dict[str, Any], pdf_format: str) -> dict[str, Any]:
         elif kl == "status":
             normalized["Status"] = vs
 
-        elif kl in ("issued", "issue date"):
+        elif kl == "optometrist name":
+            # AR_ASBO format: "Last, First[, Middle][, O.D.]"
+            cred_pat = re.compile(r"^[A-Z]+\.([A-Z]+\.)+$")
+            parts = [p.strip() for p in vs.split(",") if p.strip() and not cred_pat.match(p.strip())]
+            if parts:
+                normalized["Last Name"] = parts[0]
+            if len(parts) >= 2:
+                normalized["First Name"] = parts[1]
+            if len(parts) >= 3:
+                normalized["Middle Name"] = parts[2]
+
+        elif kl in ("issued", "issue date", "original license date", "original license"):
             normalized["Issued"] = vs
 
-        elif kl in ("expiration", "expiration date", "expire date"):
+        elif kl in ("expiration", "expiration date", "expire date", "license expiration"):
             normalized["Expiration"] = vs
+
+        elif kl == "licensure type":
+            # A = Active, R = Retired — raw value; status_map in config.yaml converts to canonical
+            normalized["Status"] = vs
 
         else:
             normalized[key.strip()] = vs

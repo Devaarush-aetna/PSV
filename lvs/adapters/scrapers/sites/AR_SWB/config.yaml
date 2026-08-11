@@ -1,0 +1,135 @@
+identity:
+  source_id: AR_SWB
+  board_name: Arkansas Social Work Licensing Board
+  state: AR
+  country: US
+  profession_codes: [LCSW, LMSW, LSW, PLMSW, PLSW]
+  # WordPress page on healthy.arkansas.gov; roster data maintained by Tyler Arkansas.
+  # Single-field (last name) search; results rendered client-side via JS/Handlebars.
+  # Result fields from template: firstname+middle+lastname, city, state, level
+  #   (LCSW/LMSW/LSW/PLMSW/PLSW), number, dateissued, expdate, disc (disciplinary).
+  # No explicit status column — active status is implied; disc field flags violations.
+  # Row/cell selectors below are best-guess pending live DOM inspection (headless=false).
+  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/social-work-licensing-board/social-work-licensing-board-roster-search/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: "#lastname"
+      button_selector: "#metl_submit"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input[placeholder='Last Name']"
+    search_button:
+      selector: "button[type='submit']"
+    wait_for_networkidle: true
+    post_navigate_wait_ms: 3000
+  results_wait:
+    strategy: ajax_row_count
+    selector: "tbody tr"
+    timeout_ms: 30000
+    min_rows: 1
+    stable_ticks: 2
+    poll_interval_ms: 500
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "no matching records"
+
+results:
+  type: table
+  table:
+    row_selector: "tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    # Columns verified via live DOM inspection (2026-08-10):
+    # 0: (empty) | 1: Firstname | 2: Middle | 3: Lastname | 4: Number
+    # 5: Level   | 6: Expdate   | 7: Dateissued | 8: City | 9: State | 10: Disciplinary Action
+    columns:
+      1: first_name
+      2: middle_name
+      3: last_name
+      4: license_number
+      5: license_type
+      6: expiration_date
+      7: issue_date
+      8: city
+      9: state_code
+      10: disciplinary_action
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Probation": probation
+    "probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: ""  # leave blank — let Chromium send its real UA; overriding causes WAF 403
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/AR_SWB/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-06"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Diggs"
+  expect:
+    min_records: 1
+    last_name_contains: "Diggs"

@@ -1167,9 +1167,8 @@ def _diagnose_failure_outcome(records: list, master_row: dict,
         l = getattr(rec, "licensee_last_name", "") or ""
         if not f and not l:
             full = getattr(rec, "licensee_full_name", "") or ""
-            toks = full.split()
-            if len(toks) >= 2:
-                f, l = toks[0], toks[-1]
+            if full.strip():
+                f, l = disamb._split_full_name(full, m_last)
         return f, l
 
     any_first_match = any(

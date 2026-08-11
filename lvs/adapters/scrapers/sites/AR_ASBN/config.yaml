@@ -1,34 +1,50 @@
 identity:
-  source_id: AR_PODIATRY
-  board_name: Arkansas State Board of Podiatric Medicine
+  source_id: AR_ASBN
+  board_name: Arkansas State Board of Nursing
   state: AR
   country: US
-  profession_codes: [DPM]
-  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/podiatric-medicine-board/"
-  archetype: pdf_bulk
+  profession_codes: [RN, LPN, APRN, CRNA, NP, NPB, PN, RNA]
+  base_url: "https://arsbn.boardsofnursing.org/licenselookup"
+  archetype: classic_html_form
 
-pdf_bulk:
-  download_strategy: page_link
-  link_selector: "text=Verification Document"
-  cache_days: 7
-  cache_dir: "./PSV/PDFS"
+# License types available on this portal (id → label):
+#   1=APRN-CRNA  2=RN  3=APRN-CNS  4=APRN-CNP  5=APRN-CNM
+#   6=LPN  8=LPTN  9=RNP  10=MA-C  11=D-PCT
+#
+# Search tabs are switched via JS TabClick('1'|'2'|'3'):
+#   Tab 1 = Search by Name (Last + First + optional LicenseTypeId)
+#   Tab 2 = Search by License Number (LicenseNumber + LicenseTypeId required)
+#   Tab 3 = Search by NCSBN ID
+#
+# reCAPTCHA v2 explicit (site key 6LdG0VIUAAAAAE5yjzAkNT3MS2hwNty11ELnooyJ)
+# is injected before every search — blocks all headless/automated access.
 
 search:
   modes:
     - mode: license_number
+      input_selector: "input#LicenseSearch_LicenseSearchInput_LicenseNumber"
     - mode: last_name
+      input_selector: "input#LicenseSearch_NameSearchInput_LastName"
     - mode: first_name
+      input_selector: "input#LicenseSearch_NameSearchInput_FirstName"
   form:
     search_by_dropdown:
       strategy: none
     search_input:
-      selector: ""
+      selector: "input#LicenseSearch_LicenseSearchInput_LicenseNumber"
     search_button:
-      selector: ""
+      selector: "button#btnSearch"
   results_wait:
-    strategy: delay
-    timeout_ms: 1000
-    no_results_indicators: []
+    strategy: network_idle
+    timeout_ms: 20000
+    no_results_indicators:
+      - "no results"
+      - "no records found"
+      - "0 result"
+      - "no matching"
+      - "captcha"
+      - "please complete"
+      - "security verification"
 
 results:
   type: table
@@ -40,12 +56,11 @@ results:
 detail:
   wait:
     strategy: delay
-    timeout_ms: 1000
+    timeout_ms: 500
   strategies: []
   field_map:
     "License Number": license_number
     "License No": license_number
-    "License #": license_number
     "Lic No": license_number
     "First Name": first_name
     "Last Name": last_name
@@ -53,11 +68,9 @@ detail:
     "License Status": status
     "Expiration": expiration_date
     "Expiration Date": expiration_date
-    "Expiry Date": expiration_date
-    "Valid Thru": expiration_date
     "Issued": issue_date
     "Issue Date": issue_date
-    "City": city
+    "License Type": license_type
     "State": state_code
 
 output:
@@ -71,10 +84,13 @@ output:
     "Expired": expired
     "expired": expired
     "EXPIRED": expired
+    "Lapsed": expired
+    "lapsed": expired
     "Suspended": suspended
     "suspended": suspended
     "Revoked": revoked
     "revoked": revoked
+    "Surrendered": revoked
   date_formats:
     - "%m/%d/%Y"
     - "%Y-%m-%d"
@@ -93,7 +109,7 @@ transport:
   timeout_ms: 60000
   navigation_timeout_ms: 30000
   rate_limit:
-    delay_between_requests_ms: 500
+    delay_between_requests_ms: 1500
     max_concurrent: 1
   retry:
     max_attempts: 2
@@ -106,17 +122,17 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "Evidence/AR_PODIATRY/{run_id}/"
+  local_path: "Evidence/AR_ASBN/{run_id}/"
 
 compliance:
-  requires_captcha: false
+  requires_captcha: true
   requires_login: false
   robots_txt_compliant: true
 
 smoke_test:
+  skip: true
+  skip_reason: "recaptcha_v2_explicit_blocks_headless"
   mode: license_number
-  query: "247"
+  query: "SKIP"
   expect:
-    license_number: "247"
-    full_name_contains: "Smith"
-    min_records: 1
+    min_records: 0

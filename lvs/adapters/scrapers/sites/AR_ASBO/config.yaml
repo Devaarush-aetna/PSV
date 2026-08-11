@@ -1,15 +1,15 @@
 identity:
-  source_id: AR_PODIATRY
-  board_name: Arkansas State Board of Podiatric Medicine
+  source_id: AR_ASBO
+  board_name: Arkansas State Board of Optometry
   state: AR
   country: US
-  profession_codes: [DPM]
-  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/podiatric-medicine-board/"
+  profession_codes: [OP]
+  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/optometry-arkansas-state-board/"
   archetype: pdf_bulk
 
 pdf_bulk:
   download_strategy: page_link
-  link_selector: "text=Verification Document"
+  link_selector: "text=Doctor Lookup"
   cache_days: 7
   cache_dir: "./PSV/PDFS"
 
@@ -65,9 +65,12 @@ output:
     "Active": active
     "active": active
     "ACTIVE": active
+    "A": active
     "Inactive": inactive
     "inactive": inactive
     "INACTIVE": inactive
+    "Retired": inactive
+    "R": inactive
     "Expired": expired
     "expired": expired
     "EXPIRED": expired
@@ -106,7 +109,7 @@ evidence:
   capture_screenshot: true
   capture_on: ["search_results", "error"]
   storage: local
-  local_path: "Evidence/AR_PODIATRY/{run_id}/"
+  local_path: "Evidence/AR_ASBO/{run_id}/"
 
 compliance:
   requires_captcha: false

@@ -189,7 +189,7 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         # into c_first and can corrupt the matched_first output field.
         rest = re.sub(r",", " ", rest)
 
-        rest_toks = rest.upper().split()
+        rest_toks = [t.rstrip(',') for t in rest.upper().split()]
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
@@ -201,15 +201,21 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         if not rest_toks:
             full_name = raw_last
         else:
-            last_toks = raw_last.upper().split()
+            last_toks = [t.rstrip(',') for t in raw_last.upper().split()]
             while last_toks and re.sub(r"[.\-,]", "", last_toks[-1]) in _NAME_SUFFIXES_NORM:
                 last_toks = last_toks[:-1]
             first_tok = rest_toks[0]
             last_str = ' '.join(last_toks) if last_toks else ''
+            if not first_tok and len(last_toks) >= 2:
+                master_last_norm = _normalize_name(master_last or "")
+                master_last_words = len(master_last_norm.split()) if master_last_norm else 1
+                if master_last_words >= 2 and len(last_toks) > master_last_words:
+                    return last_toks[0], " ".join(last_toks[-master_last_words:])
+                return last_toks[0], last_toks[-1]
             return first_tok, last_str
 
     # ---- Format 2: "First [Middle] Last" ----
-    toks = full_name.upper().split()
+    toks = [t.rstrip(',') for t in full_name.upper().split()]
     # Pre-compute master_last_norm so the suffix loop can protect the last name token.
     # Without this, a last name like "Do" (Vietnamese) would be stripped as the
     # credential abbreviation "DO" (Doctor of Osteopathy) and the record would fail.
@@ -414,8 +420,8 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "DPM": ("PODIATRIC", "PODIATRY"),
         "DP": ("PODIATRIC", "PODIATRY", "PODIATRIST"),
         "PA": ("PHYSICIAN ASSISTANT",),
-        "PAS": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
-        "PAB": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT"),
+        "PAS": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT", "PHYSICIAN ASSOCIATE"),
+        "PAB": ("PHYSICIAN ASSISTANT", "PHYSICIANS ASSISTANT", "PHYSICIAN ASSOCIATE"),
         "RN": ("REGISTERED NURSE", "NURSING", "NURSE REGISTERED"),
         "RNA": ("NURSE ANESTHETIST", "ANESTHESIA", "CRNA", "REGISTERED NURSE", "ADVANCED PRACTICE REGISTERED NURSE"),
         "NP": ("NURSE PRACTITIONER", "ADVANCED PRACTICE", "ARNP", "APRN", "PRESCRIPTIVE AUTHORITY", "ADVANCED REGISTERED", "REGISTERED NURSE PRACTITIONER", "REGISTERED NURSE","DELEGATING NURSE","ADVANCED PRACTICE REGISTERED NURSE","CHIROPRACTOR LICENSE"),
@@ -577,6 +583,13 @@ def score_candidate(candidate: Any, master_row: dict,
             if c_last_new:
                 c_first, c_last = c_first_new, c_last_new
 
+    if c_first and re.sub(r"[.\-,]", "", c_first.strip()).upper() in _NAME_SUFFIXES_NORM:
+        full = getattr(candidate, "licensee_full_name", "") or ""
+        if full.strip():
+            c_first_new, c_last_new = _split_full_name(full, m_last)
+            if c_first_new and c_first_new.upper() not in _NAME_SUFFIXES_NORM:
+                c_first, c_last = c_first_new, c_last_new
+
     # Defense-in-depth: c_first empty + c_last set is the fingerprint of a
     # single-token collapse — the extraction-layer split_full_name (no master_last)
     # stripped the last-name token as a credential suffix (e.g. "Jessica Do" →
@@ -596,7 +609,6 @@ def score_candidate(candidate: Any, master_row: dict,
     # to spaces, splitting "D.C." into ["D", "C"] before the suffix check can fire).
     if c_first and re.sub(r"[.\-,]", "", c_first.strip()).upper() in _NAME_SUFFIXES_NORM:
         c_first = m_first
-
     # If candidate has full name but no parsed first/last, split intelligently:
     # strip suffixes, use master last-name word count for compound last names.
     if not c_first and not c_last:

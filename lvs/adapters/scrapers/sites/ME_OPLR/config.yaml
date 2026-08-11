@@ -57,7 +57,10 @@ results:
       2: city
       3: license_type
       4: status
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "table#gvLicensees > tbody > tr td:first-child a"
   pagination:
     enabled: false
     strategy: none
@@ -68,8 +71,32 @@ detail:
     selector: "table"
     timeout_ms: 15000
   strategies:
+    - type: element_ids
+      id_map:
+        "h2[class='Name']": "Name"
+    - type: custom_js
+      script: |
+        (() => {
+          const result = {};
+          document.querySelectorAll('.attributeRow').forEach(row => {
+            const cells = row.querySelectorAll('.attributeCell');
+            if (cells.length >= 2) {
+              const label = (cells[0].innerText || '').trim().replace(/:$/, '').trim();
+              const value = (cells[1].innerText || '').trim();
+              if (label && value) result[label] = value;
+            }
+          });
+          return result;
+        })()
     - type: two_column_table
     - type: label_sibling
+  sections:
+    - name: "History"
+      selector: "div.InterpretedLicenseHistory table"
+      field: license_history
+      columns:
+        "License Type": "License Type"
+        "End Date": "Expiration Date"
   field_map:
     "Name": full_name
     "License Number": license_number
@@ -84,7 +111,8 @@ detail:
     "State": state_code
     "Regulator": board_name
   back_navigation:
-    strategy: browser_back
+    strategy: breadcrumb_click
+    selector: "a[href='SearchResults.aspx']"
     wait_after_ms: 1500
 
 output:
@@ -117,7 +145,7 @@ transport:
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
   proxy:
-    enabled: true
+    enabled: false
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

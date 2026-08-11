@@ -46,7 +46,8 @@ async def scrape_pdf_bulk(
         cache_dir = str(Path(__file__).parents[4] / cache_dir.lstrip("./"))
     q = query.query.strip()
 
-    proxy_cfg = get_proxy_config()
+    proxy_disabled = config.transport.proxy.enabled is False
+    proxy_cfg = None if proxy_disabled else get_proxy_config()
     resolved_entries = list(pdf_cfg.pdfs)
     if pdf_cfg.download_strategy == "page_link":
         from engine.models import PdfEntry
@@ -54,7 +55,8 @@ async def scrape_pdf_bulk(
         try:
             if not resolved_entries:
                 discovered_url = discover_pdf_url(
-                    discovery_url, pdf_cfg.link_selector, proxy_cfg
+                    discovery_url, pdf_cfg.link_selector, proxy_cfg,
+                    no_proxy=proxy_disabled,
                 )
                 log.info("[%s] page_link discovered PDF URL: %s", source_id, discovered_url)
                 resolved_entries = [PdfEntry(url=discovered_url, format="default")]
@@ -62,7 +64,9 @@ async def scrape_pdf_bulk(
                 rebuilt = []
                 for entry in resolved_entries:
                     sel = entry.link_selector or pdf_cfg.link_selector
-                    discovered_url = discover_pdf_url(discovery_url, sel, proxy_cfg)
+                    discovered_url = discover_pdf_url(
+                        discovery_url, sel, proxy_cfg, no_proxy=proxy_disabled,
+                    )
                     log.info(
                         "[%s] page_link discovered PDF URL (%s/%s): %s",
                         source_id, entry.format, sel, discovered_url,

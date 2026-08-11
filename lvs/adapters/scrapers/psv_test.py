@@ -154,6 +154,16 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NC", "SW"):   "NC Social Work Certification and Licensure Board (ncswboard.org) — CAPTCHA-protected, automated access blocked",
     # NC Art Therapy — verified manually by emailing the board contact.
     ("NC", "AP"):   "License will be verified by emailing to pat@smvt.com",
+    # AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 explicit on
+    # every search; blocks all headless/automated access (site key 6LdG0VIUA...).
+    ("AR", "RN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "LPN"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "APRN"): "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "CRNA"): "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "NP"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -540,16 +550,20 @@ class PsvBrowser:
         src = self.config.identity.source_id
         state = self.config.identity.state
         ua = self.config.transport.user_agent
-        if not ua or ua == "LVS-LicenseVerifier/1.0":
+        if ua == "LVS-LicenseVerifier/1.0":
             ua = _REAL_UA
-        ctx = await self._browser.new_context(
+        # Empty ua means "don't override" — lets Chromium send its native UA so that
+        # User-Agent and Sec-CH-UA headers stay consistent (mismatch triggers WAF 403).
+        ctx_kwargs: dict = dict(
             viewport={"width": 1280, "height": 900},
-            user_agent=ua,
             proxy=self._proxy,
             locale="en-US",
             timezone_id="America/New_York",
             ignore_https_errors=self.config.transport.ignore_https_errors,
         )
+        if ua:
+            ctx_kwargs["user_agent"] = ua
+        ctx = await self._browser.new_context(**ctx_kwargs)
         ctx.set_default_timeout(timeout_ms)
         ctx.set_default_navigation_timeout(min(timeout_ms, 30000))
         if _STEALTH is not None:

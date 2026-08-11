@@ -1,0 +1,170 @@
+identity:
+  source_id: AR_PTBS
+  board_name: Arkansas State Board of Physical Therapy
+  state: AR
+  country: US
+  profession_codes: [PT, PTA]
+  # WordPress/Elementor/MetForm site. Form inputs confirmed from live DOM (2026-08-06):
+  #   input#first_name  (name='first_name', type='text', class='form-control')
+  #   input#last_name   (name='last_name',  type='text', class='form-control')
+  #   submit: button#metl_submit (text='Submit')
+  # Search strategy order: first_and_last → last_name → first_name.
+  base_url: "https://healthy.arkansas.gov/boards-commissions/boards/physical-therapy-arkansas-state-board/physical-therapy-board-roster-search/"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: first_and_last
+      # Fill last name as primary; extra_inputs fills first name simultaneously.
+      # Query format: "FirstName LastName" (e.g. "Sarah Brown")
+      input_selector: "input#last_name"
+      button_selector: "button#metl_submit"
+      extra_inputs:
+        "input#first_name": "{first}"
+    - mode: last_name
+      input_selector: "input#last_name"
+      button_selector: "button#metl_submit"
+    - mode: first_name
+      input_selector: "input#first_name"
+      button_selector: "button#metl_submit"
+  # Pre-select the disciplinary_action radio ("No") so MetForm validation does not
+  # block submission when the field has no default value selected.
+  pre_search_click: "input#disciplinary_action-1"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#last_name"
+    search_button:
+      selector: "button#metl_submit"
+    # Same healthy.arkansas.gov MetForm pattern as AR_SWB: results are rendered
+    # client-side via JS/Handlebars after the AJAX response.  Wait for networkidle
+    # on navigation, then use ajax_row_count so polling continues until rows appear.
+    wait_for_networkidle: true
+    post_navigate_wait_ms: 3000
+  results_wait:
+    strategy: ajax_row_count
+    selector: "tbody tr"
+    timeout_ms: 30000
+    min_rows: 1
+    stable_ticks: 2
+    poll_interval_ms: 500
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "0 results"
+      - "no matching"
+      - "nothing found"
+
+results:
+  # Columns verified via evidence HTML (2026-08-10):
+  # 0: first_name | 1: last_name | 2: license_number (e.g. "PT 3429")
+  # 3: issue_date | 4: status | 5: expiration_date | 6: disciplinary_action | 7: (index)
+  type: table
+  table:
+    row_selector: "tbody tr"
+    cell_selector: "td"
+    skip_first_row: false
+    columns:
+      0: first_name
+      1: last_name
+      2: license_number
+      3: issue_date
+      4: status
+      5: expiration_date
+      6: disciplinary_action
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 500
+  strategies: []
+  field_map:
+    "First Name": first_name
+    "Last Name": last_name
+    "License Number": license_number
+    "License No": license_number
+    "License #": license_number
+    "License Type": license_type
+    "License Status": status
+    "Status": status
+    "Expiration Date": expiration_date
+    "Expiration": expiration_date
+    "Issue Date": issue_date
+    "Issued": issue_date
+    "Address": address
+    "City": city
+    "State": state_code
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Lapsed": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Surrendered": revoked
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  proxy:
+    enabled: false
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  user_agent: ""
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/AR_PTBS/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-06"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: first_and_last
+  query: "Jane Smith"
+  first_name: "Jane"
+  last_name: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: false
+  skip_reason: ""
