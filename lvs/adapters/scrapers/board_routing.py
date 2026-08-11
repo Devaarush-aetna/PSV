@@ -490,7 +490,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'DP'): ['NC_PODIATRY'],
     ('NC', 'DT'): ['NC_DIETETICS'],
     ('NC', 'LC'): ['IBCLC_COMMISSION', 'NC_MENTAL_HEALTH', 'NC_DAC'],
-    ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],
+    ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],  # LCAS holders may be verified via NC_DAC
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
     ('NC', 'OP'): ['NC_OPTOMETRY'],
