@@ -16,8 +16,8 @@ identity:
 search:
   modes:
     - mode: last_name
-      input_selector: "input[placeholder='Last Name']"
-      button_selector: "button[type='submit']"
+      input_selector: "#lastname"
+      button_selector: "#metl_submit"
   form:
     search_by_dropdown:
       strategy: none
@@ -25,9 +25,11 @@ search:
       selector: "input[placeholder='Last Name']"
     search_button:
       selector: "button[type='submit']"
+    wait_for_networkidle: true
+    post_navigate_wait_ms: 3000
   results_wait:
     strategy: ajax_row_count
-    selector: ".result-item, .roster-result, table tbody tr"
+    selector: "tbody tr"
     timeout_ms: 30000
     min_rows: 1
     stable_ticks: 2
@@ -40,19 +42,23 @@ search:
 results:
   type: table
   table:
-    row_selector: ".result-item, .roster-result, table tbody tr"
+    row_selector: "tbody tr"
     cell_selector: "td"
     skip_first_row: false
-    # Column order is a best-guess from rendered template field order:
-    # name | city | state | license_type | license_number | issue_date | expiration_date
+    # Columns verified via live DOM inspection (2026-08-10):
+    # 0: (empty) | 1: Firstname | 2: Middle | 3: Lastname | 4: Number
+    # 5: Level   | 6: Expdate   | 7: Dateissued | 8: City | 9: State | 10: Disciplinary Action
     columns:
-      0: full_name
-      1: city
-      2: state_code
-      3: license_type
+      1: first_name
+      2: middle_name
+      3: last_name
       4: license_number
-      5: issue_date
+      5: license_type
       6: expiration_date
+      7: issue_date
+      8: city
+      9: state_code
+      10: disciplinary_action
   has_detail_page: false
   pagination:
     enabled: false
@@ -106,7 +112,7 @@ transport:
     retry_on: ["timeout", "network_error"]
   proxy:
     enabled: false
-  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+  user_agent: ""  # leave blank — let Chromium send its real UA; overriding causes WAF 403
 
 evidence:
   capture_html: true
@@ -123,9 +129,7 @@ compliance:
 
 smoke_test:
   mode: last_name
-  query: "Smith"
+  query: "Diggs"
   expect:
     min_records: 1
-    full_name_contains: "Smith"
-  skip: true
-  skip_reason: "selectors_unverified: row_selector and cell_selector are best-guess from static page analysis — JS-rendered results container not inspectable via static fetch. Run headless=false against base_url to confirm .result-item/.roster-result/tbody selectors before enabling."
+    last_name_contains: "Diggs"

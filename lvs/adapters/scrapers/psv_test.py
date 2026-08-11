@@ -550,16 +550,20 @@ class PsvBrowser:
         src = self.config.identity.source_id
         state = self.config.identity.state
         ua = self.config.transport.user_agent
-        if not ua or ua == "LVS-LicenseVerifier/1.0":
+        if ua == "LVS-LicenseVerifier/1.0":
             ua = _REAL_UA
-        ctx = await self._browser.new_context(
+        # Empty ua means "don't override" — lets Chromium send its native UA so that
+        # User-Agent and Sec-CH-UA headers stay consistent (mismatch triggers WAF 403).
+        ctx_kwargs: dict = dict(
             viewport={"width": 1280, "height": 900},
-            user_agent=ua,
             proxy=self._proxy,
             locale="en-US",
             timezone_id="America/New_York",
             ignore_https_errors=self.config.transport.ignore_https_errors,
         )
+        if ua:
+            ctx_kwargs["user_agent"] = ua
+        ctx = await self._browser.new_context(**ctx_kwargs)
         ctx.set_default_timeout(timeout_ms)
         ctx.set_default_navigation_timeout(min(timeout_ms, 30000))
         if _STEALTH is not None:
