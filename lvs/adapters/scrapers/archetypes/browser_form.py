@@ -99,6 +99,7 @@ async def scrape_browser(
                 elif config.results.has_detail_page and config.results.detail_trigger:
                     single_pat = config.results.single_result_url_pattern
                     if single_pat and single_pat in page.url:
+                        await _wait_for_detail_content(page, config)
                         raw = await _scrape_one_detail(page, config, run_id, db)
                         rec = map_to_license_record(raw, config, {
                             "html_path": raw.get("html_path"),

@@ -13,6 +13,8 @@ from .post_processors import apply_field_map
 
 log = logging.getLogger(__name__)
 
+_ZW_RE = re.compile("[​‌‍﻿]")
+
 # ---------------------------------------------------------------------------
 # Strategy implementations
 # ---------------------------------------------------------------------------
@@ -25,7 +27,7 @@ async def _extract_heading_name(page: Page) -> dict:
                     "h6[class*='headline6']", ".panel-heading"):
             loc = page.locator(sel)
             count = await loc.count()
-            for i in range(min(count, 3)):
+            for i in range(min(count, 5)):
                 text = (await loc.nth(i).inner_text()).strip()
                 # "Profile for NAME" pattern (e.g. KS_KSBHADA).
                 # Use find() rather than startswith() — inner_text() concatenates child
@@ -42,7 +44,8 @@ async def _extract_heading_name(page: Page) -> dict:
                     for kw in ("board", "license", "nevada", "state", "search", "portal", "register",
                                "result", "detail", "verification", "information", "occupational",
                                "health", "credentialing", "optometry", "pharmacy", "dental", "profile",
-                               "directory", "psycholog", "registry", "lookup", "definition")
+                               "directory", "psycholog", "registry", "lookup", "definition",
+                               "regulatory", "permitting", "regulation")
                 ):
                     # Strip "Name - Credential" pattern (e.g. "Katlyn Crisp - Permanent AUD")
                     # so suffix-stripping in split_full_name doesn't corrupt the last name.
@@ -403,11 +406,13 @@ async def _extract_element_ids(page: Page, id_map: dict) -> dict:
     result: dict = {}
     for elem_id, field_label in id_map.items():
         try:
-            el = page.locator(f"#{elem_id}")
+            sel = elem_id if "[" in elem_id else f"#{elem_id}"
+            el = page.locator(sel)
             if await el.count() > 0:
-                result[field_label] = (await el.first.inner_text()).strip()
+                text = _ZW_RE.sub("", (await el.first.inner_text()).strip()).strip()
+                result[field_label] = text
         except Exception as e:
-            log.debug("element_ids: failed to read #%s: %s", elem_id, e)
+            log.debug("element_ids: failed to read %s: %s", elem_id, e)
     return result
 
 
@@ -512,6 +517,16 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
             if data:
                 combined.update(data)
                 log.debug("Strategy 'element_ids' yielded %d fields", len(data))
+        elif stype == "custom_js":
+            script = strategy.get("script", "")
+            if script:
+                try:
+                    data = await page.evaluate(script)
+                    if isinstance(data, dict) and data:
+                        combined.update(data)
+                        log.debug("Strategy 'custom_js' yielded %d fields", len(data))
+                except Exception as e:
+                    log.debug("custom_js detail strategy failed: %s", e)
 
     # Section tables (always scoped via ctx)
     for section in config.sections:
@@ -524,6 +539,12 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
             for k, v in records[0].items():
                 if k not in combined:
                     combined[k] = v
+
+    # Strip Accela zero-width Unicode from all string values before field mapping.
+    combined = {
+        k: (_ZW_RE.sub("", v).strip() if isinstance(v, str) else v)
+        for k, v in combined.items()
+    }
 
     # Apply field map
     if config.field_map:
@@ -716,7 +737,7 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
             rec: dict = {}
             for idx, field_name in tbl_cfg.columns.items():
                 if idx < await cells.count():
-                    rec[field_name] = (await cells.nth(idx).inner_text()).strip()
+                    rec[field_name] = _ZW_RE.sub("", (await cells.nth(idx).inner_text()).strip()).strip()
             # Apply column_patterns: extract additional fields via regex from cell text.
             for idx, pattern_map in (tbl_cfg.column_patterns or {}).items():
                 if idx < await cells.count():

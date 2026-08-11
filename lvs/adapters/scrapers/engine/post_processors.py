@@ -98,7 +98,16 @@ def split_full_name(full_name: str) -> tuple[str, str]:
         raw_last, _, rest = name.partition(",")
         parts_last = _strip_name_suffixes(raw_last.strip().split())
         last = " ".join(parts_last)
-        first = rest.strip().split()[0] if rest.strip() else ""
+        # Strip credential suffixes from the rest portion too. If all tokens after
+        # the comma are credentials (e.g. "BAILEY SHEVENELL, PA"), the comma separates
+        # "First Last" from a credential — raw_last holds "First Last", not just "Last".
+        rest_parts = _strip_name_suffixes(rest.strip().split())
+        if not rest_parts:
+            # "First Last, Credential" format: split parts_last into first/last.
+            if len(parts_last) >= 2:
+                return (parts_last[0], parts_last[-1])
+            return ("", last)
+        first = rest_parts[0]
         return (first, last)
     parts = _strip_name_suffixes(name.split())
     if not parts:

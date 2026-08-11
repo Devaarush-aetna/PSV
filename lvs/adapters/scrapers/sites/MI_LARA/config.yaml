@@ -22,8 +22,6 @@ search:
       input_selector: "input[id*='txtLastName'], input[id*='LastName']"
     - mode: first_name
       input_selector: "input[id*='txtFirstName'], input[id*='FirstName']"
-    - mode: first_and_last
-      input_selector: "input[id*='txtFirstName'], input[id*='FirstName']"
   form:
     search_by_dropdown:
       strategy: none
@@ -41,7 +39,7 @@ search:
         - "a[id*='lnkSearch'], span[id*='btnSearch']"
   results_wait:
     strategy: element_visible
-    selector: "tr[class*='ACA_TabRow_Odd'], tr[class*='ACA_TabRow_Even']"
+    selector: "tr[class*='ACA_TabRow_Odd'], tr[class*='ACA_TabRow_Even'], span[id$='lblLicenseeNumber_value']"
     timeout_ms: 30000
     no_results_indicators:
       - "No records found"
@@ -66,7 +64,8 @@ results:
       6: dba_name
       7: status
       8: expiration_date
-  has_detail_page: false
+  has_detail_page: true
+  single_result_url_pattern: "LicenseeDetail.aspx"
   detail_trigger:
     type: link_in_cell
     selector: "a[id*='lnkLicenseRefNumber']"
@@ -86,6 +85,15 @@ detail:
       - "span[id*='lblValue']"
       - "div[id*='divAccela']"
   strategies:
+    - type: element_ids
+      id_map:
+        "span[id$='lblLicenseeType_value']": "License Type"
+        "span[id$='lblLicenseeNumber_value']": "License Number"
+        "span[id$='lblContactName_value']": "Name"
+        "span[id$='lblLicenseIssueDate_value']": "License Issue Date"
+        "span[id$='lblExpirationDate_value']": "License Expiration Date"
+        "span[id$='lblBusinessName2_value']": "License Status"
+        "span[id$='lblInsuranceCompany_value']": "County"
     - type: label_sibling
     - type: dt_dd
     - type: two_column_table
@@ -99,13 +107,16 @@ detail:
     "Status": status
     "Licensee": full_name
     "Business Name": full_name
+    "Name": full_name
     "First Name": licensee_first_name
     "Last Name": licensee_last_name
     "Middle Name": licensee_middle_name
     "Issue Date": issue_date
     "Original Issue Date": issue_date
+    "License Issue Date": issue_date
     "Effective Date": effective_date
     "Expiration Date": expiration_date
+    "License Expiration Date": expiration_date
     "Exp Date": expiration_date
     "Address": address
     "City": city
@@ -147,6 +158,7 @@ output:
     - "%b %d, %Y"
 
 transport:
+  ladder_timeout_s: 90
   browser: chromium
   headless: true
   viewport:
@@ -162,7 +174,7 @@ transport:
     backoff_ms: [2000, 4000, 8000]
     retry_on: ["timeout", "network_error"]
   proxy:
-    enabled: true
+    enabled: false
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

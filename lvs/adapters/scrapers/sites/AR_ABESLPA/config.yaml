@@ -1,0 +1,189 @@
+identity:
+  source_id: AR_ABESLPA
+  board_name: Arkansas Board of Examiners for Speech-Language Pathology and Audiology
+  state: AR
+  country: US
+  profession_codes: [AU, SH, ST]
+  # StateSolutions portal at search.statesolutions.us.
+  # Agency: A=ASPB (Arkansas Speech Pathology Board), AID=RS.
+  # Form fields: license (LIC/PERMIT #), LName (last name), bName, city, zip.
+  # Results table id="table"; col 0 contains license text + <br> + "MORE INFO" link to detail.
+  # license_numeric_only fires automatically after license_number (canonical ladder):
+  #   strips non-digits, e.g. "SP#3336" → "3336", then dispatches as license_number.
+  base_url: "https://search.statesolutions.us/?A=ASPB&AID=RS"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: license_number
+      input_selector: "input#license"
+      button_selector: "button[type='submit']"
+    # license_numeric_only: engine strips non-digits from license and dispatches as
+    # license_number using the same selectors above. No explicit entry needed.
+    - mode: last_name
+      input_selector: "input#LName"
+      button_selector: "button[type='submit']"
+    - mode: license_and_last
+      # Fill license field as primary; also fill LName with last name from record.
+      input_selector: "input#license"
+      extra_inputs:
+        "input#LName": "{last}"
+      button_selector: "button[type='submit']"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: "input#license"
+    search_button:
+      selector: "button[type='submit']"
+  results_wait:
+    strategy: element_visible
+    selector: "table#table tbody tr"
+    timeout_ms: 30000
+    no_results_indicators:
+      - "no records found"
+      - "no results found"
+      - "no matching"
+      - "0 results"
+
+results:
+  type: table
+  table:
+    row_selector: "table#table tbody tr"
+    cell_selector: "td"
+    # Columns: 0=LIC/PERMIT # (license text + MORE INFO link), 1=TYPE, 2=LICENSEE,
+    #          3=BUSINESS NAME, 4=ADDRESS, 5=STATUS
+    # Engine reads first line of col 0 text to get license number (before <br>).
+    columns:
+      0: license_number
+      1: license_type
+      2: full_name
+      4: address
+      5: status
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "table#table tbody tr td:first-child a[href*='/Licensee']"
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  # Detail page structure (https://search.statesolutions.us/Licensee?ID=...):
+  #   <h2>Anna Cox</h2>                   ← _extract_heading_name captures → "Name"
+  #   <h6>LICENSE #: SP#3336 | TYPE: SP | STATUS: ACTIVE</h6>   ← pipe-separated
+  #   <h6>ADDITIONAL INFO<br />Effective Date: 9/21/2012<br>Expiration Date: ...<br>...</h6>
+  # No standard strategy handles either format; custom_js parses both in one pass.
+  wait:
+    strategy: element_visible
+    selector: "h2, h6"
+    timeout_ms: 15000
+  strategies:
+    - type: custom_js
+      script: |
+        (() => {
+          const result = {};
+          for (const h6 of document.querySelectorAll('h6')) {
+            const text = h6.innerText.trim();
+            // Pipe-separated line: "LICENSE #: SP#3336 | TYPE: SP | STATUS: ACTIVE"
+            if (text.includes('|') && text.includes('LICENSE')) {
+              for (const part of text.split('|')) {
+                const ci = part.indexOf(':');
+                if (ci === -1) continue;
+                result[part.slice(0, ci).trim()] = part.slice(ci + 1).trim();
+              }
+            }
+            // <br>-separated lines: "Effective Date: 9/21/2012", "Expiration Date: ...", etc.
+            if (h6.querySelector('br')) {
+              const lines = h6.innerHTML
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]+>/g, '')
+                .split('\n');
+              for (const line of lines) {
+                const ci = line.indexOf(':');
+                if (ci === -1) continue;
+                const k = line.slice(0, ci).trim();
+                const v = line.slice(ci + 1).trim();
+                if (k && v) result[k] = v;
+              }
+            }
+          }
+          return result;
+        })()
+  field_map:
+    "Name": full_name
+    "LICENSE #": license_number
+    "TYPE": license_type
+    "STATUS": status
+    "Effective Date": issue_date
+    "Expiration Date": expiration_date
+    "Disciplinary Actions": disciplinary_actions
+    "Zip Code": zip_code
+  back_navigation:
+    strategy: browser_back
+    wait_after_ms: 1500
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "SUSPENDED": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "REVOKED": revoked
+    "Probation": probation
+    "probation": probation
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+    - "%B %d, %Y"
+    - "%b %d, %Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1280
+    height: 900
+  timeout_ms: 60000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 1500
+    max_concurrent: 1
+  retry:
+    max_attempts: 2
+    backoff_ms: [2000, 5000]
+    retry_on: ["timeout", "network_error"]
+  proxy:
+    enabled: false
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "detail_page", "error"]
+  storage: local
+  local_path: "Evidence/AR_ABESLPA/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-05"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
