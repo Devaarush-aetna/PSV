@@ -42,16 +42,27 @@ search:
       - "no matching licensees"
       - "your search returned no results"
 
-# Confirmed from live evidence (session 28 smoke run 2):
+# Confirmed from live evidence (session 28 smoke run 2, updated 2026-08-10):
 # <div class="search-results">
 #   <div class="row">
-#     <div class="col-sm-4">
+#     <div class="col-sm-4">           ← column 1: Name / Location / Board Action
 #       <dl class="dl-horizontal">
-#         <dt>Name:</dt>     <dd>Carol Elaine Barone-Smith</dd>
-#         <dt>Location:</dt> <dd>Broken Arrow, OK</dd>
-#         <dt>Board Action:</dt> <dd>No</dd>
+#         <dt>Name:</dt>          <dd>Carol Elaine Barone-Smith</dd>   dd[0]=full_name
+#         <dt>Location:</dt>      <dd>Broken Arrow, OK</dd>            dd[1]=city
+#         <dt>Board Action:</dt>  <dd>No</dd>                          dd[2]=disciplinary_action
 #       </dl>
-# Each div.row holds one licensee. License # not on search page (only in detail link).
+#     </div>
+#     <div class="col-sm-4">           ← column 2: License details
+#       <dl class="dl-horizontal">
+#         <dt>License Type:</dt>    <dd>Dentist</dd>                   dd[3]=license_type
+#         <dt>License #:</dt>       <dd>4567</dd>                      dd[4]=license_number
+#         <dt>License Issued:</dt>  <dd>01/15/2005</dd>                dd[5]=issue_date
+#         <dt>Expiration:</dt>      <dd>06/30/2027</dd>                dd[6]=expiration_date
+#         <dt>License Status:</dt>  <dd>Active</dd>                    dd[7]=status
+#       </dl>
+#     </div>
+#   </div>
+# Each div.row holds one licensee. All dd elements are collected flat by cell_selector "dd".
 results:
   type: table
   table:
@@ -62,6 +73,11 @@ results:
       0: full_name
       1: city
       2: disciplinary_action
+      3: license_type
+      4: license_number
+      5: issue_date
+      6: expiration_date
+      7: status
   has_detail_page: false
   pagination:
     enabled: false
@@ -76,7 +92,10 @@ detail:
     "License Number": license_number
     "Name": full_name
     "Status": status
+    "License Status": status
     "License Type": license_type
+    "License Issued": issue_date
+    "Expiration": expiration_date
     "First Name": first_name
     "Last Name": last_name
 

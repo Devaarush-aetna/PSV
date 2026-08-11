@@ -18,8 +18,27 @@ log = logging.getLogger(__name__)
 
 async def navigate_to_search(page: Page, config: SiteConfig) -> None:
     log.info("[%s] Navigating to %s", config.identity.source_id, config.identity.base_url)
-    await page.goto(config.identity.base_url)
-    await page.wait_for_load_state("domcontentloaded")
+    # Retry navigation when the corporate proxy returns an empty response body.
+    # An empty page causes fill_search_input to fail with RuntimeError; retrying
+    # gives the proxy time to recover before the search form is filled.
+    _max_nav_attempts = 3
+    for _nav_attempt in range(1, _max_nav_attempts + 1):
+        await page.goto(config.identity.base_url)
+        await page.wait_for_load_state("domcontentloaded")
+        _content = (await page.content()).strip()
+        if len(_content) > 500:
+            break
+        if _nav_attempt < _max_nav_attempts:
+            log.warning(
+                "[%s] Navigation attempt %d returned near-empty page (%d chars) — retrying in 3s",
+                config.identity.source_id, _nav_attempt, len(_content),
+            )
+            await asyncio.sleep(3)
+        else:
+            log.warning(
+                "[%s] Page still near-empty after %d navigation attempts (%d chars) — proceeding",
+                config.identity.source_id, _max_nav_attempts, len(_content),
+            )
     # SPA archetypes need extra time for JS framework to render the search form
     if config.identity.archetype in ("thentia_cloud", "ag_grid_spa"):
         try:
@@ -788,17 +807,21 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
         return await wait_for_results(page, config.search, partial_failures=partial_failures)
 
     if config.search.pre_search_click:
+        _psc_timeout = config.search.pre_search_click_timeout_ms
         try:
             await page.wait_for_selector(
-                config.search.pre_search_click, state="visible", timeout=8000
+                config.search.pre_search_click, state="visible", timeout=_psc_timeout
             )
             await page.locator(config.search.pre_search_click).first.click()
             log.info("pre_search_click: clicked '%s'", config.search.pre_search_click)
-            # Wait for any resulting navigation/re-render; fall back to short sleep if idle
+            # Wait for any resulting navigation/re-render; fall back to short sleep if idle.
+            # post_pre_search_click_wait_ms can be raised for CF-protected sites where the
+            # JS challenge may still be running when the cookie button is first clicked.
+            _post_psc_wait = config.search.post_pre_search_click_wait_ms
             try:
-                await page.wait_for_load_state("networkidle", timeout=15_000)
+                await page.wait_for_load_state("networkidle", timeout=_post_psc_wait)
             except Exception:
-                await asyncio.sleep(1.5)
+                await asyncio.sleep(1.5)  # already waited _post_psc_wait ms; short buffer then proceed
         except Exception as e:
             log.warning("pre_search_click '%s' failed: %s", config.search.pre_search_click, e)
 
