@@ -51,7 +51,6 @@ detail:
     "licenselastreneweddate": last_renewal_date
     "licenseexpirationdate": expiration_date
     "city": city
-    "state": state_code
     "mailzipcode": zip_code
 
 output:
