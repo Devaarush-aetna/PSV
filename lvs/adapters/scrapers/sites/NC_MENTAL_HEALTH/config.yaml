@@ -15,6 +15,13 @@ search:
     - mode: last_name
       input_selector: "#txtLastName"
       button_selector: "#btnAJAX"
+    # first_and_last: fills both first and last name inputs for a more specific search.
+    # Reduces ambiguous multi-result sets when last_name alone returns multiple records.
+    - mode: first_and_last
+      input_selector: "#txtLastName"
+      button_selector: "#btnAJAX"
+      extra_inputs:
+        "#txtFirstName": "{first}"
     - mode: first_name
       input_selector: "#txtFirstName"
       button_selector: "#btnAJAX"
@@ -29,8 +36,8 @@ search:
   # rows actually render and stabilise.
   results_wait:
     strategy: ajax_row_count
-    selector: "table#MultiResultsList tbody tr"
-    timeout_ms: 25000
+    selector: "table#MultiResultsList tbody tr, table tbody tr"
+    timeout_ms: 30000
     min_rows: 1
     stable_ticks: 2
     poll_interval_ms: 400
@@ -39,6 +46,8 @@ search:
       - "no matching"
       - "no licensees"
       - "no results found for your search criteria"
+      - "0 results"
+      - "no active licensees"
 
 results:
   type: table

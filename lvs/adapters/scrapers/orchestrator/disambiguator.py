@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import logging
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
@@ -113,10 +114,13 @@ for _a, _b in _NICKNAME_PAIRS:
 
 
 def _normalize_name(s: str) -> str:
-    """Upper, collapse whitespace, hyphens/apostrophes -> space."""
+    """Upper, collapse whitespace, hyphens/apostrophes -> space. Strips Unicode accents (é→e, ñ→n)."""
     if not s:
         return ""
-    return re.sub(r"\s+", " ", re.sub(r"[-.']+", " ", str(s).upper())).strip()
+    # Decompose accented characters (e.g. é→e+combining-acute) then drop combining marks.
+    s = unicodedata.normalize("NFKD", str(s))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", re.sub(r"[-.']+", " ", s.upper())).strip()
 
 
 def _numeric_only(s: str) -> str:
