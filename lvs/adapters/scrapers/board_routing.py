@@ -510,12 +510,13 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'DC'): ['NC_CHIRO'],
     ('NC', 'DDS'): ['NC_DENTAL'],
     ('NC', 'DMD'): ['NC_DENTAL'],
+    ('NC', 'DP'): ['NC_PODIATRY'],
     ('NC', 'DT'): ['NC_DIETETICS'],
     ('NC', 'LC'): ['IBCLC_COMMISSION', 'NC_MENTAL_HEALTH', 'NC_DAC'],
     # LPC providers may hold an addiction-counselor (LCAS) credential regulated by
     # the NC Substance Abuse Professional Practice Board (NC_DAC), not the mental
     # health counselors board. Try NC_MENTAL_HEALTH first, fall back to NC_DAC.
-    ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],
+    # ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],
     ('NC', 'MT'): ['NC_MASSAGE'],
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
@@ -523,6 +524,11 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # OR = oral / maxillofacial surgeon — verified at the NC dental board; fall
     # back to the medical board for dual-degree (MD) oral surgeons.
     ('NC', 'OR'): ['NC_DENTAL', 'NC_MEDBOARD'],
+    ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],  # LCAS holders may be verified via NC_DAC
+    ('NC', 'NUT'): ['NC_DIETETICS'],
+    ('NC', 'OD'): ['NC_OPTOMETRY'],
+    ('NC', 'OP'): ['NC_OPTOMETRY'],
+    # ('NC', 'OR'): ['NC_MEDBOARD', 'NC_DENTAL'],
     ('NC', 'OT'): ['NC_OT'],
     # PC = pastoral counselor — certified by the NC Board of Pastoral Counseling
     # (small integer certificate numbers, e.g. 83/122), NOT the addiction board.

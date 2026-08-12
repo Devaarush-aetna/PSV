@@ -8,13 +8,15 @@ identity:
   archetype: classic_html_form
 
 search:
+  # LearningBuilder portal requires BOTH first and last name — single-field searches
+  # return a "check spelling" page that mis-parses as candidates. Only first_and_last
+  # is supported: primary input #LastName, extra input #FirstName filled with {first}.
   modes:
-    - mode: last_name
+    - mode: first_and_last
       input_selector: "#LastName"
       button_selector: 'input[type="submit"][value="Verify"]'
-    - mode: first_name
-      input_selector: "#FirstName"
-      button_selector: 'input[type="submit"][value="Verify"]'
+      extra_inputs:
+        "#FirstName": "{first}"
   form:
     search_by_dropdown:
       strategy: none
@@ -44,16 +46,18 @@ search:
       - "no records were found"
       - "returned no results"
       - "no practitioners"
+      - "no practitioners found"
+      - "0 practitioners"
 
 results:
   type: table
   table:
-    row_selector: "table tbody tr"
+    # :has(td:first-child a) skips header rows that migrated into <tbody> after a
+    # portal update — only data rows carry an <a> link in the first (Name) cell.
+    row_selector: "table tbody tr:has(td:first-child a)"
     cell_selector: "td"
     skip_first_row: false
     # Verified columns (live site): Name | Credential | NCSAPPB ID | City | State
-    # The table uses <thead> for column headers so "table tbody tr" already excludes
-    # them — skip_first_row must be false or the single data row is dropped.
     # The Name cell (col 0) anchor links to an HTML credential-verification page;
     # the engine navigates the browser there and lets AI fallback extract the fields.
     columns:

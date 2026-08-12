@@ -11,6 +11,17 @@ identity:
 # AJAX form submit returns CF block page → #verifyresults never populates.
 # Proxy disabled so browser connects directly with a non-flagged IP.
 search:
+  # The board shows a cookie consent banner on first load that obscures the form.
+  # Click "Accept cookies" before filling the search form.
+  # Cloudflare JS challenge runs after navigation and can take 25-40s before the
+  # real page + cookie banner appear. Wait up to 45s for the button to become visible.
+  pre_search_click: "button#cookie-consent-accept"
+  pre_search_click_timeout_ms: 45000
+  # After clicking the cookie button the Cloudflare JS challenge may still be running
+  # (it takes 25-40s in a hidden iframe). Wait up to 40s for networkidle so CF resolves
+  # before we submit the search form — otherwise AJAX is intercepted by CF and no results
+  # arrive within the 45s results_wait window.
+  post_pre_search_click_wait_ms: 40000
   modes:
     - mode: last_name
       input_selector: "input[name='LastName']"
@@ -44,9 +55,9 @@ search:
       selector: "button#submitButton, button[type='submit']"
       fallback_selectors:
         - "button[type='submit']"
-    # Cloudflare JS challenge runs in a hidden iframe after DOMContentLoaded.
-    # Wait 20s after navigation to allow the challenge to complete before submitting.
-    post_navigate_wait_ms: 20000
+    # Small baseline wait so CF challenge JS has a chance to start.
+    # post_pre_search_click_wait_ms (40s networkidle) handles waiting for CF to fully resolve.
+    post_navigate_wait_ms: 5000
   results_wait:
     strategy: element_visible
     # Results are injected by AJAX into #verifyresults — wait for that div to contain rows.

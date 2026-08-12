@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import logging
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
@@ -105,6 +106,13 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("ALEXIS", "LEXI"),
     ("CAMILLE", "CAMI"),
     ("VALERIE", "VAL"),
+    ("ZACHARY", "ZACH"),
+    ("JONATHAN", "JON"), ("JONATHAN", "JONNY"),
+    ("NATHANIEL", "NATE"),
+    ("ALLISON", "ALLIE"),
+    ("BRITTANY", "BRIT"), ("BRITTANY", "BRITT"),
+    ("HEATHER", "HEATH"),
+    ("MEREDITH", "MERI"),
 ]
 _NICK_MAP: dict[str, set[str]] = {}
 for _a, _b in _NICKNAME_PAIRS:
@@ -115,10 +123,13 @@ for _a, _b in _NICKNAME_PAIRS:
 
 
 def _normalize_name(s: str) -> str:
-    """Upper, collapse whitespace, hyphens/apostrophes -> space."""
+    """Upper, collapse whitespace, hyphens/apostrophes -> space. Strips Unicode accents (é→e, ñ→n)."""
     if not s:
         return ""
-    return re.sub(r"\s+", " ", re.sub(r"[-.']+", " ", str(s).upper())).strip()
+    # Decompose accented characters (e.g. é→e+combining-acute) then drop combining marks.
+    s = unicodedata.normalize("NFKD", str(s))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", re.sub(r"[-.']+", " ", s.upper())).strip()
 
 
 def _numeric_only(s: str) -> str:
@@ -202,6 +213,12 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[-1]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[:-1]
         while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_PREFIXES_NORM:
+            rest_toks = rest_toks[1:]
+        # Strip leading generational/credential suffixes that appear before the first name
+        # when boards write "Last, Jr., First" (two-comma format).
+        # e.g. "Slaughter, Jr., Dale Jeffery" → rest_toks=["JR.", "DALE", "JEFFERY"]
+        # Without this, first_tok would be "JR." instead of "DALE".
+        while rest_toks and re.sub(r"[.\-,]", "", rest_toks[0]) in _NAME_SUFFIXES_NORM:
             rest_toks = rest_toks[1:]
 
         # If everything after the comma was a suffix (e.g. "George Joseph Vesper, Jr."),
