@@ -96,6 +96,15 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("VIRGINIA", "GINNY"),
     ("EVELYN", "EVIE"),
     ("BEVERLY", "BEV"),
+    ("ZACHARY", "ZAC"), ("ZACHARY", "ZACH"), ("ZACHARY", "ZACK"),
+    ("JONATHAN", "JON"), ("JONATHAN", "JONNY"),
+    ("JOSHUA", "JOSH"),
+    ("BENJAMIN", "BENJI"), ("BENJAMIN", "BENNY"),
+    ("VICTORIA", "VICKY"), ("VICTORIA", "TORI"),
+    ("ABIGAIL", "ABBY"), ("ABIGAIL", "ABBIE"),
+    ("ALEXIS", "LEXI"),
+    ("CAMILLE", "CAMI"),
+    ("VALERIE", "VAL"),
 ]
 _NICK_MAP: dict[str, set[str]] = {}
 for _a, _b in _NICKNAME_PAIRS:
@@ -433,7 +442,7 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "OT": ("OCCUPATIONAL THERAPIST", "OCCUPATIONAL THERAPY"),
         "SW": ("SOCIAL WORKER", "SOCIAL WORK", "LCSW", "LCSWA", "LMSW","MENTAL HEALTH COUNSELOR"),
         "LCSW": ("LICENSED CLINICAL SOCIAL", "SOCIAL WORK"),
-        "LPC": ("PROFESSIONAL COUNSELOR", "PROFESSIONAL COUNSELOR ASSOCIATE", "MENTAL HEALTH COUNSEL", "MENTAL HEALTH ASSOC", "COUNSEL", "CPC", "LICENSED ALCOHOL AND DRUG COUNSELOR", "LICENSED BEHAVIOR ANALYST", "SUBSTANCE USE DISORDER PROFESSIONAL CERTIFICATION"),
+        "LPC": ("PROFESSIONAL COUNSELOR", "PROFESSIONAL COUNSELOR ASSOCIATE", "MENTAL HEALTH COUNSEL", "MENTAL HEALTH ASSOC", "COUNSEL", "CPC", "LICENSED ALCOHOL AND DRUG COUNSELOR", "LICENSED BEHAVIOR ANALYST", "SUBSTANCE USE DISORDER PROFESSIONAL CERTIFICATION", "LCMHC", "LCMHCA", "LCMHC ASSOCIATE", "LCMHC SUPERVISOR"),
         "LC": ("LICENSED COUNSEL", "COUNSEL", "MENTAL HEALTH COUNSEL", "REGISTERED NURSE"),
         "MFT": ("MASSAGE", "MARRIAGE", "MARITAL", "FAMILY THERAPIST", "MFT"),
         "DC": ("CHIROPRACT",),
@@ -441,8 +450,9 @@ def provider_type_matches(prov_type: str, candidate_license_type: str,
         "AP": ("ACUPUNCTUR", "ORIENTAL MEDICINE", "LAC", "DOM", "OMD"),
         "AU": ("AUDIOLOGIST", "AUDIOLOGY"),
         "SH": ("HEARING AID", "AUDIOLOGY", "AUDIOLOGIST", "SPEECH AND LANGUAGE PATHOLOGIST", "SPEECH LANGUAGE", "SLP", "SPEECH-LANGUAGE PATHOLOGY"),
-        "ST": ("SPEECH", "SPEECH-LANGUAGE", "SPEECH LANGUAGE"),
-        "CP": ("PSYCHOLOGIST", "PSYCHOLOGY", "PROFESSIONAL COUNSELOR", "LICENSED ALCOHOL AND DRUG COUNSELOR", "SOCIAL WORKER INDEPENDENT CLINICAL LICENSE"),
+        "ST": ("SPEECH", "SPEECH-LANGUAGE", "SPEECH LANGUAGE", "SLP",
+               "SPEECH-LANGUAGE PATHOLOG", "SPEECH LANGUAGE PATHOLOG", "PERMANENT SLP"),
+        "CP": ("PSYCHOLOGIST", "PSYCHOLOGY", "PROFESSIONAL COUNSELOR", "LICENSED ALCOHOL AND DRUG COUNSELOR", "SOCIAL WORKER INDEPENDENT CLINICAL LICENSE", "LCMHC", "LCMHC ASSOCIATE", "LCMHC SUPERVISOR"),
         "PC": ("PSYCHOLOGIST", "PSYCHOLOGY"),
         "PH": ("PHARMACIST", "PHARMACY",
                "MEDICAL DOCTOR", "PHYSICIAN", "OSTEOPATHIC",
@@ -689,6 +699,19 @@ def score_candidate(candidate: Any, master_row: dict,
                 sum(getattr(breakdown, k) * w for k, w in weights.items()), 4
             )
 
+    # Exact-license + last-name confirmation: the license number matches exactly and
+    # the last name matches, but the first name does not. This is the fingerprint of
+    # master data that stored a middle name or nickname in the first_name field
+    # (e.g. master "Peters Burkhalter" vs board "Kerrigan Burkhalter", license 5479;
+    # or master "Renee McCurry" vs board "Kalie McCurry", license 4891). A license
+    # number is unique per board, so license + last name is a near-conclusive identity
+    # match. Pass the gate but keep the honest (low) first_name score so the total lands
+    # in the review band — this surfaces the board record and flags the first-name
+    # discrepancy instead of giving up. NOTE: this does NOT fire when the last name is
+    # also corrupted (both name fields wrong), which correctly stays a manual case.
+    if not breakdown.gate_passed and lic_ok and last_ok:
+        breakdown.gate_passed = True
+
     return breakdown
 
 
@@ -807,6 +830,38 @@ def evaluate(candidates: list[Any], master_row: dict,
                     gate_passers=[c for c, _ in gate_passers],
                     all_breakdowns=breakdowns, tiebreaker_used=True,
                 )
+        # Tiebreaker 1b: active licence beats a non-active term of the SAME credential.
+        # A provider often appears more than once: an associate/old term and the
+        # current full/renewed term. These share one certificate number (e.g. the
+        # associate "A17151" now "Transitioned" + the full "17151" now "Active") or the
+        # exact same name. When the two tied candidates are the same person, always
+        # prefer the record whose status is ACTIVE over any non-active status
+        # (Transitioned, Expired, Inactive, Pending, Unknown, …). Requiring same-person
+        # keeps this from choosing an active stranger over an inactive genuine match.
+        def _is_active(cand) -> bool:
+            st = getattr(cand, "status", None)
+            return str(getattr(st, "value", st) or "").lower() == "active"
+
+        _top_num = _numeric_only(getattr(top_cand, "license_number", "") or "")
+        _sec_num = _numeric_only(getattr(second_cand, "license_number", "") or "")
+        _top_full = _normalize_name(getattr(top_cand, "licensee_full_name", "") or "")
+        _sec_full = _normalize_name(getattr(second_cand, "licensee_full_name", "") or "")
+        _same_person = (
+            (bool(_top_num) and _top_num == _sec_num)
+            or (bool(_top_full) and _top_full == _sec_full)
+        )
+        if _same_person and _is_active(top_cand) and not _is_active(second_cand):
+            return DisambiguationVerdict(
+                status="selected", best=top_cand, best_breakdown=top_bd,
+                gate_passers=[c for c, _ in gate_passers],
+                all_breakdowns=breakdowns, tiebreaker_used=True,
+            )
+        if _same_person and _is_active(second_cand) and not _is_active(top_cand):
+            return DisambiguationVerdict(
+                status="selected", best=second_cand, best_breakdown=second_bd,
+                gate_passers=[c for c, _ in gate_passers],
+                all_breakdowns=breakdowns, tiebreaker_used=True,
+            )
         # Tiebreaker 2: middle initial match. When the input has a middle name/initial
         # and one candidate's full name carries the matching initial, prefer that candidate.
         # This resolves same-first-last ties like "Sarah C Fuller" where one board record

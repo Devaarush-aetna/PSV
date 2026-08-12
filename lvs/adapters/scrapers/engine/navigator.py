@@ -8,7 +8,9 @@ from urllib.parse import quote as _urlencode
 
 from playwright.async_api import Page, TimeoutError as PlaywrightTimeout
 
-from .models import COMBO_MODES, SearchConfig, SearchMode, SearchQuery, SiteConfig
+from .models import (
+    BoardUnavailableError, COMBO_MODES, SearchConfig, SearchMode, SearchQuery, SiteConfig,
+)
 
 log = logging.getLogger(__name__)
 
@@ -17,8 +19,29 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 async def navigate_to_search(page: Page, config: SiteConfig) -> None:
-    log.info("[%s] Navigating to %s", config.identity.source_id, config.identity.base_url)
-    await page.goto(config.identity.base_url)
+    src = config.identity.source_id
+    log.info("[%s] Navigating to %s", src, config.identity.base_url)
+    # Initial navigation is the canary for a down board. A connection timeout /
+    # TLS drop raises here; an HTTP 5xx returns a Response with a >=500 status
+    # (page.goto does NOT raise on server errors). Both mean the board is
+    # unavailable — surface a distinct error the ladder can turn into a Skip,
+    # rather than letting the scraper parse an error page as phantom records.
+    try:
+        resp = await page.goto(config.identity.base_url)
+    except PlaywrightTimeout as exc:
+        raise BoardUnavailableError(
+            f"{src}: navigation timeout to {config.identity.base_url}"
+        ) from exc
+    except Exception as exc:
+        # net::ERR_* (connection refused/reset/timed-out, name-not-resolved, TLS)
+        msg = str(exc)
+        if "net::ERR" in msg or "NS_ERROR" in msg or "ERR_" in msg:
+            raise BoardUnavailableError(f"{src}: {msg[:200]}") from exc
+        raise
+    if resp is not None and resp.status >= 500:
+        raise BoardUnavailableError(
+            f"{src}: HTTP {resp.status} from {config.identity.base_url}"
+        )
     await page.wait_for_load_state("domcontentloaded")
     # SPA archetypes need extra time for JS framework to render the search form
     if config.identity.archetype in ("thentia_cloud", "ag_grid_spa"):

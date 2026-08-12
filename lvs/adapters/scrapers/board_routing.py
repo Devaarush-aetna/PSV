@@ -31,8 +31,31 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('AL', 'SH'): ['AL_ABESPA'],
 
     # AR
+    ('AR', 'ABA'): ['BACB'],
+    ('AR', 'AU'): ['AR_ABESLPA'],
+    ('AR', 'CP'): ['AR_APB'],
+    ('AR', 'DC'): ['AR_ASBCE'],
     ('AR', 'DO'): ['AR_MEDBOARD'],
+    ('AR', 'DP'): ['AR_PODIATRY'],
+    ('AR', 'GNC'): ['AR_MEDBOARD'],
+    ('AR', 'LC'): ['IBCLC_COMMISSION'],
+    ('AR', 'LPC'): ['AR_ABECMFT'],
     ('AR', 'MD'): ['AR_MEDBOARD'],
+    ('AR', 'MT'): ['AR_ABECMFT'],
+    ('AR', 'NP'): ['AR_ASBN'],
+    ('AR', 'NPB'): ['AR_ASBN'],
+    ('AR', 'NPS'): ['AR_ASBN'],
+    ('AR', 'OD'): ['AR_ASBO'],
+    ('AR', 'OP'): ['AR_ASBO'],
+    ('AR', 'OT'): ['AR_MEDBOARD'],
+    ('AR', 'PA'): ['AR_MEDBOARD'],
+    ('AR', 'PAS'): ['AR_MEDBOARD'],
+    ('AR', 'PN'): ['AR_ASBN'],
+    ('AR', 'PT'): ['AR_PTBS'],
+    ('AR', 'RNA'): ['AR_ASBN'],
+    ('AR', 'SH'): ['AR_ABESLPA'],
+    ('AR', 'ST'): ['AR_ABESLPA'],
+    ('AR', 'SW'): ['AR_SWB'],
 
     # AZ
     ('AZ', 'AU'): ['AZ_SPEECH_HEAR'],
@@ -489,13 +512,21 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'DMD'): ['NC_DENTAL'],
     ('NC', 'DT'): ['NC_DIETETICS'],
     ('NC', 'LC'): ['IBCLC_COMMISSION', 'NC_MENTAL_HEALTH', 'NC_DAC'],
-    ('NC', 'LPC'): ['NC_MENTAL_HEALTH'],
+    # LPC providers may hold an addiction-counselor (LCAS) credential regulated by
+    # the NC Substance Abuse Professional Practice Board (NC_DAC), not the mental
+    # health counselors board. Try NC_MENTAL_HEALTH first, fall back to NC_DAC.
+    ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],
     ('NC', 'MT'): ['NC_MASSAGE'],
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
     ('NC', 'OP'): ['NC_OPTOMETRY'],
+    # OR = oral / maxillofacial surgeon — verified at the NC dental board; fall
+    # back to the medical board for dual-degree (MD) oral surgeons.
+    ('NC', 'OR'): ['NC_DENTAL', 'NC_MEDBOARD'],
     ('NC', 'OT'): ['NC_OT'],
-    ('NC', 'PC'): ['NC_DAC'],
+    # PC = pastoral counselor — certified by the NC Board of Pastoral Counseling
+    # (small integer certificate numbers, e.g. 83/122), NOT the addiction board.
+    ('NC', 'PC'): ['NC_PASTORAL_COUNSELING'],
     ('NC', 'PT'): ['NC_PT'],
     ('NC', 'SH'): ['NC_SLP_AUD'],
     ('NC', 'ST'): ['NC_SLP_AUD'],

@@ -58,6 +58,11 @@ detail:
     "NUMBER": license_number
 
 output:
+  # The PDF roster has no expiration column. Per the board site
+  # (ncpastoralcounseling.org/certification-renewal.html) every certified
+  # counselor renews on the same annual deadline — December 31st — so stamp
+  # each record with the next occurring 12/31 (e.g. 2026-12-31) as its expiry.
+  fixed_annual_expiration_mmdd: "12-31"
   # No status column in PDF — all listed counselors are active/certified.
   status_map:
     "Active": active

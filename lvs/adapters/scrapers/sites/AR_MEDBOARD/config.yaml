@@ -3,7 +3,7 @@ identity:
   board_name: "Arkansas State Medical Board"
   state: "AR"
   country: "US"
-  profession_codes: ["MD", "DO"]
+  profession_codes: ["MD", "DO", "PA", "OT", "GNC"]
   # ASP.NET WebForms portal at armedicalboard.adh.arkansas.gov.
   # From Arkansas_StateMedical_Medical_Scraper.py:
   #   Radio buttons: License Number (rbVerifyLicenseSearch_0) vs Last Name (rbVerifyLicenseSearch_1).

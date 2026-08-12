@@ -26,6 +26,10 @@ OUTCOME_LICENSE_MISMATCH = "license_mismatch"
 OUTCOME_NAME_MATCH_NO_LICENSE = "name_match_no_license"
 OUTCOME_PROVIDER_TYPE_MISMATCH = "provider_type_mismatch"
 OUTCOME_ERROR = "error"
+# The board site itself was unreachable/erroring (connection timeout, TLS drop,
+# or HTTP 5xx / server-error page) — distinct from OUTCOME_ERROR (a per-attempt
+# failure) and OUTCOME_NO_RECORDS (the board answered but had no match).
+OUTCOME_BOARD_UNAVAILABLE = "board_unavailable"
 OUTCOME_SKIPPED_DUPLICATE = "skipped_duplicate"
 # Set by the AI agent's try_search when records are returned but not yet
 # evaluated — distinct from OUTCOME_MATCH_EXACT, which requires disambiguator
@@ -40,6 +44,9 @@ REASON_NAME_MATCH_NO_LICENSE = "name_match_no_license"
 REASON_PROVIDER_TYPE_MISMATCH = "provider_type_mismatch"
 REASON_AMBIGUOUS_AFTER_NARROWING = "ambiguous_after_narrowing"
 REASON_NO_RECORDS = "no_records"
+# Board site down / unreachable — the row is skipped (not failed) and should be
+# re-run once the board recovers. Rendered as "Skip" in the output channel.
+REASON_BOARD_UNAVAILABLE = "board_unavailable"
 REASON_NO_ROUTING = "no_routing"
 REASON_NPI_NO_MISSING = "npi_no_missing"
 REASON_NPPES_NOT_FOUND = "nppes_not_found"

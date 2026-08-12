@@ -26,12 +26,24 @@ search:
     strategy: network_idle
     selector: "table tr"
     timeout_ms: 25000
+    # LearningBuilder renders its empty-result page with label text and a
+    # "check spelling" hint (no data <tr> rows). Without these indicators the
+    # extractor parsed that label/error text as phantom candidates, producing
+    # bogus name-mismatch failures instead of a clean no_records. Match every
+    # phrasing the portal is known to emit.
     no_results_indicators:
       - "no records found"
       - "no matching"
       - "no results"
       - "no licensees"
       - "0 records"
+      - "check your spelling"
+      - "check spelling"
+      - "please try again"
+      - "were no results"
+      - "no records were found"
+      - "returned no results"
+      - "no practitioners"
 
 results:
   type: table
@@ -50,6 +62,11 @@ results:
       2: license_number
       3: city
       4: state
+    # Drop any parsed row that lacks a credential id and name — a genuine NCSAPPB
+    # result always carries both. This is the second line of defence (after the
+    # no_results_indicators above) against label/error rows being scored as
+    # phantom candidates.
+    required_fields: ["full_name", "license_number"]
   has_detail_page: true
   detail_trigger:
     type: link_in_cell

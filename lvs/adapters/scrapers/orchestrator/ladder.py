@@ -21,7 +21,7 @@ import time
 from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, Optional
 
-from engine.models import SearchQuery, SiteConfig
+from engine.models import BoardUnavailableError, SearchQuery, SiteConfig
 
 from . import capability, config as cfg
 from . import disambiguator as disamb
@@ -29,12 +29,12 @@ from . import trace as trace_mod
 from .nppes_client import NppesRecord, NpiDiscrepancy
 from .trace import (
     AttemptRecord, RowTrace,
-    OUTCOME_AMBIGUOUS, OUTCOME_ERROR, OUTCOME_LICENSE_MISMATCH,
+    OUTCOME_AMBIGUOUS, OUTCOME_BOARD_UNAVAILABLE, OUTCOME_ERROR, OUTCOME_LICENSE_MISMATCH,
     OUTCOME_MATCH_EXACT, OUTCOME_MATCH_VIA_DISAMBIGUATOR, OUTCOME_NAME_MISMATCH,
     OUTCOME_NAME_MATCH_NO_LICENSE,
     OUTCOME_NARROWED, OUTCOME_NO_RECORDS, OUTCOME_PROVIDER_TYPE_MISMATCH,
     OUTCOME_SKIPPED_DUPLICATE,
-    REASON_AMBIGUOUS_AFTER_NARROWING, REASON_LICENSE_MISMATCH,
+    REASON_AMBIGUOUS_AFTER_NARROWING, REASON_BOARD_UNAVAILABLE, REASON_LICENSE_MISMATCH,
     REASON_NAME_MATCH_NO_LICENSE,
     REASON_NAME_MISMATCH, REASON_NO_RECORDS, REASON_PROVIDER_TYPE_MISMATCH,
     make_signature, normalize_query_value,
@@ -658,6 +658,13 @@ async def run_ladder(
             )
             trace.append(attempt)
 
+            # Board site is down/erroring — stop trying further rungs on it (they
+            # would all time out too) and move to the next routed board. Preserve
+            # the board_unavailable outcome (don't let the no_gate_pass branch
+            # below overwrite it with no_records).
+            if attempt.outcome == OUTCOME_BOARD_UNAVAILABLE:
+                break
+
             verdict = await _evaluate_records(records, master_row, trace,
                                               current_mode=plan.mode)
             attempt.confidence = verdict.best_breakdown.total if verdict.best_breakdown else None
@@ -1007,6 +1014,22 @@ async def run_ladder(
         trace.final_reason = REASON_NAME_MATCH_NO_LICENSE
         return deferred_fail
 
+    # Board(s) unavailable: if at least one routed board was down AND no board
+    # ever produced an evaluable response (every attempt was board_unavailable,
+    # a transient error, or a skipped duplicate), classify the row as a Skip so
+    # it is retried when the board recovers — instead of burning the AI fallback
+    # on a site that never answered and mislabelling it a no_records/name issue.
+    _reached_a_board = any(
+        a.outcome not in (OUTCOME_BOARD_UNAVAILABLE, OUTCOME_ERROR, OUTCOME_SKIPPED_DUPLICATE)
+        for a in trace.attempts
+    )
+    if not _reached_a_board and any(
+        a.outcome == OUTCOME_BOARD_UNAVAILABLE for a in trace.attempts
+    ):
+        trace.final_outcome = "Skip"
+        trace.final_reason = REASON_BOARD_UNAVAILABLE
+        return LadderResult(status="Fail", reason=REASON_BOARD_UNAVAILABLE)
+
     # Both ladders exhausted.
     final_reason = (trace.escalate_to_ai_reason
                     or last_specific_reason
@@ -1058,6 +1081,7 @@ async def _execute_one(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
     seq = len(trace.attempts) + 1
     t0 = time.time()
     error_msg: Optional[str] = None
+    board_unavailable = False
     records: list = []
 
     effective_timeout = float(
@@ -1068,6 +1092,10 @@ async def _execute_one(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
             executor(cfg_obj, plan.query, trace.run_id),
             timeout=effective_timeout,
         )
+    except BoardUnavailableError as exc:
+        error_msg = str(exc)[:300]
+        board_unavailable = True
+        log.warning("[%s] board unavailable mode=%s sig=%s: %s", src_id, plan.mode, sig, exc)
     except asyncio.TimeoutError:
         error_msg = f"timeout_{int(effective_timeout)}s"
         log.warning("[%s] timeout mode=%s sig=%s", src_id, plan.mode, sig)
@@ -1099,7 +1127,8 @@ async def _execute_one(cfg_obj: SiteConfig, plan: PlannedAttempt, sig: str,
         used_npi_data=used_npi,
         differing_field=differing_field,
         record_count=len(records),
-        outcome="" if not error_msg else OUTCOME_ERROR,
+        outcome=(OUTCOME_BOARD_UNAVAILABLE if board_unavailable
+                 else "" if not error_msg else OUTCOME_ERROR),
         evidence_dir=ev_dir,
         duration_ms=duration_ms,
         error_msg=error_msg,

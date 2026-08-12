@@ -116,6 +116,11 @@ output:
     "Expired": expired
     "Suspended": suspended
     "Revoked": revoked
+    # "Transitioned" = an associate credential (A-prefixed number) that has been
+    # converted to a full licence — the associate term is superseded, so the
+    # active full-licence record is the one to verify against.
+    "Transitioned": inactive
+    "transitioned": inactive
   date_formats:
     - "%m/%d/%Y"
     - "%Y-%m-%d"

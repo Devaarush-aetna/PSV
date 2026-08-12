@@ -9,6 +9,21 @@ from pydantic import BaseModel, Field, model_validator
 
 
 # ---------------------------------------------------------------------------
+# Exceptions
+# ---------------------------------------------------------------------------
+
+class BoardUnavailableError(Exception):
+    """Raised when a board site is unreachable or erroring at the source —
+    connection timeout, TLS handshake drop, or an HTTP 5xx / server-error page.
+
+    This is distinct from "no records found": the board never gave a usable
+    response, so the row should be skipped (and retried later) rather than
+    failed as a data mismatch. Propagated up from navigation and re-raised
+    through the browser search wrapper so the ladder can classify it.
+    """
+
+
+# ---------------------------------------------------------------------------
 # Enums
 # ---------------------------------------------------------------------------
 

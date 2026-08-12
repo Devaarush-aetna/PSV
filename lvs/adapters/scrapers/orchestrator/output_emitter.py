@@ -81,6 +81,7 @@ _CAPTCHA_REASONS: frozenset[str] = frozenset({
     "prov_type_captcha_blocked",
     "board_skip_captcha",
     "board_skipped",      # skip:true in board identity (e.g. BACB registry down)
+    "board_unavailable",  # board site down/erroring at run time (timeout / HTTP 5xx)
 })
 
 # Manual-reason strings that route a row exclusively to AI_ADD_LICENSE (not Manual).
@@ -256,6 +257,15 @@ class OutputEmitter:
             # Board stored full name in licensee_last_name (e.g. "George Joseph Vesper").
             # Split it so first/last columns are populated correctly in output.
             first, last = disamb._split_full_name(last, master_last)
+        elif first and last and " " in last and last.split()[0].strip().upper() == first.strip().upper():
+            # Board populated first AND dumped the full name into licensee_last_name
+            # (e.g. NC_SLP_AUD detail "Name" field → first="John", last="John
+            # Rutherfoord Smith"). The last field leads with the first name, so it is
+            # really the full name — re-split so the last column holds only the surname.
+            _f, _l = disamb._split_full_name(last, master_last)
+            if _l:
+                last = _l
+                first = first or _f
         return first, last
 
     @staticmethod
@@ -436,6 +446,11 @@ class OutputEmitter:
             "Board Skipped: Registry is currently unavailable (under maintenance or access "
             "restriction). Automated verification was not attempted. "
             "Manual verification required on the board's website."
+        ),
+        "board_unavailable": (
+            "Board Unavailable: The board website was unreachable at verification time "
+            "(connection timeout or HTTP server error). This is a temporary board-side "
+            "outage — re-run this row once the site is back online."
         ),
     })
 

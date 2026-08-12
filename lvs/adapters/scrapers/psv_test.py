@@ -40,7 +40,7 @@ from engine.browser import _REAL_UA, _STEALTH, _STEALTH_ARGS
 from engine.evidence import capture_evidence
 from engine.extractor import extract_results_table, extract_detail, extract_th_td_multi
 from engine.post_processors import apply_field_map
-from engine.models import SearchQuery
+from engine.models import BoardUnavailableError, SearchQuery
 from engine.output import map_to_license_record
 from engine.proxy import get_proxy_config
 from engine.validate import load_config
@@ -164,6 +164,12 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    # AR Drug and Alcohol Counselors — no board website; AR guide requires email verification only.
+    ("AR", "DAC"):  "AR Drug and Alcohol Counselors verified by email only — send request to ARBEADAC@arkansas.gov with provider name and license number",
+    # AR Dieticians — no board website; AR guide requires email verification only.
+    ("AR", "DT"):   "AR Dieticians verified by email only — send request to ARDiet@arkansas.gov or call 501-661-2530",
+    # AR Pharmacist — no AR pharmacy board scraper configured; manual verification required.
+    ("AR", "PH"):   "AR Board of Pharmacy — no automated scraper configured; manual verification required",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -792,6 +798,20 @@ class PsvBrowser:
                 if detailed:
                     return detailed
             return [map_to_license_record(r, self.config, {}) for r in raw_rows]
+        except BoardUnavailableError:
+            # Board site is down/erroring — propagate so the ladder classifies the
+            # row as Skip (board_unavailable), rather than swallowing to [] which
+            # looks identical to a genuine no-records result.
+            log.warning("[%s] Board unavailable mode=%s query=%s", src, query.mode, query.query)
+            if run_id:
+                try:
+                    await capture_evidence(page, self.config.evidence,
+                                            stage="error",
+                                            run_id=run_id, source_id=src,
+                                            state=state, query=query)
+                except Exception:
+                    pass
+            raise
         except Exception as exc:
             log.warning("[%s] Error mode=%s query=%s: %s", src, query.mode, query.query, exc)
             if run_id:
@@ -822,6 +842,8 @@ async def _try_search_psv(psv_b: PsvBrowser, query: SearchQuery, timeout: int) -
     except asyncio.TimeoutError:
         log.warning("[%s] Timeout for mode=%s query=%s", src, query.mode, query.query)
         return []
+    except BoardUnavailableError:
+        raise  # let the caller classify the board as down (Skip)
     except Exception as exc:
         log.warning("[%s] Error for mode=%s query=%s: %s", src, query.mode, query.query, exc)
         return []
@@ -1012,6 +1034,14 @@ async def run_row(
         ), ""
 
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
+    # License-prefix override: an NC LPC provider whose license number starts with
+    # "LCAS" holds a Licensed Clinical Addiction Specialist credential, regulated by
+    # the NC Substance Abuse Professional Practice Board (NC_DAC) — not the mental
+    # health counselors board. Route those to NC_DAC first (it is also present in the
+    # LPC routing list as a fallback so its config is loaded for the batch).
+    if (lic_state == "NC" and prov_type == "LPC"
+            and re.sub(r"[^A-Z]", "", (license_id or "").upper()).startswith("LCAS")):
+        preferred_sids = ["NC_DAC"] + [s for s in preferred_sids if s != "NC_DAC"]
     if not preferred_sids:
         return "Fail", f"No board configured for prov_type '{prov_type}'", ""
 
