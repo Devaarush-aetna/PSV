@@ -50,7 +50,7 @@ results:
       0: full_name
       2: license_type
       3: license_number
-  has_detail_page: false
+  has_detail_page: true
   pagination:
     enabled: false
     strategy: none

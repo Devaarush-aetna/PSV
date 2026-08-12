@@ -40,7 +40,7 @@ from engine.browser import _REAL_UA, _STEALTH, _STEALTH_ARGS
 from engine.evidence import capture_evidence
 from engine.extractor import extract_results_table, extract_detail, extract_th_td_multi
 from engine.post_processors import apply_field_map
-from engine.models import BoardUnavailableError, SearchQuery
+from engine.models import BoardUnavailableError, LicenseStatus, SearchQuery
 from engine.output import map_to_license_record
 from engine.proxy import get_proxy_config
 from engine.validate import load_config
@@ -166,9 +166,9 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     # AR Drug and Alcohol Counselors — no board website; AR guide requires email verification only.
-    ("AR", "DAC"):  "AR Drug and Alcohol Counselors verified by email only — send request to ARBEADAC@arkansas.gov with provider name and license number",
+    ("AR", "DAC"):  "Please email verification to: ARBEADAC@arkansas.gov",
     # AR Dieticians — no board website; AR guide requires email verification only.
-    ("AR", "DT"):   "AR Dieticians verified by email only — send request to ARDiet@arkansas.gov or call 501-661-2530",
+    ("AR", "DT"):   "Please email verification to: ARDiet@arkansas.gov or call for verification: 501-661-2530",
     # AR Pharmacist — no AR pharmacy board scraper configured; manual verification required.
     ("AR", "PH"):   "AR Board of Pharmacy — no automated scraper configured; manual verification required",
 }
@@ -888,12 +888,44 @@ def _epdb_name_gate_note(rec, last_name: str, first_name: str) -> str:
         return ""
 
 
+# Status preference for choosing among multiple matching records (lower = better).
+# Boards commonly return several rows for the same person — e.g. NC counseling boards
+# list a superseded "A#####" associate credential (status "Transitioned" → INACTIVE)
+# *before* the current full-licence row (ACTIVE). Selecting by table order would pick
+# the stale/expired associate record; ranking by status surfaces the ACTIVE one instead.
+_STATUS_PREFERENCE = {
+    LicenseStatus.ACTIVE: 0,
+    LicenseStatus.PROBATION: 1,
+    LicenseStatus.UNKNOWN: 2,   # status not parsed — don't penalise below a known-bad row
+    LicenseStatus.INACTIVE: 3,
+    LicenseStatus.EXPIRED: 3,
+    LicenseStatus.SUSPENDED: 3,
+    LicenseStatus.REVOKED: 3,
+}
+
+
+def _status_rank(rec) -> int:
+    """Preference rank for a record's status (lower = prefer). Unknown statuses rank
+    with UNKNOWN so an unparsed row is never chosen over an ACTIVE one."""
+    return _STATUS_PREFERENCE.get(getattr(rec, "status", LicenseStatus.UNKNOWN), 2)
+
+
+def _prefer_active(recs: list) -> list:
+    """Stable-sort matching records so ACTIVE rows come first, preserving the board's
+    original order for records of equal status (Python's sort is stable)."""
+    return sorted(recs, key=_status_rank)
+
+
 def _match_analysis(records, last_name, first_name, license_id):
-    """Return (both, name_hits, lic_hits) lists from records."""
+    """Return (both, name_hits, lic_hits) lists from records.
+
+    Each list is ordered ACTIVE-first (stable), so callers that take element [0]
+    verify against the current/active record rather than a superseded one that the
+    board happened to list first (e.g. NC "Transitioned" A-prefixed associate rows)."""
     both = [r for r in records if _name_matches(r, last_name, first_name) and _license_matches(r, license_id)]
     name_hits = [r for r in records if _name_matches(r, last_name, first_name)]
     lic_hits = [r for r in records if _license_matches(r, license_id)]
-    return both, name_hits, lic_hits
+    return _prefer_active(both), _prefer_active(name_hits), _prefer_active(lic_hits)
 
 
 async def _try_first_and_last_psv(
@@ -985,10 +1017,24 @@ async def _fetch_detail_expiry(psv_b: "PsvBrowser", rec, timeout: int) -> str:
         last_name=(getattr(rec, "licensee_last_name", None) or "").strip() or None,
     )
     detail_recs = await _try_search_psv(psv_b, q, timeout)
-    for dr in detail_recs:
+    # The re-search may again return several rows for the same person (e.g. NC boards
+    # returning a superseded "A#####" Transitioned row alongside the ACTIVE one).
+    # `board_lic` is the chosen record's own number, so a row matching it exactly is the
+    # one we want — this excludes the A-prefixed superseded credential. Take that row's
+    # expiry first; only if no exact-match row carries one do we fall back to any other
+    # ACTIVE row (never an inactive/Transitioned one, whose stale date would false-Fail).
+    board_lic_u = board_lic.upper().strip()
+    exact = [dr for dr in detail_recs
+             if (getattr(dr, "license_number", None) or "").upper().strip() == board_lic_u]
+    for dr in _prefer_active(exact):
         exp = _get_expiry(dr)
         if exp:
             return exp
+    for dr in detail_recs:
+        if getattr(dr, "status", None) == LicenseStatus.ACTIVE and dr not in exact:
+            exp = _get_expiry(dr)
+            if exp:
+                return exp
     return ""
 
 
@@ -1046,14 +1092,14 @@ async def run_row(
         ), ""
 
     preferred_sids = _ROUTING.get((lic_state, prov_type), [])
-    # License-prefix override: an NC LPC provider whose license number starts with
-    # "LCAS" holds a Licensed Clinical Addiction Specialist credential, regulated by
-    # the NC Substance Abuse Professional Practice Board (NC_DAC) — not the mental
-    # health counselors board. Route those to NC_DAC first (it is also present in the
-    # LPC routing list as a fallback so its config is loaded for the batch).
-    if (lic_state == "NC" and prov_type == "LPC"
-            and re.sub(r"[^A-Z]", "", (license_id or "").upper()).startswith("LCAS")):
-        preferred_sids = ["NC_DAC"] + [s for s in preferred_sids if s != "NC_DAC"]
+    # NC LPC conditional routing: LCAS-prefix licenses belong to the NC Substance
+    # Abuse Professional Practice Board (NC_DAC); all other LPC licenses belong to
+    # the NC Mental Health Counselors board (NC_MENTAL_HEALTH). No secondary routing.
+    if lic_state == "NC" and prov_type == "LPC":
+        if re.sub(r"[^A-Z]", "", (license_id or "").upper()).startswith("LCAS"):
+            preferred_sids = ["NC_DAC"]
+        else:
+            preferred_sids = ["NC_MENTAL_HEALTH"]
     if not preferred_sids:
         return "Fail", f"No board configured for prov_type '{prov_type}'", ""
 
@@ -1679,6 +1725,16 @@ async def run_row(
         if not expiry and s_id in psv_browsers:
             expiry = await _fetch_detail_expiry(psv_browsers[s_id], s_rec, timeout)
         return "Pass", f"Verified via {s_id} (name match — PSV license class not in this search type)", expiry
+    # --- PSYPACT secondary check for NC CP ---
+    # NC Clinical Psychologists may hold PSYPACT E.Passports. When the primary
+    # NC board ladder fails, search the PSYPACT national registry as a fallback.
+    if lic_state == "NC" and prov_type == "CP":
+        _trace_stub = types.SimpleNamespace(final_outcome=None, final_reason=None)
+        _psypact_lr = await _verify_psypact_row(row_data, _trace_stub)
+        if _psypact_lr.status == "Pass" and getattr(_psypact_lr, "best_record", None):
+            _exp = getattr(_psypact_lr.best_record, "expiration_date", None)
+            _exp_str = _exp.isoformat() if hasattr(_exp, "isoformat") else (str(_exp) if _exp else "")
+            return "Pass", "Verified via PSYPACT (secondary — NC CP)", _exp_str
     # Post-scrape N/A override: board was visited but state does not license this type.
     if _post_na := NA_PROV_TYPES.get((lic_state, prov_type)):
         return "N/A", _post_na, ""
@@ -2285,6 +2341,14 @@ async def run_state_orchestrated(
                         routed_sids = [s for s in routed_sids if s == "IBCLC_COMMISSION"]
                     else:
                         routed_sids = [s for s in routed_sids if s == "IL_LICENSING"]
+
+                # NC LPC conditional routing: LCAS-prefix → NC_DAC only; others → NC_MENTAL_HEALTH only.
+                if row["lic_state"].upper() == "NC" and prov_type_upper == "LPC":
+                    _lic_id = (row.get("license_id") or "").strip()
+                    if re.sub(r"[^A-Z]", "", _lic_id.upper()).startswith("LCAS"):
+                        routed_sids = [s for s in routed_sids if s == "NC_DAC"]
+                    else:
+                        routed_sids = [s for s in routed_sids if s == "NC_MENTAL_HEALTH"]
 
                 routed_configs = [cfg_by_sid[s] for s in routed_sids if s in cfg_by_sid]
 

@@ -18,10 +18,11 @@ import asyncio
 import logging
 import re
 import time
+from datetime import date
 from dataclasses import dataclass
 from typing import Any, Awaitable, Callable, Optional
 
-from engine.models import BoardUnavailableError, SearchQuery, SiteConfig
+from engine.models import BoardUnavailableError, LicenseStatus, SearchQuery, SiteConfig
 
 from . import capability, config as cfg
 from . import disambiguator as disamb
@@ -247,6 +248,34 @@ def build_attempt_plan(config: SiteConfig, master_row: dict,
             continue
         seen_norms.add(key)
         plans.append(PlannedAttempt(mode=mode, query=query, normalized_query=norm))
+
+    # Synthetic: license_separators_stripped — remove separators (-, space, ., /) while
+    # KEEPING any alpha prefix, e.g. "S-8727" → "S8727". license_numeric_only strips the
+    # meaningful "S" and can match a DIFFERENT sibling credential ("8727", often a
+    # superseded/Transitioned term); this variant preserves the prefix so the correct
+    # (active) record is found. Inserted before license_numeric_only so the prefixed
+    # form is tried first.
+    _sep_raw_lic = master_row.get("license_id") or ""
+    _sep_stripped = re.sub(r"[-\s./]", "", _sep_raw_lic)
+    _sep_numeric = re.sub(r"\D", "", _sep_raw_lic)
+    if (_sep_stripped
+            and _sep_stripped != _sep_raw_lic       # separators actually present
+            and _sep_stripped != _sep_numeric        # has an alpha prefix (else numeric_only covers it)
+            and "license_number" in capability.supported_modes(config)):
+        _sq, _snorm = _build_query("license_number", master_row,
+                                   {"license_id": _sep_stripped},
+                                   license_type_override=None)
+        _skey = ("license_number", _snorm)
+        if _skey not in seen_norms:
+            seen_norms.add(_skey)
+            _num_idx = next((i for i, p in enumerate(plans)
+                             if p.mode == "license_numeric_only"), None)
+            _ins_at = _num_idx if _num_idx is not None else (
+                max((i for i, p in enumerate(plans) if p.mode == "license_number"),
+                    default=-1) + 1
+            )
+            plans.insert(_ins_at, PlannedAttempt(mode="license_number", query=_sq,
+                                                 normalized_query=_snorm))
 
     # Rung 0 — exact leading-zero search.
     # When the input license_id starts with "0" (e.g. "01486"), insert an attempt at the
@@ -575,23 +604,38 @@ async def _fetch_detail_record(
             executor(cfg_obj, q, trace.run_id), timeout=float(timeout_s),
         )
         trace.seen_signatures.add(detail_sig)
+
+        def _name_ok(dr) -> bool:
+            # When the original record has a known name, only accept a detail record
+            # that matches it — boards like KS_GLSUITE reuse the same numeric license
+            # number across license types, so the re-fetch can return many people with
+            # the same number and we must not swap in the wrong one.
+            # Only reject on name mismatch when the detail record actually has a name.
+            # If heading extraction fails (e.g. KSBHADA h3 with embedded link text),
+            # the detail record has empty first/last — don't discard it when the board
+            # license number already uniquely identifies the record.
+            if not (board_fn or board_ln):
+                return True
+            dr_fn = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
+            dr_ln = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
+            if not (dr_fn or dr_ln):
+                return True
+            return (dr_fn == (board_fn or "").upper()
+                    and dr_ln == (board_ln or "").upper())
+
+        # First pass: prefer a detail record whose license number EXACTLY matches the
+        # one we re-searched. Boards that return several rows for the same person (e.g.
+        # the associate "A17686" alongside the full "17686") share a name, so a
+        # name-only match is ambiguous and could pick the wrong row's (stale) expiry.
+        board_lic_k = board_lic.upper().strip()
         for dr in detail_records:
-            if getattr(dr, "expiration_date", None) is not None:
-                # When the original record has a known name, only accept a detail
-                # record that matches it — boards like KS_GLSUITE reuse the same
-                # numeric license number across license types, so the re-fetch can
-                # return many people with the same number and we must not swap in
-                # the wrong one.
-                if board_fn or board_ln:
-                    dr_fn = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
-                    dr_ln = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
-                    # Only reject on name mismatch when the detail record actually has a name.
-                    # If heading extraction fails (e.g. KSBHADA h3 with embedded link text),
-                    # the detail record has empty first/last — don't discard it when the board
-                    # license number already uniquely identifies the record.
-                    if (dr_fn or dr_ln) and (
-                            dr_fn != (board_fn or "").upper() or dr_ln != (board_ln or "").upper()):
-                        continue
+            if ((getattr(dr, "license_number", "") or "").upper().strip() == board_lic_k
+                    and getattr(dr, "expiration_date", None) is not None
+                    and _name_ok(dr)):
+                return dr
+        # Second pass: fall back to any name-matching record that carries an expiry.
+        for dr in detail_records:
+            if getattr(dr, "expiration_date", None) is not None and _name_ok(dr):
                 return dr
     except Exception as exc:
         log.debug("[%s] detail expiry re-fetch failed for '%s': %s",
@@ -630,10 +674,27 @@ async def run_ladder(
     # more boards remain.  We store it and keep searching for an exact-license
     # hit on a later board; if nothing better is found, we return this.
     soft_match: Optional[LadderResult] = None
+    # True when the stored soft_match came from the PRIMARY (first-routed) board. Used to
+    # accept a strong name identity on the primary board when the queried license belongs
+    # to a different board that couldn't confirm it (e.g. NC_DENTAL finds the provider by
+    # name while the physician licence lives on the captcha-blocked NC_MEDBOARD).
+    soft_match_primary: bool = False
     # Deferred fail: name was found but license didn't match.  We defer the
     # return so the NPPES retry section can try the correct credential number
     # (e.g. IBCLC input has state-level ID; NPPES has the real L-XXXXXX).
     deferred_fail: Optional[LadderResult] = None
+    # Expired NPPES fallback: an NPPES-substituted license+name match whose record is
+    # already expired (or non-active). We don't accept it immediately — a later retry
+    # plan (e.g. the numeric-only "17686" after the associate "A17686") may find the
+    # ACTIVE record. If none does, we return this so the row reports a clean expired
+    # Fail rather than escalating to AI.
+    expired_nppes_fallback: Optional[LadderResult] = None
+    # Same idea for the master ladder (Loop 1): a license search can match a superseded
+    # sibling credential when the input license was degraded to bare digits (e.g. input
+    # "S-8727" → numeric-only "8727" matches the Transitioned "8727" while the ACTIVE
+    # record is "S8727"). Hold the superseded match and prefer an active one from a later
+    # rung; return this only if no active record is found anywhere.
+    transitioned_fallback: Optional[LadderResult] = None
     _stop_boards = False
 
     blm = board_license_type_map or {}
@@ -694,6 +755,7 @@ async def run_ladder(
                             tiebreaker_used=verdict.tiebreaker_used,
                             weight_profile_used=bd.weight_profile,
                         )
+                        soft_match_primary = (board_idx == 0)
                     attempt.candidates = [best]
                     attempt.outcome = OUTCOME_MATCH_EXACT
                     break  # stop rungs on this board; continue to next board
@@ -755,6 +817,36 @@ async def run_ladder(
                         break  # break rung loop; outer board loop checks _stop_boards
                 if _name_only_rescore:
                     bd = disamb.score_candidate(best, master_row, weight_profile="name_only")
+                # Active-preference deferral: when the matched record is non-active/expired
+                # AND its number differs from the input (after stripping separators), it is
+                # a superseded sibling matched via digit-only degradation — e.g. input
+                # "S-8727" degraded to "8727" hit the Transitioned "8727" while the ACTIVE
+                # record is "S8727". Don't accept it yet; a later rung (the separator-
+                # stripped or name search) may surface the active record. Preserve it as a
+                # fallback so a genuinely-superseded-only licence still reports.
+                _b_status = getattr(best, "status", None)
+                _b_exp = getattr(best, "expiration_date", None)
+                _b_nonactive = (
+                    _b_status in (LicenseStatus.INACTIVE, LicenseStatus.EXPIRED,
+                                  LicenseStatus.REVOKED, LicenseStatus.SUSPENDED)
+                    or bool(_b_exp is not None and _b_exp < date.today())
+                )
+                _in_lic_ss = re.sub(r"[-\s./]", "", (master_row.get("license_id") or "")).upper()
+                _b_lic_ss = re.sub(r"[-\s./]", "", (getattr(best, "license_number", "") or "")).upper()
+                if (_b_nonactive and has_lic_id and _in_lic_ss and _b_lic_ss
+                        and _b_lic_ss != _in_lic_ss):
+                    if transitioned_fallback is None:
+                        transitioned_fallback = LadderResult(
+                            status="Pass", best_record=best, best_breakdown=bd,
+                            tiebreaker_used=verdict.tiebreaker_used,
+                            weight_profile_used=bd.weight_profile,
+                            reason=_out_of_state_reason(best),
+                        )
+                    attempt.outcome = _diagnose_failure_outcome(
+                        [best], master_row, cfg_obj.identity.source_id
+                    )
+                    attempt.candidates = [best]
+                    continue  # try next rung — a later one may find the active record
                 attempt.outcome = OUTCOME_MATCH_EXACT
                 trace.final_outcome = "Pass"
                 return LadderResult(
@@ -870,6 +962,19 @@ async def run_ladder(
                 if _sm_name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
                     _sm_high_conf = True
                     _sm_name_only_rescore = True
+            # Primary-board name identity: when the soft match came from the PRIMARY routed
+            # board, the name identity is strong (first & last both >= 0.9), and the record
+            # is ACTIVE, accept it even though the queried license number doesn't match this
+            # board. This covers dual-credential providers whose queried licence lives on a
+            # different board that couldn't confirm it — e.g. a physician licence on the
+            # captcha-blocked NC_MEDBOARD while NC_DENTAL (primary) lists the provider as an
+            # active dentist. The provider_type score is 0 (checked as one profession, found
+            # as another), which alone would keep the name_only total below threshold.
+            if (not _sm_high_conf and soft_match_primary and _sm_bd is not None
+                    and _sm_bd.first_name >= 0.9 and _sm_bd.last_name >= 0.9
+                    and getattr(soft_match.best_record, "status", None) == LicenseStatus.ACTIVE):
+                _sm_high_conf = True
+                _sm_name_only_rescore = True
             if (_sm_detail_lic
                     and not disamb.license_numerics_match(_sm_input_lic, _sm_detail_lic)
                     and not _sm_high_conf):
@@ -933,10 +1038,47 @@ async def run_ladder(
                                 trace.escalate_to_ai_reason or trace_mod.REASON_AMBIGUOUS_AFTER_NARROWING
                             )
                             continue
+                    # Enrich with the detail-page expiry BEFORE deciding acceptance:
+                    # many boards only expose the expiration date on the detail page,
+                    # and we must know whether this record is already expired before
+                    # accepting it as a Pass.
                     if getattr(best, "expiration_date", None) is None:
                         best = await _fetch_detail_record(
                             cfg_obj, best, trace, executor, timeout_s,
                         )
+                    # Don't accept a non-active OR already-expired NPPES-matched record
+                    # yet — a later retry plan may find the active record. This is the
+                    # associate→full transition case: NPPES carries the associate number
+                    # "A17686" (LCMHC Associate, term ended 2025-06-30) whose record may
+                    # still read "Active", while the numeric-only retry "17686" returns
+                    # the current ACTIVE full licence (the disambiguator's active-over-
+                    # transitioned tiebreaker then selects it). Checking the expiry DATE
+                    # — not just the status label — is what catches the associate row,
+                    # since its status field alone is not in the skip set below.
+                    _nppes_rec_status = getattr(best, "status", None) if best else None
+                    _best_exp = getattr(best, "expiration_date", None) if best else None
+                    _best_expired = bool(_best_exp is not None and _best_exp < date.today())
+                    if (_nppes_rec_status in (
+                            LicenseStatus.INACTIVE, LicenseStatus.EXPIRED,
+                            LicenseStatus.REVOKED, LicenseStatus.SUSPENDED,
+                        ) or _best_expired):
+                        attempt.outcome = _diagnose_failure_outcome(
+                            [best], master_row, cfg_obj.identity.source_id
+                        ) if best else OUTCOME_NO_RECORDS
+                        attempt.candidates = [best] if best else []
+                        # Remember the first expired/non-active NPPES match. If no active
+                        # alternative surfaces on a later retry plan, we return this so
+                        # the row reports a clean expired Fail instead of escalating to AI.
+                        if best is not None and expired_nppes_fallback is None:
+                            expired_nppes_fallback = LadderResult(
+                                status="Pass", best_record=best,
+                                best_breakdown=_sel_bd,
+                                npi_substituted=True,
+                                tiebreaker_used=verdict.tiebreaker_used,
+                                weight_profile_used=(_sel_bd.weight_profile if _sel_bd else None),
+                                reason=_out_of_state_reason(best),
+                            )
+                        continue
                     attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                     trace.final_outcome = "Pass"
                     return LadderResult(
@@ -970,6 +1112,31 @@ async def run_ladder(
                             best = await _fetch_detail_record(
                                 cfg_obj, best, trace, executor, timeout_s,
                             )
+                        # Same expired/non-active guard as the "selected" branch: an
+                        # already-expired NPPES-substituted record (e.g. the associate
+                        # "A17686") is not accepted yet — a later retry plan (numeric-only
+                        # "17686") may surface the ACTIVE full licence. Preserve it as a
+                        # fallback so a genuinely-expired-only licence still reports cleanly.
+                        _abd_status = getattr(best, "status", None) if best else None
+                        _abd_exp = getattr(best, "expiration_date", None) if best else None
+                        _abd_expired = bool(_abd_exp is not None and _abd_exp < date.today())
+                        if (_abd_status in (
+                                LicenseStatus.INACTIVE, LicenseStatus.EXPIRED,
+                                LicenseStatus.REVOKED, LicenseStatus.SUSPENDED,
+                            ) or _abd_expired):
+                            attempt.outcome = _diagnose_failure_outcome(
+                                [best], master_row, cfg_obj.identity.source_id
+                            ) if best else OUTCOME_NO_RECORDS
+                            attempt.candidates = [best] if best else []
+                            if best is not None and expired_nppes_fallback is None:
+                                expired_nppes_fallback = LadderResult(
+                                    status="Pass", best_record=best,
+                                    best_breakdown=_abd,
+                                    npi_substituted=True,
+                                    weight_profile_used=_abd.weight_profile,
+                                    reason=_out_of_state_reason(best),
+                                )
+                            continue
                         attempt.outcome = OUTCOME_MATCH_VIA_DISAMBIGUATOR
                         trace.final_outcome = "Pass"
                         return LadderResult(
@@ -1007,6 +1174,22 @@ async def run_ladder(
                         attempt.candidates = records[:10]
                     else:
                         attempt.outcome = OUTCOME_NO_RECORDS
+
+    # NPPES retry exhausted with no ACTIVE match found, but we did match an expired/
+    # non-active NPPES-substituted record. Return it now so the row reports a proper
+    # expired Fail downstream rather than a generic AI escalation. (Reached only when
+    # no later retry plan produced an active record — e.g. the numeric-only variant
+    # also found nothing current.)
+    if expired_nppes_fallback is not None:
+        trace.final_outcome = "Pass"
+        return expired_nppes_fallback
+
+    # No active record found anywhere, but Loop 1 matched a superseded sibling credential
+    # (e.g. the Transitioned "8727" for input "S-8727"). Return it so the row reports that
+    # record rather than escalating to AI / no-match.
+    if transitioned_fallback is not None:
+        trace.final_outcome = "Pass"
+        return transitioned_fallback
 
     # NPPES retry exhausted — if a name_match_no_license was deferred, return it now.
     if deferred_fail is not None:

@@ -52,7 +52,8 @@ detail:
   # All records in the PDF are active certified counselors — no status column.
   # NUMBER is the board-assigned certification number used as license_number.
   field_map:
-    "NAME": full_name
+    "First Name": first_name
+    "Last Name": last_name
     "CITY": city
     "PHONE": phone
     "NUMBER": license_number
