@@ -45,7 +45,7 @@ from engine.output import map_to_license_record
 from engine.proxy import get_proxy_config
 from engine.validate import load_config
 from engine.navigator import navigate_to_search, fill_search_form
-from archetypes._shared import _wait_for_detail_content, _navigate_back, _try_out_of_state_tab
+from archetypes._shared import _wait_for_detail_content, _navigate_back, _try_out_of_state_tab, _scrape_pdf_detail
 from run import verify_license
 
 log = logging.getLogger("psv_test")
@@ -738,6 +738,41 @@ class PsvBrowser:
                         btn = page.locator(trigger_sel).nth(_idx)
                         if not await btn.is_visible(timeout=3000):
                             break
+                        # PDF detail: the trigger links to a PDF (e.g. NC_DAC's
+                        # /PractitionerLookup/Detail/{id} serves a "Credential Status"
+                        # letter as application/pdf even though the href lacks a .pdf
+                        # suffix). Download and parse it in-place instead of navigating —
+                        # navigating would let extract_detail capture the page's
+                        # "Credential Status" heading as the licensee name. No back-
+                        # navigation is needed since the browser never leaves the results.
+                        _dt = self.config.results.detail_trigger
+                        _href = (await btn.get_attribute("href") or "").strip()
+                        _is_pdf = (
+                            getattr(_dt, "force_pdf", False)
+                            or _href.lower().endswith(".pdf")
+                            or "pdf" in _href.lower().split("?")[0]
+                        )
+                        if _is_pdf:
+                            if not _href:
+                                log.warning("[%s] force_pdf but empty href at idx=%d — using summary row",
+                                            src, _idx)
+                                if _idx < len(raw_rows):
+                                    detailed.append(map_to_license_record(raw_rows[_idx], self.config, {}))
+                                continue
+                            _pdf_raw = await _scrape_pdf_detail(page, _href, self.config)
+                            _pdf_mapped = apply_field_map(_pdf_raw, self.config.detail.field_map)
+                            # Backfill from the summary row for anything the letter omitted
+                            # (e.g. the inactive-credential letter carries no license number).
+                            if _idx < len(raw_rows):
+                                _sr = raw_rows[_idx]
+                                for _k in ("full_name", "first_name", "last_name",
+                                           "license_number", "license_type",
+                                           "city", "state", "status",
+                                           "issue_date", "expiration_date"):
+                                    if not _pdf_mapped.get(_k) and _sr.get(_k):
+                                        _pdf_mapped[_k] = _sr[_k]
+                            detailed.append(map_to_license_record(_pdf_mapped, self.config, {}))
+                            continue
                         if getattr(self.config.results.detail_trigger, "opens_modal", False):
                             # Modal detail (no navigation): fire the row's own click handler
                             # via JS so a cookie/consent overlay can't intercept the pointer,

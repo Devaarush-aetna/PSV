@@ -75,6 +75,12 @@ results:
   detail_trigger:
     type: link_in_cell
     selector: "table tbody tr td:nth-child(1) a"
+    # The Name-cell anchor (/Public/PractitionerLookup/Detail/{id}?roleId=...) serves
+    # a PDF (Content-Type: application/pdf) — the "Credential Status Detail" letter —
+    # even though its href has no ".pdf" suffix. force_pdf makes the engine download
+    # and parse that PDF directly instead of navigating the browser, which previously
+    # captured the page's "Credential Status" heading as the licensee name.
+    force_pdf: true
   pagination:
     enabled: true
     strategy: next_button

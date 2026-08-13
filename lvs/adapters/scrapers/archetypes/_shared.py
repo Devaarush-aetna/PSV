@@ -15,6 +15,63 @@ from engine.telemetry import log_scrape_event
 
 log = logging.getLogger(__name__)
 
+_NARR_DATE = r"\d{1,2}/\d{1,2}/\d{4}"
+
+
+def _parse_credential_narrative(text: str) -> dict:
+    """Extract fields from a LearningBuilder/NCASPPB "Credential Status" letter PDF.
+
+    These letters carry the licensee's details in a single opening paragraph rather
+    than as label:value pairs, in one of two phrasings:
+
+      active   — "...confirm that {NAME} received NCASPPB's {CREDENTIAL} credential,
+                  {LICENSE#}, on {ISSUE}. This credential will expire on {EXPIRY}..."
+      inactive — "...inform you that {NAME} no longer holds NCASPPB's {CREDENTIAL}
+                  credential. It was originally issued on {ISSUE} and it expired on {EXPIRY}."
+
+    Returns raw label keys (Name / Credential / License Number / Issue Date /
+    Expiration Date / Status) that the caller maps via config.detail.field_map.
+    Only fires when the sentinel phrase is present, so it is a no-op for other PDFs.
+    """
+    t = re.sub(r"\s+", " ", text or "").strip()
+    if "credential" not in t.lower():
+        return {}
+    out: dict = {}
+
+    m = re.search(r"\bthat\s+(.+?)\s+(?:received|no longer holds|currently holds|holds)\b", t)
+    if m:
+        out["Name"] = m.group(1).strip()
+
+    # Credential phrase, e.g. "Licensed Clinical Addiction Specialist (LCAS)".
+    # Prefer the parenthetical abbreviation (LCAS) — it matches the results-table
+    # value and the board's profession_codes gate.
+    m = re.search(r"(?:NC[AS]SPPB'?s)\s+(.+?)\s+credential\b", t, re.I)
+    if m:
+        phrase = m.group(1).strip()
+        abbr = re.search(r"\(([A-Za-z][A-Za-z0-9/\-]*)\)\s*$", phrase)
+        out["Credential"] = abbr.group(1).strip() if abbr else phrase
+
+    m = re.search(r"credential,\s*([A-Za-z]+-?\d+)", t)
+    if m:
+        out["License Number"] = m.group(1).strip()
+
+    m = (re.search(r"received[\s\S]*?on\s+(" + _NARR_DATE + r")", t)
+         or re.search(r"originally issued on\s+(" + _NARR_DATE + r")", t))
+    if m:
+        out["Issue Date"] = m.group(1)
+
+    m = (re.search(r"will expire on\s+(" + _NARR_DATE + r")", t)
+         or re.search(r"\bit expired on\s+(" + _NARR_DATE + r")", t))
+    if m:
+        out["Expiration Date"] = m.group(1)
+
+    if re.search(r"no longer holds|it expired on", t):
+        out["Status"] = "Expired"
+    elif re.search(r"is pleased to confirm|received", t):
+        out["Status"] = "Active"
+
+    return out
+
 
 async def _emit_event(
     db, run_id, source_id, stage, status, t0, count,
@@ -97,16 +154,54 @@ async def _scrape_pdf_detail(page, href: str, config: SiteConfig) -> dict:
         log.warning("PyMuPDF not installed — cannot extract PDF detail for '%s'", href)
         return {}
 
+    from urllib.parse import urljoin
+    abs_url = href if href.startswith("http") else urljoin(page.url, href)
+    pdf_bytes: bytes | None = None
+
+    # Primary: fetch from *inside* the page context. This reuses the live document's
+    # cookies, User-Agent, WAF fingerprint and — crucially — the same proxy the working
+    # search navigation used. A bare page.request.get() (APIRequestContext) sends minimal
+    # headers and is frequently 403'd by WAFs or dropped by corporate proxies, which
+    # silently yielded empty PDFs (no expiry) on NC_DAC behind http://proxy:9119.
     try:
-        from urllib.parse import urljoin
-        abs_url = href if href.startswith("http") else urljoin(page.url, href)
-        resp = await page.request.get(abs_url)
-        if resp.status != 200:
-            log.warning("PDF download failed for '%s': HTTP %d", href, resp.status)
-            return {}
-        pdf_bytes = await resp.body()
+        b64 = await page.evaluate(
+            """async (url) => {
+                try {
+                    const r = await fetch(url, {credentials: 'include'});
+                    if (!r.ok) return null;
+                    const buf = await r.arrayBuffer();
+                    const bytes = new Uint8Array(buf);
+                    let binary = '';
+                    const CHUNK = 0x8000;
+                    for (let i = 0; i < bytes.length; i += CHUNK) {
+                        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+                    }
+                    return btoa(binary);
+                } catch (e) { return null; }
+            }""",
+            abs_url,
+        )
+        if b64:
+            import base64
+            pdf_bytes = base64.b64decode(b64)
+        else:
+            log.info("in-page PDF fetch returned no data for '%s' — trying request API", abs_url)
     except Exception as exc:
-        log.warning("PDF download failed for '%s': %s", href, exc)
+        log.info("in-page PDF fetch failed for '%s': %s — trying request API", abs_url, exc)
+
+    # Fallback: Playwright's APIRequestContext (works when in-page fetch is blocked, e.g. CSP).
+    if not pdf_bytes:
+        try:
+            resp = await page.request.get(abs_url)
+            if resp.status != 200:
+                log.warning("PDF download failed for '%s': HTTP %d", abs_url, resp.status)
+                return {}
+            pdf_bytes = await resp.body()
+        except Exception as exc:
+            log.warning("PDF download failed for '%s': %s", abs_url, exc)
+            return {}
+
+    if not pdf_bytes:
         return {}
 
     try:
@@ -172,6 +267,15 @@ async def _scrape_pdf_detail(page, href: str, config: SiteConfig) -> dict:
                 if m:
                     raw[field] = m.group(1)
                     break
+
+    # Narrative-paragraph letters (LearningBuilder/NCASPPB "Credential Status") carry
+    # the licensee details in prose, not label:value pairs. Parse them last and let
+    # them override the generic extraction — the paragraph is the authoritative source
+    # for name / credential / license# / issue+expiry dates / status.
+    narrative = _parse_credential_narrative(combined_text)
+    if narrative:
+        raw.update(narrative)
+        log.info("PDF narrative parse yielded %d field(s) from '%s'", len(narrative), abs_url)
 
     log.info("PDF detail extracted %d field(s) from '%s'", len(raw), abs_url)
     return raw
