@@ -1808,8 +1808,7 @@ def _write_remove_license(rows: list[dict], output_dir: Path) -> None:
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "RemoveLicense"
-        ws.append(["PIN", "State", "LicenseNumber", "LicenseType", "EPDBDone"])
-        ws.append(["Input", "Input", "Input", "Input", "Acknowledgement"])
+        ws.append(["PIN", "State", "LicenseNumber", "LicenseType"])
         for cell in ws[1]:
             cell.font = Font(bold=True)
 
@@ -1819,7 +1818,6 @@ def _write_remove_license(rows: list[dict], output_dir: Path) -> None:
             r.get("lic_state", ""),
             r.get("license_id", ""),
             r.get("lic_type", ""),
-            "",
         ])
 
     wb.save(str(remove_path))

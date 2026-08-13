@@ -73,15 +73,23 @@ def _clean_matched_name(raw: str) -> str:
 # sites/ directory — used for lazy board_name lookups
 _SITES_DIR = Path(__file__).resolve().parents[1] / "sites"
 
-# Reason codes that mean the board could not be reached due to CAPTCHA / WAF / network block.
-# Rows with these reasons get match_method="Captcha Based Board" in standard output
-# and a human-readable message in the manual channel. They are never sent to add_license.
+# Reason codes that produce status="Skip" in standard output.
+# Superset — includes both captcha-blocked and transient-outage reasons.
 _CAPTCHA_REASONS: frozenset[str] = frozenset({
     "state_captcha_blocked",
     "prov_type_captcha_blocked",
     "board_skip_captcha",
     "board_skipped",      # skip:true in board identity (e.g. BACB registry down)
     "board_unavailable",  # board site down/erroring at run time (timeout / HTTP 5xx)
+})
+
+# Subset of _CAPTCHA_REASONS whose match_method label is "Captcha Based Board".
+# board_unavailable and board_skipped are transient outages, not captcha blocks —
+# they get status=Skip but match_method="none".
+_CAPTCHA_LABEL_REASONS: frozenset[str] = frozenset({
+    "state_captcha_blocked",
+    "prov_type_captcha_blocked",
+    "board_skip_captcha",
 })
 
 # Manual-reason strings that route a row exclusively to AI_ADD_LICENSE (not Manual).
@@ -527,7 +535,12 @@ class OutputEmitter:
         went_ai_add_license = False
         _epdb = str(outcome.master_row.get("epdb_pin", "") or "").strip()
         if manual_reason:
-            if manual_reason in _REASONS_FOR_AI_ADD_LICENSE:
+            if "not in Service Location State" in manual_reason:
+                # Row belongs to RemoveLicense channel — do not route to Manual.
+                self._standard_rows[-1]["routed_to"] = "RemoveLicense"
+                self._accumulate_state_stats(outcome, manual_reason, False, False, False)
+                return
+            elif manual_reason in _REASONS_FOR_AI_ADD_LICENSE:
                 if not _epdb:
                     self._collect_manual(outcome, failure_reason="EPDB is blanks")
                     went_manual = True
@@ -870,7 +883,7 @@ class OutputEmitter:
             and bool(o.trace.attempts)
             and all(a.source_id in _BACB_SOURCE_IDS for a in o.trace.attempts)
         )
-        if o.status != "Pass" and (_final_reason in _CAPTCHA_REASONS or _is_bacb):
+        if o.status != "Pass" and (_final_reason in _CAPTCHA_LABEL_REASONS or _is_bacb):
             match_method = "Captcha Based Board"
         elif o.status != "Pass":
             match_method = "none"

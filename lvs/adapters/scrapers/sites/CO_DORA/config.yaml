@@ -3,7 +3,7 @@ identity:
   board_name: Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
   state: CO
   country: US
-  profession_codes: [MD, DO, RN, LPN, DDS, DMD, PharmD, PT, OT, PA, SW, LCSW, LPC, MFT]
+  profession_codes: [MD, DO, RN, LPN, DDS, DMD, PharmD, PT, OT, PA, SW, LCSW, LPC, MFT, DT]
   # Socrata JSON API — dataset 7s5z-vewr on data.colorado.gov.
   # socrata_bulk_csv archetype uses Playwright browser page.goto() (not APIRequestContext)
   # so it works through corporate Zscaler SSL inspection.
