@@ -40,13 +40,14 @@ def _build_socrata_combo_url(config: SiteConfig, query: SearchQuery) -> str:
         else:
             clauses.append(f"upper({col}) like upper('%{safe}%')")
 
-    _lic_val = query.license_number or (query.query if query.mode.startswith("license") else None)
-    # Dotted inputs (e.g. "149.029942") are visual-separator formats; the board
-    # stores the bare digits ("149029942").  Strip dots and use LIKE so both
-    # "149.029942" and "149029942" resolve to the same dataset row.
-    if _lic_val and "." in _lic_val:
-        _lic_val = _lic_val.replace(".", "")
-    _add_clause("license_number", _lic_val, op="like")
+    if query.mode.startswith("license") or query.mode == "credential_number":
+        _lic_val = query.license_number or query.query
+        # Dotted inputs (e.g. "149.029942") are visual-separator formats; the board
+        # stores the bare digits ("149029942").  Strip dots and use LIKE so both
+        # "149.029942" and "149029942" resolve to the same dataset row.
+        if _lic_val and "." in _lic_val:
+            _lic_val = _lic_val.replace(".", "")
+        _add_clause("license_number", _lic_val, op="like")
     _add_clause("first_name", query.first_name, op="like")
     _add_clause("last_name", query.last_name, op="like")
     if query.license_type and config.identity.license_type_selector:

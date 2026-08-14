@@ -175,7 +175,8 @@ async def main(args: argparse.Namespace) -> None:
         import os as _os
         _os.environ["PSV_AI_MOCK_PATH"] = args.ai_mock
 
-    run_id = args.run_id if args.run_id else (timestamp + "_001")
+    input_stem = Path(args.input).stem
+    run_id = args.run_id if args.run_id else f"{input_stem}_{timestamp}_001"
 
     if args.legacy_output:
         output_path = PSV_DEV / f"PSV_Output_{timestamp}.xlsx"

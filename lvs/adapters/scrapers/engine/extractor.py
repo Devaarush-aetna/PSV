@@ -15,6 +15,17 @@ log = logging.getLogger(__name__)
 
 _ZW_RE = re.compile("[​‌‍﻿]")
 
+
+def _clean_value(v: str) -> str:
+    """Strip zero-width chars and normalise whitespace.
+
+    Accela (and others) inject non-breaking / unicode spaces (nbsp U+00A0,
+    narrow-nbsp U+202F, ideographic space, ...) between words. Python's r'\s'
+    matches all of them, so a single collapse converts them to ASCII spaces
+    and squeezes runs -- e.g. 'Amy L Rodriguez' -> 'Amy L Rodriguez'.
+    """
+    return re.sub(r"\s+", " ", _ZW_RE.sub("", v)).strip()
+
 # ---------------------------------------------------------------------------
 # Strategy implementations
 # ---------------------------------------------------------------------------
@@ -540,9 +551,10 @@ async def extract_detail(page: Page, config: DetailConfig) -> dict:
                 if k not in combined:
                     combined[k] = v
 
-    # Strip Accela zero-width Unicode from all string values before field mapping.
+    # Strip Accela zero-width Unicode + normalise nbsp/unicode spaces on all
+    # string values before field mapping (e.g. "Amy\xa0L\xa0Rodriguez").
     combined = {
-        k: (_ZW_RE.sub("", v).strip() if isinstance(v, str) else v)
+        k: (_clean_value(v) if isinstance(v, str) else v)
         for k, v in combined.items()
     }
 

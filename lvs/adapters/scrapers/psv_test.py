@@ -84,6 +84,8 @@ NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("NJ", "NUT"): "NJ does not license Nutritionists (NUT) — Professional License step N/A",
     ("CT", "DT"):  "The state of Connecticut does not require DT/NUT to hold state licensure",
     ("CT", "NUT"): "The state of Connecticut does not require DT/NUT to hold state licensure",
+    ("CO", "DT"):  "The state of Colorado does not license Dietitians — Professional License step N/A",
+    ("CO", "NUT"): "The state of Colorado does not license Nutritionists — Professional License step N/A",
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -366,6 +368,10 @@ _SOCRATA_TYPE_MAP: dict[tuple[str, str], str] = {
     ("WA_HEALTH", "PN"):  "Licensed Practical Nurse",
     ("WA_HEALTH", "PT"):  "Physical Therapist License",
     ("WA_HEALTH", "RNA"): "Registered Nurse License",
+    ("CO_DORA", "AP"):  "ACU",
+    ("CO_DORA", "CP"):  "PSY",
+    ("CO_DORA", "ND"):  "ND",
+    ("CO_DORA", "RFA"): "SA",
     # WA SW omitted: too many LICSW subtypes; exact match would risk false negatives
     # KS_NURSING_KSBN — KSBN dropdown values (not prov_type codes)
     # Dropdown options: RN, LPN, LMHT, RNA, NP, NMW, CNS
@@ -2410,6 +2416,10 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
+                # CO does not license DT/NUT — Skip immediately, no board queries needed.
+                elif state == "CO" and prov_type_upper in ("DT", "NUT"):
+                    trace.final_outcome = "Skip"
+                    trace.final_reason = NA_PROV_TYPES.get(("CO", prov_type_upper), "")
                 # ABA rows whose license_id is a BACB certification number → always Skip.
                 elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))):
                     trace.final_outcome = "Skip"

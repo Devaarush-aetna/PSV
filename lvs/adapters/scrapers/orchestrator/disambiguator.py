@@ -767,7 +767,7 @@ def evaluate(candidates: list[Any], master_row: dict,
         )
 
     # Sort gate-passers by total descending
-    gate_passers.sort(key=lambda x: x[1].total, reverse=True)
+    gate_passers.sort(key=lambda x: (x[1].license_numerics, x[1].total), reverse=True)
 
     threshold = (cfg.THRESHOLD_LICENSE_PROFILE
                  if weight_profile == "license_present"

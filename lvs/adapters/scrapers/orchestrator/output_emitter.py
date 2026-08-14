@@ -912,6 +912,7 @@ class OutputEmitter:
             "status": (
                 "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
                 else "Fail" if self._expired_after_fetch_reason(o)
+                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip")
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
