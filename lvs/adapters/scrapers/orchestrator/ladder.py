@@ -146,7 +146,8 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
     if mode in ("license_number", "license_number_exact"):
         query_str = lic or ""
     elif mode == "license_numeric_only":
-        query_str = re.sub(r"\D", "", lic or "")
+        _digits = re.sub(r"\D", "", lic or "")
+        query_str = _digits.lstrip("0") or _digits
     elif mode in ("license_formatted", "license_middle_group"):
         # query_str is set by caller via override_fields["license_id"] already reformatted
         query_str = lic or ""
@@ -179,8 +180,14 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
     else:
         actual_mode = mode
 
-    # license_numeric_only also overrides license_number on the structured field
-    license_number = re.sub(r"\D", "", lic or "") if mode == "license_numeric_only" else lic
+    # license_numeric_only also overrides license_number on the structured field.
+    # Strip leading zeros to match boards that store numbers without them (e.g. "993819" not "0993819").
+    # Consistent with normalize_query_value which already strips leading zeros for signatures.
+    if mode == "license_numeric_only":
+        _d = re.sub(r"\D", "", lic or "")
+        license_number = _d.lstrip("0") or _d or None
+    else:
+        license_number = lic
 
     sq = SearchQuery(
         mode=actual_mode,

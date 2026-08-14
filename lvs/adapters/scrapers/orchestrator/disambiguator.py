@@ -184,6 +184,10 @@ def _strip_name_affixes(tokens: list[str]) -> list[str]:
         toks = toks[1:]
     while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
         toks = toks[:-1]
+    # Honorifics sometimes appear at the END of board-stored names (e.g. "Jang-en Sarah Lin Mrs.")
+    # Strip them from the trailing position too so they don't get parsed as the last name.
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_PREFIXES_NORM:
+        toks = toks[:-1]
     return toks
 
 
@@ -252,6 +256,10 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         if master_last_norm and _normalize_name(toks[-1]) == master_last_norm:
             break
         toks = toks[:-1]
+    # Some boards append honorifics at the END (e.g. "Jang-en Sarah Lin Mrs.").
+    # Strip trailing honorifics too so they don't get parsed as the last name.
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_PREFIXES_NORM:
+        toks = toks[:-1]
     while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
     if not toks:
@@ -259,7 +267,12 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
     if len(toks) == 1:
         return toks[0], toks[0]
 
-    master_last_words = len(master_last_norm.split()) if master_last_norm else 1
+    # Count space-separated words in the ORIGINAL master_last, not the normalised version.
+    # _normalize_name converts hyphens to spaces, inflating the count for hyphenated names
+    # like "Jang-En" (1 token on the board) → "JANG EN" (2 norm words) → wrongly grabs 2
+    # trailing board tokens. Space-splitting the original correctly gives 1 for "Jang-En"
+    # and 2 for "Rodriguez Pestana", matching how boards tokenise compound last names.
+    master_last_words = len(master_last.split()) if master_last else 1
 
     if master_last_words >= 2 and len(toks) > master_last_words:
         return toks[0], " ".join(toks[-master_last_words:])
@@ -364,6 +377,9 @@ def last_name_score(master_last: str, candidate_last: str) -> float:
         for i in range(len(longer) - n + 1):
             if longer[i : i + n] == shorter:
                 return 0.95
+    # Space-collapse fallback: "DO PICO" == "DOPICO" when spaces removed.
+    if m.replace(" ", "") == c.replace(" ", ""):
+        return 0.95
     return fuzz.token_sort_ratio(m, c) / 100.0
 
 

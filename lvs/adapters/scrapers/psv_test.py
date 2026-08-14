@@ -86,6 +86,7 @@ NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("CT", "NUT"): "The state of Connecticut does not require DT/NUT to hold state licensure",
     ("CO", "DT"):  "The state of Colorado does not license Dietitians — Professional License step N/A",
     ("CO", "NUT"): "The state of Colorado does not license Nutritionists — Professional License step N/A",
+    ("CO", "ABA"): "The state of Colorado does not issue state ABA licenses — Professional License step N/A",
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -2416,8 +2417,8 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
-                # CO does not license DT/NUT — Skip immediately, no board queries needed.
-                elif state == "CO" and prov_type_upper in ("DT", "NUT"):
+                # CO does not license DT/NUT/ABA — Skip immediately, no board queries needed.
+                elif state == "CO" and prov_type_upper in ("DT", "NUT", "ABA"):
                     trace.final_outcome = "Skip"
                     trace.final_reason = NA_PROV_TYPES.get(("CO", prov_type_upper), "")
                 # ABA rows whose license_id is a BACB certification number → always Skip.
