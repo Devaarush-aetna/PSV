@@ -647,7 +647,9 @@ class OutputEmitter:
                 and _bd_check.license_numerics < 1.0
                 and _input_lic_check
                 and not self._expired_after_fetch_reason(outcome)):
-            if _bd_check.first_name >= 1.0 and _bd_check.last_name >= 1.0:
+            if (_bd_check.first_name >= 1.0 and _bd_check.last_name >= 1.0
+                    and not (outcome.ladder_result
+                             and outcome.ladder_result.npi_substituted)):
                 return "Name verified: license number changed on renewal — review required"
             return (
                 f"Low match score ({round(_bd_check.total, 3)}) with no license ID match "

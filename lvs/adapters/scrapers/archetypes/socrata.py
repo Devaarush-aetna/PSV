@@ -169,7 +169,16 @@ async def scrape_socrata_bulk_csv(
             if _digits_only and _digits_only != q:
                 _num = _digits_only.lstrip('0') or _digits_only
                 safe = _num.replace("'", "''")
-            where = f"upper({field}) like upper('%{safe}%')"
+                _full_safe = _digits_only.replace("'", "''")
+                # Boards like CO_DORA store bare digits ("7086").  LIKE '%7086%' is too
+                # broad — it also matches "17086", "70861" etc. and returns ambiguous sets.
+                # Use equality on the stripped number (covers bare-digit storage) PLUS a
+                # LIKE on the full digit string with leading zeros (covers zero-padded
+                # storage like "0007086"), so a single clause handles both formats without
+                # returning spurious partial matches.
+                where = f"({field} = '{safe}' OR upper({field}) like upper('%{_full_safe}%'))"
+            else:
+                where = f"upper({field}) like upper('%{safe}%')"
             params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
         else:
             where = f"upper({field}) like upper('%{safe}%')"

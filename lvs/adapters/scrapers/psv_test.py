@@ -2492,6 +2492,17 @@ async def run_state_orchestrated(
                     else:
                         routed_sids = [s for s in routed_sids if s == "IL_LICENSING"]
 
+                # CO + LC conditional routing: IBCLC credentials always start with "L-";
+                # route L- licenses directly to IBCLC_COMMISSION (skip CO_DORA entirely to
+                # prevent NPI-substituted RN records from blocking the IBLC lookup).
+                # Non-L- licenses (e.g. RN., APN.) belong to CO_DORA only.
+                if (row["lic_state"].upper() == "CO" and prov_type_upper == "LC"):
+                    _lic_id = (row.get("license_id") or "").strip()
+                    if _lic_id.upper().startswith("L-"):
+                        routed_sids = [s for s in routed_sids if s == "IBCLC_COMMISSION"]
+                    else:
+                        routed_sids = [s for s in routed_sids if s == "CO_DORA"]
+
                 # NC LPC conditional routing: LCAS-prefix → NC_DAC only; others → NC_MENTAL_HEALTH only.
                 if row["lic_state"].upper() == "NC" and prov_type_upper == "LPC":
                     _lic_id = (row.get("license_id") or "").strip()

@@ -75,6 +75,12 @@ results:
   pagination:
     enabled: false
     strategy: none
+    # Two-phase harvest: collect all summary hrefs first, then navigate directly
+    # to the detail URL only for the row matching the search target. Avoids
+    # browser_back failures when multiple license rows share numeric "139" — e.g.
+    # SP#139, A#139, SP#1391 — which caused _scrape_with_detail_clicks to return
+    # only the first (wrong) detail record and miss Janet Montgomery's expiry.
+    harvest_all: true
 
 detail:
   # Detail page structure (https://search.statesolutions.us/Licensee?ID=...):
