@@ -1,0 +1,87 @@
+identity:
+  source_id: "AR_DIETBOARD"
+  board_name: "Arkansas Dietetic Licensing Board"
+  state: "AR"
+  country: "US"
+  profession_codes: ["DT"]
+  # Manual verification only — board does not provide an online public lookup.
+  # Contact: ARDiet@arkansas.gov | 501-661-2530
+  base_url: ""
+  archetype: classic_html_form
+  skip: true
+  skip_reason: "Manual verification required. Please email: ARDiet@arkansas.gov or call: 501-661-2530 (Arkansas Dietetic Licensing Board)"
+
+search:
+  modes: []
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ""
+    search_button:
+      selector: ""
+  results_wait:
+    strategy: delay
+    timeout_ms: 0
+
+results:
+  type: table
+  table:
+    row_selector: ""
+    cell_selector: ""
+    columns: {}
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 0
+  strategies: []
+  field_map: {}
+
+output:
+  status_map: {}
+  date_formats:
+    - "%m/%d/%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport: {width: 1280, height: 900}
+  timeout_ms: 30000
+  navigation_timeout_ms: 30000
+  rate_limit:
+    delay_between_requests_ms: 0
+    max_concurrent: 1
+  retry:
+    max_attempts: 0
+    backoff_ms: []
+    retry_on: []
+  proxy:
+    enabled: false
+  user_agent: ""
+
+evidence:
+  capture_html: false
+  capture_screenshot: false
+  capture_on: []
+  storage: local
+  local_path: "Evidence/AR_DIETBOARD/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-14"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: last_name
+  query: "Smith"
+  expect:
+    min_records: 1
+    full_name_contains: "Smith"
+  skip: true
+  skip_reason: "Manual verification required. Please email: ARDiet@arkansas.gov or call: 501-661-2530 (Arkansas Dietetic Licensing Board)"

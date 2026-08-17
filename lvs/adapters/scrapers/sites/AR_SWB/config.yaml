@@ -5,11 +5,16 @@ identity:
   country: US
   profession_codes: [LCSW, LMSW, LSW, PLMSW, PLSW]
   # WordPress page on healthy.arkansas.gov; roster data maintained by Tyler Arkansas.
-  # Single-field (last name) search; results rendered client-side via JS/Handlebars.
+  # Single-field (last name) search only — no first_name or license input exists on the form.
+  # Results rendered client-side via JS/Handlebars.
   # Result fields from template: firstname+middle+lastname, city, state, level
   #   (LCSW/LMSW/LSW/PLMSW/PLSW), number, dateissued, expdate, disc (disciplinary).
   # No explicit status column — active status is implied; disc field flags violations.
-  # Row/cell selectors below are best-guess pending live DOM inspection (headless=false).
+  # form.search_input.selector must match #lastname (NOT WordPress site-search input).
+  #   Using "input[placeholder='Last Name']" was wrong — MetForm input has no placeholder
+  #   attribute; that selector fell through to WordPress site search (?s=<query>) and
+  #   returned 0 board results for all synthesized non-last_name modes.
+  # Selectors verified via live DOM inspection (2026-08-10).
   base_url: "https://healthy.arkansas.gov/boards-commissions/boards/social-work-licensing-board/social-work-licensing-board-roster-search/"
   archetype: classic_html_form
 
@@ -22,9 +27,9 @@ search:
     search_by_dropdown:
       strategy: none
     search_input:
-      selector: "input[placeholder='Last Name']"
+      selector: "#lastname"
     search_button:
-      selector: "button[type='submit']"
+      selector: "#metl_submit"
     wait_for_networkidle: true
     post_navigate_wait_ms: 3000
   results_wait:
@@ -41,11 +46,15 @@ search:
 
 results:
   type: table
+  # This board's DataTables renders 25 rows per page; common surnames (Taylor, Miller,
+  # Smith) exceed 25 total entries so the target provider is often on page 2+. Collect
+  # all pages before matching (same pattern as AR_MEDBOARD paginate_summary_rows).
+  paginate_summary_rows: true
   table:
     row_selector: "tbody tr"
     cell_selector: "td"
     skip_first_row: false
-    # Columns verified via live DOM inspection (2026-08-10):
+    # Column mapping verified via live DOM inspection (2026-08-10):
     # 0: (empty) | 1: Firstname | 2: Middle | 3: Lastname | 4: Number
     # 5: Level   | 6: Expdate   | 7: Dateissued | 8: City | 9: State | 10: Disciplinary Action
     columns:
@@ -61,8 +70,12 @@ results:
       10: disciplinary_action
   has_detail_page: false
   pagination:
-    enabled: false
-    strategy: none
+    enabled: true
+    strategy: next_button
+    # jQuery DataTables "Next" button; acquires class "disabled" on the last page.
+    next_selector: "a.paginate_button.next"
+    disabled_class: "disabled"
+    max_pages: 20
 
 detail:
   wait:

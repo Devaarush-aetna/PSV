@@ -25,6 +25,7 @@ import csv
 import logging
 import re
 import sys
+import time
 import types
 from datetime import datetime as _dt
 from pathlib import Path
@@ -168,12 +169,6 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
-    # AR Drug and Alcohol Counselors — no board website; AR guide requires email verification only.
-    ("AR", "DAC"):  "Please email verification to: ARBEADAC@arkansas.gov",
-    # AR Dieticians — no board website; AR guide requires email verification only.
-    ("AR", "DT"):   "Please email verification to: ARDiet@arkansas.gov or call for verification: 501-661-2530",
-    # AR Pharmacist — no AR pharmacy board scraper configured; manual verification required.
-    ("AR", "PH"):   "AR Board of Pharmacy — no automated scraper configured; manual verification required",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -583,6 +578,8 @@ class PsvBrowser:
         if _STEALTH is not None:
             await _STEALTH.apply_stealth_async(ctx)
         page = await ctx.new_page()
+        _search_start = time.monotonic()
+        _timeout_s = timeout_ms / 1000
         try:
             log.info("[%s] search mode=%s query=%s", src, query.mode, query.query)
             await navigate_to_search(page, self.config)
@@ -633,6 +630,82 @@ class PsvBrowser:
             raw_rows, _warn = await extract_results_table(page, self.config.results)
             if _warn:
                 log.warning("[%s] extract_results_table partial: %s", src, _warn)
+
+            # Opt-in name-mode pagination (results.paginate_summary_rows): boards like
+            # AR_MEDBOARD order their name-search GridView alphabetically and show ~10
+            # rows/page, so the target person is frequently on a later page. Detail-
+            # clicking each row (below) breaks the ASP.NET pager, so we'd only ever see
+            # page 1. Instead collect summary rows across ALL pages here and match on the
+            # summary table (which already carries full_name + license_number); expiry for
+            # the winning row is fetched on demand by the caller (_fetch_detail_expiry).
+            _NAME_QUERY_MODES_PG = {
+                "first_name", "last_name", "first_and_last", "first_and_last_typed",
+            }
+            _pg = self.config.results.pagination
+            _paginated_summary = False
+            if (getattr(self.config.results, "paginate_summary_rows", False)
+                    and query.mode in _NAME_QUERY_MODES_PG
+                    and raw_rows and _pg and _pg.enabled
+                    and _pg.strategy == "next_button" and _pg.next_selector):
+                _max_pages = 60
+                _page_n = 1
+                _row_sel = self.config.results.table.row_selector if self.config.results.table else None
+
+                async def _first_row_sig() -> str:
+                    # Content sentinel for detecting an ASP.NET postback page advance —
+                    # networkidle is unreliable for GridView __doPostBack (the connection
+                    # can stay open). Watch the first result row's text instead.
+                    if not _row_sel:
+                        return ""
+                    try:
+                        loc = page.locator(_row_sel).first
+                        if await loc.count() > 0:
+                            return (await loc.inner_text())[:120]
+                    except Exception:
+                        pass
+                    return ""
+
+                while _page_n < _max_pages:
+                    # Leave headroom in the row's time budget for matching + expiry fetch.
+                    if time.monotonic() - _search_start >= _timeout_s * 0.6:
+                        log.warning("[%s] summary pagination time budget reached at page %d",
+                                    src, _page_n)
+                        break
+                    try:
+                        _nxt = page.locator(_pg.next_selector).first
+                        if await _nxt.count() == 0:
+                            break
+                        _cls = (await _nxt.get_attribute("class") or "").lower()
+                        if _pg.disabled_class and _pg.disabled_class.lower() in _cls:
+                            break
+                        if (await _nxt.get_attribute("aria-disabled")) == "true":
+                            break
+                        _sig_before = await _first_row_sig()
+                        await _nxt.click()
+                        # Wait for the results table to actually change (postback complete),
+                        # not just for the network to idle.
+                        _advanced = False
+                        for _ in range(30):  # up to ~15s
+                            await asyncio.sleep(0.5)
+                            if await _first_row_sig() != _sig_before:
+                                _advanced = True
+                                break
+                        if not _advanced:
+                            log.info("[%s] pagination: page did not change after next-click at page %d — stopping",
+                                     src, _page_n)
+                            break
+                        _more, _ = await extract_results_table(page, self.config.results)
+                        if not _more:
+                            break
+                        raw_rows.extend(_more)
+                        _page_n += 1
+                    except Exception as _pg_err:
+                        log.warning("[%s] summary pagination stopped at page %d: %s",
+                                    src, _page_n, _pg_err)
+                        break
+                _paginated_summary = True
+                log.info("[%s] name-mode summary pagination: %d row(s) across %d page(s)",
+                         src, len(raw_rows), _page_n)
             # AG-Grid returns rows keyed by column-header text ("License Number", "First Name", …).
             # apply_field_map normalises these to snake_case so targeting and map_to_license_record
             # can find them via the expected keys ("license_number", "first_name", …).
@@ -732,15 +805,52 @@ class PsvBrowser:
                             log.info("[%s] License-hint: targeting detail idx=%d (lic=%s)",
                                      src, _ri, _rw_lic)
                             break
+            # Name-mode license-hint narrowing: when searching by name but the query
+            # still carries the original license number (e.g. license_number search
+            # returned no results so the ladder fell back to first_name), scan the
+            # summary table for rows whose license_number matches. Visiting only those
+            # prevents an O(N) detail sweep when a common first name returns hundreds
+            # of rows.
+            _name_lic_indices: list | None = None
+            if (query.mode in _NAME_QUERY_MODES and _detail_targeted_idx is None
+                    and query.license_number and _has_detail and raw_rows):
+                _nlh = query.license_number.strip().upper()
+                _nlh_num = re.sub(r'\D', '', _nlh).lstrip('0') or '0'
+                _nlh_alpha = bool(re.search(r'[A-Za-z]', _nlh))
+                _nlh_hits = []
+                for _ri, _rw in enumerate(raw_rows):
+                    _rl = (_rw.get("license_number", "") or "").strip().upper()
+                    if not _rl:
+                        continue
+                    _rn = re.sub(r'\D', '', _rl).lstrip('0') or '0'
+                    if _rl == _nlh or (
+                            _rn != '0' and _nlh_num != '0' and _rn == _nlh_num
+                            and bool(re.search(r'[A-Za-z]', _rl)) == _nlh_alpha):
+                        _nlh_hits.append(_ri)
+                if _nlh_hits:
+                    log.info("[%s] Name-mode lic-hint: %d/%d rows match lic=%s",
+                             src, len(_nlh_hits), len(raw_rows), query.license_number)
+                    _name_lic_indices = _nlh_hits
+                else:
+                    log.info("[%s] Name-mode lic-hint: no summary rows match lic=%s — visiting all %d rows",
+                             src, query.license_number, len(raw_rows))
+
             _visit_indices = (
                 [_detail_targeted_idx] if _detail_targeted_idx is not None
+                else list(_name_lic_indices) if _name_lic_indices is not None
                 else range(len(raw_rows))
             )
-            if _has_detail and raw_rows and (
-                    _detail_targeted_idx is not None or len(raw_rows) <= _detail_limit):
+            if _has_detail and raw_rows and not _paginated_summary and (
+                    _detail_targeted_idx is not None
+                    or _name_lic_indices is not None
+                    or len(raw_rows) <= _detail_limit):
                 trigger_sel = self.config.results.detail_trigger.selector
                 detailed = []
                 for _idx in _visit_indices:
+                    if time.monotonic() - _search_start >= _timeout_s * 0.85:
+                        log.warning("[%s] Detail loop time budget (%.0fs) nearly exhausted at idx=%d — stopping early",
+                                    src, _timeout_s, _idx)
+                        break
                     try:
                         btn = page.locator(trigger_sel).nth(_idx)
                         if not await btn.is_visible(timeout=3000):
@@ -2439,6 +2549,11 @@ async def run_state_orchestrated(
                         )
                         trace.final_outcome = "Skip"
                         trace.final_reason = "board_skip_captcha" if _is_captcha else "board_skipped"
+                        if not _is_captcha:
+                            trace.skip_reason_text = next(
+                                (_SKIP_REASON_BY_SID[s] for s in routed_sids if s in _SKIP_REASON_BY_SID),
+                                "",
+                            )
                     else:
                         trace.final_outcome = "Fail"
                         trace.final_reason = "no_routing"

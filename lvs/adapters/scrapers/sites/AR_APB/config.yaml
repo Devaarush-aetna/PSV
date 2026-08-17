@@ -3,7 +3,7 @@ identity:
   board_name: Arkansas Psychology Board
   state: AR
   country: US
-  profession_codes: [CP]
+  profession_codes: [CP, PE]
   # StateSolutions portal at search.statesolutions.us.
   # Agency: A=ASPB (Arkansas Speech Pathology Board), AID=RS.
   # Form fields: license (LIC/PERMIT #), LName (last name), bName, city, zip.

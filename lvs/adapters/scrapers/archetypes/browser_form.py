@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
+from urllib.parse import urljoin
 
 from engine.browser import get_page
 from engine.evidence import capture_evidence
@@ -80,7 +82,7 @@ async def scrape_browser(
 
                 if config.results.type == "ag_grid":
                     if config.results.has_detail_page and config.results.detail_trigger:
-                        records.extend(await _scrape_with_detail_clicks(page, config, run_id, db))
+                        records.extend(await _scrape_with_detail_clicks(page, config, run_id, db, query))
                     else:
                         raw_rows = await extract_ag_grid(page, config.results.ag_grid_columns or None)
                         for raw in raw_rows:
@@ -107,7 +109,7 @@ async def scrape_browser(
                         })
                         records.append(rec)
                     else:
-                        records.extend(await _scrape_with_detail_clicks(page, config, run_id, db))
+                        records.extend(await _scrape_with_detail_clicks(page, config, run_id, db, query))
                 elif config.results.type == "th_td_multi":
                     raw_rows = await extract_th_td_multi(page, config.results)
                     for raw in raw_rows:
@@ -156,8 +158,21 @@ async def scrape_browser(
     return records
 
 
-async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) -> list:
-    """Click View → extract → back, across all paginated result pages."""
+async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, query=None) -> list:
+    """Click View → extract → back, across all paginated result pages.
+
+    When results.pagination.harvest_all is set, delegate to the two-phase
+    harvester instead: it pages through the whole result set collecting summary
+    rows first (no per-row navigation), then fetches detail only for rows that
+    match the search target — avoiding the postback-grid page-1 reset.
+    """
+    if (
+        config.results.pagination.harvest_all
+        and config.results.type == "table"
+        and config.results.detail_trigger
+    ):
+        return await _harvest_paginated_then_detail(page, config, run_id, db, query)
+
     records = []
     trigger_sel = config.results.detail_trigger.selector
 
@@ -318,6 +333,143 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db) 
                     await page.wait_for_selector(rw.selector, timeout=10000)
             except Exception:
                 pass
+
+    return records
+
+
+def _numerics(s: str) -> str:
+    return re.sub(r"\D", "", s or "")
+
+
+def _row_matches_target(rec, query) -> bool:
+    """Loose match of a summary row against the search target.
+
+    Matches on license numerics (strongest) or last-name equality with a
+    compatible first-name prefix. Kept deliberately permissive so the true
+    record is never filtered out before its detail page is fetched.
+    """
+    if query is None:
+        return False
+    q_lic = _numerics(getattr(query, "license_number", "") or "")
+    r_lic = _numerics(getattr(rec, "license_number", "") or "")
+    if q_lic and r_lic and q_lic == r_lic:
+        return True
+    ql = (getattr(query, "last_name", "") or "").strip().lower()
+    rl = (getattr(rec, "licensee_last_name", "") or "").strip().lower()
+    if ql and rl and ql == rl:
+        qf = (getattr(query, "first_name", "") or "").strip().lower()
+        rf = (getattr(rec, "licensee_first_name", "") or "").strip().lower()
+        if not qf or not rf or rf.startswith(qf) or qf.startswith(rf):
+            return True
+    return False
+
+
+async def _harvest_paginated_then_detail(page, config: SiteConfig, run_id: str, db, query) -> list:
+    """Two-phase scrape for postback-paginated result grids.
+
+    Phase 1 — page through the ENTIRE result set collecting summary rows plus
+    each row's detail link, never navigating away from the grid (so the grid's
+    page state is never reset). Stops early once a page contains the target.
+    Phase 2 — navigate directly to the detail link for matching rows and merge
+    the richer detail fields; non-matching rows are returned as summary-only so
+    the caller still sees the full candidate set.
+    """
+    source_id = config.identity.source_id
+    tbl = config.results.table
+    trigger_sel = config.results.detail_trigger.selector
+    # Anchor selector relative to a row = the final token of the trigger selector
+    # (e.g. "...tr.gridrows a[href*='results.aspx']" -> "a[href*='results.aspx']").
+    anchor_sel = trigger_sel.split()[-1]
+
+    # ---- Phase 1: harvest summaries + hrefs across all pages ----------------
+    harvested: list[tuple] = []          # (record, href)
+    seen: set[tuple] = set()
+    found_target = False
+    page_count = 0
+
+    async for _ in paginate(page, config.results.pagination):
+        page_count += 1
+        rows = page.locator(tbl.row_selector)
+        n = await rows.count()
+        page_had_target = False
+        for i in range(n):
+            row = rows.nth(i)
+            cells = row.locator(tbl.cell_selector)
+            ncells = await cells.count()
+            raw: dict = {}
+            for idx, fname in tbl.columns.items():
+                if idx < ncells:
+                    raw[fname] = (await cells.nth(idx).inner_text()).strip()
+            if not any(v for v in raw.values() if isinstance(v, str) and v.strip()):
+                continue
+            href = None
+            links = row.locator(anchor_sel)
+            if await links.count() > 0:
+                href = await links.first.get_attribute("href")
+            rec = map_to_license_record(raw, config, {})
+            key = (
+                (rec.license_number or "").upper(),
+                (rec.licensee_full_name or "").upper(),
+                href or "",
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            harvested.append((rec, href))
+            if _row_matches_target(rec, query):
+                page_had_target = True
+        log.info("[%s] harvest page %d: %d rows (running total %d)%s",
+                 source_id, page_count, n, len(harvested),
+                 "  <-- target found" if page_had_target else "")
+        if page_had_target:
+            found_target = True
+            break  # early-exit: the person we want is on this page
+
+    log.info("[%s] harvest complete: %d unique rows across %d page(s); target_found=%s",
+             source_id, len(harvested), page_count, found_target)
+
+    # ---- Phase 2: fetch detail for matching rows only -----------------------
+    targets = [(rec, href) for rec, href in harvested if _row_matches_target(rec, query)]
+    if not targets:
+        # Nothing matched the pre-filter — return every summary row so the
+        # caller's disambiguator still gets the full candidate set to score.
+        log.info("[%s] no summary row matched target — returning %d summary-only rows",
+                 source_id, len(harvested))
+        return [rec for rec, _ in harvested]
+
+    records = []
+    target_hrefs = {id(rec) for rec, _ in targets}
+    for rec, href in harvested:
+        if id(rec) not in target_hrefs or not href:
+            records.append(rec)  # summary-only candidate
+            continue
+        try:
+            detail_url = urljoin(page.url, href)
+            await page.goto(detail_url)
+            await _wait_for_detail_content(page, config)
+            raw = await _scrape_one_detail(page, config, run_id, db)
+            drec = map_to_license_record(raw, config, {
+                "html_path": raw.get("html_path"),
+                "screenshot_path": raw.get("screenshot_path"),
+            })
+            # Backfill from the summary row when the detail page omits a field.
+            if not drec.license_number and rec.license_number:
+                drec.license_number = rec.license_number
+            if not drec.licensee_full_name and not drec.licensee_first_name and rec.licensee_full_name:
+                drec.licensee_full_name = rec.licensee_full_name
+                drec.licensee_first_name = rec.licensee_first_name
+                drec.licensee_last_name = rec.licensee_last_name
+            if not drec.license_type and rec.license_type:
+                drec.license_type = rec.license_type
+            if drec.status == LicenseStatus.UNKNOWN and rec.status != LicenseStatus.UNKNOWN:
+                drec.status = rec.status
+            if drec.expiration_date is None and rec.expiration_date is not None:
+                drec.expiration_date = rec.expiration_date
+            records.append(drec)
+        except Exception as exc:
+            log.warning("[%s] detail fetch failed for %r: %s — using summary row",
+                        source_id, href, exc)
+            records.append(rec)
 
     return records
 

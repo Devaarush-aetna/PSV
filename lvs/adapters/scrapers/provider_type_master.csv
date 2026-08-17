@@ -26,17 +26,18 @@ AL,PT,Physical Therapist,,,,PTH:1,1,NOT_CONFIGURED
 AL,SW,Social Worker,,,,(none):8,8,NOT_CONFIGURED
 AR,ABA,Applied Behavior Analyst,,,,(none):16,16,NOT_CONFIGURED
 AR,CP,Clinical Psychologist,,,,"(none):2, PSYPACT:1",3,NOT_CONFIGURED
-AR,DAC,Drug & Alcohol Counselor,,,,(none):2,2,NOT_CONFIGURED
+AR,DAC,Drug & Alcohol Counselor,AR_BEADAC,Arkansas Board of Examiners for Alcohol and Drug Abuse Counselors,,(none):2,2,CONFIGURED
 AR,DC,Doctor of Chiropractic,,,,(none):49,49,NOT_CONFIGURED
-AR,DT,Dietitian/Nutritionist,,,,"(none):20, PLD:1",21,NOT_CONFIGURED
-AR,LC,Licensed Counselor,,,,"R:1, L:1",2,NOT_CONFIGURED
+AR,DT,Dietitian/Nutritionist,AR_DIETBOARD,Arkansas Dietetic Licensing Board,,"(none):20, PLD:1",21,CONFIGURED
+AR,LC,Licensed Counselor,"IBCLC_COMMISSION,AR_ASBN","International Board of Lactation Consultant Examiners / Arkansas State Board of Nursing",,"R:1, L:1",2,CONFIGURED
 AR,LPC,Licensed Professional Counselor,,,,"P:2, (none):1",3,NOT_CONFIGURED
 AR,NP,Nurse Practitioner,,,,"(none):45, R:44, A:24, S:1",114,NOT_CONFIGURED
 AR,NPB,Nurse Practitioner (Broadened),,,,"A:1, (none):1",2,NOT_CONFIGURED
 AR,OP,Optometrist (OP),,,,"(none):4, AR:1",5,NOT_CONFIGURED
 AR,OT,Occupational Therapist,,,,OTR:61,61,NOT_CONFIGURED
 AR,PAS,Physician Assistant,,,,PA:11,11,NOT_CONFIGURED
-AR,PH,Pharmacist,,,,"E:81, C:9, N:4, R:4",98,NOT_CONFIGURED
+AR,PE,Psychology Examiner,AR_APB,Arkansas Psychology Board,"[EX, EI]",(none):3,3,CONFIGURED
+AR,PH,Pharmacist,AR_MEDBOARD,Arkansas State Medical Board,,"E:81, C:9, N:4, R:4",98,CONFIGURED
 AR,PN,Practical Nurse (LPN),,,,"R:8, (none):7, A:6, S:1",22,NOT_CONFIGURED
 AR,PT,Physical Therapist,,,,"PT:125, (none):18",143,NOT_CONFIGURED
 AR,RNA,Registered Nurse Anesthetist,,,,"C:2, R:1",3,NOT_CONFIGURED

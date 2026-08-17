@@ -156,11 +156,19 @@ async def scrape_socrata_bulk_csv(
         base = config.identity.base_url.rstrip("?&")
 
         if query.mode in ("license_number", "credential_number"):
-            # Dots in license numbers are visual separators; strip them so
-            # "149.029942" searches as "%149029942%" matching the bare-digit form.
+            # Dots are visual separators; strip them ("149.029942" → "149029942").
             if "." in q:
                 q = q.replace(".", "")
                 safe = q.replace("'", "''")
+            # Boards that store digit-only values won't match LIKE '%PA7086%' or
+            # '%C-RXN0102890-C-NP%'.  Extract ONLY the digit characters from the
+            # license string and trim leading zeros so the search finds the bare-digit
+            # board entry regardless of prefix/suffix/hyphen formatting.
+            # E.g. "C-RXN.0102890-C-NP" → digits "0102890" → "102890" → LIKE '%102890%'
+            _digits_only = _re.sub(r'[^0-9]', '', q)
+            if _digits_only and _digits_only != q:
+                _num = _digits_only.lstrip('0') or _digits_only
+                safe = _num.replace("'", "''")
             where = f"upper({field}) like upper('%{safe}%')"
             params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
         else:

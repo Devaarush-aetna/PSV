@@ -53,13 +53,21 @@ results:
     cell_selector: "td"
     # Columns: 0=LIC/PERMIT # (license text + MORE INFO link), 1=TYPE, 2=LICENSEE,
     #          3=BUSINESS NAME, 4=ADDRESS, 5=STATUS
-    # Engine reads first line of col 0 text to get license number (before <br>).
+    # Col 0 inner_text is "A#436\nMORE INFO" — column_patterns below overwrites
+    # license_number with just the first line (before the <br>/link text).
     columns:
       0: license_number
       1: license_type
       2: full_name
       4: address
       5: status
+    column_patterns:
+      0:
+        # Strip type prefix (SP#, A#, AU#, etc.) and MORE INFO suffix — keep numeric core only.
+        # PSV records often carry just the number ("3278") while the board stores "SP#3278".
+        # Normalising to numeric lets the exact-string comparison succeed so the AI does not
+        # reject a valid match solely because the raw strings differ.
+        license_number: "^[A-Z#]*([0-9]+)"
   has_detail_page: true
   detail_trigger:
     type: link_in_cell

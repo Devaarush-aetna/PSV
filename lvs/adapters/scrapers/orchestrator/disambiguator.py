@@ -152,8 +152,19 @@ _NAME_SUFFIXES = {
     "PA",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABA", "RBT",
-    # PT / OT / SLP / AUD
-    "PT", "OT", "SLP", "AUD",
+    "LGSW", "LMSW", "CSW",
+    # PT / OT / SLP / AUD (incl. assistant + registered variants)
+    "PT", "PTA", "LPT",
+    "OT", "OTA", "OT-A", "OTR", "OTRL", "OTR/L", "COTA", "COTAL",
+    "SLP", "AUD", "ST", "STA",
+    # Respiratory care
+    "RCP", "LRCP", "RRT", "CRT",
+    # Genetic counseling
+    "LGC", "CGC",
+    # Dietetics / nutrition / massage
+    "RDN", "LMT", "MST",
+    # Business-entity suffixes (boards occasionally list practice entities)
+    "LLC", "LLP", "PLLC",
     # Pharmacy
     "PHARMD", "PHARM.D.", "RPH",
     # Fellowship designations
@@ -797,18 +808,23 @@ def evaluate(candidates: list[Any], master_row: dict,
                 status="selected", best=top_cand, best_breakdown=top_bd,
                 gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,
             )
-        # License anchor: exact license + partial first name match → accept regardless
+        # License anchor: exact license + EXACT first name match → accept regardless
         # of last name. Handles name-change cases (e.g. "Duric Zinka" → board has
         # "LEWANDOWSKI, ZINKA D") where last name differs but license is definitive.
-        # Requires last_name >= 0.4: prevents anchoring on a completely different person
-        # (e.g. "BAILEY" vs "IAMS", or "BENNETT" vs "LESSLER") when multiple licenses
-        # share the same numeric digits but different type prefixes (e.g. "FD.009648"
-        # vs "PT.009648"). A last_name score of 0.286 or 0.2 is not a name variant —
-        # it is a different person.
+        # first_name == 1.0 means exact or nickname match only (fuzzy first-name mismatches
+        # are routed to manual review). The last_name >= 0.4 guard prevents anchoring on
+        # a completely different person when multiple licenses share the same numeric digits
+        # but different type prefixes (e.g. "FD.009648" vs "PT.009648"). The provider_type
+        # > 0.0 arm handles marriage/divorce name-change cases: same person, same license
+        # type, exact first-name match, but completely different last name. Requiring
+        # provider_type > 0.0 ensures we do NOT anchor when the board record has an
+        # unknown/empty license type (which could indicate a different person with
+        # coincidentally shared digits).
         if (top_bd.weight_profile == "license_present"
                 and top_bd.license_numerics == 1.0
-                and top_bd.first_name >= 0.5
-                and top_bd.last_name >= 0.4):
+                and top_bd.first_name == 1.0
+                and (top_bd.last_name >= 0.4
+                     or top_bd.provider_type > 0.0)):
             return DisambiguationVerdict(
                 status="selected", best=top_cand, best_breakdown=top_bd,
                 gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,
