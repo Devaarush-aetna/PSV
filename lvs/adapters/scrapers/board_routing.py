@@ -551,6 +551,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NH', 'ABA'): ['NH_OPLC'],
     ('NH', 'AU'): ['NH_OPLC'],
     ('NH', 'CP'): ['NH_OPLC'],
+    ('NH', 'DAC'): ['NH_OPLC'],
     ('NH', 'DC'): ['NH_OPLC'],
     ('NH', 'DDS'): ['NH_OPLC'],
     ('NH', 'DMD'): ['NH_OPLC'],

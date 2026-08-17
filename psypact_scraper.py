@@ -155,9 +155,27 @@ async def run_scraper(
             await page.wait_for_timeout(2000)
 
             # POST name search → list of profile stubs
+            # The Accredible Spotlight API requires the structured text_search_query
+            # payload; a bare {"name": ...} body is silently ignored and returns 0 profiles.
+            # Search by last name (broader) and filter by first name after.
+            _search_payload = json.dumps({
+                "page": "1",
+                "page_size": 50,
+                "order": "",
+                "groups": [],
+                "organizations": [],
+                "lat": None,
+                "lng": None,
+                "viewport": None,
+                "skills": [],
+                "skill_category_ids": [],
+                "availability": [],
+                "custom_attributes": [],
+                "text_search_query": {"fields": ["name"], "value": last or name},
+            })
             search_result = await page.evaluate(
                 _JS_POST,
-                {"url": _SEARCH_URL, "body": json.dumps({"name": name})},
+                {"url": _SEARCH_URL, "body": _search_payload},
             )
 
             if search_result.get("error"):
