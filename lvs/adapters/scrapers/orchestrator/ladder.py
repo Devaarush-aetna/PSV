@@ -46,8 +46,11 @@ log = logging.getLogger(__name__)
 # (source_id, prov_type) pairs where provider-type comparison is suppressed.
 # WY_PHYSICIAN is the board used for WY PH: it only returns MD/DO license types,
 # so a PH prov_type would always mismatch — skip the check entirely for this combo.
+# CO_DORA / CP: CO_DORA stores LPC license types but EPDB sometimes carries prov_type=CP
+# for the same person; the license-number match is authoritative, so skip the type gate.
 _SKIP_PROV_TYPE_CHECK: frozenset[tuple[str, str]] = frozenset({
     ("WY_PHYSICIAN", "PH"),
+    ("CO_DORA", "CP"),
 })
 
 
@@ -146,7 +149,8 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
     if mode in ("license_number", "license_number_exact"):
         query_str = lic or ""
     elif mode == "license_numeric_only":
-        query_str = re.sub(r"\D", "", lic or "")
+        _digits = re.sub(r"\D", "", lic or "")
+        query_str = _digits.lstrip("0") or _digits
     elif mode in ("license_formatted", "license_middle_group"):
         # query_str is set by caller via override_fields["license_id"] already reformatted
         query_str = lic or ""
@@ -179,8 +183,14 @@ def _build_query(mode: str, master_row: dict, override_fields: Optional[dict] = 
     else:
         actual_mode = mode
 
-    # license_numeric_only also overrides license_number on the structured field
-    license_number = re.sub(r"\D", "", lic or "") if mode == "license_numeric_only" else lic
+    # license_numeric_only also overrides license_number on the structured field.
+    # Strip leading zeros to match boards that store numbers without them (e.g. "993819" not "0993819").
+    # Consistent with normalize_query_value which already strips leading zeros for signatures.
+    if mode == "license_numeric_only":
+        _d = re.sub(r"\D", "", lic or "")
+        license_number = _d.lstrip("0") or _d or None
+    else:
+        license_number = lic
 
     sq = SearchQuery(
         mode=actual_mode,
@@ -595,8 +605,20 @@ async def _fetch_detail_record(
     # narrow to the specific row rather than visiting every detail page in the set.
     board_fn = (getattr(record, "licensee_first_name", None) or "").strip() or None
     board_ln = (getattr(record, "licensee_last_name", None) or "").strip() or None
+    # Some boards (e.g. AR_ABESLPA) store full_name without separate first/last fields.
+    # Capture it so _name_ok can still filter when board_fn/board_ln are unavailable.
+    board_full = (getattr(record, "licensee_full_name", None) or "").strip().upper() or None
+    # Prefer license_and_last when we have a last name and the board supports it:
+    # narrows results to the specific person rather than everyone sharing the
+    # numeric license prefix (e.g. SP#139 search returns SP#1390..SP#1399 too).
+    _cfg_modes = {m.mode for m in (cfg_obj.search.modes or [])}
+    _detail_mode = (
+        "license_and_last"
+        if (board_ln and "license_and_last" in _cfg_modes)
+        else "license_number"
+    )
     q = SearchQuery(
-        mode="license_number", query=board_lic, license_number=board_lic,
+        mode=_detail_mode, query=board_lic, license_number=board_lic,
         first_name=board_fn, last_name=board_ln,
     )
     try:
@@ -614,14 +636,26 @@ async def _fetch_detail_record(
             # If heading extraction fails (e.g. KSBHADA h3 with embedded link text),
             # the detail record has empty first/last — don't discard it when the board
             # license number already uniquely identifies the record.
-            if not (board_fn or board_ln):
-                return True
-            dr_fn = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
-            dr_ln = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
-            if not (dr_fn or dr_ln):
-                return True
-            return (dr_fn == (board_fn or "").upper()
-                    and dr_ln == (board_ln or "").upper())
+            if board_fn or board_ln:
+                dr_fn = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
+                dr_ln = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
+                if not (dr_fn or dr_ln):
+                    return True
+                return (dr_fn == (board_fn or "").upper()
+                        and dr_ln == (board_ln or "").upper())
+            if board_full:
+                # Board uses full_name (no separate first/last). Filter by token overlap
+                # so "Montgomery, Janet" rejects "Welch-Jackson, Leann" sharing only "A#139".
+                dr_full = (getattr(dr, "licensee_full_name", None) or "").strip().upper()
+                dr_fn2 = (getattr(dr, "licensee_first_name", None) or "").strip().upper()
+                dr_ln2 = (getattr(dr, "licensee_last_name", None) or "").strip().upper()
+                dr_any = dr_full or f"{dr_fn2} {dr_ln2}".strip()
+                if not dr_any:
+                    return True
+                board_tokens = set(board_full.replace(",", " ").split())
+                detail_tokens = set(dr_any.replace(",", " ").split())
+                return bool(board_tokens & detail_tokens)
+            return True
 
         # First pass: prefer a detail record whose license number EXACTLY matches the
         # one we re-searched. Boards that return several rows for the same person (e.g.

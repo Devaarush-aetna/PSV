@@ -105,6 +105,7 @@ _REASONS_FOR_AI_ADD_LICENSE: frozenset[str] = frozenset({
     "Name mismatch after license match: EPDB and NPPES name scores both below 0.70 threshold",
     "Name verified: board record does not expose license number",
     "Name match accepted: board uses different license numbering",
+    "Name verified: license number changed on renewal — review required",
 })
 
 # BACB boards are captcha-blocked — skip automated verification for any row
@@ -197,6 +198,8 @@ class RowOutcome:
         if self.ladder_result and self.ladder_result.reason:
             return self.ladder_result.reason
         if self.trace.final_reason:
+            if self.trace.final_reason == "board_skipped" and self.trace.skip_reason_text:
+                return self.trace.skip_reason_text
             return self.trace.final_reason
         return "no_records"
 
@@ -351,9 +354,14 @@ class OutputEmitter:
         first_fail = input_first and bd.first_name < _THRESHOLD
         last_fail = input_last and bd.last_name < _THRESHOLD
         if first_fail or last_fail:
-            # Very low last name (< 0.40) means a completely different person, not a
-            # name variant — route to Manual, not AIAddLicense.
+            # Low last name (<0.40) but strong first name (≥0.85): name-change case
+            # (marriage/divorce) — same person, different last name.  Route to
+            # AIAddLicense for human review, not Manual.
+            # Low last name AND low/absent first name: truly different person with
+            # coincidentally matching license digits — route to Manual.
             if input_last and bd.last_name < 0.40:
+                if bd.first_name >= 0.85:
+                    return "License matched but Name mismatched"
                 return "Wrong provider matched: license matched but last name is completely different"
             return "License matched but Name mismatched"
         return None
@@ -610,6 +618,8 @@ class OutputEmitter:
 
         # 1. Captcha / WAF block
         if _final_reason in _CAPTCHA_REASONS:
+            if _final_reason == "board_skipped" and outcome.trace.skip_reason_text:
+                return outcome.trace.skip_reason_text
             return self._CAPTCHA_MANUAL_REASONS.get(_final_reason, _final_reason)
 
         # 1.5. BACB board — captcha-blocked registry; skip automated verification
@@ -624,6 +634,11 @@ class OutputEmitter:
         # match is too uncertain to be upload-ready — route to manual regardless of
         # whether the ladder or AI agent accepted it.
         # Skipped when the board record is expired (that surfaces as the primary reason).
+        #
+        # Exception — renewal pattern: perfect first AND last name (both == 1.0) with
+        # no license match usually means the provider received a new license number on
+        # renewal (EPDB still carries the old one).  Route to AIAddLicense so a reviewer
+        # can confirm quickly rather than sending the whole row to Manual.
         _bd_check = outcome.chosen_breakdown
         _input_lic_check = (outcome.master_row.get("license_id", "") or "").strip()
         if (outcome.status == "Pass"
@@ -632,6 +647,10 @@ class OutputEmitter:
                 and _bd_check.license_numerics < 1.0
                 and _input_lic_check
                 and not self._expired_after_fetch_reason(outcome)):
+            if (_bd_check.first_name >= 1.0 and _bd_check.last_name >= 1.0
+                    and not (outcome.ladder_result
+                             and outcome.ladder_result.npi_substituted)):
+                return "Name verified: license number changed on renewal — review required"
             return (
                 f"Low match score ({round(_bd_check.total, 3)}) with no license ID match "
                 f"— manual review required"
@@ -912,6 +931,7 @@ class OutputEmitter:
             "status": (
                 "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
                 else "Fail" if self._expired_after_fetch_reason(o)
+                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip")
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),

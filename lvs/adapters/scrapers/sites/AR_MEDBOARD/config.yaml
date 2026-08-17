@@ -3,7 +3,7 @@ identity:
   board_name: "Arkansas State Medical Board"
   state: "AR"
   country: "US"
-  profession_codes: ["MD", "DO", "PA", "OT", "GNC"]
+  profession_codes: ["MD", "DO", "PA", "OT", "GNC", "PH"]
   # ASP.NET WebForms portal at armedicalboard.adh.arkansas.gov.
   # From Arkansas_StateMedical_Medical_Scraper.py:
   #   Radio buttons: License Number (rbVerifyLicenseSearch_0) vs Last Name (rbVerifyLicenseSearch_1).
@@ -11,18 +11,23 @@ identity:
   #   Verify button: btnVerifyLicense.
   # License-number search lands on results.aspx (single record, ListView).
   # Last-name search lands on lookup.aspx (GridView with multiple rows; click row link → details).
-  base_url: "https://www.armedicalboard.org/"
+  base_url: "https://armedicalboard.adh.arkansas.gov/"
   archetype: classic_html_form
 
 search:
   modes:
     - mode: license_number
       input_selector: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_txtVerifyLicNumLastName"
-      pre_input_click: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_rbVerifyLicenseSearch_0"
+      # Select the "License Number" radio BEFORE filling — the form defaults to
+      # "Last Name", so without this the license number is searched as a surname
+      # and always returns "No Results". Clicking the label is more reliable than
+      # the radio input ID across page revisions. (Uses `pre_click`, the key the
+      # engine actually executes — `pre_input_click` was a no-op.)
+      pre_click: "label:has-text('License Number')"
       button_selector: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_btnVerifyLicense"
     - mode: last_name
       input_selector: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_txtVerifyLicNumLastName"
-      pre_input_click: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_rbVerifyLicenseSearch_1"
+      pre_click: "label:has-text('Last Name')"
       button_selector: "#ctl00_MainContentPlaceHolder_ucVerifyLicense_btnVerifyLicense"
   form:
     search_by_dropdown:
@@ -40,9 +45,15 @@ search:
       - "no records found"
       - "did not return any"
       - "no match"
+      - "No Results"
 
 results:
   type: table
+  # Name searches return an alphabetically-ordered GridView (~10 rows/page); the target
+  # person is often on a later page. Detail-clicking each row breaks the ASP.NET pager, so
+  # collect summary rows across all pages and match on the summary table (full_name +
+  # license_number are present there). Expiry for the winner is fetched on demand.
+  paginate_summary_rows: true
   table:
     row_selector: "#ctl00_MainContentPlaceHolder_gvVerifyLicenseResultsLookup tr.gridrows"
     cell_selector: "td"
@@ -51,34 +62,101 @@ results:
       2: license_type
       3: license_number
   has_detail_page: true
+  # License-number search auto-redirects to results.aspx (single-record ListView).
+  # When the URL contains this pattern after search, extract from detail page directly.
+  single_result_url_pattern: "results.aspx"
+  detail_trigger:
+    type: link_in_cell
+    # "View" link in the last column of each results row — goes to results.aspx?strPHIDNO=ASMB...
+    selector: "#ctl00_MainContentPlaceHolder_gvVerifyLicenseResultsLookup tr.gridrows a[href*='results.aspx']"
   pagination:
-    enabled: false
-    strategy: none
+    # ASP.NET GridView pager: numbered page links in <tr class="pager">.
+    # Current page is a <span>; next page is the <a> in the immediately following <td>.
+    # Selector reliably advances to the next page regardless of which page we are on.
+    enabled: true
+    strategy: next_button
+    next_selector: "tr.pager td:has(span) + td > a"
+    # Large result sets (common surnames span many pages); traverse exhaustively.
+    max_pages: 100
+    # Two-phase harvest: page through all summaries first (postback paging keeps
+    # the grid intact), then fetch detail only for the matching row(s). Without
+    # this, clicking a row's detail link and going back resets the GridView to
+    # page 1, capping results at 10 and missing providers on later pages.
+    harvest_all: true
 
 detail:
   wait:
     strategy: element_visible
-    selector: "#ctl00_MainContentPlaceHolder_lvResults_ctrl0_lblPhyname, #ctl00_MainContentPlaceHolder_lblBoardActions"
+    selector: "#ctl00_MainContentPlaceHolder_lvResults_ctrl0_lblPhyname, h2.publicInformation"
     timeout_ms: 15000
   strategies:
+    - type: custom_js
+      script: |
+        (() => {
+          const result = {};
+          const lines = (document.body.innerText || '').split('\n')
+            .map(l => l.trim()).filter(Boolean);
+
+          // First pass: collect first-occurrence label:value pairs.
+          for (const line of lines) {
+            const ci = line.indexOf(':');
+            if (ci <= 0 || ci > 50) continue;
+            const k = line.slice(0, ci).trim();
+            const v = line.slice(ci + 1).trim();
+            if (k && v && !result[k]) result[k] = v;
+          }
+
+          // Second pass: for pages with multiple license blocks (e.g. PA + temp),
+          // find the first block whose License Status is Active and use its
+          // Expiration Date, overwriting the first-occurrence default if needed.
+          let lastExpiry = null;
+          let lastIssue  = null;
+          let lastLicNum = null;
+          let lastStatus = null;
+          for (const line of lines) {
+            const ci = line.indexOf(':');
+            if (ci <= 0 || ci > 50) continue;
+            const k = line.slice(0, ci).trim();
+            const v = line.slice(ci + 1).trim();
+            if (!k || !v) continue;
+            if (k === 'License Number')    lastLicNum = v;
+            if (k === 'Original Issue Date' || k === 'Issue Date' || k === 'Original License Date')
+              lastIssue = v;
+            if (k === 'Expiration Date')   lastExpiry = v;
+            if (k === 'License Status' || k === 'Status') {
+              lastStatus = v;
+              if ((v === 'Active' || v === 'ACTIVE') && lastExpiry) {
+                result['Expiration Date']    = lastExpiry;
+                result['License Status']     = v;
+                if (lastLicNum) result['License Number'] = lastLicNum;
+                if (lastIssue)  result['Original Issue Date'] = lastIssue;
+                break;
+              }
+            }
+          }
+          return result;
+        })()
     - type: label_sibling
-    - type: two_column_table
     - type: field_label_value
   field_map:
-    "Physician Name": full_name
     "Name": full_name
+    "Physician Name": full_name
     "License Number": license_number
     "License #": license_number
     "License Type": license_type
-    "Status": status
     "License Status": status
-    "Issue Date": issue_date
+    "Status": status
+    "Original Issue Date": issue_date
     "Original License Date": issue_date
+    "Issue Date": issue_date
     "Expiration Date": expiration_date
+    "Primary Specialty": specialty
+    "Specialty": specialty
+    "Mailing Address": address
     "Address": address
     "City": city
     "State": state_code
-    "Specialty": specialty
+    "Zip": zip_code
     "Board Actions": disciplinary_actions
   back_navigation:
     strategy: browser_back
