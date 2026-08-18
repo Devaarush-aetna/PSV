@@ -88,6 +88,16 @@ NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("CO", "DT"):  "The state of Colorado does not license Dietitians — Professional License step N/A",
     ("CO", "NUT"): "The state of Colorado does not license Nutritionists — Professional License step N/A",
     ("CO", "ABA"): "The state of Colorado does not issue state ABA licenses — Professional License step N/A",
+    ("MI", "DT"):  "Michigan does not license Dietitians (DT) at this time — no state primary source (per LARA, Mary Hess 517-335-4084). Professional License step N/A",
+    ("MI", "NUT"): "Michigan does not license Nutritionists (NUT) at this time — no state primary source (per LARA, Mary Hess 517-335-4084). Professional License step N/A",
+}
+
+# (state, prov_type) combos to Skip immediately — the state does not license the
+# profession, so no primary source exists and visiting a board is pointless. The
+# row is written as Skip with the NA_PROV_TYPES reason above (no browser launched).
+SKIP_UNLICENSED_PROV_TYPES: set[tuple[str, str]] = {
+    ("CO", "DT"), ("CO", "NUT"), ("CO", "ABA"),
+    ("MI", "DT"), ("MI", "NUT"),
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -2538,10 +2548,11 @@ async def run_state_orchestrated(
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
                     trace.final_reason = "prov_type_captcha_blocked"
-                # CO does not license DT/NUT/ABA — Skip immediately, no board queries needed.
-                elif state == "CO" and prov_type_upper in ("DT", "NUT", "ABA"):
+                # State does not license this profession (e.g. CO DT/NUT/ABA, MI DT/NUT)
+                # — Skip immediately with the stated reason, no board queries needed.
+                elif (state, prov_type_upper) in SKIP_UNLICENSED_PROV_TYPES:
                     trace.final_outcome = "Skip"
-                    trace.final_reason = NA_PROV_TYPES.get(("CO", prov_type_upper), "")
+                    trace.final_reason = NA_PROV_TYPES.get((state, prov_type_upper), "")
                 # ABA rows whose license_id is a BACB certification number → always Skip.
                 elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))):
                     trace.final_outcome = "Skip"

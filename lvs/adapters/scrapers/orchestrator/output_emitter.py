@@ -1532,6 +1532,7 @@ class OutputEmitter:
                 if k not in seen:
                     seen.add(k)
                     keys.append(k)
+        out.parent.mkdir(parents=True, exist_ok=True)
         with open(out, "w", newline="", encoding="utf-8-sig") as f:
             w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()
