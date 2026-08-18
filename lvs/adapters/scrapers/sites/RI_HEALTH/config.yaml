@@ -3,13 +3,13 @@ identity:
   board_name: Rhode Island Department of Health — Health Professions
   state: RI
   country: US
-  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, LADC, DENT, AT, DIET]
+  profession_codes: [MD, DO, RN, LPN, APRN, DC, OD, PT, PTA, OT, AUD, SLP, PHARM, PA, PSYCH, SW, LADC, DENT, AT, DIET, DACM]
   # elicensesoftware.com / myLicense.com portal at healthri.mylicense.com — same platform as IN_PLA and NH_OPLC.
   # Inputs: #t_web_lookup__last_name, #t_web_lookup__first_name, #t_web_lookup__license_no + #sch_button.
   # Profession dropdown: select#t_web_lookup__profession_name (leave as "All" for umbrella search).
   # Results: #datagrid_results tr, row 0 = header (skip_first_row: true).
   # Columns: 0=full_name, 1=license_number, 2=profession, 3=license_type, 4=status, 5=city, 6=state_code.
-  # No detail page needed — grid provides all key fields.
+  # Detail page required — search results grid omits expiration date; it is only on Details.aspx.
   # No proxy required — healthri.mylicense.com is accessible on corporate network.
   # ~41 records for Smith/All Professions. No pagination (elicensesoftware default 200-row cap).
   base_url: "https://healthri.mylicense.com/Verification/"
@@ -54,17 +54,33 @@ results:
       4: status
       5: city
       6: state_code
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    selector: "table#datagrid_results a[href*='Details.aspx']"
   pagination:
     enabled: false
     strategy: none
 
 detail:
   wait:
-    strategy: delay
-    timeout_ms: 500
-  strategies: []
-  field_map: {}
+    strategy: element_visible
+    selector: "table"
+    timeout_ms: 15000
+    fallback_selectors:
+      - "td"
+  strategies:
+    - type: element_ids
+      id_map:
+        full_name: "Name"
+    - type: four_column_table
+  field_map:
+    "Name": full_name
+    "License No": license_number
+    "License Type": license_type
+    "Profession": profession_code
+    "License Status": status
+    "Issue Date": issue_date
+    "Expiration Date": expiration_date
 
 output:
   status_map:
@@ -119,7 +135,7 @@ transport:
 evidence:
   capture_html: true
   capture_screenshot: true
-  capture_on: ["search_results", "error"]
+  capture_on: ["search_results", "detail_page", "error"]
   storage: local
   local_path: "Evidence/RI_HEALTH/{run_id}/"
 

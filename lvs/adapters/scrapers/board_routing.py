@@ -4,7 +4,7 @@ Board routing table — generated from board_routing_master.csv.
 Maps (state_abbr, psv_prov_type) -> [source_id, ...]
 Multiple boards are tried in list order; first Pass wins.
 
-  851 routing entries across 41 states and 44 provider types.
+  878 routing entries across 42 states and 44 provider types.
 """
 from __future__ import annotations
 
@@ -63,7 +63,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # AZ
     ('AZ', 'AU'): ['AZ_SPEECH_HEAR'],
-    ('AZ', 'CP'): ['AZ_PSYCH'],
+    ('AZ', 'CP'): ['AZ_PSYCH', 'PSYPACT'],
     ('AZ', 'DA'): ['AZ_DENTAL'],
     ('AZ', 'DAC'): ['AZ_BEHAVIORAL_HEALTH'],
     ('AZ', 'DC'): ['AZ_CHIRO'],
@@ -119,7 +119,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('CT', 'ABA'): ['CT_ELICENSE'],
     ('CT', 'AP'): ['CT_ELICENSE'],
     ('CT', 'AU'): ['CT_ELICENSE'],
-    ('CT', 'CP'): ['CT_ELICENSE'],
+    ('CT', 'CP'): ['CT_ELICENSE', 'PSYPACT'],
     ('CT', 'DAC'): ['CT_ELICENSE'],
     ('CT', 'DC'): ['CT_ELICENSE'],
     ('CT', 'DO'): ['CT_ELICENSE'],
@@ -150,7 +150,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('FL', 'ABA'): ['BACB'],
     ('FL', 'AP'): ['FL_MQA'],
     ('FL', 'AU'): ['FL_MQA'],
-    ('FL', 'CP'): ['FL_MQA'],
+    ('FL', 'CP'): ['FL_MQA', 'PSYPACT'],
     ('FL', 'DC'): ['FL_MQA'],
     ('FL', 'DDS'): ['FL_MQA'],
     ('FL', 'DMD'): ['FL_MQA'],
@@ -186,7 +186,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # ID
     ('ID', 'ABA'): ['ID_DOPL'],
     ('ID', 'AU'): ['ID_DOPL'],
-    ('ID', 'CP'): ['ID_DOPL'],
+    ('ID', 'CP'): ['ID_DOPL', 'PSYPACT'],
     ('ID', 'DC'): ['ID_DOPL'],
     ('ID', 'DO'): ['ID_DOPL'],
     ('ID', 'DP'): ['ID_DOPL'],
@@ -212,7 +212,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('IL', 'ABA'): ['IL_LICENSING'],
     ('IL', 'AP'): ['IL_LICENSING'],
     ('IL', 'AU'): ['IL_LICENSING'],
-    ('IL', 'CP'): ['IL_LICENSING'],
+    ('IL', 'CP'): ['IL_LICENSING', 'PSYPACT'],
     ('IL', 'DAC'): ['IL_LICENSING'],
     ('IL', 'DC'): ['IL_LICENSING'],
     ('IL', 'DDS'): ['IL_LICENSING'],
@@ -247,7 +247,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('IN', 'ABA'): ['IN_PLA', 'BACB'],
     ('IN', 'AP'): ['IN_PLA'],
     ('IN', 'AU'): ['IN_PLA'],
-    ('IN', 'CP'): ['IN_PLA'],
+    ('IN', 'CP'): ['IN_PLA', 'PSYPACT'],
     ('IN', 'DAC'): ['IN_PLA'],
     ('IN', 'DC'): ['IN_PLA'],
     ('IN', 'DO'): ['IN_PLA'],
@@ -274,7 +274,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # KS
     ('KS', 'ABA'): ['KS_BSRB'],
-    ('KS', 'CP'): ['KS_BSRB'],
+    ('KS', 'CP'): ['KS_BSRB', 'PSYPACT'],
     ('KS', 'DA'): ['KS_DENTAL'],
     ('KS', 'DC'): ['KS_KSBHADA'],
     ('KS', 'DDS'): ['KS_DENTAL'],
@@ -307,7 +307,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('KY', 'ABA'): ['KY_MULTIBOARD'],
     ('KY', 'AP'): ['KY_AP'],
     ('KY', 'AU'): ['KY_MULTIBOARD'],
-    ('KY', 'CP'): ['KY_MULTIBOARD'],
+    ('KY', 'CP'): ['KY_MULTIBOARD', 'PSYPACT'],
     ('KY', 'DC'): ['KY_MULTIBOARD'],
     ('KY', 'DN'): ['KY_DENTAL'],
     ('KY', 'DO'): ['KY_MEDBOARD'],
@@ -384,7 +384,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # MD
     ('MD', 'AP'): ['MD_ACUPUNCTURE'],
     ('MD', 'AU'): ['MD_AUDIOLOGY'],
-    ('MD', 'CP'): ['MD_PSYCH'],
+    ('MD', 'CP'): ['MD_PSYCH', 'PSYPACT'],
     ('MD', 'DC'): ['MD_CHIROPRACTIC'],
     ('MD', 'DO'): ['MD_PHYSICIANS'],
     ('MD', 'DT'): ['MD_DIETETICS'],
@@ -481,7 +481,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # MO
     ('MO', 'AP'): ['MO_NURSING'],
-    ('MO', 'CP'): ['MO_PSYCHOLOGISTS'],
+    ('MO', 'CP'): ['MO_PSYCHOLOGISTS', 'PSYPACT'],
     ('MO', 'DA'): ['MO_DENTAL'],
     ('MO', 'DC'): ['MO_CHIROPRACTIC'],
     ('MO', 'DDS'): ['MO_DENTAL'],
@@ -521,7 +521,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # NC
     ('NC', 'AU'): ['NC_SLP_AUD'],
-    ('NC', 'CP'): ['NC_MENTAL_HEALTH'],
+    ('NC', 'CP'): ['NC_MENTAL_HEALTH', 'PSYPACT'],
     ('NC', 'DA'): ['NC_DENTAL'],
     ('NC', 'DAC'): ['NC_DAC'],
     ('NC', 'DC'): ['NC_CHIRO'],
@@ -567,7 +567,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # NH
     ('NH', 'ABA'): ['NH_OPLC'],
     ('NH', 'AU'): ['NH_OPLC'],
-    ('NH', 'CP'): ['NH_OPLC'],
+    ('NH', 'CP'): ['NH_OPLC', 'PSYPACT'],
     ('NH', 'DAC'): ['NH_OPLC'],
     ('NH', 'DC'): ['NH_OPLC'],
     ('NH', 'DDS'): ['NH_OPLC'],
@@ -596,7 +596,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NJ', 'ABA'): ['NJ_DCA'],
     ('NJ', 'AP'): ['NJ_DCA'],
     ('NJ', 'AU'): ['NJ_DCA'],
-    ('NJ', 'CP'): ['NJ_DCA'],
+    ('NJ', 'CP'): ['NJ_DCA', 'PSYPACT'],
     ('NJ', 'DC'): ['NJ_DCA'],
     ('NJ', 'DO'): ['NJ_DCA'],
     ('NJ', 'DT'): ['NJ_DCA'],
@@ -646,7 +646,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NV', 'ABA'): ['NV_ABA'],
     ('NV', 'AP'): ['NV_ORIENTAL'],
     ('NV', 'AU'): ['NV_SPEECH'],
-    ('NV', 'CP'): ['NV_BOP'],
+    ('NV', 'CP'): ['NV_BOP', 'PSYPACT'],
     ('NV', 'DA'): ['NV_NVADGC'],
     ('NV', 'DC'): ['NV_CHIRO'],
     ('NV', 'DDS'): ['NV_NVADGC', 'NV_DENTAL'],
@@ -699,7 +699,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('OH', 'ABA'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'AP'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'AU'): ['OH_PROVIDERS_INDIVIDUAL'],
-    ('OH', 'CP'): ['OH_PROVIDERS_INDIVIDUAL'],
+    ('OH', 'CP'): ['OH_PROVIDERS_INDIVIDUAL', 'PSYPACT'],
     ('OH', 'DAC'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'DC'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'DP'): ['OH_PROVIDERS_INDIVIDUAL'],
@@ -772,7 +772,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'ABA'): ['PA_PALS'],
     ('PA', 'AP'): ['PA_PALS'],
     ('PA', 'AU'): ['PA_PALS'],
-    ('PA', 'CP'): ['PA_PALS'],
+    ('PA', 'CP'): ['PA_PALS', 'PSYPACT'],
     ('PA', 'DA'): ['PA_PALS'],
     ('PA', 'DAC'): ['PA_PALS'],
     ('PA', 'DC'): ['PA_PALS'],
@@ -799,6 +799,33 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'SH'): ['PA_PALS'],
     ('PA', 'SW'): ['PA_PALS'],
 
+    # RI
+    ('RI', 'ABA'): ['RI_HEALTH'],
+    ('RI', 'AP'): ['RI_HEALTH'],
+    ('RI', 'AU'): ['RI_HEALTH'],
+    ('RI', 'CP'): ['RI_HEALTH', 'PSYPACT'],
+    ('RI', 'DAC'): ['RI_HEALTH'],
+    ('RI', 'DC'): ['RI_HEALTH'],
+    ('RI', 'DO'): ['RI_HEALTH'],
+    ('RI', 'DT'): ['RI_HEALTH'],
+    ('RI', 'LC'): ['IBCLC_COMMISSION', 'RI_HEALTH'],
+    ('RI', 'LPC'): ['RI_HEALTH'],
+    ('RI', 'MD'): ['RI_HEALTH'],
+    ('RI', 'MW'): ['RI_HEALTH'],
+    ('RI', 'NP'): ['RI_HEALTH'],
+    ('RI', 'NPB'): ['RI_HEALTH'],
+    ('RI', 'OD'): ['RI_HEALTH'],
+    ('RI', 'OP'): ['RI_HEALTH'],
+    ('RI', 'OT'): ['RI_HEALTH'],
+    ('RI', 'PA'): ['RI_HEALTH'],
+    ('RI', 'PAS'): ['RI_HEALTH'],
+    ('RI', 'PH'): ['RI_HEALTH'],
+    ('RI', 'PN'): ['RI_HEALTH'],
+    ('RI', 'PT'): ['RI_HEALTH'],
+    ('RI', 'RNA'): ['RI_HEALTH'],
+    ('RI', 'SH'): ['RI_HEALTH'],
+    ('RI', 'SW'): ['RI_HEALTH'],
+
     # SC
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
@@ -806,7 +833,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # SD
     ('SD', 'AU'): ['SD_AUDIOLOGY'],
-    ('SD', 'CP'): ['SD_PSYCH'],
+    ('SD', 'CP'): ['SD_PSYCH', 'PSYPACT'],
     ('SD', 'DC'): ['SD_CHIRO'],
     ('SD', 'OD'): ['SD_OPT'],
     ('SD', 'OP'): ['SD_OPT'],
@@ -815,7 +842,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # TX
     ('TX', 'AP'): ['TX_MEDBOARD'],
-    ('TX', 'CP'): ['TX_BHEC'],
+    ('TX', 'CP'): ['TX_BHEC', 'PSYPACT'],
     ('TX', 'DA'): ['TX_DENTAL'],
     ('TX', 'DAC'): ['TX_CHEMICAL'],
     ('TX', 'DC'): ['TX_CHIRO'],
@@ -843,7 +870,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'ABA'): ['VA_DHP'],
     ('VA', 'AP'): ['VA_DHP'],
     ('VA', 'AU'): ['VA_DHP'],
-    ('VA', 'CP'): ['VA_DHP'],
+    ('VA', 'CP'): ['VA_DHP', 'PSYPACT'],
     ('VA', 'DC'): ['VA_DHP'],
     ('VA', 'DDS'): ['VA_DHP'],
     ('VA', 'DMD'): ['VA_DHP'],
@@ -925,7 +952,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # WI
     ('WI', 'ABA'): ['WI_DSPS'],
     ('WI', 'AU'): ['WI_DSPS'],
-    ('WI', 'CP'): ['WI_DSPS'],
+    ('WI', 'CP'): ['WI_DSPS', 'PSYPACT'],
     ('WI', 'DC'): ['WI_DSPS'],
     ('WI', 'DDS'): ['WI_DSPS'],
     ('WI', 'DMD'): ['WI_DSPS'],
@@ -953,7 +980,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('WI', 'SW'): ['WI_DSPS'],
 
     # WV
-    ('WV', 'CP'): ['WV_PSYCH'],
+    ('WV', 'CP'): ['WV_PSYCH', 'PSYPACT'],
     ('WV', 'DA'): ['WV_DENTAL'],
     ('WV', 'DC'): ['WV_CHIRO'],
     ('WV', 'DDS'): ['WV_DENTAL'],
@@ -970,7 +997,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # WY
     ('WY', 'AP'): ['WY_PHYSICIAN'],
     ('WY', 'AU'): ['WY_SPEECH'],
-    ('WY', 'CP'): ['WY_PSYCH'],
+    ('WY', 'CP'): ['WY_PSYCH', 'PSYPACT'],
     ('WY', 'DA'): ['WY_DENTAL'],
     ('WY', 'DAC'): ['WY_MENTAL_HEALTH'],
     ('WY', 'DC'): ['WY_CHIRO'],

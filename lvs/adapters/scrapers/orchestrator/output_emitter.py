@@ -158,6 +158,8 @@ class RowOutcome:
 
     @property
     def status(self) -> str:
+        if self.trace.final_outcome == "Skip":
+            return "Skip"
         if self.ai_result and self.ai_result.outcome == "resolved":
             bd = self.ai_result.chosen_breakdown
             if bd is not None and not bd.gate_passed:
@@ -723,8 +725,8 @@ class OutputEmitter:
                 "EPDB and NPPES name scores both below 0.70 threshold"
             )
 
-        # 5. Rule-based Fail
-        if outcome.status == "Fail":
+        # 5. Rule-based Fail or Skip (service-location mismatch, CO unlicensed types, etc.)
+        if outcome.status in ("Fail", "Skip"):
             _fail_reason_code = outcome.reason or "no_records"
             # When a license-mode rung found a record but the name doesn't match,
             # report the mismatch clearly instead of the raw reason code.

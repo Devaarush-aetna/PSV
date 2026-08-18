@@ -729,6 +729,9 @@ async def run_ladder(
     # record is "S8727"). Hold the superseded match and prefer an active one from a later
     # rung; return this only if no active record is found anywhere.
     transitioned_fallback: Optional[LadderResult] = None
+    # Fallback for exact-license-match ambiguous cases: preserves the best board
+    # candidate so the expiry date is available for AIAddLicense routing if AI gives up.
+    _license_exact_fallback: Optional[LadderResult] = None
     _stop_boards = False
 
     blm = board_license_type_map or {}
@@ -949,6 +952,24 @@ async def run_ladder(
                 attempt.candidates = verdict.gate_passers[:10]
                 trace.escalate_to_ai_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 last_specific_reason = REASON_AMBIGUOUS_AFTER_NARROWING
+                # When the top gate-passer has an exact license match, preserve it so
+                # the expiry date is available for AIAddLicense routing if AI gives up.
+                if _license_exact_fallback is None and verdict.gate_passers:
+                    _top_gp = verdict.gate_passers[0]
+                    _top_gp_bd = disamb.score_candidate(
+                        _top_gp, master_row, weight_profile=_pick_profile(trace, master_row)
+                    )
+                    if _top_gp_bd.license_numerics == 1.0:
+                        if getattr(_top_gp, "expiration_date", None) is None:
+                            _top_gp = await _fetch_detail_record(
+                                cfg_obj, _top_gp, trace, executor, timeout_s
+                            )
+                        _license_exact_fallback = LadderResult(
+                            status="EscalateAi",
+                            best_record=_top_gp,
+                            best_breakdown=_top_gp_bd,
+                            weight_profile_used=_top_gp_bd.weight_profile,
+                        )
                 # Fall through to next rung to give it another shot? No — per spec,
                 # narrowing failure stops THIS board. Continue to next board.
                 break
@@ -967,6 +988,23 @@ async def run_ladder(
                 attempt.candidates = records[:10]
                 trace.escalate_to_ai_reason = REASON_AMBIGUOUS_AFTER_NARROWING
                 last_specific_reason = REASON_AMBIGUOUS_AFTER_NARROWING
+                # When license matched exactly, preserve best candidate so if AI gives up
+                # the expiry is available for AIAddLicense routing (name-change case).
+                if (_license_exact_fallback is None
+                        and verdict.best_breakdown is not None
+                        and verdict.best_breakdown.license_numerics == 1.0
+                        and verdict.best is not None):
+                    _fb = verdict.best
+                    if getattr(_fb, "expiration_date", None) is None:
+                        _fb = await _fetch_detail_record(
+                            cfg_obj, _fb, trace, executor, timeout_s
+                        )
+                    _license_exact_fallback = LadderResult(
+                        status="EscalateAi",
+                        best_record=_fb,
+                        best_breakdown=verdict.best_breakdown,
+                        weight_profile_used=verdict.best_breakdown.weight_profile,
+                    )
                 break  # stop this board
 
         # end of rung loop for this board
@@ -1254,7 +1292,13 @@ async def run_ladder(
     trace.escalate_to_ai_reason = trace.escalate_to_ai_reason or final_reason
     trace.final_outcome = "EscalateAi"
     trace.final_reason = final_reason
-    return LadderResult(status="EscalateAi", reason=final_reason)
+    return LadderResult(
+        status="EscalateAi",
+        reason=final_reason,
+        best_record=_license_exact_fallback.best_record if _license_exact_fallback else None,
+        best_breakdown=_license_exact_fallback.best_breakdown if _license_exact_fallback else None,
+        weight_profile_used=_license_exact_fallback.weight_profile_used if _license_exact_fallback else "license_present",
+    )
 
 
 # --------------------------------------------------------------------------
