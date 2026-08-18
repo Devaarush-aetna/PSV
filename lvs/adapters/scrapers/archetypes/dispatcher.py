@@ -85,6 +85,10 @@ async def verify_license(
         from .psypact import scrape_psypact
         return await scrape_psypact(config, query, db, t0, run_id)
 
+    if archetype == "ny_credentials":
+        from .ny_credentials import scrape_ny_credentials
+        return await scrape_ny_credentials(config, query, db, t0, run_id)
+
     # All remaining archetypes use the browser form loop
     from .browser_form import scrape_browser
     return await scrape_browser(config, query, db, t0, run_id, headless_override=headless_override)

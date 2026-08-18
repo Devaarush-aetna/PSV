@@ -175,7 +175,7 @@ class SiteIdentity(BaseModel):
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
         "socrata_api", "socrata_bulk_csv", "pdf_bulk", "csv_bulk", "certemy",
         "json_api", "datatables_jsapi", "filemaker_webdirect", "pega_constellation",
-        "psypact",
+        "psypact", "ny_credentials",
     ]
     # Optional explicit capability list — overrides auto-derivation in check_board_capability.
     # Use when the auto-derivation is wrong (e.g. dropdown-switched single-field boards).

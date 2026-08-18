@@ -3,57 +3,84 @@ identity:
   board_name: "New York State Education Department - Office of the Professions (Multi-Profession)"
   state: "NY"
   country: "US"
-  profession_codes: ["MD", "DO", "RN", "DDS", "RPh", "PT", "OT", "Multi-Profession"]
-  # 2026-06-15: Was csv_bulk pointing at health.data.ny.gov (no canonical multi-profession
-  # Socrata dataset exists). Switched to NYSED's public verification-search page, which
-  # is the authoritative multi-profession lookup for ~50 NY professions.
-  base_url: "https://www.op.nysed.gov/verification-search"
-  archetype: classic_html_form
+  base_url: "https://eservices.nysed.gov/professions/verification-search"
+  archetype: ny_credentials
+  # 2026-08-18: Replaced the Vue-SPA browser automation (classic_html_form) with a direct
+  # call to the JSON API the SPA itself uses. The page (eservices.nysed.gov) is a thin Vue
+  # client over https://api.nysed.gov/rosa/V2/*. Driving the form was ~70% reliable and
+  # Zscaler-fragile; the API is exact, browserless, and validated at 24/25 on real records.
+  #
+  # provider_type -> candidate NYSED profession codes, used ONLY by the license-first
+  # fallback (when name search finds nothing). The PRIMARY name search uses professionCode=ALL
+  # and reads the licensee's real profession code from the result, so this map does not need
+  # to be perfect — supersets are fine (the archetype iterates and stops at the first hit).
+  profession_code_map:
+    ABA: "071,078"
+    AP: "025"
+    AU: "057"
+    CP: "068"
+    DC: "070"
+    DDS: "050,059,079,081,082,083"
+    DMD: "050,059,079,081,082,083"
+    DO: "060,061"
+    DP: "065"
+    DT: "048"
+    LC: "018"
+    LPC: "018,071,005,006"
+    MD: "060,061"
+    MT: "027,006"
+    MW: "028"
+    NP: "029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,022"
+    NPB: "029,030,031,032,033,034,035,036,037,038,039,040,041,042,043,044,045,022"
+    NPS: "040,022,018,068"
+    NUT: "048"
+    OP: "056,055"
+    OT: "063,064"
+    PAB: "023,024"
+    PAS: "023,024"
+    PH: "020,021,002,060,061"
+    PN: "010,022"
+    PT: "062,066"
+    RNA: "022,029"
+    SH: "057,058"
+    ST: "058"
+    SW: "072,073,018"
+  # The archetype resolves first_name/last_name/license_number internally regardless of the
+  # requested mode; declare a broad capability set so the dispatcher never rejects or degrades
+  # away usable fields.
+  capabilities:
+    - first_and_last
+    - license_first_last
+    - license_and_last
+    - license_and_first
+    - last_name
+    - first_name
+    - license_number
 
-# op.nysed.gov verification-search is a server-rendered form. Common NYSED field
-# conventions (selectors fanned out as ORs to absorb minor naming differences):
+# Schema requires a search.modes list. The ny_credentials archetype does NOT read these
+# selectors (it calls the JSON API directly) — they exist only to satisfy validation and to
+# document the modes the board answers.
 search:
   modes:
     - mode: license_number
-      input_selector: "input[name='license_number'], input[name='LicenseNumber'], input#license_number, input#LicenseNumber, input[name*='license']"
-      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
     - mode: last_name
-      input_selector: "input[name='last_name'], input[name='LastName'], input#last_name, input#LastName, input[name*='last']"
-      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
     - mode: first_name
-      input_selector: "input[name='first_name'], input[name='FirstName'], input#first_name, input#FirstName, input[name*='first']"
-      button_selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
-  form:
-    search_by_dropdown:
-      strategy: none
-    search_input:
-      selector: "input[name='last_name'], input[name='LastName']"
-    search_button:
-      selector: "button[type='submit'], input[type='submit'], button:has-text('Search')"
-  results_wait:
-    strategy: element_visible
-    selector: "table tbody tr, table.views-table tbody tr, table.results tr"
-    timeout_ms: 25000
-    no_results_indicators:
-      - "no results"
-      - "no records"
-      - "no matching"
-      - "0 records"
-      - "not found"
 
+# NYSED ROSA verification API. The x-oapi-key is a static key embedded in the public
+# vsc.js bundle (client-side, not a secret); re-extractable from the bundle if it rotates.
+json_api:
+  mode: direct
+  method: GET
+  endpoint_url: "https://api.nysed.gov/rosa/V2"
+  headers:
+    x-oapi-key: "BRJF4D6U646A5PNMIB77AAW9544QFQKAYAEWI9EPU0TNP72CEEO3L4KGVN5K3R44"
+  timeout_ms: 30000
+
+# The archetype builds LicenseRecords directly from the API JSON; results/detail sections
+# below are unused by ny_credentials but kept minimal for schema completeness.
 results:
   type: table
-  table:
-    row_selector: "table tbody tr, table.views-table tbody tr, table.results tbody tr"
-    cell_selector: "td"
-    skip_first_row: false
-    columns:
-      0: full_name
-      1: license_number
-      2: profession
-      3: status
-      4: city
-  has_detail_page: false
+  has_detail_page: true
   pagination:
     enabled: false
     strategy: none
@@ -61,7 +88,7 @@ results:
 detail:
   wait:
     strategy: delay
-    timeout_ms: 1000
+    timeout_ms: 0
   strategies: []
   field_map: {}
 
@@ -70,11 +97,16 @@ output:
     "Registered": active
     "REGISTERED": active
     "Active": active
+    "Not Registered": inactive
     "Inactive": inactive
     "Expired": expired
     "Suspended": suspended
     "Revoked": revoked
+    "Surrendered": revoked
+  # NYSED renders dates as "April 30, 2029".
   date_formats:
+    - "%B %d, %Y"
+    - "%b %d, %Y"
     - "%m/%d/%Y"
     - "%Y-%m-%d"
 
@@ -85,34 +117,36 @@ transport:
   timeout_ms: 60000
   navigation_timeout_ms: 30000
   rate_limit:
-    delay_between_requests_ms: 1500
+    delay_between_requests_ms: 400
     max_concurrent: 1
   retry:
     max_attempts: 2
     backoff_ms: [2000, 5000]
     retry_on: ["timeout", "network_error"]
+  # api.nysed.gov is a public government API reachable directly. The corporate proxy
+  # returns 407 (auth required) and, per prior findings, drops the search endpoints —
+  # so this board must NOT route through it.
   proxy:
-    enabled: true
+    enabled: false
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:
-  capture_html: true
-  capture_screenshot: true
+  capture_html: false
+  capture_screenshot: false
   capture_on: ["search_results", "error"]
   storage: local
   local_path: "Evidence/NY_CREDENTIALS/{run_id}/"
 
 compliance:
-  tos_review_date: "2026-06-15"
+  tos_review_date: "2026-08-18"
   requires_captcha: false
   requires_login: false
   robots_txt_compliant: true
 
 smoke_test:
-  mode: last_name
-  query: "Smith"
+  mode: first_and_last
+  query: "Kennedy Jane"
   expect:
     min_records: 1
-    full_name_contains: "Smith"
-  skip: true
-  skip_reason: "api_search_response_blocked: eservices.nysed.gov/professions/verification-search IS reachable (no proxy needed). Page uses Vue Select dropdowns (#vs12-combobox = Search Type with 6 options, second combobox = Profession with 116 including 'All Professions (ALL)'). Full UI interaction works: select Licensee Name → select All Professions → fill #searchInput → click #goButton. Form fires GET https://api.nysed.gov/rosa/V2/byProfessionAndName?name={q}&professionCode=ALL (API key x-oapi-key in header from vsc.js bundle). BUT the search API response never arrives — Zscaler/corporate firewall allows maintenance endpoints (CURRENT_AS_OF, licenseeProfessions) but drops the search query response. Unblock: (a) add api.nysed.gov to Zscaler bypass/allowlist for search endpoints, OR (b) use data.ny.gov Socrata per-profession datasets as an alternative source."
+    full_name_contains: "KENNEDY"
+  skip: false

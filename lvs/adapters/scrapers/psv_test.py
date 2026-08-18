@@ -90,6 +90,8 @@ NA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("CO", "ABA"): "The state of Colorado does not issue state ABA licenses — Professional License step N/A",
     ("MI", "DT"):  "Michigan does not license Dietitians (DT) at this time — no state primary source (per LARA, Mary Hess 517-335-4084). Professional License step N/A",
     ("MI", "NUT"): "Michigan does not license Nutritionists (NUT) at this time — no state primary source (per LARA, Mary Hess 517-335-4084). Professional License step N/A",
+    ("NY", "DT"):  "The state of New York does not currently license DT/NUT, but they do issue certification — Professional License step N/A",
+    ("NY", "NUT"): "The state of New York does not currently license DT/NUT, but they do issue certification — Professional License step N/A",
 }
 
 # (state, prov_type) combos to Skip immediately — the state does not license the
@@ -98,6 +100,7 @@ NA_PROV_TYPES: dict[tuple[str, str], str] = {
 SKIP_UNLICENSED_PROV_TYPES: set[tuple[str, str]] = {
     ("CO", "DT"), ("CO", "NUT"), ("CO", "ABA"),
     ("MI", "DT"), ("MI", "NUT"),
+    ("NY", "DT"), ("NY", "NUT"),
 }
 
 # Per-(state, prov_type) combos where the board site blocks automated access.
@@ -456,18 +459,24 @@ def _name_matches(rec, last: str, first: str) -> bool:
     full = _strip_name_credentials(_normalize(_full_name(rec)))
     if not full:
         return False
+    # Space-collapsed form so multi-token surnames whose spacing differs between the
+    # board and the input still match (board "DI NITTO"/"DE LEON"/"MONTES DE OCA" vs
+    # input "Dinitto"/"Deleon"/"Montesdeoca", and vice-versa).
+    full_ns = full.replace(" ", "")
     last_norm = _strip_name_credentials(_normalize(last)) if last else ""
-    if last_norm and last_norm not in full:
+    if last_norm and last_norm not in full and last_norm.replace(" ", "") not in full_ns:
         # Hyphenated surname fallback: board may store only one component of the name
         # (e.g. board shows "BATES, AMY J" while PSV has "Bates-Daly" → try "BATES" or "DALY").
         if "-" in last:
             parts = [_strip_name_credentials(_normalize(p)) for p in last.split("-") if p.strip()]
-            if not any(p and p in full for p in parts):
+            if not any(p and (p in full or p.replace(" ", "") in full_ns) for p in parts):
                 return False
         else:
             return False
-    if first and _strip_name_credentials(_normalize(first)) not in full:
-        return False
+    if first:
+        first_norm = _strip_name_credentials(_normalize(first))
+        if first_norm and first_norm not in full and first_norm.replace(" ", "") not in full_ns:
+            return False
     return True
 
 
