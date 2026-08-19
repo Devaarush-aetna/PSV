@@ -73,15 +73,23 @@ def _clean_matched_name(raw: str) -> str:
 # sites/ directory — used for lazy board_name lookups
 _SITES_DIR = Path(__file__).resolve().parents[1] / "sites"
 
-# Reason codes that mean the board could not be reached due to CAPTCHA / WAF / network block.
-# Rows with these reasons get match_method="Captcha Based Board" in standard output
-# and a human-readable message in the manual channel. They are never sent to add_license.
+# Reason codes that produce status="Skip" in standard output.
+# Superset — includes both captcha-blocked and transient-outage reasons.
 _CAPTCHA_REASONS: frozenset[str] = frozenset({
     "state_captcha_blocked",
     "prov_type_captcha_blocked",
     "board_skip_captcha",
     "board_skipped",      # skip:true in board identity (e.g. BACB registry down)
     "board_unavailable",  # board site down/erroring at run time (timeout / HTTP 5xx)
+})
+
+# Subset of _CAPTCHA_REASONS whose match_method label is "Captcha Based Board".
+# board_unavailable and board_skipped are transient outages, not captcha blocks —
+# they get status=Skip but match_method="none".
+_CAPTCHA_LABEL_REASONS: frozenset[str] = frozenset({
+    "state_captcha_blocked",
+    "prov_type_captcha_blocked",
+    "board_skip_captcha",
 })
 
 # Manual-reason strings that route a row exclusively to AI_ADD_LICENSE (not Manual).
@@ -97,6 +105,7 @@ _REASONS_FOR_AI_ADD_LICENSE: frozenset[str] = frozenset({
     "Name mismatch after license match: EPDB and NPPES name scores both below 0.70 threshold",
     "Name verified: board record does not expose license number",
     "Name match accepted: board uses different license numbering",
+    "Name verified: license number changed on renewal — review required",
 })
 
 # BACB boards are captcha-blocked — skip automated verification for any row
@@ -189,6 +198,8 @@ class RowOutcome:
         if self.ladder_result and self.ladder_result.reason:
             return self.ladder_result.reason
         if self.trace.final_reason:
+            if self.trace.final_reason == "board_skipped" and self.trace.skip_reason_text:
+                return self.trace.skip_reason_text
             return self.trace.final_reason
         return "no_records"
 
@@ -343,9 +354,14 @@ class OutputEmitter:
         first_fail = input_first and bd.first_name < _THRESHOLD
         last_fail = input_last and bd.last_name < _THRESHOLD
         if first_fail or last_fail:
-            # Very low last name (< 0.40) means a completely different person, not a
-            # name variant — route to Manual, not AIAddLicense.
+            # Low last name (<0.40) but strong first name (≥0.85): name-change case
+            # (marriage/divorce) — same person, different last name.  Route to
+            # AIAddLicense for human review, not Manual.
+            # Low last name AND low/absent first name: truly different person with
+            # coincidentally matching license digits — route to Manual.
             if input_last and bd.last_name < 0.40:
+                if bd.first_name >= 0.85:
+                    return "License matched but Name mismatched"
                 return "Wrong provider matched: license matched but last name is completely different"
             return "License matched but Name mismatched"
         return None
@@ -527,7 +543,12 @@ class OutputEmitter:
         went_ai_add_license = False
         _epdb = str(outcome.master_row.get("epdb_pin", "") or "").strip()
         if manual_reason:
-            if manual_reason in _REASONS_FOR_AI_ADD_LICENSE:
+            if "not in Service Location State" in manual_reason:
+                # Row belongs to RemoveLicense channel — do not route to Manual.
+                self._standard_rows[-1]["routed_to"] = "RemoveLicense"
+                self._accumulate_state_stats(outcome, manual_reason, False, False, False)
+                return
+            elif manual_reason in _REASONS_FOR_AI_ADD_LICENSE:
                 if not _epdb:
                     self._collect_manual(outcome, failure_reason="EPDB is blanks")
                     went_manual = True
@@ -597,6 +618,8 @@ class OutputEmitter:
 
         # 1. Captcha / WAF block
         if _final_reason in _CAPTCHA_REASONS:
+            if _final_reason == "board_skipped" and outcome.trace.skip_reason_text:
+                return outcome.trace.skip_reason_text
             return self._CAPTCHA_MANUAL_REASONS.get(_final_reason, _final_reason)
 
         # 1.5. BACB board — captcha-blocked registry; skip automated verification
@@ -611,6 +634,11 @@ class OutputEmitter:
         # match is too uncertain to be upload-ready — route to manual regardless of
         # whether the ladder or AI agent accepted it.
         # Skipped when the board record is expired (that surfaces as the primary reason).
+        #
+        # Exception — renewal pattern: perfect first AND last name (both == 1.0) with
+        # no license match usually means the provider received a new license number on
+        # renewal (EPDB still carries the old one).  Route to AIAddLicense so a reviewer
+        # can confirm quickly rather than sending the whole row to Manual.
         _bd_check = outcome.chosen_breakdown
         _input_lic_check = (outcome.master_row.get("license_id", "") or "").strip()
         if (outcome.status == "Pass"
@@ -619,6 +647,10 @@ class OutputEmitter:
                 and _bd_check.license_numerics < 1.0
                 and _input_lic_check
                 and not self._expired_after_fetch_reason(outcome)):
+            if (_bd_check.first_name >= 1.0 and _bd_check.last_name >= 1.0
+                    and not (outcome.ladder_result
+                             and outcome.ladder_result.npi_substituted)):
+                return "Name verified: license number changed on renewal — review required"
             return (
                 f"Low match score ({round(_bd_check.total, 3)}) with no license ID match "
                 f"— manual review required"
@@ -870,7 +902,7 @@ class OutputEmitter:
             and bool(o.trace.attempts)
             and all(a.source_id in _BACB_SOURCE_IDS for a in o.trace.attempts)
         )
-        if o.status != "Pass" and (_final_reason in _CAPTCHA_REASONS or _is_bacb):
+        if o.status != "Pass" and (_final_reason in _CAPTCHA_LABEL_REASONS or _is_bacb):
             match_method = "Captcha Based Board"
         elif o.status != "Pass":
             match_method = "none"
@@ -905,6 +937,7 @@ class OutputEmitter:
             "status": (
                 "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
                 else "Fail" if self._expired_after_fetch_reason(o)
+                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip")
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
@@ -1505,6 +1538,7 @@ class OutputEmitter:
                 if k not in seen:
                     seen.add(k)
                     keys.append(k)
+        out.parent.mkdir(parents=True, exist_ok=True)
         with open(out, "w", newline="", encoding="utf-8-sig") as f:
             w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()

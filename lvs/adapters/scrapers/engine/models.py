@@ -175,7 +175,7 @@ class SiteIdentity(BaseModel):
         "thentia_cloud", "ag_grid_spa", "classic_html_form", "state_portal",
         "socrata_api", "socrata_bulk_csv", "pdf_bulk", "csv_bulk", "certemy",
         "json_api", "datatables_jsapi", "filemaker_webdirect", "pega_constellation",
-        "psypact",
+        "psypact", "ny_credentials",
     ]
     # Optional explicit capability list — overrides auto-derivation in check_board_capability.
     # Use when the auto-derivation is wrong (e.g. dropdown-switched single-field boards).
@@ -343,6 +343,16 @@ class PaginationConfig(BaseModel):
     strategy: Literal["next_button", "page_numbers", "infinite_scroll", "none"] = "none"
     next_selector: Optional[str] = None
     disabled_class: str = "disabled"
+    # Max pages to traverse. 0 => use the engine safety cap (50). Set higher for
+    # boards whose result sets are large and must be searched exhaustively.
+    max_pages: int = 0
+    # Two-phase harvest: page through ALL result pages collecting summary rows
+    # (staying on the grid — no per-row detail navigation), THEN fetch the detail
+    # page only for rows matching the search target via their captured link.
+    # Fixes postback-paginated grids (e.g. ASP.NET GridView) where clicking a row's
+    # detail link and navigating back resets the grid to page 1, capping results at
+    # one page. Requires results.type == "table" and a link_in_cell detail_trigger.
+    harvest_all: bool = False
 
 
 class ResultsTableConfig(BaseModel):
@@ -420,6 +430,14 @@ class ResultsConfig(BaseModel):
     # Config for th_td_multi type (th=key, td=value per row, one container = one record).
     th_td_multi: Optional[ThTdMultiConfig] = None
     pagination: PaginationConfig = Field(default_factory=PaginationConfig)
+    # Opt-in: for name-mode searches (last_name/first_name/…), collect summary rows
+    # across ALL result pages before matching, and match on the summary table directly
+    # instead of detail-clicking each row. Use for boards whose name search returns many
+    # paginated rows and whose summary row already carries name + license_number (e.g.
+    # AR_MEDBOARD's ASP.NET GridView). Detail-clicking each row on such boards both breaks
+    # the pager (so only page 1 is ever seen) and is O(N) slow. Expiry for the matched row
+    # is fetched on demand afterwards. Default off — no effect on other boards.
+    paginate_summary_rows: bool = False
 
 
 class DetailWait(BaseModel):

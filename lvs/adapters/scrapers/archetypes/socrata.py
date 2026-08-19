@@ -40,13 +40,14 @@ def _build_socrata_combo_url(config: SiteConfig, query: SearchQuery) -> str:
         else:
             clauses.append(f"upper({col}) like upper('%{safe}%')")
 
-    _lic_val = query.license_number or (query.query if query.mode.startswith("license") else None)
-    # Dotted inputs (e.g. "149.029942") are visual-separator formats; the board
-    # stores the bare digits ("149029942").  Strip dots and use LIKE so both
-    # "149.029942" and "149029942" resolve to the same dataset row.
-    if _lic_val and "." in _lic_val:
-        _lic_val = _lic_val.replace(".", "")
-    _add_clause("license_number", _lic_val, op="like")
+    if query.mode.startswith("license") or query.mode == "credential_number":
+        _lic_val = query.license_number or query.query
+        # Dotted inputs (e.g. "149.029942") are visual-separator formats; the board
+        # stores the bare digits ("149029942").  Strip dots and use LIKE so both
+        # "149.029942" and "149029942" resolve to the same dataset row.
+        if _lic_val and "." in _lic_val:
+            _lic_val = _lic_val.replace(".", "")
+        _add_clause("license_number", _lic_val, op="like")
     _add_clause("first_name", query.first_name, op="like")
     _add_clause("last_name", query.last_name, op="like")
     if query.license_type and config.identity.license_type_selector:
@@ -155,12 +156,29 @@ async def scrape_socrata_bulk_csv(
         base = config.identity.base_url.rstrip("?&")
 
         if query.mode in ("license_number", "credential_number"):
-            # Dots in license numbers are visual separators; strip them so
-            # "149.029942" searches as "%149029942%" matching the bare-digit form.
+            # Dots are visual separators; strip them ("149.029942" → "149029942").
             if "." in q:
                 q = q.replace(".", "")
                 safe = q.replace("'", "''")
-            where = f"upper({field}) like upper('%{safe}%')"
+            # Boards that store digit-only values won't match LIKE '%PA7086%' or
+            # '%C-RXN0102890-C-NP%'.  Extract ONLY the digit characters from the
+            # license string and trim leading zeros so the search finds the bare-digit
+            # board entry regardless of prefix/suffix/hyphen formatting.
+            # E.g. "C-RXN.0102890-C-NP" → digits "0102890" → "102890" → LIKE '%102890%'
+            _digits_only = _re.sub(r'[^0-9]', '', q)
+            if _digits_only and _digits_only != q:
+                _num = _digits_only.lstrip('0') or _digits_only
+                safe = _num.replace("'", "''")
+                _full_safe = _digits_only.replace("'", "''")
+                # Boards like CO_DORA store bare digits ("7086").  LIKE '%7086%' is too
+                # broad — it also matches "17086", "70861" etc. and returns ambiguous sets.
+                # Use equality on the stripped number (covers bare-digit storage) PLUS a
+                # LIKE on the full digit string with leading zeros (covers zero-padded
+                # storage like "0007086"), so a single clause handles both formats without
+                # returning spurious partial matches.
+                where = f"({field} = '{safe}' OR upper({field}) like upper('%{_full_safe}%'))"
+            else:
+                where = f"upper({field}) like upper('%{safe}%')"
             params = urllib.parse.urlencode({"$where": where, "$limit": "500"})
         else:
             where = f"upper({field}) like upper('%{safe}%')"

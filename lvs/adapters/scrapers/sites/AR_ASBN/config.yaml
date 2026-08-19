@@ -3,7 +3,7 @@ identity:
   board_name: Arkansas State Board of Nursing
   state: AR
   country: US
-  profession_codes: [RN, LPN, APRN, CRNA, NP, NPB, PN, RNA]
+  profession_codes: [RN, LPN, APRN, CRNA, NP, NPB, PN, RNA, LC]
   base_url: "https://arsbn.boardsofnursing.org/licenselookup"
   archetype: classic_html_form
 

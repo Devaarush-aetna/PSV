@@ -206,6 +206,7 @@ class RowTrace:
     epdb_name_score: Optional[float] = None
     nppes_name_score: Optional[float] = None
     name_gate_reason: Optional[str] = None  # "name_gate_manual" | None
+    skip_reason_text: str = ""  # per-board contact/skip text (e.g. email) for board_skipped rows
 
     def append(self, rec: AttemptRecord) -> None:
         self.attempts.append(rec)

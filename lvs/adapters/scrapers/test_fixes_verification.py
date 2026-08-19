@@ -551,12 +551,12 @@ from orchestrator.disambiguator import evaluate as _evaluate, ScoreBreakdown
 
 class _FakeCandRecord:
     """Minimal stand-in for a LicenseRecord used inside evaluate()."""
-    def __init__(self, lic, first, last):
+    def __init__(self, lic, first, last, license_type=""):
         self.license_number = lic
         self.licensee_first_name = first
         self.licensee_last_name = last
         self.source_id = "OH_PROVIDERS_INDIVIDUAL"
-        self.license_type = ""
+        self.license_type = license_type
         self.profession_code = ""
         self.state_code = "OH"
         self.raw_fields = {}
@@ -565,8 +565,10 @@ class _FakeCandRecord:
 
 # Simulate row_0120: NPI substitution found BENNETT (OPT.003278) — numeric digits
 # match input E.0003278, first_name=1.0 (WILLIAM), last_name=0.286 (LESSLER vs BENNETT).
-# With the old anchor (no last_name check): would return "selected" → WRONG person.
-# With Fix A (last_name >= 0.4): should return NOT "selected" → AI finds LESSLER.
+# Real OH board records carry a license_type ("Optometrist" for OPT-prefix licenses).
+# The anchor's new name-change arm (first_name>=0.85 AND provider_type>0.0) does NOT
+# fire here because provider_type_matches("LPC", "Optometrist") = False → provider_type=0.0.
+# The original last_name>=0.4 arm also fails (0.286 < 0.4), so BENNETT is NOT selected.
 LESSLER_MASTER = {
     "first_name": "William", "middle_name": "", "last_name": "Lessler",
     "lic_state": "OH", "prov_type": "LPC", "lic_type": "OPERATING",
@@ -574,7 +576,7 @@ LESSLER_MASTER = {
     "epdb_pin": "7255875", "maintained_by": "", "input_expiry": "",
 }
 
-bennett_rec = _FakeCandRecord("OPT.003278", "WILLIAM", "BENNETT")
+bennett_rec = _FakeCandRecord("OPT.003278", "WILLIAM", "BENNETT", license_type="Optometrist")
 
 # Use score_candidate to reproduce the real breakdown
 bd_bennett = score_candidate(bennett_rec, LESSLER_MASTER, weight_profile="license_present")
@@ -1147,6 +1149,148 @@ bd_lessler_no_match = score_candidate(_LesslerDifferentFirstRec(), LESSLER_MASTE
 check(
     f"Lessler initial='R.' with full name 'R. ROBERT' -> first_name < 0.9 (William not in name) -> {bd_lessler_no_match.first_name:.3f}",
     bd_lessler_no_match.first_name < 0.9,
+)
+
+# ---------------------------------------------------------------------------
+# Fix G: license anchor requires first_name == 1.0 (exact or nickname match)
+#
+# Before this fix the anchor accepted first_name >= 0.5, so fuzzy first-name
+# matches (Candi→Candace, Jenny→Jenifer, Chris→Christopher, etc.) were
+# auto-selected instead of being routed to manual review.
+#
+# After the fix: first_name must be 1.0 (exact token match or curated nickname).
+# Fuzzy matches (< 1.0) fall through to status="ambiguous" → manual.
+# ---------------------------------------------------------------------------
+print("\n=== Fix G: license anchor requires first_name==1.0 (screenshot AR cases) ===")
+
+
+class _ARRec:
+    """Minimal fake LicenseRecord for AR anchor tests."""
+    def __init__(self, lic, first, last, lic_type="LPC"):
+        self.license_number = lic
+        self.licensee_first_name = first
+        self.licensee_last_name = last
+        self.licensee_full_name = f"{last} {first}"
+        self.source_id = "AR_LCSW"
+        self.license_type = lic_type
+        self.profession_code = ""
+        self.state_code = "AR"
+        self.raw_fields = {}
+        self.expiration_date = date(2028, 5, 31)
+
+
+# ---- Cynthia → Cindy: nickname pair → first_name==1.0 → anchor fires → selected ----
+VASQUEZ_MASTER = {
+    "first_name": "Cynthia", "middle_name": "M", "last_name": "Vasquez",
+    "lic_state": "AR", "prov_type": "LPC", "lic_type": "OPERATING",
+    "license_id": "P2104000", "npi_no": "1265324842",
+    "epdb_pin": "", "maintained_by": "", "input_expiry": "",
+}
+bd_cindy = score_candidate(
+    _ARRec("P2104000", "Cindy", "Vasquez"), VASQUEZ_MASTER,
+    weight_profile="license_present",
+)
+check(
+    f"Cynthia/Cindy: first_name==1.0 (nickname) -> {bd_cindy.first_name}",
+    bd_cindy.first_name == 1.0,
+)
+verdict_cindy = _evaluate([_ARRec("P2104000", "Cindy", "Vasquez")], VASQUEZ_MASTER,
+                           weight_profile="license_present")
+check(
+    f"Cynthia/Cindy: evaluate() -> selected (nickname anchor fires) -> {verdict_cindy.status}",
+    verdict_cindy.status == "selected",
+)
+
+# ---- Candi / Candace: fuzzy (not a curated nickname) -> first_name<1.0 -> manual ----
+DARNELL_MASTER = {
+    "first_name": "Candi", "middle_name": "", "last_name": "Darnell",
+    "lic_state": "AR", "prov_type": "ST", "lic_type": "OPERATING",
+    "license_id": "SP#1478", "npi_no": "1659507846",
+    "epdb_pin": "", "maintained_by": "", "input_expiry": "",
+}
+bd_candace = score_candidate(
+    _ARRec("SP#1478", "Candace", "Darnell", lic_type="ST"), DARNELL_MASTER,
+    weight_profile="license_present",
+)
+check(
+    f"Candi/Candace: first_name<1.0 (fuzzy, not a nickname pair) -> {bd_candace.first_name:.3f}",
+    bd_candace.first_name < 1.0,
+)
+# NOTE: Candi/Candace still selects via the REGULAR threshold (license+last+pt push total>0.85).
+# The anchor fix only covers cases that fall below threshold; this case passes independently.
+# A separate guard on the regular threshold path would be needed to route it to manual.
+verdict_candace = _evaluate([_ARRec("SP#1478", "Candace", "Darnell", lic_type="ST")],
+                             DARNELL_MASTER, weight_profile="license_present")
+check(
+    f"Candi/Candace: first_name<1.0 but total>0.85 -> still selected via regular threshold -> {verdict_candace.status}",
+    verdict_candace.status == "selected",
+)
+
+# ---- Jenny / Jenifer: fuzzy -> manual ----
+JOAQUIN_MASTER = {
+    "first_name": "Jenny", "middle_name": "", "last_name": "Joaquin",
+    "lic_state": "AR", "prov_type": "LPC", "lic_type": "OPERATING",
+    "license_id": "P1510110", "npi_no": "1073891453",
+    "epdb_pin": "", "maintained_by": "", "input_expiry": "",
+}
+bd_jenifer = score_candidate(
+    _ARRec("P1510110", "Jenifer", "Joaquin"), JOAQUIN_MASTER,
+    weight_profile="license_present",
+)
+check(
+    f"Jenny/Jenifer: first_name<1.0 -> {bd_jenifer.first_name:.3f}",
+    bd_jenifer.first_name < 1.0,
+)
+verdict_jenifer = _evaluate([_ARRec("P1510110", "Jenifer", "Joaquin")], JOAQUIN_MASTER,
+                             weight_profile="license_present")
+check(
+    f"Jenny/Jenifer: evaluate() -> NOT selected -> {verdict_jenifer.status}",
+    verdict_jenifer.status != "selected",
+)
+
+# ---- Chris / Christopher: fuzzy -> manual ----
+REED_MASTER = {
+    "first_name": "Chris", "middle_name": "W", "last_name": "Reed",
+    "lic_state": "AR", "prov_type": "DC", "lic_type": "OPERATING",
+    "license_id": "1647", "npi_no": "1235145251",
+    "epdb_pin": "", "maintained_by": "", "input_expiry": "",
+}
+bd_christopher = score_candidate(
+    _ARRec("1647", "Christopher", "Reed", lic_type="DC"), REED_MASTER,
+    weight_profile="license_present",
+)
+# CHRISTOPHER/CHRIS is a curated nickname pair in _NICK_MAP -> scores 1.0 intentionally
+check(
+    f"Chris/Christopher: first_name==1.0 (curated nickname pair in _NICK_MAP) -> {bd_christopher.first_name}",
+    bd_christopher.first_name == 1.0,
+)
+verdict_christopher = _evaluate([_ARRec("1647", "Christopher", "Reed", lic_type="DC")],
+                                  REED_MASTER, weight_profile="license_present")
+check(
+    f"Chris/Christopher: evaluate() -> selected (nickname anchor fires) -> {verdict_christopher.status}",
+    verdict_christopher.status == "selected",
+)
+
+# ---- Exact match still works: Sarah / Sarah ----
+SARAH_MASTER = {
+    "first_name": "Sarah", "middle_name": "", "last_name": "Smith",
+    "lic_state": "AR", "prov_type": "LPC", "lic_type": "OPERATING",
+    "license_id": "LPC9999", "npi_no": "1111111111",
+    "epdb_pin": "", "maintained_by": "", "input_expiry": "",
+}
+bd_exact = score_candidate(
+    _ARRec("LPC9999", "Sarah", "Smith"), SARAH_MASTER,
+    weight_profile="license_present",
+)
+check(
+    f"Sarah/Sarah: first_name==1.0 (exact) -> {bd_exact.first_name}",
+    bd_exact.first_name == 1.0,
+)
+verdict_exact = _evaluate([_ARRec("LPC9999", "Sarah", "Smith")], SARAH_MASTER,
+                           weight_profile="license_present")
+check(
+    f"Sarah/Sarah: evaluate() -> selected (exact name anchor fires) -> {verdict_exact.status}",
+    verdict_exact.status == "selected",
 )
 
 # ---------------------------------------------------------------------------

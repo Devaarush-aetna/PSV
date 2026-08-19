@@ -9,8 +9,9 @@ identity:
   # Supports: license number, first+last name, first name, last name searches.
   # Results appear in a standard Accela grid (table#gdvRefLicenseeList or table.ACA_Grid).
   # Detail page: LicenseeDetail.aspx — Accela standard tabs with multi-strategy extraction.
-  # NOTE: Accela injects zero-width Unicode characters (U+200B, U+200C, U+200D) into displayed
-  # text as anti-scraping measures. Post-processor strip_zero_width_chars handles this.
+  # NOTE: Accela injects zero-width Unicode (U+200B/C/D) between every character and uses
+  # &nbsp; (U+00A0) between name parts. engine/extractor.py:_clean_value strips the zero-width
+  # chars and normalises nbsp/unicode spaces to ASCII on every extracted value.
   base_url: "https://aca-prod.accela.com/MILARA/GeneralProperty/PropertyLookUp.aspx?isLicensee=Y&TabName=Home"
   archetype: classic_html_form
 
@@ -78,12 +79,19 @@ results:
 detail:
   wait:
     strategy: element_visible
-    timeout_ms: 20000
+    # Primary readiness signal — the licensee-number/name spans on LicenseeDetail.aspx.
+    # These are the fields element_ids extraction reads, and (unlike the old
+    # ACA_Table_IE_Width / lblValue / divAccela selectors, which are absent, and
+    # table.ACA_Grid, which exists but is hidden) they are actually present AND
+    # visible on the detail DOM. Waiting on them returns in <1s instead of burning
+    # the full timeout on every miss. Sequential misses across the old 4-selector
+    # list cost ~80s per row, which timed out multi-row name searches at the 90s
+    # ladder cap (see diag: results at 20s, first detail not ready until ~102s).
+    selector: "span[id$='lblLicenseeNumber_value'], span[id$='lblContactName_value']"
+    timeout_ms: 15000
     fallback_selectors:
-      - "div.ACA_Table_IE_Width"
+      - "span[id*='_value']"
       - "table.ACA_Grid"
-      - "span[id*='lblValue']"
-      - "div[id*='divAccela']"
   strategies:
     - type: element_ids
       id_map:
@@ -149,7 +157,14 @@ output:
     "REVOKED": revoked
     "Cancelled": inactive
     "Surrendered": revoked
+    # MI LARA: a newer/upgraded license replaced this one — the number is no longer operative.
+    "Superseded": inactive
+    "SUPERSEDED": inactive
+    "superseded": inactive
     "Probation": probation
+    # MI LARA COVID-era temporary statuses (see portal disclaimer) — treated as inactive.
+    "Temporary Foreign Waiver": inactive
+    "Temporary Emergency": inactive
   date_formats:
     - "%m/%d/%Y"
     - "%Y-%m-%d"

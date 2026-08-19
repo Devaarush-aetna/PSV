@@ -23,7 +23,8 @@ async def paginate(page: Page, config: PaginationConfig) -> AsyncIterator[None]:
         yield
         return
 
-    for page_num in range(1, _SAFETY_CAP + 1):
+    cap = config.max_pages if getattr(config, "max_pages", 0) else _SAFETY_CAP
+    for page_num in range(1, cap + 1):
         yield  # let caller process current page
 
         if config.strategy == "next_button":
@@ -39,8 +40,8 @@ async def paginate(page: Page, config: PaginationConfig) -> AsyncIterator[None]:
             break
         await asyncio.sleep(2)
 
-    if page_num >= _SAFETY_CAP:
-        log.warning("Pagination safety cap (%d pages) reached", _SAFETY_CAP)
+    if page_num >= cap:
+        log.warning("Pagination cap (%d pages) reached — result set may be truncated", cap)
 
 
 async def _click_next_button(page: Page, config: PaginationConfig) -> bool:

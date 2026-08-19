@@ -59,17 +59,26 @@ def clean_name(value: str | None) -> str:
 _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     # Generational / legal
     "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    # Business-entity suffixes (boards occasionally list practice entities)
+    "LLC", "LLP", "PLLC", "PC", "PA",  # NB: "PA" also = physician assistant
     # Medical degrees
     "MD", "DO", "DPM", "DDS", "DMD", "OD", "PHD", "PSYD",
     "DPT", "DC", "ND",
     # Nursing / advanced practice
     "RN", "LPN", "LVN", "APRN", "DNP", "CNM", "NP",
-    # PA
-    "PA",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABAD", "BCABA", "RBT",
-    # PT / OT / SLP / AUD
-    "PT", "OT", "SLP", "AUD",
+    "LGSW", "LMSW", "CSW",
+    # PT / OT / SLP / AUD (incl. assistant and registered variants)
+    "PT", "PTA", "LPT",
+    "OT", "OTA", "OTR", "OTRL", "COTA", "COTAL",
+    "SLP", "AUD", "ST", "STA",
+    # Respiratory care
+    "RCP", "LRCP", "RRT", "CRT",
+    # Genetic counseling
+    "LGC", "CGC", "GC",
+    # Dietetics / nutrition / massage
+    "RDN", "LMT", "MST",
     # Pharmacy
     "PHARMD", "RPH",
     # Fellowship designations
@@ -77,48 +86,102 @@ _NAME_SUFFIX_SET: frozenset[str] = frozenset({
 })
 
 
+# Honorific / title prefixes some boards prepend or append to the stored name
+# (e.g. "Dr. John Smith", "Jang-en Sarah Lin Mrs."). These are NOT part of the
+# name and must be stripped before first/last tokens are selected — otherwise the
+# honorific is parsed as the first or last name. Kept in sync with
+# orchestrator.disambiguator._NAME_PREFIXES_NORM.
+_NAME_PREFIX_SET: frozenset[str] = frozenset({
+    "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV", "PASTOR", "RABBI",
+    "SISTER", "BROTHER",
+})
+
+
+def _norm_token(token: str) -> str:
+    """Normalize a name token for suffix lookup: drop all non-alphanumerics
+    (dots, dashes, and stray commas) and upper-case. 'OT-A' → 'OTA', 'Jr.,' → 'JR'."""
+    return re.sub(r"[^A-Za-z0-9]", "", token).upper()
+
+
+def _is_suffix_token(token: str) -> bool:
+    return _norm_token(token) in _NAME_SUFFIX_SET
+
+
+def _is_prefix_token(token: str) -> bool:
+    return _norm_token(token) in _NAME_PREFIX_SET
+
+
 def _strip_name_suffixes(parts: list[str]) -> list[str]:
     """Pop trailing credential/generational tokens from a name parts list."""
-    while parts and re.sub(r"[.\-]", "", parts[-1]).upper() in _NAME_SUFFIX_SET:
+    while parts and _is_suffix_token(parts[-1]):
+        parts = parts[:-1]
+    return parts
+
+
+def _strip_name_affixes(parts: list[str]) -> list[str]:
+    """Strip trailing credential/generational suffixes AND leading/trailing
+    honorific prefixes from a name parts list.
+
+    Handles honorifics on either end: "Dr. John Smith" → ["John", "Smith"] and
+    "Jang-en Sarah Lin Mrs." → ["Jang-en", "Sarah", "Lin"].
+    """
+    parts = _strip_name_suffixes(parts)
+    while parts and _is_prefix_token(parts[0]):
+        parts = parts[1:]
+    while parts and _is_prefix_token(parts[-1]):
         parts = parts[:-1]
     return parts
 
 
 def split_full_name(full_name: str) -> tuple[str, str]:
-    """Split 'Last, First Middle' or 'First Last' into (first, last).
+    """Split a board-rendered name into (first, last).
 
-    Strips trailing credential/generational suffixes (MD, DPM, Jr., etc.) so that
-    boards appending credentials after the name (e.g. 'Victor McNamara DPM') don't
-    end up with the credential stored as the last name.
+    Handles both orderings seen across boards:
+      - 'Last, First Middle'                 → ('First', 'Last')
+      - 'First Middle Last, CREDENTIAL(s)'   → ('First', 'Last')
+      - 'First Last, Jr., M.D.'              → ('First', 'Last')
+      - 'First Middle Last' (no comma)       → ('First', 'Last')
+
+    The comma is ambiguous: it may separate Last-from-First, or merely separate
+    trailing credential/generational suffixes (MD, OT-A, LRCP, ST, Jr., LLC, …)
+    from a natural 'First … Last' name. We resolve this by splitting on commas and
+    discarding trailing segments that are composed *entirely* of suffix tokens; if
+    only one real segment remains, the comma was a credential separator, not a
+    name-order separator.
     """
     name = clean_name(full_name)
     if not name:
         return ("", "")
+
     if "," in name:
-        raw_last, _, rest = name.partition(",")
-        parts_last = _strip_name_suffixes(raw_last.strip().split())
-        last = " ".join(parts_last)
-        # Strip credential suffixes from the rest portion too. If all tokens after
-        # the comma are credentials (e.g. "BAILEY SHEVENELL, PA"), the comma separates
-        # "First Last" from a credential — raw_last holds "First Last", not just "Last".
-        rest_parts = _strip_name_suffixes(rest.strip().split())
-        # Also treat short all-uppercase alpha tokens as credential suffixes even
-        # when not in the known set (e.g. "LD" = Licensed Dietitian, "RD", "MSW").
-        # Guard: only when the part before the comma has 2+ words, which indicates
-        # "FIRST [MIDDLE] LAST, Credential" rather than "LAST, FIRST_INITIAL" format.
-        _rest_is_creds = (
-            bool(rest_parts)
-            and len(parts_last) >= 2
-            and all(len(p) <= 3 and p == p.upper() and p.isalpha() for p in rest_parts)
-        )
-        if not rest_parts or _rest_is_creds:
-            # "First Last, Credential" format: split parts_last into first/last.
+        segments = [s.strip() for s in name.split(",") if s.strip()]
+        # Drop trailing segments that are purely credential/suffix tokens
+        # (e.g. "Charles Reeves, Jr., M.D." → drop "Jr." and "M.D.").
+        while len(segments) > 1 and all(_is_suffix_token(t) for t in segments[-1].split()):
+            segments.pop()
+
+        if len(segments) <= 1:
+            # Comma only separated credentials → remaining text is 'First … Last'.
+            parts = _strip_name_affixes((segments[0] if segments else "").split())
+            if not parts:
+                return ("", "")
+            if len(parts) == 1:
+                return ("", parts[0])
+            return (parts[0], parts[-1])
+
+        # Two or more real segments → 'Last, First Middle [, Credentials]'.
+        parts_last = _strip_name_affixes(segments[0].split())
+        last = " ".join(parts_last) if parts_last else segments[0]
+        rest_parts = _strip_name_affixes(" ".join(segments[1:]).split())
+        if not rest_parts:
+            # Nothing usable after the comma — fall back to treating segment 0
+            # as a whole 'First Last' name.
             if len(parts_last) >= 2:
                 return (parts_last[0], parts_last[-1])
             return ("", last)
-        first = rest_parts[0]
-        return (first, last)
-    parts = _strip_name_suffixes(name.split())
+        return (rest_parts[0], last)
+
+    parts = _strip_name_affixes(name.split())
     if not parts:
         return ("", "")
     if len(parts) == 1:

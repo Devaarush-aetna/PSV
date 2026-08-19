@@ -152,8 +152,19 @@ _NAME_SUFFIXES = {
     "PA",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABA", "RBT",
-    # PT / OT / SLP / AUD
-    "PT", "OT", "SLP", "AUD",
+    "LGSW", "LMSW", "CSW",
+    # PT / OT / SLP / AUD (incl. assistant + registered variants)
+    "PT", "PTA", "LPT",
+    "OT", "OTA", "OT-A", "OTR", "OTRL", "OTR/L", "COTA", "COTAL",
+    "SLP", "AUD", "ST", "STA",
+    # Respiratory care
+    "RCP", "LRCP", "RRT", "CRT",
+    # Genetic counseling
+    "LGC", "CGC",
+    # Dietetics / nutrition / massage
+    "RDN", "LMT", "MST",
+    # Business-entity suffixes (boards occasionally list practice entities)
+    "LLC", "LLP", "PLLC",
     # Pharmacy
     "PHARMD", "PHARM.D.", "RPH",
     # Fellowship designations
@@ -183,6 +194,10 @@ def _strip_name_affixes(tokens: list[str]) -> list[str]:
     while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
     while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_SUFFIXES_NORM:
+        toks = toks[:-1]
+    # Honorifics sometimes appear at the END of board-stored names (e.g. "Jang-en Sarah Lin Mrs.")
+    # Strip them from the trailing position too so they don't get parsed as the last name.
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_PREFIXES_NORM:
         toks = toks[:-1]
     return toks
 
@@ -252,6 +267,10 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
         if master_last_norm and _normalize_name(toks[-1]) == master_last_norm:
             break
         toks = toks[:-1]
+    # Some boards append honorifics at the END (e.g. "Jang-en Sarah Lin Mrs.").
+    # Strip trailing honorifics too so they don't get parsed as the last name.
+    while toks and re.sub(r"[.\-,]", "", toks[-1]) in _NAME_PREFIXES_NORM:
+        toks = toks[:-1]
     while toks and re.sub(r"[.\-,]", "", toks[0]) in _NAME_PREFIXES_NORM:
         toks = toks[1:]
     if not toks:
@@ -259,7 +278,12 @@ def _split_full_name(full_name: str, master_last: str) -> tuple[str, str]:
     if len(toks) == 1:
         return toks[0], toks[0]
 
-    master_last_words = len(master_last_norm.split()) if master_last_norm else 1
+    # Count space-separated words in the ORIGINAL master_last, not the normalised version.
+    # _normalize_name converts hyphens to spaces, inflating the count for hyphenated names
+    # like "Jang-En" (1 token on the board) → "JANG EN" (2 norm words) → wrongly grabs 2
+    # trailing board tokens. Space-splitting the original correctly gives 1 for "Jang-En"
+    # and 2 for "Rodriguez Pestana", matching how boards tokenise compound last names.
+    master_last_words = len(master_last.split()) if master_last else 1
 
     if master_last_words >= 2 and len(toks) > master_last_words:
         return toks[0], " ".join(toks[-master_last_words:])
@@ -370,6 +394,9 @@ def last_name_score(master_last: str, candidate_last: str) -> float:
         for i in range(len(longer) - n + 1):
             if longer[i : i + n] == shorter:
                 return 0.95
+    # Space-collapse fallback: "DO PICO" == "DOPICO" when spaces removed.
+    if m.replace(" ", "") == c.replace(" ", ""):
+        return 0.95
     return fuzz.token_sort_ratio(m, c) / 100.0
 
 
@@ -773,7 +800,7 @@ def evaluate(candidates: list[Any], master_row: dict,
         )
 
     # Sort gate-passers by total descending
-    gate_passers.sort(key=lambda x: x[1].total, reverse=True)
+    gate_passers.sort(key=lambda x: (x[1].license_numerics, x[1].total), reverse=True)
 
     threshold = (cfg.THRESHOLD_LICENSE_PROFILE
                  if weight_profile == "license_present"
@@ -787,18 +814,23 @@ def evaluate(candidates: list[Any], master_row: dict,
                 status="selected", best=top_cand, best_breakdown=top_bd,
                 gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,
             )
-        # License anchor: exact license + partial first name match → accept regardless
+        # License anchor: exact license + EXACT first name match → accept regardless
         # of last name. Handles name-change cases (e.g. "Duric Zinka" → board has
         # "LEWANDOWSKI, ZINKA D") where last name differs but license is definitive.
-        # Requires last_name >= 0.4: prevents anchoring on a completely different person
-        # (e.g. "BAILEY" vs "IAMS", or "BENNETT" vs "LESSLER") when multiple licenses
-        # share the same numeric digits but different type prefixes (e.g. "FD.009648"
-        # vs "PT.009648"). A last_name score of 0.286 or 0.2 is not a name variant —
-        # it is a different person.
+        # first_name == 1.0 means exact or nickname match only (fuzzy first-name mismatches
+        # are routed to manual review). The last_name >= 0.4 guard prevents anchoring on
+        # a completely different person when multiple licenses share the same numeric digits
+        # but different type prefixes (e.g. "FD.009648" vs "PT.009648"). The provider_type
+        # > 0.0 arm handles marriage/divorce name-change cases: same person, same license
+        # type, exact first-name match, but completely different last name. Requiring
+        # provider_type > 0.0 ensures we do NOT anchor when the board record has an
+        # unknown/empty license type (which could indicate a different person with
+        # coincidentally shared digits).
         if (top_bd.weight_profile == "license_present"
                 and top_bd.license_numerics == 1.0
-                and top_bd.first_name >= 0.5
-                and top_bd.last_name >= 0.4):
+                and top_bd.first_name == 1.0
+                and (top_bd.last_name >= 0.4
+                     or top_bd.provider_type > 0.0)):
             return DisambiguationVerdict(
                 status="selected", best=top_cand, best_breakdown=top_bd,
                 gate_passers=[c for c, _ in gate_passers], all_breakdowns=breakdowns,

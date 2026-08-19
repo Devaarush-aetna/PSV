@@ -97,6 +97,15 @@ def _strip_suffix_and_initial(text: str, is_first: bool) -> str:
             toks = toks[1:]
         else:
             break
+    # Strip TRAILING honorific prefixes too — MI LARA and some Accela boards append
+    # them to the stored name (e.g. "Jang-en Sarah Lin Mrs."). Mirrors
+    # disambiguator._strip_name_affixes so the gate parses the same last name.
+    while toks:
+        norm_tok = re.sub(r"[.\-]", "", toks[-1]).upper()
+        if norm_tok in disamb._NAME_PREFIXES_NORM:
+            toks = toks[:-1]
+        else:
+            break
     # Strip interior single-letter middle initials (keep index-0 token)
     if not is_first:
         # For last-name tokens, strip leading single letters too (e.g. "A SMITH")
@@ -275,9 +284,13 @@ def evaluate_name_gate(
     # so it cannot override a clearly mismatching EPDB score.
     _nppes_score_for_max = None if _nppes_shortcircuit_blocked else nppes_score
 
-    # Skip gate when EPDB name already exactly matches the cleaned board name
-    if (epdb_first == board_first and epdb_last == board_last
-            and epdb_first and epdb_last):
+    # Skip gate when EPDB name already exactly matches the cleaned board name.
+    # Also accept the transposed orientation (first/last swapped in the master row):
+    # this gate only runs after a board LICENSE match, so a name that matches exactly
+    # once transposed is the same person (mirrors disambiguator.score_candidate).
+    if (epdb_first and epdb_last
+            and ((epdb_first == board_first and epdb_last == board_last)
+                 or (epdb_first == board_last and epdb_last == board_first))):
         return NameGateResult(
             epdb_score=1.0,
             nppes_score=round(nppes_score, 4) if nppes_score is not None else None,
@@ -287,6 +300,11 @@ def evaluate_name_gate(
         )
 
     epdb_score = _name_pair_score(epdb_first, epdb_last, board_first, board_last)
+    # Swap-tolerant rescue: score the transposed orientation and keep the better one.
+    # Covers master rows with first_name/last_name entered in swapped columns.
+    epdb_score_swapped = _name_pair_score(epdb_first, epdb_last, board_last, board_first)
+    if epdb_score_swapped > epdb_score:
+        epdb_score = epdb_score_swapped
 
     # ================================================================
     # Determine verdict from max of available scores

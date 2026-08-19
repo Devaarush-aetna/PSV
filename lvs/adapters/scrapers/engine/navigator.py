@@ -721,6 +721,12 @@ async def wait_for_results(page: Page, config: SearchConfig, partial_failures: l
                 await asyncio.sleep(poll)
         elif rw.strategy == "delay":
             await asyncio.sleep(rw.timeout_ms / 1000.0)
+        elif config.iframe_search_selector:
+            try:
+                await page.wait_for_load_state("networkidle", timeout=25000)
+            except Exception as e:
+                log.debug("iframe board networkidle timeout (non-fatal): %s", e)
+            await asyncio.sleep(2)
         else:
             await asyncio.sleep(2)
     except PlaywrightTimeout:
