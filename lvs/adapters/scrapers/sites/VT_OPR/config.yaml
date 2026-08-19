@@ -68,6 +68,7 @@ output:
     "Suspended": suspended
     "Revoked": revoked
   date_formats:
+    - "%b %d, %Y"
     - "%m/%d/%Y"
     - "%Y-%m-%d"
 

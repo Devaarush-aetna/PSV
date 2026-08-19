@@ -51,11 +51,28 @@ search:
 results:
   type: table
   table:
-    row_selector: "div[class*='MuiCard-root']"
-    cell_selector: "span[class*='MuiCardHeader-title']"
-    skip_first_row: false
-    columns:
-      0: full_name
+    custom_js: |
+      Array.from(document.querySelectorAll('[class*="MuiCard-root"]')).map(card => {
+        const name = (card.querySelector('[class*="MuiCardHeader-title"]') || {}).innerText || '';
+        let creds = [];
+        for (const dt of card.querySelectorAll('dt')) {
+          if (dt.innerText.trim() === 'Credential Details') {
+            let sib = dt.nextElementSibling;
+            while (sib && sib.tagName.toLowerCase() === 'dd') {
+              creds.push(sib.innerText.trim());
+              sib = sib.nextElementSibling;
+            }
+            break;
+          }
+        }
+        return {
+          full_name: name.trim(),
+          license_type: creds[0] || '',
+          license_number: creds[1] || '',
+          status: creds[2] || '',
+          expiration_date: creds[3] || ''
+        };
+      });
   has_detail_page: false
   pagination:
     enabled: false
@@ -88,7 +105,7 @@ output:
 
 transport:
   browser: chromium
-  headless: true
+  headless: True
   viewport:
     width: 1280
     height: 900
