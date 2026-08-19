@@ -458,6 +458,67 @@ class OutOfStateTabConfig(BaseModel):
     content_wait_selector: str = "table tr td, dl dt, h2"
 
 
+# ---------------------------------------------------------------------------
+# DetailApiConfig — direct JSON API strategy for detail fetching
+# ---------------------------------------------------------------------------
+
+class DetailApiConfig(BaseModel):
+    """Config for boards whose 'detail page' is actually a direct JSON API call.
+
+    WHY THIS EXISTS — PA_PALS root cause:
+    --------------------------------------
+    PA_PALS's Angular controller (getAssetDetail) does NOT navigate the current
+    tab. Instead it stores PersonId/LicenseId in localStorage and then opens
+    #!/page/searchresult in a brand-new _blank tab via:
+        link.target = "_blank"; link.click()
+    Playwright's standard click+wait_for_url flow watches the CURRENT tab, so
+    the URL never changes here → detail page is never loaded → ExpiryDate is
+    never scraped.
+
+    HOW IT WORKS:
+    -------------
+    Rather than following the _blank tab, we skip the click entirely and call
+    the backing JSON API that the new-tab's SearchResultController would call.
+    Specifically:
+      1. The engine evaluates scope_selector to find an Angular scope element.
+      2. It walks DOM ancestors until it finds the scope holding scope_params data.
+      3. It builds the POST body dict from scope_params path expressions.
+      4. It calls fetch(endpoint, POST body) inside the page context so session
+         cookies are sent automatically.
+      5. The JSON response is mapped via field_map to canonical LicenseRecord fields.
+
+    GENERALISATION:
+    ---------------
+    Any AngularJS SPA that opens a _blank detail tab can use this strategy.
+    Just configure the endpoint, scope_selector, scope_params, and field_map.
+    """
+
+    # Relative URL of the JSON API endpoint (resolved against the page origin).
+    # Example: "api/Search/GetPersonOrFacilityDetails"
+    endpoint: str
+
+    # HTTP method for the API call.
+    method: Literal["GET", "POST"] = "POST"
+
+    # CSS selector for the DOM element used to start Angular scope traversal.
+    # Pick an element INSIDE the results table so the walk reaches the controller
+    # scope that holds the search result data.
+    # Example: "#DataTables_Table_3"
+    scope_selector: str = "body"
+
+    # Maps POST body key names → dot-path expressions in the Angular scope.
+    # Array indexing is supported via [N] literal or {idx} placeholder (replaced
+    # at runtime with the row's zero-based index in the results table).
+    # Example:
+    #   PersonId:      "search.PersonDetails[{idx}].PersonId"
+    #   LicenseNumber: "search.PersonDetails[{idx}].LicenseNumber"
+    scope_params: dict[str, str] = Field(default_factory=dict)
+
+    # Maps JSON response key names → canonical LicenseRecord field names.
+    # Example: {"ExpiryDate": "expiration_date", "IssueDate": "issue_date"}
+    field_map: dict[str, str] = Field(default_factory=dict)
+
+
 class DetailConfig(BaseModel):
     wait: DetailWait = Field(default_factory=DetailWait)
     strategies: list[dict] = Field(default_factory=list)
@@ -469,6 +530,12 @@ class DetailConfig(BaseModel):
     # the full page. Use for inline popup/modal boards (e.g. Kendo UI Window) where the
     # search form's labels contaminate page-wide extractions.
     scope_selector: Optional[str] = None
+
+    # When set, the engine skips the detail link click and instead calls this JSON
+    # API directly (in the current tab's page context).  See DetailApiConfig above.
+    # Use for boards where the detail link opens a new _blank tab that Playwright
+    # cannot follow without explicit popup handling (e.g. PA_PALS).
+    api: Optional[DetailApiConfig] = None
 
 
 class OutputConfig(BaseModel):

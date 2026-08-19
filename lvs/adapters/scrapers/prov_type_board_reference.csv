@@ -32,6 +32,7 @@ AP,Acupuncturist,PA,PA_PALS,Pennsylvania Licensing System (PALS) — All Boards
 AP,Acupuncturist,TX,TX_MEDBOARD,Texas Medical Board
 AP,Acupuncturist,VA,VA_DHP,Virginia Department of Health Professions — License Lookup
 AP,Acupuncturist,WY,WY_PHYSICIAN,Wyoming Board of Medicine — Physician
+AP,Acupuncturist,ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
 AU,Audiologist,AL,AL_ABESPA,Alabama Board of Examiners for Speech-Language Pathology and Audiology
 AU,Audiologist,AZ,AZ_SPEECH_HEAR,"Arizona Department of Health Services - Licensing Services (Speech-Language Pathology, Audiology, Hearing Aid Dispensing)"
 AU,Audiologist,CO,CO_DORA,Colorado Division of Regulatory Agencies — Professional and Occupational Licenses
@@ -582,6 +583,7 @@ PAB,Physician Assistant (Board),OR,OR_OMB,Oregon Medical Board
 PAB,Physician Assistant (Board),TX,TX_MEDBOARD,Texas Medical Board
 PAB,Physician Assistant (Board),VA,VA_DHP,Virginia Department of Health Professions — License Lookup
 PAB,Physician Assistant (Board),WI,WI_DSPS,Wisconsin Department of Safety and Professional Services
+PAB,Physician Assistant (Board),ID,ID_DOPL,Idaho Division of Occupational and Professional Licenses
 PAS,Physician Assistant (Specialty),AK,AK_CBP,"Alaska Division of Corporations, Business and Professional Licensing"
 PAS,Physician Assistant (Specialty),AL,AL_ALBME,Alabama Board of Medical Examiners and Medical Licensure Commission
 PAS,Physician Assistant (Specialty),AZ,AZ_MEDBOARD,Arizona Medical Board

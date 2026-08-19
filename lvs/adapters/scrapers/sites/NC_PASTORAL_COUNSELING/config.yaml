@@ -38,6 +38,14 @@ search:
 
 results:
   type: table
+  table:
+    # PDF columns confirmed: NAME | CITY | PHONE | NUMBER
+    # Column-index fallback used when PDF header text doesn't match field_map keys.
+    columns:
+      0: full_name
+      1: city
+      2: phone
+      3: license_number
   has_detail_page: false
   pagination:
     enabled: false

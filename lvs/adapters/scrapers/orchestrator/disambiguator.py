@@ -329,6 +329,12 @@ def first_name_score(master_first: str, candidate_first: str) -> float:
     c_joined = "".join(c_toks)
     if m_joined and c_joined and m_joined == c_joined:
         return 1.0
+    # Compound-name prefix rescue: "Prayashkumar" (input) vs board "Prayash" where
+    # "Kumar" spilled into the last-name field. One being a ≥5-char prefix of the
+    # other is strong evidence they are the same compound given name.
+    if len(m_joined) >= 5 and len(c_joined) >= 5:
+        if m_joined.startswith(c_joined) or c_joined.startswith(m_joined):
+            return 0.95
     return fuzz.token_sort_ratio(m_tok, c_tok) / 100.0
 
 

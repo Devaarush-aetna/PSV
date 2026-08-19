@@ -102,7 +102,16 @@ def split_full_name(full_name: str) -> tuple[str, str]:
         # the comma are credentials (e.g. "BAILEY SHEVENELL, PA"), the comma separates
         # "First Last" from a credential — raw_last holds "First Last", not just "Last".
         rest_parts = _strip_name_suffixes(rest.strip().split())
-        if not rest_parts:
+        # Also treat short all-uppercase alpha tokens as credential suffixes even
+        # when not in the known set (e.g. "LD" = Licensed Dietitian, "RD", "MSW").
+        # Guard: only when the part before the comma has 2+ words, which indicates
+        # "FIRST [MIDDLE] LAST, Credential" rather than "LAST, FIRST_INITIAL" format.
+        _rest_is_creds = (
+            bool(rest_parts)
+            and len(parts_last) >= 2
+            and all(len(p) <= 3 and p == p.upper() and p.isalpha() for p in rest_parts)
+        )
+        if not rest_parts or _rest_is_creds:
             # "First Last, Credential" format: split parts_last into first/last.
             if len(parts_last) >= 2:
                 return (parts_last[0], parts_last[-1])
