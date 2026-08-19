@@ -453,10 +453,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('MI', 'LPN'): ['MI_LARA'],
     ('MI', 'MD'): ['MI_LARA'],
     ('MI', 'MT'): ['MI_LARA'],
-<<<<<<< HEAD
-=======
     ('MI', 'MW'): ['MI_LARA'],
->>>>>>> origin/main
     ('MI', 'NP'): ['MI_LARA'],
     ('MI', 'NPB'): ['MI_LARA'],
     ('MI', 'NPS'): ['MI_LARA'],
