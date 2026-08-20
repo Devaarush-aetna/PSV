@@ -169,6 +169,24 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    # OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked.
+    # Covers RN, LPN/PN, NP/NPB, CRNA/RNA, MW (CNM/CNW). No OK_NURSING site configured.
+    ("OK", "RN"):   "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "LPN"):  "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "PN"):   "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "NP"):   "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "NPB"):  "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "CRNA"): "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "RNA"):  "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    ("OK", "MW"):   "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
+    # OK State Board of Chiropractic Examiners — no web lookup; verification requires emailing
+    # Stacie.Rasmussen@chiro.ok.gov with a $10 fee per request invoiced to Credentialing Dept.
+    ("OK", "DC"):   "OK State Board of Chiropractic Examiners — no automated lookup; email Stacie.Rasmussen@chiro.ok.gov ($10/request, invoiced monthly)",
+    # OK Board of Examiners for Psychology — no automated lookup; verification requires
+    # submitting the online License Verification Request Form; board faxes results back.
+    # Form: https://aetnet.aetna.com/provider_services/cvo/geddi_forms/form_license.htm
+    # Phone: 405-524-9094.
+    ("OK", "CP"):   "OK Board of Examiners for Psychology — no automated lookup; submit License Verification Request Form (https://aetnet.aetna.com/provider_services/cvo/geddi_forms/form_license.htm); board faxes verification back (405-524-9094)",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.

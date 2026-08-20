@@ -54,9 +54,13 @@ results:
       4: status
       5: city
       6: state_code
+    required_fields: [license_number]
   has_detail_page: true
   detail_trigger:
     selector: "table#datagrid_results a[href*='Details.aspx']"
+    # SearchResults.aspx is POST-based (ASP.NET __VIEWSTATE); go_back() fails after the
+    # first detail click.  Pre-collect all detail HREFs and page.goto() each directly.
+    navigate_directly: true
   pagination:
     enabled: false
     strategy: none
@@ -68,6 +72,9 @@ detail:
     timeout_ms: 15000
     fallback_selectors:
       - "td"
+    error_page_selectors:
+      - "td:has-text('too many requests')"
+      - "td:has-text('CAPTCHA')"
   strategies:
     - type: element_ids
       id_map:

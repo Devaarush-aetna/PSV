@@ -703,6 +703,16 @@ async def run_ladder(
         trace.final_reason = trace_mod.REASON_NO_RECORDS
         return LadderResult(status="Fail", reason=trace_mod.REASON_NO_RECORDS)
 
+    # Supplement blank PSV middle_name from NPPES when available.
+    # The PSV input spreadsheet often omits middle names even when NPPES has one
+    # (e.g. "JENNIFER LAUREN LEE MILLER" in NPPES vs blank column 1 in PSV).
+    # TB2 in the disambiguator uses master_row["middle_name"] as the tie-breaker
+    # between same-first-last candidates — it only fires when the value is non-empty.
+    # NPPES is the authoritative name source for NPI-linked providers, so using it
+    # here improves disambiguation without overriding an explicit PSV entry.
+    if not master_row.get("middle_name") and nppes_record and nppes_record.middle_name:
+        master_row = {**master_row, "middle_name": nppes_record.middle_name}
+
     last_specific_reason: Optional[str] = None
     # Soft-match fallback: a name-only Pass with license_numerics=0.0 when
     # more boards remain.  We store it and keep searching for an exact-license

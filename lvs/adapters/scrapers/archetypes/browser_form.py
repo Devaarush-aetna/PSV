@@ -193,74 +193,127 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
         buttons = page.locator(trigger_sel)
         num_buttons = await buttons.count()
         if num_buttons == 0:
-            records.extend(_summary_rows)
+            # Filter out pagination artifact rows: RI_HEALTH (and similar ASP.NET boards)
+            # render a <td colspan="N"><span>1</span></td> pager row inside #datagrid_results
+            # even when 0 real records matched.  That row maps to full_name="1",
+            # license_number="" — a real record always has a license_number.
+            records.extend(r for r in _summary_rows if r.license_number)
             break
+
+        # navigate_directly: collect all detail HREFs now, before navigating away from
+        # the results page.  Lets us page.goto() each detail URL directly — no back
+        # navigation needed between rows (safe for POST-based results pages like RI_HEALTH
+        # where go_back() fails after the first detail click).
+        _nav_directly = bool(
+            config.results.detail_trigger
+            and getattr(config.results.detail_trigger, "navigate_directly", False)
+        )
+        _direct_hrefs: list[str] = []
+        if _nav_directly:
+            _base = page.url
+            for _i in range(num_buttons):
+                _h = (await page.locator(trigger_sel).nth(_i).get_attribute("href") or "").strip()
+                _direct_hrefs.append(urljoin(_base, _h) if _h else "")
+            # On elicensesoftware.com boards (RI_HEALTH, NH_OPLC, IN_PLA) the
+            # Details.aspx?result=<GUID> session keys are single-use: navigating
+            # to the first detail invalidates subsequent GUIDs.  Reorder so the
+            # state-matching row (highest chance of being the correct record)
+            # is processed at idx=0 — it always succeeds; idx≥1 fall back to
+            # summary-row data via the exception handler below.
+            _board_state = (config.identity.state or "").upper()
+            if _board_state and len(_summary_rows) > 1 and len(_direct_hrefs) > 1:
+                _best_idx = next(
+                    (i for i, r in enumerate(_summary_rows)
+                     if i < len(_direct_hrefs) and _direct_hrefs[i]
+                     and (getattr(r, "state_code", "") or "").upper() == _board_state),
+                    -1,
+                )
+                if _best_idx > 0:
+                    _direct_hrefs[0], _direct_hrefs[_best_idx] = (
+                        _direct_hrefs[_best_idx], _direct_hrefs[0]
+                    )
+                    _summary_rows[0], _summary_rows[_best_idx] = (
+                        _summary_rows[_best_idx], _summary_rows[0]
+                    )
 
         for idx in range(num_buttons):
             try:
-                btns = page.locator(trigger_sel)
-                btn = btns.nth(idx)
                 url_before = page.url
 
-                try:
-                    if not await btn.is_visible(timeout=3000):
-                        log.info("Button idx=%d not visible — falling back to table summary for %d remaining row(s)",
+                if _nav_directly:
+                    # Direct navigation: skip all button interaction — use pre-collected HREF.
+                    if idx >= len(_direct_hrefs) or not _direct_hrefs[idx]:
+                        log.warning("[%s] navigate_directly: no href at idx=%d — using summary row",
+                                    config.identity.source_id, idx)
+                        if idx < len(_summary_rows):
+                            records.append(_summary_rows[idx])
+                        continue
+                    await page.goto(_direct_hrefs[idx])
+                else:
+                    btns = page.locator(trigger_sel)
+                    btn = btns.nth(idx)
+
+                    try:
+                        if not await btn.is_visible(timeout=3000):
+                            log.info("Button idx=%d not visible — falling back to table summary for %d remaining row(s)",
+                                     idx, max(0, len(_summary_rows) - idx))
+                            records.extend(_summary_rows[idx:])
+                            return records
+                    except Exception:
+                        log.info("Button idx=%d check failed — falling back to table summary for %d remaining row(s)",
                                  idx, max(0, len(_summary_rows) - idx))
                         records.extend(_summary_rows[idx:])
                         return records
-                except Exception:
-                    log.info("Button idx=%d check failed — falling back to table summary for %d remaining row(s)",
-                             idx, max(0, len(_summary_rows) - idx))
-                    records.extend(_summary_rows[idx:])
-                    return records
 
-                await btn.scroll_into_view_if_needed()
-                await asyncio.sleep(0.3)
+                    await btn.scroll_into_view_if_needed()
+                    await asyncio.sleep(0.3)
 
-                # PDF detail: if the link href points to a PDF, download and parse
-                # it directly instead of navigating the browser (avoids PDF viewer issues).
-                _href = (await btn.get_attribute("href") or "").strip()
-                _force_pdf = bool(config.results.detail_trigger and config.results.detail_trigger.force_pdf)
-                _is_pdf = _force_pdf or _href.lower().endswith(".pdf") or "pdf" in _href.lower().split("?")[0]
-                if _is_pdf and not _href:
-                    log.warning("force_pdf=True but href is empty at idx=%d — using summary row only", idx)
-                    if idx < len(_summary_rows):
-                        records.append(_summary_rows[idx])
-                    continue
-                if _is_pdf:
-                    from engine.post_processors import apply_field_map as _afm
-                    _pdf_raw = await _scrape_pdf_detail(page, _href, config)
-                    _pdf_mapped = _afm(_pdf_raw, config.detail.field_map)
-                    rec = map_to_license_record(_pdf_mapped, config, {})
-                    if idx < len(_summary_rows):
-                        _sr = _summary_rows[idx]
-                        if not rec.license_number and _sr.license_number:
-                            rec.license_number = _sr.license_number
-                        if not rec.licensee_full_name and not rec.licensee_first_name and _sr.licensee_full_name:
-                            rec.licensee_full_name = _sr.licensee_full_name
-                            rec.licensee_first_name = _sr.licensee_first_name
-                            rec.licensee_last_name = _sr.licensee_last_name
-                        if not rec.license_type and _sr.license_type:
-                            rec.license_type = _sr.license_type
-                        from engine.models import LicenseStatus as _LS
-                        if rec.status == _LS.UNKNOWN and _sr.status != _LS.UNKNOWN:
-                            rec.status = _sr.status
-                        if rec.expiration_date is None and _sr.expiration_date is not None:
-                            rec.expiration_date = _sr.expiration_date
-                    records.append(rec)
-                    continue  # no back navigation needed — browser never navigated
+                    # PDF detail: if the link href points to a PDF, download and parse
+                    # it directly instead of navigating the browser (avoids PDF viewer issues).
+                    _href = (await btn.get_attribute("href") or "").strip()
+                    _force_pdf = bool(config.results.detail_trigger and config.results.detail_trigger.force_pdf)
+                    _is_pdf = _force_pdf or _href.lower().endswith(".pdf") or "pdf" in _href.lower().split("?")[0]
+                    if _is_pdf and not _href:
+                        log.warning("force_pdf=True but href is empty at idx=%d — using summary row only", idx)
+                        if idx < len(_summary_rows):
+                            records.append(_summary_rows[idx])
+                        continue
+                    if _is_pdf:
+                        from engine.post_processors import apply_field_map as _afm
+                        _pdf_raw = await _scrape_pdf_detail(page, _href, config)
+                        _pdf_mapped = _afm(_pdf_raw, config.detail.field_map)
+                        rec = map_to_license_record(_pdf_mapped, config, {})
+                        if idx < len(_summary_rows):
+                            _sr = _summary_rows[idx]
+                            if not rec.license_number and _sr.license_number:
+                                rec.license_number = _sr.license_number
+                            if not rec.licensee_full_name and not rec.licensee_first_name and _sr.licensee_full_name:
+                                rec.licensee_full_name = _sr.licensee_full_name
+                                rec.licensee_first_name = _sr.licensee_first_name
+                                rec.licensee_last_name = _sr.licensee_last_name
+                            if not rec.license_type and _sr.license_type:
+                                rec.license_type = _sr.license_type
+                            from engine.models import LicenseStatus as _LS
+                            if rec.status == _LS.UNKNOWN and _sr.status != _LS.UNKNOWN:
+                                rec.status = _sr.status
+                            if rec.expiration_date is None and _sr.expiration_date is not None:
+                                rec.expiration_date = _sr.expiration_date
+                            if not rec.state_code and _sr.state_code:
+                                rec.state_code = _sr.state_code
+                        records.append(rec)
+                        continue  # no back navigation needed — browser never navigated
 
-                await btn.evaluate("el => el.removeAttribute('target')")
-                await btn.click()
+                    await btn.evaluate("el => el.removeAttribute('target')")
+                    await btn.click()
 
-                try:
-                    await page.wait_for_function(
-                        "url => window.location.href !== url",
-                        url_before,
-                        timeout=config.detail.wait.timeout_ms,
-                    )
-                except Exception:
-                    pass
+                    try:
+                        await page.wait_for_function(
+                            "url => window.location.href !== url",
+                            url_before,
+                            timeout=config.detail.wait.timeout_ms,
+                        )
+                    except Exception:
+                        pass
 
                 await _wait_for_detail_content(page, config)
 
@@ -308,15 +361,35 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
                         rec.status = _sr.status
                     if rec.expiration_date is None and _sr.expiration_date is not None:
                         rec.expiration_date = _sr.expiration_date
+                    if not rec.state_code and _sr.state_code:
+                        rec.state_code = _sr.state_code
                 records.append(rec)
 
             except Exception as exc:
                 log.error("Detail scrape failed (idx=%d): %s", idx, exc)
-                try:
-                    await _navigate_back(page, config)
-                except Exception:
-                    pass
+                if not _nav_directly:
+                    try:
+                        await _navigate_back(page, config)
+                    except Exception:
+                        pass
+                else:
+                    # navigate_directly: detail navigation failed (e.g. GUID
+                    # expired after the first hit on elicensesoftware.com boards).
+                    # Fall back to summary-row data so the candidate still reaches
+                    # the disambiguator.  State-reordering above ensures the correct
+                    # record was already processed at idx=0 with full detail.
+                    if idx < len(_summary_rows) and _summary_rows[idx].license_number:
+                        records.append(_summary_rows[idx])
+                        log.warning(
+                            "[%s] navigate_directly fallback (idx=%d): "
+                            "using summary row (lic=%s)",
+                            config.identity.source_id, idx,
+                            _summary_rows[idx].license_number,
+                        )
                 continue
+
+            if _nav_directly:
+                continue  # next goto() handles navigation — no back nav needed
 
             try:
                 await _navigate_back(page, config)
