@@ -252,8 +252,10 @@ Available tools:
   folder. Use this when you suspect a layout change or parsing failure.
 - pick_candidate(source_id, candidate_index): commit a candidate from a prior
   attempt. Use this when you can identify the right row in already-returned data.
-  The `pool_index` field on each matched_candidate is the exact candidate_index
-  to pass — no try_search needed for records already in matched_candidates.
+  The `pool_index` field on each matched_candidate AND on each candidate returned
+  by try_search is the exact candidate_index to pass. ALWAYS use the `pool_index`
+  value shown in the candidate — do NOT use a 0-based position from the current
+  search result, because earlier searches may have filled indices 0, 1, 2, …
 - report_site_drift(source_id, suspected_change, fix_hint): emit a drift report.
   Do NOT call this unless evidence strongly suggests the board's HTML changed.
 - give_up(reason): terminate. reason MUST be one of:
@@ -271,6 +273,13 @@ Rules:
   label the same profession with different type codes (e.g. "State Medical Board"
   vs prov_type "PH"). If name and/or license match strongly, prefer
   pick_candidate over give_up(provider_type_mismatch).
+- Name change case: when a candidate has an EXACT license number match AND an
+  exact first name match but a different last name, call pick_candidate() — do
+  NOT give_up. A different last name with a confirmed license + first name is
+  consistent with a legal name change (marriage/divorce). Use
+  give_up:name_change_detected only as a last resort when you cannot commit
+  the record at all; in most name-change cases you SHOULD pick the candidate
+  and note the discrepancy so a human reviewer can confirm.
 - You have at most {max_turns} turns.
 """
 
@@ -645,14 +654,22 @@ async def _dispatch_tool(
             chosen = pool[idx]
             bd = disamb.score_candidate(chosen, master_row, weight_profile="license_present")
             if not bd.gate_passed:
-                return {
-                    "ok": False,
-                    "error": (
-                        f"candidate {idx} failed gate (score={bd.total:.3f}, "
-                        "gate_passed=False). Board data may be corrupted — give_up."
-                    ),
-                    "score_breakdown": bd.to_dict(),
-                }
+                # Fallback: name-only profile allows picking when name matches but
+                # license number differs (e.g. board issued a different license type).
+                # Downstream routing sends to Manual when license_numerics == 0.0.
+                bd_name = disamb.score_candidate(chosen, master_row, weight_profile="name_only")
+                if bd_name.gate_passed or (bd_name.first_name >= 0.85 and bd_name.last_name >= 0.85):
+                    bd = bd_name
+                else:
+                    return {
+                        "ok": False,
+                        "error": (
+                            f"candidate {idx} failed gate (license_present={bd.total:.3f}, "
+                            f"name_only={bd_name.total:.3f}, first={bd_name.first_name:.3f}, "
+                            f"last={bd_name.last_name:.3f}, gate_passed=False). give_up."
+                        ),
+                        "score_breakdown": bd.to_dict(),
+                    }
             result.outcome = "resolved"
             result.chosen_candidate = chosen
             result.chosen_breakdown = bd
@@ -700,6 +717,7 @@ async def _dispatch_tool(
             evidence_dir="",
         )
         trace.append(attempt)
+        _prev_cache_len = len(candidate_cache.get(sid, []))
         candidate_cache.setdefault(sid, []).extend(records or [])
 
         # If the disambiguator selects exactly one unambiguous match, short-
@@ -730,7 +748,10 @@ async def _dispatch_tool(
         return {
             "ok": True,
             "record_count": len(records or []),
-            "candidates": [_candidate_summary(r) for r in (records or [])[:5]],
+            "candidates": [
+                {**_candidate_summary(r), "pool_index": _prev_cache_len + i}
+                for i, r in enumerate((records or [])[:5])
+            ],
             "attempt_seq": seq,
         }
 

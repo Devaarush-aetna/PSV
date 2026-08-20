@@ -25,6 +25,9 @@ search:
     - mode: last_name
       input_selector: "#Dd-11"
       button_selector: "button#Dc-d, button:has-text('Search')"
+    - mode: first_and_last
+      input_selector: "#Dd-11"
+      button_selector: "button#Dc-d, button:has-text('Search')"
   form:
     search_by_dropdown:
       strategy: none

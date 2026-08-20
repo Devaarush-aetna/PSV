@@ -815,6 +815,8 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'SW'): ['PA_PALS'],
 
     # SC
+    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 — blocked in CAPTCHA_PROV_TYPES.
+    # SC_SCLLR_LPCMFT / SC_SCLLR_SW are out-of-state telehealth registries only (TLC/TLS format).
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
     ('SC', 'SW'): ['SC_SCLLR_SW'],

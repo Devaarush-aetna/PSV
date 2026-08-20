@@ -183,6 +183,16 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    # SC LPC — verify.llronline.com/LicLookup/Counselors/Counselors.aspx?div=18
+    # (SC Board of Examiners for Professional Counselors, board value 18) enforces
+    # reCAPTCHA v2 Invisible (sitekey 6Lc2X-saAAAAAPC6HatgHFOd8rCxCl-2yPTh44PN).
+    # Headless Chromium scores below threshold, triggering a visual image challenge
+    # that cannot be solved programmatically. All SC LPC records blocked. 2026-08-20.
+    ("SC", "LPC"):  "SC Board of Professional Counselors (verify.llronline.com/LicLookup/Counselors/Counselors.aspx?div=18) — reCAPTCHA v2 blocks automated access",
+    # SC SW — verify.llronline.com/LicLookup/SW/SW.aspx?div=41
+    # (SC Board of Social Work Examiners, board value 41) same reCAPTCHA v2 sitekey.
+    # All SC SW/LCSW/BCSW records blocked. 2026-08-20.
+    ("SC", "SW"):   "SC Board of Social Work Examiners (verify.llronline.com/LicLookup/SW/SW.aspx?div=41) — reCAPTCHA v2 blocks automated access",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.

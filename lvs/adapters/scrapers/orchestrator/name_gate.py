@@ -262,10 +262,16 @@ def evaluate_name_gate(
                     and disamb.last_name_score(epdb_last, board_last) < 0.40):
                 _nppes_shortcircuit_blocked = True
 
-            # Short-circuit: NPPES alone clears the threshold
+            # Short-circuit: NPPES alone clears the threshold.
+            # Guard: only short-circuit when the EPDB first name also exactly
+            # matches the board first name. When NPPES and the board agree but
+            # the EPDB input has a different first name (e.g. "Chandra" vs board
+            # "CHANDANA"), a human reviewer must confirm — fall through to EPDB
+            # scoring so the verdict section can route to manual.
             if (nppes_score is not None
                     and nppes_score >= approve_threshold
-                    and not _nppes_shortcircuit_blocked):
+                    and not _nppes_shortcircuit_blocked
+                    and disamb.first_name_score(epdb_first, board_first) >= 1.0):
                 return NameGateResult(
                     epdb_score=None,
                     nppes_score=round(nppes_score, 4),
@@ -313,7 +319,14 @@ def evaluate_name_gate(
     max_score = max(scores) if scores else 0.0
 
     if max_score >= approve_threshold:
-        verdict = "approve"
+        # Guard: only auto-approve when the first name is an exact match.
+        # A first name that merely starts with the other (e.g. CHANDRA/CHANDANA,
+        # compound-prefix rescue score = 0.95) is a mismatch — route to manual
+        # so a reviewer can confirm the correct provider was picked.
+        if disamb.first_name_score(epdb_first, board_first) >= 1.0:
+            verdict = "approve"
+        else:
+            verdict = "manual"
     elif max_score >= ai_band_low:
         verdict = "ai_review"
     else:

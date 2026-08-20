@@ -840,6 +840,9 @@ async def run_ladder(
                         if _name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
                             _name_high_conf = True
                             _name_only_rescore = True
+                        elif bd.first_name >= 0.85 and bd.last_name >= 0.85:
+                            _name_high_conf = True
+                            _name_only_rescore = True
                     if (not _is_temp_permit(_input_lic)
                             and _detail_lic
                             and not disamb.license_numerics_match(_input_lic, _detail_lic)
@@ -925,6 +928,9 @@ async def run_ladder(
                             if _nrw_name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
                                 _nrw_high_conf = True
                                 _nrw_name_only_rescore = True
+                            elif bd.first_name >= 0.85 and bd.last_name >= 0.85:
+                                _nrw_high_conf = True
+                                _nrw_name_only_rescore = True
                         if (not _is_temp_permit(_nrw_input_lic)
                                 and _nrw_detail_lic
                                 and not disamb.license_numerics_match(
@@ -994,6 +1000,9 @@ async def run_ladder(
                     + _sm_bd.provider_type * 0.25 + _sm_bd.state * 0.05
                 )
                 if _sm_name_only_total >= cfg.THRESHOLD_NAME_PROFILE:
+                    _sm_high_conf = True
+                    _sm_name_only_rescore = True
+                elif _sm_bd.first_name >= 0.85 and _sm_bd.last_name >= 0.85:
                     _sm_high_conf = True
                     _sm_name_only_rescore = True
             # Primary-board name identity: when the soft match came from the PRIMARY routed

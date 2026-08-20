@@ -171,6 +171,13 @@ class RowOutcome:
     def chosen_record(self) -> Optional[Any]:
         if self.ai_result and self.ai_result.outcome == "resolved":
             return self.ai_result.chosen_candidate
+        # When a license-mismatch fallback found the right candidate but the AI gave
+        # up (outcome reset to "gave_up"), use that candidate for expiry checks and
+        # display so the unrelated expired ladder record doesn't surface as the match.
+        if (self.ai_result
+                and self.ai_result.chosen_candidate is not None
+                and (self.trace.final_reason or "").strip() == "AI found License ID mismatched"):
+            return self.ai_result.chosen_candidate
         if self.ladder_result:
             return self.ladder_result.best_record
         return None
@@ -673,6 +680,11 @@ class OutputEmitter:
                     "verification result before use"
                 )
             else:
+                # License mismatch detected by AI: route to Manual with board data preserved.
+                # Must be checked BEFORE gate_passed — prov_type=0 can make gate_passed=False
+                # even when the name matches well, which must not suppress the mismatch reason.
+                if _final_reason == "AI found License ID mismatched":
+                    return "AI found License ID mismatched"
                 # If the AI picked a candidate whose name doesn't match the input
                 # (gate_passed=False), don't route to AIAddLicense — send to Manual.
                 _ai_bd_check = outcome.ai_result.chosen_breakdown
@@ -685,10 +697,6 @@ class OutputEmitter:
                 if (_final_reason == "name_mismatch"
                         and outcome.trace.license_attempts_returned_records()):
                     return "License matched but Name mismatched"
-                # AI resolved a candidate but the board license number did not match
-                # the input license ID — route to Manual with a clear reason.
-                if _final_reason == "AI found License ID mismatched":
-                    return "AI found License ID mismatched"
                 _ai_fail_reason = (outcome.ai_result.reason or "no_candidates")
                 _ai_fail_reason = _ai_fail_reason.replace("—", "-").replace(";", ",")
                 return f"AI fallback failed - manual review required ({_ai_fail_reason})"
@@ -924,6 +932,16 @@ class OutputEmitter:
         _name_rec = rec if rec is not None else (
             _best_fail_candidate(o.trace) if o.status != "Pass" else None
         )
+        # When AI picked a candidate but the license-mismatch override forced Fail,
+        # surface the AI's candidate so the reviewer sees the board data (name +
+        # board license number). _best_fail_candidate only sees ladder attempts and
+        # would otherwise show an unrelated record from the license search.
+        if (rec is None
+                and _final_reason == "AI found License ID mismatched"
+                and o.ai_result is not None
+                and o.ai_result.chosen_candidate is not None):
+            _name_rec = o.ai_result.chosen_candidate
+            _ml = (getattr(o.ai_result.chosen_candidate, "license_number", "") or "").strip() or _ml
         row = {
             "master_row_id": o.master_row_id,
             "first_name": m.get("first_name", ""),
