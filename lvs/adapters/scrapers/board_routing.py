@@ -855,7 +855,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'DMD'): ['VA_DHP'],
     ('VA', 'DO'): ['VA_DHP'],
     ('VA', 'DP'): ['VA_DHP'],
-    ('VA', 'DT'): ['VA_DHP'],
+    # ('VA', 'DT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
     ('VA', 'GNC'): ['VA_DHP'],
     ('VA', 'LC'): ['IBCLC_COMMISSION', 'VA_DHP'],
     ('VA', 'LPC'): ['VA_DHP'],
@@ -865,7 +865,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'NP'): ['VA_DHP'],
     ('VA', 'NPB'): ['VA_DHP'],
     ('VA', 'NPS'): ['VA_DHP'],
-    ('VA', 'NUT'): ['VA_DHP'],
+    # ('VA', 'NUT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
     ('VA', 'OD'): ['VA_DHP'],
     ('VA', 'OP'): ['VA_DHP'],
     ('VA', 'OT'): ['VA_DHP'],

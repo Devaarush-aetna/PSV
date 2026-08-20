@@ -198,7 +198,7 @@ class RowOutcome:
         if self.ladder_result and self.ladder_result.reason:
             return self.ladder_result.reason
         if self.trace.final_reason:
-            if self.trace.final_reason == "board_skipped" and self.trace.skip_reason_text:
+            if self.trace.final_reason in ("board_skipped", "no_routing") and self.trace.skip_reason_text:
                 return self.trace.skip_reason_text
             return self.trace.final_reason
         return "no_records"
@@ -618,7 +618,7 @@ class OutputEmitter:
 
         # 1. Captcha / WAF block
         if _final_reason in _CAPTCHA_REASONS:
-            if _final_reason == "board_skipped" and outcome.trace.skip_reason_text:
+            if _final_reason in ("board_skipped", "no_routing") and outcome.trace.skip_reason_text:
                 return outcome.trace.skip_reason_text
             return self._CAPTCHA_MANUAL_REASONS.get(_final_reason, _final_reason)
 

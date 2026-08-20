@@ -2633,8 +2633,12 @@ async def run_state_orchestrated(
                                 "",
                             )
                     else:
-                        trace.final_outcome = "Fail"
+                        trace.final_outcome = "Skip"
                         trace.final_reason = "no_routing"
+                        trace.skip_reason_text = (
+                            f"No board routing configured for {state} {prov_type_upper} "
+                            f"— {state} does not issue a license for this provider type"
+                        )
                 else:
                     # --- Run rule-based ladder ---
                     ladder_result = await ladder_mod.run_ladder(
