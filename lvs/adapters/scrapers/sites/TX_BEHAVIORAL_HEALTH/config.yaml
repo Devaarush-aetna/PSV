@@ -4,53 +4,65 @@ identity:
   state: TX
   country: US
   profession_codes: [ABA]
-  # TDLR Behavior Analysts — Salesforce/Vlocity OmniStudio SPA.
-  # Results rendered in nested native shadow DOM; Playwright >> combinator
-  # required for row and cell selectors to pierce shadow roots.
-  # Smoke test: license_number "5091" (Tidwell). Record count 0 unresolved —
-  # pending live re-test to confirm selectors are correct.
-  base_url: "https://www.tdlr.texas.gov/MOOS/License/ViewLicenseInformation"
-  archetype: angular_spa
+  # Salesforce Experience Cloud / Vlocity OmniStudio SPA at core.tdlr.texas.gov.
+  # Inputs share class="vlocity-input slds-input"; IDs are dynamic per session.
+  # nth-match is unreliable — dropdown components (License Type, County) also render
+  # hidden <input> elements, corrupting positional counts.
+  # Use label-text anchoring instead: each field is wrapped in .slds-form-element
+  # with a <label> sibling; Playwright :has() pierces the LWC shadow DOM.
+  #   License Number  → label text "License Number"
+  #   Licensee Name   → label text "Licensee Name" (accepts Last Name, First Name, Full Name)
+  # Results render in a standard HTML table directly below the form — no detail page.
+  # Test record: License 5091 — Brittany Tidwell.
+  base_url: "https://core.tdlr.texas.gov/s/search-license-permit-holder"
+  archetype: classic_html_form
 
 search:
   modes:
-    - mode: license_number
-      input_selector: "input[name='licenseNumber'], input[placeholder*='License']"
     - mode: last_name
-      input_selector: "input[name='lastName'], input[placeholder*='Last Name']"
+      input_selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
+    - mode: first_name
+      input_selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
+    - mode: license_number
+      input_selector: ".slds-form-element:has(label:has-text('License Number')) input.vlocity-input"
   form:
     search_by_dropdown:
       strategy: none
     search_input:
-      selector: "input[name='licenseNumber']"
+      selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
       fallback_selectors:
-        - "input[placeholder*='License']"
-        - "input[type='text']:visible"
+        - "label:has-text('Licensee Name') ~ input.vlocity-input"
+        - "label:has-text('Licensee Name') + input"
     search_button:
-      selector: "button:has-text('Search'), input[type='submit'][value*='Search']"
+      selector: "button.slds-button_brand"
+      fallback_selectors:
+        - "button:has-text('Search')"
+        - "button[type='submit']"
+  post_search_click: "runtime_omnistudio_flexcards-flex-datatable"
   results_wait:
-    strategy: element_visible
-    selector: "c-omnistudio-list >> tr, .slds-table >> tr, table tr.result-row"
-    timeout_ms: 30000
+    strategy: delay
+    timeout_ms: 2000
     no_results_indicators:
-      - "no records found"
       - "no results found"
-      - "0 results"
-      - "no licenses matching"
+      - "no records found"
+      - "0 results found"
 
 results:
   type: table
   table:
-    # Vlocity OmniStudio SPA — results in nested shadow DOM.
-    # Use Playwright >> combinator to pierce shadow roots.
-    row_selector: "c-omnistudio-list >> tbody tr, .slds-table >> tbody tr"
-    cell_selector: "td"
+    row_selector: "runtime_omnistudio-generated-flexcard >> tr[data-rowindex]"
+    cell_selector: "td[data-label] >> span.field-value"
+    skip_first_row: false
     columns:
       0: license_number
-      1: full_name
+      1: status
       2: license_type
-      3: status
-      4: expiration_date
+      3: full_name
+      4: issue_date
+      5: expiration_date
+      6: city
+      7: zip_code
+      8: county
   has_detail_page: false
   pagination:
     enabled: false
@@ -58,39 +70,26 @@ results:
 
 detail:
   wait:
-    strategy: element_visible
-    selector: "label, .slds-form-element__label"
-    timeout_ms: 20000
-  strategies:
-    - type: label_sibling
-    - type: dt_dd
-    - type: two_column_table
-  field_map:
-    "License Number": license_number
-    "License #": license_number
-    "Name": full_name
-    "First Name": first_name
-    "Last Name": last_name
-    "License Type": license_type
-    "License Status": status
-    "Status": status
-    "Expiration Date": expiration_date
-    "Issue Date": issue_date
-    "Original Issue Date": issue_date
-    "City": city
-    "State": state_code
-    "County": county
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
 
 output:
   status_map:
     "Active": active
     "active": active
+    "ACTIVE": active
     "Inactive": inactive
     "inactive": inactive
+    "INACTIVE": inactive
     "Expired": expired
     "expired": expired
+    "EXPIRED": expired
     "Suspended": suspended
+    "suspended": suspended
     "Revoked": revoked
+    "revoked": revoked
     "Cancelled": inactive
   date_formats:
     - "%m/%d/%Y"
@@ -101,10 +100,10 @@ transport:
   browser: chromium
   headless: true
   viewport:
-    width: 1280
-    height: 900
+    width: 1920
+    height: 1600
   timeout_ms: 60000
-  navigation_timeout_ms: 30000
+  navigation_timeout_ms: 45000
   rate_limit:
     delay_between_requests_ms: 2000
     max_concurrent: 1
@@ -119,7 +118,7 @@ transport:
 evidence:
   capture_html: true
   capture_screenshot: true
-  capture_on: ["search_results", "detail_page", "error"]
+  capture_on: ["search_results", "error"]
   storage: local
   local_path: "Evidence/TX_BEHAVIORAL_HEALTH/{run_id}/"
 
@@ -134,6 +133,6 @@ smoke_test:
   query: "5091"
   expect:
     min_records: 1
-    full_name_contains: "Tidwell"
-  skip: true
-  skip_reason: "record_count_0_unresolved: selectors need live re-test against OmniStudio shadow DOM"
+    field_contains:
+      license_number: "5091"
+      full_name: "Tidwell"
