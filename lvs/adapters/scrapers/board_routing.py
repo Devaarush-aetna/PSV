@@ -1,5 +1,5 @@
-"""
-Board routing table — generated from board_routing_master.csv.
+﻿"""
+Board routing table â€” generated from board_routing_master.csv.
 
 Maps (state_abbr, psv_prov_type) -> [source_id, ...]
 Multiple boards are tried in list order; first Pass wins.
@@ -63,7 +63,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # AZ
     ('AZ', 'AU'): ['AZ_SPEECH_HEAR'],
-    ('AZ', 'CP'): ['AZ_PSYCH', 'PSYPACT'],
+    ('AZ', 'CP'): ['AZ_PSYCH'],
     ('AZ', 'DA'): ['AZ_DENTAL'],
     ('AZ', 'DAC'): ['AZ_BEHAVIORAL_HEALTH'],
     ('AZ', 'DC'): ['AZ_CHIRO'],
@@ -119,7 +119,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('CT', 'ABA'): ['CT_ELICENSE'],
     ('CT', 'AP'): ['CT_ELICENSE'],
     ('CT', 'AU'): ['CT_ELICENSE'],
-    ('CT', 'CP'): ['CT_ELICENSE', 'PSYPACT'],
+    ('CT', 'CP'): ['CT_ELICENSE'],
     ('CT', 'DAC'): ['CT_ELICENSE'],
     ('CT', 'DC'): ['CT_ELICENSE'],
     ('CT', 'DO'): ['CT_ELICENSE'],
@@ -150,7 +150,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('FL', 'ABA'): ['BACB'],
     ('FL', 'AP'): ['FL_MQA'],
     ('FL', 'AU'): ['FL_MQA'],
-    ('FL', 'CP'): ['FL_MQA', 'PSYPACT'],
+    ('FL', 'CP'): ['FL_MQA'],
     ('FL', 'DC'): ['FL_MQA'],
     ('FL', 'DDS'): ['FL_MQA'],
     ('FL', 'DMD'): ['FL_MQA'],
@@ -185,9 +185,9 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # ID
     ('ID', 'ABA'): ['ID_DOPL'],
-    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing — was causing no_routing fail (Aarush: see PSV run 20260813)
+    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing â€” was causing no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'AU'): ['ID_DOPL'],
-    ('ID', 'CP'): ['ID_DOPL', 'PSYPACT'],
+    ('ID', 'CP'): ['ID_DOPL'],
     ('ID', 'DC'): ['ID_DOPL'],
     ('ID', 'DO'): ['ID_DOPL'],
     ('ID', 'DP'): ['ID_DOPL'],
@@ -202,7 +202,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('ID', 'OP'): ['ID_DOPL'],
     ('ID', 'OT'): ['ID_DOPL'],
     ('ID', 'PA'): ['ID_DOPL'],
-    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing — input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
+    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing â€” input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'PAS'): ['ID_DOPL'],
     ('ID', 'PH'): ['ID_DOPL'],
     ('ID', 'PN'): ['ID_DOPL'],
@@ -214,7 +214,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('IL', 'ABA'): ['IL_LICENSING'],
     ('IL', 'AP'): ['IL_LICENSING'],
     ('IL', 'AU'): ['IL_LICENSING'],
-    ('IL', 'CP'): ['IL_LICENSING', 'PSYPACT'],
+    ('IL', 'CP'): ['IL_LICENSING'],
     ('IL', 'DAC'): ['IL_LICENSING'],
     ('IL', 'DC'): ['IL_LICENSING'],
     ('IL', 'DDS'): ['IL_LICENSING'],
@@ -249,7 +249,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('IN', 'ABA'): ['IN_PLA', 'BACB'],
     ('IN', 'AP'): ['IN_PLA'],
     ('IN', 'AU'): ['IN_PLA'],
-    ('IN', 'CP'): ['IN_PLA', 'PSYPACT'],
+    ('IN', 'CP'): ['IN_PLA'],
     ('IN', 'DAC'): ['IN_PLA'],
     ('IN', 'DC'): ['IN_PLA'],
     ('IN', 'DO'): ['IN_PLA'],
@@ -276,7 +276,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # KS
     ('KS', 'ABA'): ['KS_BSRB'],
-    ('KS', 'CP'): ['KS_BSRB', 'PSYPACT'],
+    ('KS', 'CP'): ['KS_BSRB'],
     ('KS', 'DA'): ['KS_DENTAL'],
     ('KS', 'DC'): ['KS_KSBHADA'],
     ('KS', 'DDS'): ['KS_DENTAL'],
@@ -309,7 +309,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('KY', 'ABA'): ['KY_MULTIBOARD'],
     ('KY', 'AP'): ['KY_AP'],
     ('KY', 'AU'): ['KY_MULTIBOARD'],
-    ('KY', 'CP'): ['KY_MULTIBOARD', 'PSYPACT'],
+    ('KY', 'CP'): ['KY_MULTIBOARD'],
     ('KY', 'DC'): ['KY_MULTIBOARD'],
     ('KY', 'DN'): ['KY_DENTAL'],
     ('KY', 'DO'): ['KY_MEDBOARD'],
@@ -386,7 +386,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # MD
     ('MD', 'AP'): ['MD_ACUPUNCTURE'],
     ('MD', 'AU'): ['MD_AUDIOLOGY'],
-    ('MD', 'CP'): ['MD_PSYCH', 'PSYPACT'],
+    ('MD', 'CP'): ['MD_PSYCH'],
     ('MD', 'DC'): ['MD_CHIROPRACTIC'],
     ('MD', 'DO'): ['MD_PHYSICIANS'],
     ('MD', 'DT'): ['MD_DIETETICS'],
@@ -438,7 +438,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('MI', 'ABA'): ['MI_LARA'],
     ('MI', 'AP'): ['MI_LARA'],
     ('MI', 'AU'): ['MI_LARA'],
-    ('MI', 'CP'): ['MI_LARA', 'PSYPACT'],
+    ('MI', 'CP'): ['MI_LARA'],
     ('MI', 'DC'): ['MI_LARA'],
     ('MI', 'DDS'): ['MI_LARA'],
     ('MI', 'DMD'): ['MI_LARA'],
@@ -483,7 +483,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # MO
     ('MO', 'AP'): ['MO_NURSING'],
-    ('MO', 'CP'): ['MO_PSYCHOLOGISTS', 'PSYPACT'],
+    ('MO', 'CP'): ['MO_PSYCHOLOGISTS'],
     ('MO', 'DA'): ['MO_DENTAL'],
     ('MO', 'DC'): ['MO_CHIROPRACTIC'],
     ('MO', 'DDS'): ['MO_DENTAL'],
@@ -523,7 +523,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # NC
     ('NC', 'AU'): ['NC_SLP_AUD'],
-    ('NC', 'CP'): ['NC_MENTAL_HEALTH', 'PSYPACT'],
+    ('NC', 'CP'): ['NC_MENTAL_HEALTH'],
     ('NC', 'DA'): ['NC_DENTAL'],
     ('NC', 'DAC'): ['NC_DAC'],
     ('NC', 'DC'): ['NC_CHIRO'],
@@ -540,7 +540,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
     ('NC', 'OP'): ['NC_OPTOMETRY'],
-    # OR = oral / maxillofacial surgeon — verified at the NC dental board; fall
+    # OR = oral / maxillofacial surgeon â€” verified at the NC dental board; fall
     # back to the medical board for dual-degree (MD) oral surgeons.
     ('NC', 'OR'): ['NC_DENTAL', 'NC_MEDBOARD'],
     ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],  # LCAS holders may be verified via NC_DAC
@@ -549,7 +549,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'OP'): ['NC_OPTOMETRY'],
     # ('NC', 'OR'): ['NC_MEDBOARD', 'NC_DENTAL'],
     ('NC', 'OT'): ['NC_OT'],
-    # PC = pastoral counselor — certified by the NC Board of Pastoral Counseling
+    # PC = pastoral counselor â€” certified by the NC Board of Pastoral Counseling
     # (small integer certificate numbers, e.g. 83/122), NOT the addiction board.
     ('NC', 'PC'): ['NC_PASTORAL_COUNSELING'],
     ('NC', 'PT'): ['NC_PT'],
@@ -598,7 +598,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NJ', 'ABA'): ['NJ_DCA'],
     ('NJ', 'AP'): ['NJ_DCA'],
     ('NJ', 'AU'): ['NJ_DCA'],
-    ('NJ', 'CP'): ['NJ_DCA', 'PSYPACT'],
+    ('NJ', 'CP'): ['NJ_DCA'],
     ('NJ', 'DC'): ['NJ_DCA'],
     ('NJ', 'DO'): ['NJ_DCA'],
     ('NJ', 'DT'): ['NJ_DCA'],
@@ -648,7 +648,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NV', 'ABA'): ['NV_ABA'],
     ('NV', 'AP'): ['NV_ORIENTAL'],
     ('NV', 'AU'): ['NV_SPEECH'],
-    ('NV', 'CP'): ['NV_BOP', 'PSYPACT'],
+    ('NV', 'CP'): ['NV_BOP'],
     ('NV', 'DA'): ['NV_NVADGC'],
     ('NV', 'DC'): ['NV_CHIRO'],
     ('NV', 'DDS'): ['NV_NVADGC', 'NV_DENTAL'],
@@ -708,7 +708,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('OH', 'ABA'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'AP'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'AU'): ['OH_PROVIDERS_INDIVIDUAL'],
-    ('OH', 'CP'): ['OH_PROVIDERS_INDIVIDUAL', 'PSYPACT'],
+    ('OH', 'CP'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'DAC'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'DC'): ['OH_PROVIDERS_INDIVIDUAL'],
     ('OH', 'DP'): ['OH_PROVIDERS_INDIVIDUAL'],
@@ -795,7 +795,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'ABA'): ['PA_PALS'],
     ('PA', 'AP'): ['PA_PALS'],
     ('PA', 'AU'): ['PA_PALS'],
-    ('PA', 'CP'): ['PA_PALS', 'PSYPACT'],
+    ('PA', 'CP'): ['PA_PALS'],
     ('PA', 'DA'): ['PA_PALS'],
     ('PA', 'DAC'): ['PA_PALS'],
     ('PA', 'DC'): ['PA_PALS'],
@@ -850,7 +850,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('RI', 'SW'): ['RI_HEALTH'],
 
     # SC
-    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 — blocked in CAPTCHA_PROV_TYPES.
+    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 â€” blocked in CAPTCHA_PROV_TYPES.
     # SC_SCLLR_LPCMFT / SC_SCLLR_SW are out-of-state telehealth registries only (TLC/TLS format).
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
@@ -858,7 +858,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # SD
     ('SD', 'AU'): ['SD_AUDIOLOGY'],
-    ('SD', 'CP'): ['SD_PSYCH', 'PSYPACT'],
+    ('SD', 'CP'): ['SD_PSYCH'],
     ('SD', 'DC'): ['SD_CHIRO'],
     ('SD', 'OD'): ['SD_OPT'],
     ('SD', 'OP'): ['SD_OPT'],
@@ -867,7 +867,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # TX
     ('TX', 'AP'): ['TX_MEDBOARD'],
-    ('TX', 'CP'): ['TX_BHEC', 'PSYPACT'],
+    ('TX', 'CP'): ['TX_BHEC'],
     ('TX', 'DA'): ['TX_DENTAL'],
     ('TX', 'DAC'): ['TX_CHEMICAL'],
     ('TX', 'DC'): ['TX_CHIRO'],
@@ -895,13 +895,13 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'ABA'): ['VA_DHP'],
     ('VA', 'AP'): ['VA_DHP'],
     ('VA', 'AU'): ['VA_DHP'],
-    ('VA', 'CP'): ['VA_DHP', 'PSYPACT'],
+    ('VA', 'CP'): ['VA_DHP'],
     ('VA', 'DC'): ['VA_DHP'],
     ('VA', 'DDS'): ['VA_DHP'],
     ('VA', 'DMD'): ['VA_DHP'],
     ('VA', 'DO'): ['VA_DHP'],
     ('VA', 'DP'): ['VA_DHP'],
-    # ('VA', 'DT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
+    # ('VA', 'DT') intentionally omitted â€” VA does not license DT/NUT (certification only); no_routing â†’ Skip/N/A
     ('VA', 'GNC'): ['VA_DHP'],
     ('VA', 'LC'): ['IBCLC_COMMISSION', 'VA_DHP'],
     ('VA', 'LPC'): ['VA_DHP'],
@@ -911,7 +911,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'NP'): ['VA_DHP'],
     ('VA', 'NPB'): ['VA_DHP'],
     ('VA', 'NPS'): ['VA_DHP'],
-    # ('VA', 'NUT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
+    # ('VA', 'NUT') intentionally omitted â€” VA does not license DT/NUT (certification only); no_routing â†’ Skip/N/A
     ('VA', 'OD'): ['VA_DHP'],
     ('VA', 'OP'): ['VA_DHP'],
     ('VA', 'OT'): ['VA_DHP'],
@@ -981,7 +981,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # WI
     ('WI', 'ABA'): ['WI_DSPS'],
     ('WI', 'AU'): ['WI_DSPS'],
-    ('WI', 'CP'): ['WI_DSPS', 'PSYPACT'],
+    ('WI', 'CP'): ['WI_DSPS'],
     ('WI', 'DC'): ['WI_DSPS'],
     ('WI', 'DDS'): ['WI_DSPS'],
     ('WI', 'DMD'): ['WI_DSPS'],
@@ -1009,7 +1009,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('WI', 'SW'): ['WI_DSPS'],
 
     # WV
-    ('WV', 'CP'): ['WV_PSYCH', 'PSYPACT'],
+    ('WV', 'CP'): ['WV_PSYCH'],
     ('WV', 'DA'): ['WV_DENTAL'],
     ('WV', 'DC'): ['WV_CHIRO'],
     ('WV', 'DDS'): ['WV_DENTAL'],
@@ -1026,7 +1026,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # WY
     ('WY', 'AP'): ['WY_PHYSICIAN'],
     ('WY', 'AU'): ['WY_SPEECH'],
-    ('WY', 'CP'): ['WY_PSYCH', 'PSYPACT'],
+    ('WY', 'CP'): ['WY_PSYCH'],
     ('WY', 'DA'): ['WY_DENTAL'],
     ('WY', 'DAC'): ['WY_MENTAL_HEALTH'],
     ('WY', 'DC'): ['WY_CHIRO'],

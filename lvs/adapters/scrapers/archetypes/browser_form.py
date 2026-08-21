@@ -569,14 +569,14 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
                     await btn.evaluate("el => el.setAttribute('href', 'javascript:void(0)')")
                 await btn.click()
 
-                    try:
-                        await page.wait_for_function(
-                            "url => window.location.href !== url",
-                            url_before,
-                            timeout=config.detail.wait.timeout_ms,
-                        )
-                    except Exception:
-                        pass
+                try:
+                    await page.wait_for_function(
+                        "url => window.location.href !== url",
+                        url_before,
+                        timeout=config.detail.wait.timeout_ms,
+                    )
+                except Exception:
+                    pass
 
                 await _wait_for_detail_content(page, config)
 
