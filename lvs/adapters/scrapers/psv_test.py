@@ -1304,7 +1304,7 @@ async def run_row(
     _svc_raw = row_data.get("svc_loc_state", "")
     _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
     if _svc_states and lic_state not in _svc_states:
-        return "N/A", (
+        return "Removed License", (
             f"License State ({lic_state}) not in Service Location State "
             f"({_svc_raw}) — PSV step N/A"
         ), ""
@@ -1971,7 +1971,7 @@ def _write_remove_license(rows: list[dict], output_dir: Path) -> None:
     if rows and "status" in rows[0]:
         svc_na_rows = [
             r for r in rows
-            if r.get("status") == "N/A"
+            if r.get("status") in ("N/A", "Removed License")
             and "not in Service Location State" in r.get("reason", "")
         ]
     else:
@@ -2030,11 +2030,11 @@ def write_results(results: list[dict], output_path: Path, append: bool) -> None:
             r["first_name"], r["middle_name"], r["last_name"],
             r["lic_state"], r["prov_type"], r["lic_type"], r["license_id"],
             r["status"], r.get("expiry_date", ""),
-            r["reason"] if r["status"] in ("Fail", "N/A") else "",
+            r["reason"] if r["status"] in ("Fail", "N/A", "Removed License") else "",
         ])
         if r["status"] == "Pass":
             fill = green
-        elif r["status"] == "N/A":
+        elif r["status"] in ("N/A", "Removed License"):
             fill = yellow
         else:
             fill = red
@@ -2594,7 +2594,7 @@ async def run_state_orchestrated(
                 _svc_raw = row.get("svc_loc_state", "")
                 _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
                 if _svc_states and row["lic_state"].upper() not in _svc_states:
-                    trace.final_outcome = "N/A"
+                    trace.final_outcome = "Removed License"
                     trace.final_reason = (
                         f"License State ({row['lic_state'].upper()}) not in Service Location State "
                         f"({_svc_raw}) — PSV step N/A"

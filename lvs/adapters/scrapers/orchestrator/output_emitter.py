@@ -223,6 +223,7 @@ def _blank_state_stats() -> dict:
         "ai_used":        0,  # Any row where AI agent ran
         "ai_resolved":    0,  # AI resolved (outcome == "resolved")
         "ai_failed":      0,  # AI ran but did not resolve
+        "removed_license": 0, # License State not in Service Location State
         "npi_substituted": 0, # NPI was used to find the board record
         # AI token / cost aggregates (summed across all rows in this state)
         "ai_input_tokens":  0,
@@ -866,6 +867,10 @@ class OutputEmitter:
         if went_manual and manual_reason and "no_expiry_date" in manual_reason:
             s["no_expiry"] += 1
 
+        # Removed License
+        if (outcome.trace.final_outcome or "") == "Removed License":
+            s["removed_license"] += 1
+
         # Pass / Fail in standard (after any retroactive overrides)
         std = self._standard_rows[-1] if self._standard_rows else {}
         if std.get("status") == "Pass":
@@ -931,7 +936,7 @@ class OutputEmitter:
             "status": (
                 "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
                 else "Fail" if self._expired_after_fetch_reason(o)
-                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip")
+                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip", "Removed License")
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
@@ -1485,7 +1490,7 @@ class OutputEmitter:
         _COLS = [
             "run_id", "state",
             "total", "pass_rule", "pass_ai", "pass_npi",
-            "fail_rule", "fail_ai", "captcha",
+            "fail_rule", "fail_ai", "captcha", "removed_license",
             "mismatch", "same_expiry", "expired_after_fetch", "no_expiry",
             "manual", "add_license", "ai_add_license",
             "ai_used", "ai_resolved", "ai_failed", "npi_substituted",
