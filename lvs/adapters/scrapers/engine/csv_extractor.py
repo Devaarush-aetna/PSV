@@ -1466,7 +1466,37 @@ async def _download_mopro_zip(
         raise RuntimeError("mopro_zip: no readable TXT data found in any downloaded ZIP")
 
     merged = pd.concat(dfs, ignore_index=True).fillna("") if len(dfs) > 1 else dfs[0]
-    log.info("mopro_zip: merged %d record(s) from %d ZIP(s)", len(merged), len(dfs))
+    before = len(merged)
+
+    # Step 1: drop rows where every column is identical (safe — zero data loss).
+    merged = merged.drop_duplicates(keep="first")
+    exact_dupes = before - len(merged)
+
+    # Step 2: deduplicate by (lic_number, lic_profession) — the semantically correct
+    # key for MOPRO data. lic_number alone is NOT unique across profession types
+    # (e.g. ATT-00194 and PHT-00194 are different providers). The combination of
+    # lic_number + lic_profession IS unique: verified against MO_HEALING_ARTS data
+    # — zero cases where the same (lic_number, lic_profession) pair maps to
+    # different last names. When lic_profession is absent, fall back to lic_number.
+    key_cols = [c for c in ["lic_number", "lic_profession"] if c in merged.columns]
+    if key_cols:
+        lic_dupes = merged.duplicated(subset=key_cols, keep=False)
+        if lic_dupes.any():
+            conflicting = merged[lic_dupes][key_cols[0]].unique().tolist()
+            log.warning(
+                "mopro_zip: %d lic_number(s) appear >1 time with differing fields "
+                "after exact-row dedup — keeping first occurrence. Affected: %s",
+                len(conflicting), conflicting[:10],
+            )
+        merged = merged.drop_duplicates(subset=key_cols, keep="first")
+
+    total_removed = before - len(merged)
+    log.info(
+        "mopro_zip: merged %d record(s) from %d ZIP(s) "
+        "(%d exact dupes + %d (%s)-key dupes removed, %d kept)",
+        len(merged), len(dfs), exact_dupes, total_removed - exact_dupes,
+        "+".join(key_cols) if key_cols else "none", len(merged),
+    )
     return merged.to_csv(index=False, sep="\t")
 
 
