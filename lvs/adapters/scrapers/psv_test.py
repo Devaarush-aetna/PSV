@@ -182,6 +182,20 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    # TX Board of Nursing (nursingportal.bon.texas.gov) — reCAPTCHA-protected; covers RN, LPN,
+    ("TX", "MW"):  "TX Midwifery Board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NP"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NPB"): "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NUT"): "TX Dietitians (TDLR) — reCAPTCHA-protected, automated access blocked",
+    ("TX", "PT"):  "TX PT board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "RN"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "RNA"): "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "SH"):  "TX Speech-Language Pathology & Audiology board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "AU"):  "TX Speech-Language Pathology & Audiology board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "DP"):  "TX Podiatric Medical Examiners board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "OT"):  "TX OT board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "PN"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "DT"):  "TX Department of Licensing and Regulation — reCAPTCHA-protected, automated access blocked",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
