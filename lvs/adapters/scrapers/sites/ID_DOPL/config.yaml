@@ -3,7 +3,9 @@ identity:
   board_name: Idaho Division of Occupational and Professional Licenses
   state: ID
   country: US
-  profession_codes: [MD, DO, RN, LPN, DC, OD, PT, PTA, OT, OTA, PA, PHARM, SW, LPC, AUD, SLP, PSYCH, DIET]
+  profession_codes: [MD, DO, RN, LPN, DC, OD, PT, PTA, OT, OTA, PA, PAB, PHARM, SW, LPC, AUD, SLP, PSYCH, DIET, AP]
+  # AP added: Acupuncturist (ACU- licenses) was missing — caused no_routing fail (Aarush: PSV run 20260813)
+  # PAB added: Physician Assistant Board code maps to PA- licenses on DOPL portal — caused no_routing fail (Aarush: PSV run 20260813)
   # Angular SPA at edopl.idaho.gov/OnlineServices. Navigation flow:
   #   1. Navigate to base_url (home, no #hash) — shows login + public search tiles
   #   2. pre_search_click clicks "Search for Individual Licenses" tile → Angular router → #2
@@ -21,6 +23,9 @@ search:
       input_selector: "#Dd-r"
       button_selector: "button#Dc-d, button:has-text('Search')"
     - mode: last_name
+      input_selector: "#Dd-11"
+      button_selector: "button#Dc-d, button:has-text('Search')"
+    - mode: first_and_last
       input_selector: "#Dd-11"
       button_selector: "button#Dc-d, button:has-text('Search')"
   form:

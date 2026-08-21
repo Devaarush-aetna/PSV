@@ -58,7 +58,7 @@ def clean_name(value: str | None) -> str:
 # same way before lookup.
 _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     # Generational / legal
-    "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    "I", "II", "III", "IV", "V", "JR", "SR", "ESQ",
     # Business-entity suffixes (boards occasionally list practice entities)
     "LLC", "LLP", "PLLC", "PC", "PA",  # NB: "PA" also = physician assistant
     # Medical degrees
@@ -68,7 +68,7 @@ _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     "RN", "LPN", "LVN", "APRN", "DNP", "CNM", "NP",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABAD", "BCABA", "RBT",
-    "LGSW", "LMSW", "CSW",
+    "LGSW", "LMSW", "CSW", "MSW", "MCOUN",
     # PT / OT / SLP / AUD (incl. assistant and registered variants)
     "PT", "PTA", "LPT",
     "OT", "OTA", "OTR", "OTRL", "COTA", "COTAL",
@@ -94,6 +94,8 @@ _NAME_SUFFIX_SET: frozenset[str] = frozenset({
 _NAME_PREFIX_SET: frozenset[str] = frozenset({
     "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV", "PASTOR", "RABBI",
     "SISTER", "BROTHER",
+    # Board-prepended credential type codes (ID_DOPL and similar)
+    "LD",
 })
 
 

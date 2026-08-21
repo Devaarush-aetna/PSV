@@ -47,6 +47,7 @@ from engine.proxy import get_proxy_config
 from engine.validate import load_config
 from engine.navigator import navigate_to_search, fill_search_form
 from archetypes._shared import _wait_for_detail_content, _navigate_back, _try_out_of_state_tab, _scrape_pdf_detail
+from archetypes.browser_form import _fetch_detail_via_api
 from run import verify_license
 
 log = logging.getLogger("psv_test")
@@ -886,6 +887,39 @@ class PsvBrowser:
                         break
                     try:
                         _dt = self.config.results.detail_trigger
+                        _href = (await btn.get_attribute("href") or "").strip()
+                        _is_pdf = (
+                            getattr(_dt, "force_pdf", False)
+                            or _href.lower().endswith(".pdf")
+                            or "pdf" in _href.lower().split("?")[0]
+                        )
+                        # BRANCH A: Direct JSON API detail (e.g. PA_PALS)
+                        # When config.detail.api is set, the board's "detail link"
+                        # opens a new _blank tab — Playwright's URL-change wait
+                        # never fires. Skip the click entirely; call the backing
+                        # JSON API directly (in the current page context so session
+                        # cookies are sent automatically) and merge the response
+                        # into the summary row. No back-navigation needed.
+                        # See _fetch_detail_via_api in browser_form.py for docs.
+                        if self.config.detail.api:
+                            _api_raw = await _fetch_detail_via_api(page, self.config, _idx)
+                            # Backfill fields missing from the API response with the
+                            # corresponding summary-row value (e.g. full_name and
+                            # license_type come from the results table, not the API).
+                            if _idx < len(raw_rows):
+                                _sr = raw_rows[_idx]
+                                for _k in ("full_name", "first_name", "last_name",
+                                           "license_number", "license_type",
+                                           "status", "board", "address"):
+                                    if not _api_raw.get(_k) and _sr.get(_k):
+                                        _api_raw[_k] = _sr[_k]
+                            detailed.append(map_to_license_record(_api_raw, self.config, {}))
+                            continue
+
+                        if _is_pdf:
+                            if not _href:
+                                log.warning("[%s] force_pdf but empty href at idx=%d — using summary row",
+                                            src, _idx)
                         _is_modal = getattr(_dt, "opens_modal", False)
                         # AG Grid boards use virtual scrolling: after extract_ag_grid
                         # scrolls through all rows the viewport sits at the bottom, so

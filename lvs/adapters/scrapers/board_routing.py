@@ -185,6 +185,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # ID
     ('ID', 'ABA'): ['ID_DOPL'],
+    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing — was causing no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'AU'): ['ID_DOPL'],
     ('ID', 'CP'): ['ID_DOPL'],
     ('ID', 'DC'): ['ID_DOPL'],
@@ -201,6 +202,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('ID', 'OP'): ['ID_DOPL'],
     ('ID', 'OT'): ['ID_DOPL'],
     ('ID', 'PA'): ['ID_DOPL'],
+    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing — input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'PAS'): ['ID_DOPL'],
     ('ID', 'PH'): ['ID_DOPL'],
     ('ID', 'PN'): ['ID_DOPL'],
@@ -806,6 +808,8 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'SW'): ['PA_PALS'],
 
     # SC
+    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 — blocked in CAPTCHA_PROV_TYPES.
+    # SC_SCLLR_LPCMFT / SC_SCLLR_SW are out-of-state telehealth registries only (TLC/TLS format).
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
     ('SC', 'SW'): ['SC_SCLLR_SW'],

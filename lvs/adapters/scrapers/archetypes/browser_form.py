@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import json as _json
 import logging
 import re
 from urllib.parse import urljoin
@@ -158,6 +159,209 @@ async def scrape_browser(
     return records
 
 
+async def _fetch_detail_via_api(page, config: SiteConfig, idx: int) -> dict:
+    """Fetch detail data by calling the board's JSON API directly (no page navigation).
+
+    WHY THIS FUNCTION EXISTS
+    ------------------------
+    Some AngularJS boards (e.g. PA_PALS) open the detail page in a new _blank
+    tab instead of navigating the current tab.  Playwright's normal click +
+    wait_for_url flow watches the CURRENT tab, so the URL never changes and the
+    detail page is never loaded.
+
+    Instead of following the _blank tab, we:
+      1. Extract POST body parameters from the Angular scope of the current page
+         (using the scope_selector + scope_params paths defined in config.detail.api).
+      2. Call the backing JSON API via fetch() in the page context, which sends
+         session cookies automatically (no manual auth needed).
+      3. Map the JSON response fields to a raw {field: value} dict via
+         config.detail.api.field_map.
+
+    The caller (``_scrape_with_detail_clicks``) merges this raw dict with the
+    summary-row data using the same logic as the standard click path.
+
+    Parameters
+    ----------
+    page : playwright.async_api.Page
+        The Playwright page object, still on the search-results view.
+    config : SiteConfig
+        Board config; config.detail.api must be non-None before calling this.
+    idx : int
+        Zero-based index of the result row being processed.  Used to resolve
+        {idx} placeholders in scope_params path expressions so each row's
+        PersonId/LicenseId is picked independently.
+
+    Returns
+    -------
+    dict
+        Canonical field names → raw string values (e.g. {"expiration_date": "11/30/2025"}).
+        Empty dict on any failure (logged as WARNING); caller falls back to summary row.
+    """
+    api_cfg = config.detail.api
+    source_id = config.identity.source_id
+
+    # ------------------------------------------------------------------
+    # Step 1: Build the POST body by resolving scope_params paths.
+    #
+    # We inject a small JS snippet that:
+    #   a) Finds the DOM element matching scope_selector.
+    #   b) Walks up the ancestor chain until it finds an Angular scope that
+    #      contains the first required data path (verifies the right scope).
+    #   c) Resolves every scope_params path and returns {bodyKey: stringValue}.
+    #
+    # The {idx} placeholder in paths (e.g. "search.PersonDetails[{idx}].PersonId")
+    # is substituted with the current row index before the JS runs.
+    # ------------------------------------------------------------------
+    scope_params_resolved = {
+        k: v.replace("{idx}", str(idx))
+        for k, v in api_cfg.scope_params.items()
+    }
+
+    # JS that runs in the browser page context to extract scope values.
+    # Defined as a string so it can be passed to page.evaluate().
+    _js_extract_scope = """
+    ([scopeSelector, scopeParams]) => {
+        // Resolve a dot-path + array-index expression against an object.
+        // e.g. "search.PersonDetails[0].PersonId" on the Angular scope.
+        function resolvePath(obj, path) {
+            // Convert "[N]" bracket notation to ".N" so we can split on "."
+            const parts = path.replace(/\\[(\\d+)\\]/g, '.$1').split('.');
+            let cur = obj;
+            for (const part of parts) {
+                if (cur === null || cur === undefined) return undefined;
+                cur = cur[part];
+            }
+            return cur;
+        }
+
+        // Locate the DOM anchor element for scope traversal.
+        const startEl = document.querySelector(scopeSelector);
+        if (!startEl) {
+            return {error: 'scope_selector_not_found: ' + scopeSelector};
+        }
+
+        // The first scope_params path is used to verify we found the right scope.
+        const firstPath = Object.values(scopeParams)[0];
+
+        // Walk up the DOM tree from the anchor element.
+        let el = startEl;
+        while (el) {
+            let s;
+            try {
+                // angular.element().scope() returns the Angular scope for that element.
+                s = (typeof angular !== 'undefined') ? angular.element(el).scope() : null;
+            } catch(_) { s = null; }
+
+            if (s && firstPath !== undefined && resolvePath(s, firstPath) !== undefined) {
+                // Found the scope with the required data — resolve all params.
+                const body = {};
+                for (const [key, path] of Object.entries(scopeParams)) {
+                    const val = resolvePath(s, path);
+                    // Stringify everything; null/undefined becomes '0' (safe default
+                    // for IsFacility-style boolean flags the API expects as "0"/"1").
+                    body[key] = (val === null || val === undefined) ? '0' : String(val);
+                }
+                return {ok: true, body: body};
+            }
+            el = el.parentElement;
+        }
+        return {error: 'scope_not_found_for_path: ' + firstPath};
+    }
+    """
+
+    extract_result = await page.evaluate(_js_extract_scope, [api_cfg.scope_selector, scope_params_resolved])
+
+    if not extract_result.get("ok"):
+        log.warning(
+            "[%s] detail_api: scope extraction failed (idx=%d): %s",
+            source_id, idx, extract_result.get("error", "unknown"),
+        )
+        return {}
+
+    post_body = extract_result["body"]
+    log.debug("[%s] detail_api: POST body (idx=%d): %s", source_id, idx, post_body)
+
+    # ------------------------------------------------------------------
+    # Step 2: Call the API via fetch() inside the page context.
+    #
+    # Running fetch() in the page context means the browser sends all
+    # existing session/auth cookies automatically — no manual cookie
+    # management required.  For GET requests, body params become query
+    # string params.
+    # ------------------------------------------------------------------
+    _js_fetch = """
+    async ([endpoint, method, body]) => {
+        try {
+            if (method === 'GET') {
+                // Append params as query string for GET requests.
+                const qs = new URLSearchParams(body).toString();
+                const sep = endpoint.includes('?') ? '&' : '?';
+                const resp = await fetch(endpoint + sep + qs, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                return {status: resp.status, body: await resp.text()};
+            }
+            // POST: send body as JSON.
+            const resp = await fetch(endpoint, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body),
+            });
+            return {status: resp.status, body: await resp.text()};
+        } catch(e) {
+            return {error: String(e)};
+        }
+    }
+    """
+
+    fetch_result = await page.evaluate(_js_fetch, [api_cfg.endpoint, api_cfg.method.upper(), post_body])
+
+    if fetch_result.get("error"):
+        log.warning("[%s] detail_api: fetch error (idx=%d): %s", source_id, idx, fetch_result["error"])
+        return {}
+
+    http_status = fetch_result.get("status")
+    body_text = fetch_result.get("body", "")
+
+    if http_status not in (200, 201):
+        log.warning(
+            "[%s] detail_api: HTTP %s from %s (idx=%d) — body: %s",
+            source_id, http_status, api_cfg.endpoint, idx, body_text[:200],
+        )
+        return {}
+
+    # ------------------------------------------------------------------
+    # Step 3: Parse the JSON response and map fields to canonical names.
+    #
+    # api_cfg.field_map: {"ExpiryDate": "expiration_date", ...}
+    # The output raw dict uses canonical field names so map_to_license_record
+    # can process it identically to a normal HTML-scraped detail page.
+    # ------------------------------------------------------------------
+    try:
+        data = _json.loads(body_text)
+    except Exception as exc:
+        log.warning("[%s] detail_api: JSON parse error (idx=%d): %s", source_id, idx, exc)
+        return {}
+
+    raw: dict = {}
+    for api_key, canonical_field in api_cfg.field_map.items():
+        if isinstance(data, dict):
+            value = data.get(api_key)
+        else:
+            value = None
+        if value is not None:
+            raw[canonical_field] = value
+
+    log.info(
+        "[%s] detail_api: OK (idx=%d) — %s",
+        source_id, idx,
+        {k: v for k, v in raw.items() if v},
+    )
+    return raw
+
+
 async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, query=None) -> list:
     """Click View → extract → back, across all paginated result pages.
 
@@ -217,6 +421,52 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
                 await btn.scroll_into_view_if_needed()
                 await asyncio.sleep(0.3)
 
+                # ----------------------------------------------------------
+                # BRANCH A: Direct JSON API detail (e.g. PA_PALS)
+                #
+                # When config.detail.api is set, the board's "detail link"
+                # opens a new _blank tab rather than navigating the current
+                # tab. Playwright's standard URL-change wait never fires here.
+                #
+                # Instead of clicking the link at all, we:
+                #   1. Extract PersonId/LicenseId from the Angular scope.
+                #   2. POST to the configured API endpoint.
+                #   3. Map the JSON response directly to the raw field dict.
+                #   4. Skip back-navigation (we never left the search-results page).
+                #
+                # See _fetch_detail_via_api() above and DetailApiConfig in
+                # models.py for full documentation.
+                # ----------------------------------------------------------
+                if config.detail.api:
+                    raw = await _fetch_detail_via_api(page, config, idx)
+                    rec = map_to_license_record(raw, config, {})
+                    # Merge name/license fields from the summary row — the API
+                    # response does include them, but merging guarantees we have
+                    # them even if the API call partially fails.
+                    if idx < len(_summary_rows):
+                        _sr = _summary_rows[idx]
+                        if not rec.license_number and _sr.license_number:
+                            rec.license_number = _sr.license_number
+                        if not rec.licensee_full_name and not rec.licensee_first_name and _sr.licensee_full_name:
+                            rec.licensee_full_name   = _sr.licensee_full_name
+                            rec.licensee_first_name  = _sr.licensee_first_name
+                            rec.licensee_last_name   = _sr.licensee_last_name
+                        if not rec.license_type and _sr.license_type:
+                            rec.license_type = _sr.license_type
+                        if rec.status == LicenseStatus.UNKNOWN and _sr.status != LicenseStatus.UNKNOWN:
+                            rec.status = _sr.status
+                        if rec.expiration_date is None and _sr.expiration_date is not None:
+                            rec.expiration_date = _sr.expiration_date
+                    records.append(rec)
+                    # No back-navigation needed — we never left the search-results page.
+                    continue
+
+                # ----------------------------------------------------------
+                # BRANCH B: Standard click → navigate → scrape → back
+                #
+                # Original flow for all boards that navigate in the same tab.
+                # ----------------------------------------------------------
+
                 # PDF detail: if the link href points to a PDF, download and parse
                 # it directly instead of navigating the browser (avoids PDF viewer issues).
                 _href = (await btn.get_attribute("href") or "").strip()
@@ -251,6 +501,17 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
                     continue  # no back navigation needed — browser never navigated
 
                 await btn.evaluate("el => el.removeAttribute('target')")
+                # CHANGED: For AngularJS ng-click links that use href="" or href="#"
+                # as a placeholder, clicking triggers TWO things: the ng-click handler
+                # (which calls $state.go() to navigate the Angular route) AND the
+                # browser's default anchor navigation to the base URL (href="" strips
+                # the hash). The default navigation races against $state.go() and can
+                # reload the page before Angular finishes routing. Setting href to
+                # javascript:void(0) prevents the default navigation while still
+                # allowing ng-click to fire — used by PALS (PA) and similar AngularJS
+                # SPAs that use href="" + ng-click for in-app navigation links.
+                if not _href or _href.strip() == "#":
+                    await btn.evaluate("el => el.setAttribute('href', 'javascript:void(0)')")
                 await btn.click()
 
                 try:
