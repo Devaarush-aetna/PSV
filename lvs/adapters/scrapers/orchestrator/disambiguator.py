@@ -141,7 +141,7 @@ def _numeric_only(s: str) -> str:
 # _NAME_SUFFIXES_NORM (all-uppercase, dots/hyphens removed), so "M.D." and "MD" match.
 _NAME_SUFFIXES = {
     # Generational / legal
-    "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.", "ESQ", "ESQ.",
+    "I", "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.", "ESQ", "ESQ.",
     # Medical degrees (plain + dotted)
     "MD", "M.D.", "DO", "D.O.", "DPM", "D.P.M.", "DDS", "D.D.S.", "DMD", "D.M.D.",
     "OD", "O.D.", "PHD", "PH.D.", "PSYD", "PSY.D.", "DPT", "D.P.T.", "DC", "D.C.",
@@ -152,7 +152,7 @@ _NAME_SUFFIXES = {
     "PA",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABA", "RBT",
-    "LGSW", "LMSW", "CSW",
+    "LGSW", "LMSW", "CSW", "MSW", "MCOUN",
     # PT / OT / SLP / AUD (incl. assistant + registered variants)
     "PT", "PTA", "LPT",
     "OT", "OTA", "OT-A", "OTR", "OTRL", "OTR/L", "COTA", "COTAL",
@@ -176,11 +176,14 @@ _NAME_SUFFIXES_NORM: frozenset[str] = frozenset(
     re.sub(r"[.\-]", "", s).upper() for s in _NAME_SUFFIXES
 )
 
-# Honorific / title prefixes that may appear before a provider's actual name.
-# Only unambiguous civilian titles are included to minimise false positives.
+# Honorific / title prefixes and credential-type codes that some boards prepend
+# to the name field (e.g. Idaho DOPL returns "LD MARISSA RUDLEY" where "LD" is
+# the Licensed Dietitian credential code, not part of the name).
 _NAME_PREFIXES_NORM: frozenset[str] = frozenset({
     "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV", "PASTOR", "RABBI",
     "SISTER", "BROTHER",
+    # Board-prepended credential type codes (ID_DOPL and similar)
+    "LD",
 })
 
 
