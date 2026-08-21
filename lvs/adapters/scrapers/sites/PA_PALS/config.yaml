@@ -60,18 +60,107 @@ results:
       3: license_type
       4: status
       5: address
-  has_detail_page: false
+  # CHANGED: enabled detail page click-through to capture Expiration Date.
+  # PALS search results table has no expiry column — it only appears on the
+  # individual license detail page reached by clicking the Full Name link.
+  has_detail_page: true
+  detail_trigger:
+    # Click the Full Name <a> link in the first column of each result row
+    # to navigate to the detail page at #!/page/searchresult
+    type: link_in_cell
+    selector: "#DataTables_Table_3 tbody tr td:first-child a"
   pagination:
     enabled: true
     strategy: next_button
     next_selector: "#DataTables_Table_3_next:not(.disabled)"
 
 detail:
+  # -----------------------------------------------------------------------
+  # PA_PALS uses the "api" detail strategy instead of the standard
+  # click-navigate-scrape flow.
+  #
+  # ROOT CAUSE (why the old url_change strategy failed):
+  # PA_PALS's Angular controller (getAssetDetail) does NOT navigate the
+  # current browser tab when the user clicks a result row. Instead it:
+  #   1. Stores PersonId, LicenseId, LicenseNumber in localStorage.
+  #   2. Opens #!/page/searchresult in a brand-new _blank tab:
+  #        var link = document.createElement("a");
+  #        link.target = "_blank";
+  #        link.click();
+  # Playwright's wait_for_url / url_change strategy watches the CURRENT tab,
+  # so the URL never changes here and the detail page is never loaded.
+  #
+  # FIX — api strategy:
+  # Instead of clicking the link, browser_form.py calls _fetch_detail_via_api()
+  # which:
+  #   1. Reads PersonId/LicenseId from the Angular scope of the CURRENT page.
+  #   2. POSTs to api/Search/GetPersonOrFacilityDetails (the same endpoint
+  #      that the new tab's SearchResultController would call).
+  #   3. Maps ExpiryDate and other fields from the JSON response.
+  # No page navigation happens, so no back_navigation is needed.
+  #
+  # DISCOVERED VIA: reverse-engineering register.js from pals.pa.gov
+  #   (see PSV/test_pa_pals_detail.py — the standalone scrape test).
+  # -----------------------------------------------------------------------
+
+  # wait.strategy is unused when api is set (no navigation to wait for),
+  # but kept here so the config is valid for fallback parsing.
   wait:
-    strategy: delay
-    timeout_ms: 1000
-  strategies: []
-  field_map: {}
+    strategy: url_change
+    timeout_ms: 20000
+
+  # The "api" block activates the direct API-call path in browser_form.py.
+  # When present, _scrape_with_detail_clicks skips the link click entirely.
+  api:
+    # Relative endpoint resolved against https://www.pals.pa.gov/
+    # This is the public (no-login) detail endpoint used by SearchResultController
+    # in the _blank tab that getAssetDetail() would open.
+    endpoint: "api/Search/GetPersonOrFacilityDetails"
+    method: POST
+
+    # scope_selector: CSS selector for the DOM element used to start Angular
+    # scope traversal. We anchor on the DataTables result table because the
+    # Angular controller that holds PersonDetails lives in that scope chain.
+    scope_selector: "#DataTables_Table_3"
+
+    # scope_params: maps POST body key → dot-path expression in the Angular scope.
+    # {idx} is replaced at runtime with the current row's zero-based index,
+    # so each row in the results table gets its own PersonId/LicenseId.
+    # These match the keys that SearchResultController reads from localStorage
+    # (localStorage["SearchPersonOrFacility_Id"] etc.).
+    scope_params:
+      PersonId:      "search.PersonDetails[{idx}].PersonId"
+      LicenseNumber: "search.PersonDetails[{idx}].LicenseNumber"
+      IsFacility:    "search.PersonDetails[{idx}].IsFacility"
+      LicenseId:     "search.PersonDetails[{idx}].LicenseId"
+
+    # field_map: maps JSON response key → canonical LicenseRecord field name.
+    # Key names come from the actual api/Search/GetPersonOrFacilityDetails response
+    # (verified by test_pa_pals_detail.py — response keys include ExpiryDate,
+    # IssueDate, Status, LicenseType, LicenseNumber, FirstName, LastName, etc.)
+    field_map:
+      ExpiryDate:         expiration_date
+      IssueDate:          issue_date
+      Status:             status
+      LicenseType:        license_type
+      LicenseNumber:      license_number
+      FirstName:          licensee_first_name
+      LastName:           licensee_last_name
+      StatusEffectivedate: raw_additional_info
+
+  # field_map here is for the HTML-scrape path (strategies below).
+  # Not used when api is set, but kept for fallback/documentation purposes.
+  field_map:
+    "Expiration Date": expiration_date
+    "Issue Date": issue_date
+    "License Type": license_type
+    "License Number": license_number
+    "License Status": status
+
+  # back_navigation is not needed for the api strategy (no page navigation
+  # happens), but must be present to satisfy the config model.
+  back_navigation:
+    strategy: browser_back
 
 output:
   status_map:
@@ -112,7 +201,7 @@ transport:
 evidence:
   capture_html: true
   capture_screenshot: true
-  capture_on: ["search_results", "error"]
+  capture_on: ["search_results", "detail_page", "error"]
   storage: local
   local_path: "Evidence/PA_PALS/{run_id}/"
 

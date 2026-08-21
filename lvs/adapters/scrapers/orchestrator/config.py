@@ -47,7 +47,7 @@ NAME_GATE_THRESHOLD: float = 0.80      # max(nppes_score, epdb_score) >= this â†
 NAME_GATE_AI_BAND_LOW: float = 0.70    # in [0.70, 0.80) â†’ route to AI disambiguator
 
 # AI agent
-AI_MAX_TURNS: int = int(os.environ.get("PSV_AI_MAX_TURNS", "8"))
+AI_MAX_TURNS: int = int(os.environ.get("PSV_AI_MAX_TURNS", "12"))
 AI_MOCK_PATH_ENV: str = "PSV_AI_MOCK_PATH"   # set by --ai-mock CLI flag
 
 # Telemetry DB lives at PSV_DEV/lvs/adapters/scrapers/lvs_scrape.db (unchanged).

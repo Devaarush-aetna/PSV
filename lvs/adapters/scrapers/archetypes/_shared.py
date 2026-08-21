@@ -360,10 +360,16 @@ async def _wait_for_detail_content(page, config: SiteConfig) -> None:
     dw = config.detail.wait
     if dw.strategy == "element_visible":
         wait_sels = ([dw.selector] if dw.selector else []) + dw.fallback_selectors
-        for sel in wait_sels:
+        # Race all selectors in a single wait: return as soon as ANY becomes visible,
+        # bounded by ONE timeout. Waiting selectors sequentially made a stale/missing
+        # selector list cost timeout_ms per entry (e.g. 4 misses x 20s = 80s per row),
+        # which timed out multi-row name searches at the ladder cap. A comma-joined
+        # selector resolves to the first matching visible element.
+        combined = ", ".join(s for s in wait_sels if s)
+        if combined:
             try:
-                await page.wait_for_selector(sel, state="visible", timeout=dw.timeout_ms)
-                log.debug("Detail content visible via selector '%s'", sel)
+                await page.wait_for_selector(combined, state="visible", timeout=dw.timeout_ms)
+                log.debug("Detail content visible via selector '%s'", combined)
                 if config.identity.archetype in ("ag_grid_spa", "thentia_cloud"):
                     try:
                         await page.wait_for_function(
@@ -381,7 +387,9 @@ async def _wait_for_detail_content(page, config: SiteConfig) -> None:
                         await asyncio.sleep(3)
                 return
             except Exception:
-                continue
+                # None of the selectors became visible within the timeout — fall
+                # through; extraction strategies may still recover content.
+                pass
         return
 
     archetype = config.identity.archetype

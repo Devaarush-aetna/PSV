@@ -868,6 +868,15 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
         parts = query.query.rsplit(" ", 1)
         if len(parts) > 1:
             primary_value = parts[-1]
+    # When an explicit combo mode in config.yaml uses a single input field (no
+    # extra_inputs), the full "First Last" query belongs in that one field — the
+    # last-name-only extraction is only correct for synthesized two-field combos.
+    # Example: ID_DOPL #Dd-11 accepts "Tara High" directly as a name search.
+    if (synthetic is None and primary_value is not None
+            and query.mode in ("first_and_last", "first_mid_last")):
+        _tmp_mode = next((m for m in config.search.modes if m.mode == query.mode), None)
+        if _tmp_mode and not getattr(_tmp_mode, "extra_inputs", None):
+            primary_value = query.query
     if primary_value is not None:
         effective_query = query.model_copy(update={"query": primary_value})
 
@@ -923,14 +932,25 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
     # Combo-mode re-fill guard: some boards (e.g. KY GenSearch ASP.NET) have JS event
     # handlers on secondary fields that clear the primary input when they receive a value.
     # After filling extra_inputs, re-fill the primary field so it is always the last write.
-    if query.mode in COMBO_MODES and mode_cfg and mode_cfg.input_selector:
-        primary_value = _primary_value_for_mode(query.mode, query)
-        if primary_value:
+    # Skip when there are no extra_inputs — nothing could have cleared the primary field,
+    # and calling clear()+fill() on Angular boards would zero the reactive FormControl.
+    if (query.mode in COMBO_MODES and mode_cfg and mode_cfg.input_selector
+            and getattr(mode_cfg, "extra_inputs", None)):
+        _refill_value = _primary_value_for_mode(query.mode, query)
+        if _refill_value:
+            _use_kbd = (config.search.form.use_keyboard_type
+                        if config.search.form else False)
             try:
                 loc = search_target.locator(mode_cfg.input_selector).first
-                await loc.clear()
-                await loc.fill(primary_value)
-                log.debug("combo re-fill primary '%s' = '%s'", mode_cfg.input_selector, primary_value)
+                if _use_kbd:
+                    await loc.click()
+                    await page.keyboard.press("Control+a")
+                    await page.keyboard.press("Delete")
+                    await page.keyboard.type(_refill_value, delay=30)
+                else:
+                    await loc.clear()
+                    await loc.fill(_refill_value)
+                log.debug("combo re-fill primary '%s' = '%s'", mode_cfg.input_selector, _refill_value)
             except Exception as e:
                 log.warning("combo re-fill primary '%s' failed: %s", mode_cfg.input_selector, e)
     # Apply orthogonal license_type / provider_type filters from SiteIdentity.

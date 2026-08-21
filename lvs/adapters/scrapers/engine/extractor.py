@@ -114,6 +114,11 @@ async def _extract_label_sibling(page: Page) -> dict:
                 if sib_tag not in ("label", "th"):
                     result[label_text] = (await sibling.first.inner_text()).strip()
                     continue
+                if sib_tag == "label":
+                    sib_class = await sibling.first.evaluate("el => el.className")
+                    if "normal-m" in sib_class:
+                        result[label_text] = (await sibling.first.inner_text()).strip()
+                        continue
             # Bootstrap col-* pattern: label is alone in a col div; value is in
             # the parent's next sibling div (e.g. NC_SLP_AUD viewer.aspx).
             parent_sibling = lbl.locator("xpath=../following-sibling::div[1]")

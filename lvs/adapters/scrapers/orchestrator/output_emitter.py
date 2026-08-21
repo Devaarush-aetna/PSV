@@ -173,6 +173,13 @@ class RowOutcome:
     def chosen_record(self) -> Optional[Any]:
         if self.ai_result and self.ai_result.outcome == "resolved":
             return self.ai_result.chosen_candidate
+        # When a license-mismatch fallback found the right candidate but the AI gave
+        # up (outcome reset to "gave_up"), use that candidate for expiry checks and
+        # display so the unrelated expired ladder record doesn't surface as the match.
+        if (self.ai_result
+                and self.ai_result.chosen_candidate is not None
+                and (self.trace.final_reason or "").strip() == "AI found License ID mismatched"):
+            return self.ai_result.chosen_candidate
         if self.ladder_result:
             return self.ladder_result.best_record
         return None
@@ -200,7 +207,7 @@ class RowOutcome:
         if self.ladder_result and self.ladder_result.reason:
             return self.ladder_result.reason
         if self.trace.final_reason:
-            if self.trace.final_reason == "board_skipped" and self.trace.skip_reason_text:
+            if self.trace.final_reason in ("board_skipped", "no_routing") and self.trace.skip_reason_text:
                 return self.trace.skip_reason_text
             return self.trace.final_reason
         return "no_records"
@@ -214,6 +221,7 @@ def _blank_state_stats() -> dict:
         "pass_npi":       0,  # NPI substituted Pass
         "fail_rule":      0,  # Rule-based Fail
         "fail_ai":        0,  # AI attempted but failed
+        "no_state_board": 0,  # State does not license this provider type (no primary source)
         "captcha":        0,  # Captcha / WAF blocked
         "mismatch":       0,  # Name/license cross-validation override to Fail
         "same_expiry":    0,  # Expiry same as input (no update needed)
@@ -225,6 +233,7 @@ def _blank_state_stats() -> dict:
         "ai_used":        0,  # Any row where AI agent ran
         "ai_resolved":    0,  # AI resolved (outcome == "resolved")
         "ai_failed":      0,  # AI ran but did not resolve
+        "removed_license": 0, # License State not in Service Location State
         "npi_substituted": 0, # NPI was used to find the board record
         # AI token / cost aggregates (summed across all rows in this state)
         "ai_input_tokens":  0,
@@ -620,7 +629,7 @@ class OutputEmitter:
 
         # 1. Captcha / WAF block
         if _final_reason in _CAPTCHA_REASONS:
-            if _final_reason == "board_skipped" and outcome.trace.skip_reason_text:
+            if _final_reason in ("board_skipped", "no_routing") and outcome.trace.skip_reason_text:
                 return outcome.trace.skip_reason_text
             return self._CAPTCHA_MANUAL_REASONS.get(_final_reason, _final_reason)
 
@@ -675,6 +684,11 @@ class OutputEmitter:
                     "verification result before use"
                 )
             else:
+                # License mismatch detected by AI: route to Manual with board data preserved.
+                # Must be checked BEFORE gate_passed — prov_type=0 can make gate_passed=False
+                # even when the name matches well, which must not suppress the mismatch reason.
+                if _final_reason == "AI found License ID mismatched":
+                    return "AI found License ID mismatched"
                 # If the AI picked a candidate whose name doesn't match the input
                 # (gate_passed=False), don't route to AIAddLicense — send to Manual.
                 _ai_bd_check = outcome.ai_result.chosen_breakdown
@@ -687,10 +701,6 @@ class OutputEmitter:
                 if (_final_reason == "name_mismatch"
                         and outcome.trace.license_attempts_returned_records()):
                     return "License matched but Name mismatched"
-                # AI resolved a candidate but the board license number did not match
-                # the input license ID — route to Manual with a clear reason.
-                if _final_reason == "AI found License ID mismatched":
-                    return "AI found License ID mismatched"
                 _ai_fail_reason = (outcome.ai_result.reason or "no_candidates")
                 _ai_fail_reason = _ai_fail_reason.replace("—", "-").replace(";", ",")
                 return f"AI fallback failed - manual review required ({_ai_fail_reason})"
@@ -841,6 +851,10 @@ class OutputEmitter:
             s["npi_substituted"] += 1
             s["pass_npi"] += 1
 
+        # No state board — state does not license this provider type
+        if getattr(outcome.trace, "no_licensure_required", False):
+            s["no_state_board"] += 1
+
         # Captcha (includes BACB-blocked rows)
         if _final_reason in _CAPTCHA_REASONS or _is_bacb:
             s["captcha"] += 1
@@ -867,6 +881,10 @@ class OutputEmitter:
         # No expiry
         if went_manual and manual_reason and "no_expiry_date" in manual_reason:
             s["no_expiry"] += 1
+
+        # Removed License
+        if (outcome.trace.final_outcome or "") == "Removed License":
+            s["removed_license"] += 1
 
         # Pass / Fail in standard (after any retroactive overrides)
         std = self._standard_rows[-1] if self._standard_rows else {}
@@ -920,6 +938,22 @@ class OutputEmitter:
             ) else "exact_name"
 
         _ml = _matched_license(rec, m, o.status)
+        # For Fail rows with no chosen record, surface the best board candidate so
+        # reviewers can see what name the board actually had (e.g. license matched
+        # but name failed the gate). Pass rows always use the chosen record directly.
+        _name_rec = rec if rec is not None else (
+            _best_fail_candidate(o.trace) if o.status != "Pass" else None
+        )
+        # When AI picked a candidate but the license-mismatch override forced Fail,
+        # surface the AI's candidate so the reviewer sees the board data (name +
+        # board license number). _best_fail_candidate only sees ladder attempts and
+        # would otherwise show an unrelated record from the license search.
+        if (rec is None
+                and _final_reason == "AI found License ID mismatched"
+                and o.ai_result is not None
+                and o.ai_result.chosen_candidate is not None):
+            _name_rec = o.ai_result.chosen_candidate
+            _ml = (getattr(o.ai_result.chosen_candidate, "license_number", "") or "").strip() or _ml
         row = {
             "master_row_id": o.master_row_id,
             "first_name": m.get("first_name", ""),
@@ -933,13 +967,13 @@ class OutputEmitter:
             "status": (
                 "Skip" if (_final_reason in _CAPTCHA_REASONS or _is_bacb)
                 else "Fail" if self._expired_after_fetch_reason(o)
-                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip")
+                else o.trace.final_outcome if o.trace.final_outcome in ("N/A", "Skip", "Removed License")
                 else o.status
             ),
             "license_expiry": _expiry_str(rec),
             "matched_license": _ml,
-            "matched_first": _matched_name_part(rec, m, o.status, 0),
-            "matched_last":  _matched_name_part(rec, m, o.status, 1),
+            "matched_first": _matched_name_part(_name_rec, m, o.status, 0),
+            "matched_last":  _matched_name_part(_name_rec, m, o.status, 1),
             "board_name": _get_board_name(getattr(rec, "source_id", "") or "") if rec else "",
             "match_method": match_method,
             "fuzzy_score": (round(bd.total, 3) if bd else ""),
@@ -1487,7 +1521,7 @@ class OutputEmitter:
         _COLS = [
             "run_id", "state",
             "total", "pass_rule", "pass_ai", "pass_npi",
-            "fail_rule", "fail_ai", "captcha",
+            "fail_rule", "fail_ai", "no_state_board", "captcha", "removed_license",
             "mismatch", "same_expiry", "expired_after_fetch", "no_expiry",
             "manual", "add_license", "ai_add_license",
             "ai_used", "ai_resolved", "ai_failed", "npi_substituted",
@@ -1534,6 +1568,7 @@ class OutputEmitter:
                 if k not in seen:
                     seen.add(k)
                     keys.append(k)
+        out.parent.mkdir(parents=True, exist_ok=True)
         with open(out, "w", newline="", encoding="utf-8-sig") as f:
             w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()
@@ -1636,6 +1671,30 @@ def _matched_license(rec: Optional[Any], master_row: dict, status: str) -> str:
         val = (master_row.get("license_id", "") or "").strip()
     return val
 
+
+
+_LIC_MODES_FOR_FAIL_DISPLAY: frozenset = frozenset({
+    "license_number", "license_number_exact", "license_numeric_only",
+    "license_formatted", "license_first_last", "license_and_last",
+    "license_and_first",
+})
+
+
+def _best_fail_candidate(trace: Any) -> Optional[Any]:
+    """Best board record from a failed attempt, for display in Fail rows.
+
+    When the ladder fails but attempts returned candidates that didn't pass the
+    gate (name/license mismatch), we surface what the board actually had so
+    reviewers see the discrepancy in matched_first/matched_last.
+    Prefers the most recent license-mode attempt (more specific) over name-only.
+    """
+    for attempt in reversed(trace.attempts):
+        if attempt.candidates and attempt.mode in _LIC_MODES_FOR_FAIL_DISPLAY:
+            return attempt.candidates[0]
+    for attempt in reversed(trace.attempts):
+        if attempt.candidates:
+            return attempt.candidates[0]
+    return None
 
 
 def _matched_name_part(rec: Optional[Any], master_row: dict, status: str, idx: int) -> str:

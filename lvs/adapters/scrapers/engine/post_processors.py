@@ -58,7 +58,7 @@ def clean_name(value: str | None) -> str:
 # same way before lookup.
 _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     # Generational / legal
-    "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    "I", "II", "III", "IV", "V", "JR", "SR", "ESQ",
     # Business-entity suffixes (boards occasionally list practice entities)
     "LLC", "LLP", "PLLC", "PC", "PA",  # NB: "PA" also = physician assistant
     # Medical degrees
@@ -68,7 +68,7 @@ _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     "RN", "LPN", "LVN", "APRN", "DNP", "CNM", "NP",
     # Behavioral health
     "LCSW", "LMFT", "LPC", "LCPC", "LMHC", "BCBA", "BCABAD", "BCABA", "RBT",
-    "LGSW", "LMSW", "CSW",
+    "LGSW", "LMSW", "CSW", "MSW", "MCOUN",
     # PT / OT / SLP / AUD (incl. assistant and registered variants)
     "PT", "PTA", "LPT",
     "OT", "OTA", "OTR", "OTRL", "COTA", "COTAL",
@@ -86,6 +86,19 @@ _NAME_SUFFIX_SET: frozenset[str] = frozenset({
 })
 
 
+# Honorific / title prefixes some boards prepend or append to the stored name
+# (e.g. "Dr. John Smith", "Jang-en Sarah Lin Mrs."). These are NOT part of the
+# name and must be stripped before first/last tokens are selected — otherwise the
+# honorific is parsed as the first or last name. Kept in sync with
+# orchestrator.disambiguator._NAME_PREFIXES_NORM.
+_NAME_PREFIX_SET: frozenset[str] = frozenset({
+    "DR", "MR", "MRS", "MS", "MISS", "PROF", "REV", "PASTOR", "RABBI",
+    "SISTER", "BROTHER",
+    # Board-prepended credential type codes (ID_DOPL and similar)
+    "LD",
+})
+
+
 def _norm_token(token: str) -> str:
     """Normalize a name token for suffix lookup: drop all non-alphanumerics
     (dots, dashes, and stray commas) and upper-case. 'OT-A' → 'OTA', 'Jr.,' → 'JR'."""
@@ -96,9 +109,28 @@ def _is_suffix_token(token: str) -> bool:
     return _norm_token(token) in _NAME_SUFFIX_SET
 
 
+def _is_prefix_token(token: str) -> bool:
+    return _norm_token(token) in _NAME_PREFIX_SET
+
+
 def _strip_name_suffixes(parts: list[str]) -> list[str]:
     """Pop trailing credential/generational tokens from a name parts list."""
     while parts and _is_suffix_token(parts[-1]):
+        parts = parts[:-1]
+    return parts
+
+
+def _strip_name_affixes(parts: list[str]) -> list[str]:
+    """Strip trailing credential/generational suffixes AND leading/trailing
+    honorific prefixes from a name parts list.
+
+    Handles honorifics on either end: "Dr. John Smith" → ["John", "Smith"] and
+    "Jang-en Sarah Lin Mrs." → ["Jang-en", "Sarah", "Lin"].
+    """
+    parts = _strip_name_suffixes(parts)
+    while parts and _is_prefix_token(parts[0]):
+        parts = parts[1:]
+    while parts and _is_prefix_token(parts[-1]):
         parts = parts[:-1]
     return parts
 
@@ -132,7 +164,7 @@ def split_full_name(full_name: str) -> tuple[str, str]:
 
         if len(segments) <= 1:
             # Comma only separated credentials → remaining text is 'First … Last'.
-            parts = _strip_name_suffixes((segments[0] if segments else "").split())
+            parts = _strip_name_affixes((segments[0] if segments else "").split())
             if not parts:
                 return ("", "")
             if len(parts) == 1:
@@ -140,9 +172,9 @@ def split_full_name(full_name: str) -> tuple[str, str]:
             return (parts[0], parts[-1])
 
         # Two or more real segments → 'Last, First Middle [, Credentials]'.
-        parts_last = _strip_name_suffixes(segments[0].split())
+        parts_last = _strip_name_affixes(segments[0].split())
         last = " ".join(parts_last) if parts_last else segments[0]
-        rest_parts = _strip_name_suffixes(" ".join(segments[1:]).split())
+        rest_parts = _strip_name_affixes(" ".join(segments[1:]).split())
         if not rest_parts:
             # Nothing usable after the comma — fall back to treating segment 0
             # as a whole 'First Last' name.
@@ -151,7 +183,7 @@ def split_full_name(full_name: str) -> tuple[str, str]:
             return ("", last)
         return (rest_parts[0], last)
 
-    parts = _strip_name_suffixes(name.split())
+    parts = _strip_name_affixes(name.split())
     if not parts:
         return ("", "")
     if len(parts) == 1:

@@ -3,7 +3,7 @@ identity:
   board_name: Texas Medical Board
   state: TX
   country: US
-  profession_codes: [MD, DO, PA, APRN]
+  profession_codes: [MD, DO, PA, APRN, AP]
   # URL extracted from mimecast-protected link (?domain=profile.tmb.state.tx.us).
   # Site shows a terms-of-use page before the search form on first visit;
   # requires conditional click on input[id*='btnAccept'] not supported by engine.
@@ -32,7 +32,6 @@ search:
     no_results_indicators:
       - "no results found"
       - "no records found"
-      - "not found"
       - "your search returned 0"
       - "0 results found"
 
@@ -49,7 +48,10 @@ results:
       2: "license_type"
       4: "city"
       5: "disciplinary_action"
-  has_detail_page: false
+  has_detail_page: true
+  detail_trigger:
+    type: link_in_cell
+    selector: "#BodyContent_gvSearchResults td:first-child a"
   pagination:
     enabled: true
     strategy: next_button
@@ -57,12 +59,12 @@ results:
 
 detail:
   wait:
-    strategy: url_change
-    timeout_ms: 15000
+    strategy: element_visible
+    selector: "label.medium-bold"
+    timeout_ms: 20000
   strategies:
-    - type: two_column_table
-    - type: four_column_table
     - type: label_sibling
+    - type: two_column_table
     - type: dt_dd
   field_map:
     "Name": full_name
@@ -70,12 +72,18 @@ detail:
     "License Type": license_type
     "License Status": status
     "Status": status
+    "Current Status": status
+    "Current Status:": status
     "Expiration Date": expiration_date
+    "Expiration Date:": expiration_date
     "Issue Date": issue_date
+    "Issuance Date": issue_date
+    "Issuance Date:": issue_date
     "City": city
     "State": state_code
     "County": county
     "Board Actions": disciplinary_action
+    "Disciplinary Restrictions:": disciplinary_action
   back_navigation:
     strategy: browser_back
     wait_after_ms: 1000

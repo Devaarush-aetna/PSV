@@ -185,6 +185,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # ID
     ('ID', 'ABA'): ['ID_DOPL'],
+    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing — was causing no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'AU'): ['ID_DOPL'],
     ('ID', 'CP'): ['ID_DOPL', 'PSYPACT'],
     ('ID', 'DC'): ['ID_DOPL'],
@@ -201,6 +202,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('ID', 'OP'): ['ID_DOPL'],
     ('ID', 'OT'): ['ID_DOPL'],
     ('ID', 'PA'): ['ID_DOPL'],
+    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing — input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'PAS'): ['ID_DOPL'],
     ('ID', 'PH'): ['ID_DOPL'],
     ('ID', 'PN'): ['ID_DOPL'],
@@ -672,8 +674,10 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # NY
     ('NY', 'ABA'): ['NY_CREDENTIALS'],
+    ('NY', 'AP'): ['NY_CREDENTIALS'],
     ('NY', 'AU'): ['NY_CREDENTIALS'],
     ('NY', 'CP'): ['NY_CREDENTIALS'],
+    ('NY', 'DC'): ['NY_CREDENTIALS'],
     ('NY', 'DDS'): ['NY_CREDENTIALS'],
     ('NY', 'DMD'): ['NY_CREDENTIALS'],
     ('NY', 'DO'): ['NY_CREDENTIALS'],
@@ -683,10 +687,15 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NY', 'LPC'): ['NY_CREDENTIALS'],
     ('NY', 'MD'): ['NY_CREDENTIALS'],
     ('NY', 'MT'): ['NY_CREDENTIALS'],
+    ('NY', 'MW'): ['NY_CREDENTIALS'],
     ('NY', 'NP'): ['NY_CREDENTIALS'],
     ('NY', 'NPB'): ['NY_CREDENTIALS'],
+    ('NY', 'NPS'): ['NY_CREDENTIALS'],
     ('NY', 'NUT'): ['NY_CREDENTIALS'],
+    ('NY', 'OP'): ['NY_CREDENTIALS'],
     ('NY', 'OT'): ['NY_CREDENTIALS'],
+    ('NY', 'PAB'): ['NY_CREDENTIALS'],
+    ('NY', 'PAS'): ['NY_CREDENTIALS'],
     ('NY', 'PH'): ['NY_CREDENTIALS'],
     ('NY', 'PN'): ['NY_CREDENTIALS'],
     ('NY', 'PT'): ['NY_CREDENTIALS'],
@@ -841,6 +850,8 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('RI', 'SW'): ['RI_HEALTH'],
 
     # SC
+    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 — blocked in CAPTCHA_PROV_TYPES.
+    # SC_SCLLR_LPCMFT / SC_SCLLR_SW are out-of-state telehealth registries only (TLC/TLS format).
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
     ('SC', 'SW'): ['SC_SCLLR_SW'],
@@ -890,7 +901,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'DMD'): ['VA_DHP'],
     ('VA', 'DO'): ['VA_DHP'],
     ('VA', 'DP'): ['VA_DHP'],
-    ('VA', 'DT'): ['VA_DHP'],
+    # ('VA', 'DT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
     ('VA', 'GNC'): ['VA_DHP'],
     ('VA', 'LC'): ['IBCLC_COMMISSION', 'VA_DHP'],
     ('VA', 'LPC'): ['VA_DHP'],
@@ -900,7 +911,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'NP'): ['VA_DHP'],
     ('VA', 'NPB'): ['VA_DHP'],
     ('VA', 'NPS'): ['VA_DHP'],
-    ('VA', 'NUT'): ['VA_DHP'],
+    # ('VA', 'NUT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
     ('VA', 'OD'): ['VA_DHP'],
     ('VA', 'OP'): ['VA_DHP'],
     ('VA', 'OT'): ['VA_DHP'],
@@ -919,17 +930,21 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VT', 'DC'): ['VT_OPR'],
     ('VT', 'DO'): ['VT_MEDBOARD'],
     ('VT', 'DP'): ['VT_OPR'],
+    ('VT', 'DT'): ['VT_OPR'],
     ('VT', 'LAC'): ['VT_OPR'],
     ('VT', 'LC'): ['IBCLC_COMMISSION', 'VT_OPR'],
     ('VT', 'LPC'): ['VT_OPR'],
     ('VT', 'MD'): ['VT_MEDBOARD'],
+    ('VT', 'NP'): ['VT_OPR'],
     ('VT', 'OD'): ['VT_OPR'],
     ('VT', 'OP'): ['VT_OPR'],
     ('VT', 'OT'): ['VT_OPR'],
     ('VT', 'PA'): ['VT_MEDBOARD'],
     ('VT', 'PAS'): ['VT_MEDBOARD'],
-    ('VT', 'PH'): ['VT_OPR'],
+    ('VT', 'PH'): ['VT_MEDBOARD'],
+    ('VT', 'PN'): ['VT_OPR'],
     ('VT', 'PT'): ['VT_OPR'],
+    ('VT', 'SW'): ['VT_OPR'],
 
     # WA
     ('WA', 'ABA'): ['WA_HEALTH'],
