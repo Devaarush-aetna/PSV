@@ -219,6 +219,7 @@ def _blank_state_stats() -> dict:
         "pass_npi":       0,  # NPI substituted Pass
         "fail_rule":      0,  # Rule-based Fail
         "fail_ai":        0,  # AI attempted but failed
+        "no_state_board": 0,  # State does not license this provider type (no primary source)
         "captcha":        0,  # Captcha / WAF blocked
         "mismatch":       0,  # Name/license cross-validation override to Fail
         "same_expiry":    0,  # Expiry same as input (no update needed)
@@ -847,6 +848,10 @@ class OutputEmitter:
         if _npi_used:
             s["npi_substituted"] += 1
             s["pass_npi"] += 1
+
+        # No state board — state does not license this provider type
+        if getattr(outcome.trace, "no_licensure_required", False):
+            s["no_state_board"] += 1
 
         # Captcha (includes BACB-blocked rows)
         if _final_reason in _CAPTCHA_REASONS or _is_bacb:
@@ -1514,7 +1519,7 @@ class OutputEmitter:
         _COLS = [
             "run_id", "state",
             "total", "pass_rule", "pass_ai", "pass_npi",
-            "fail_rule", "fail_ai", "captcha", "removed_license",
+            "fail_rule", "fail_ai", "no_state_board", "captcha", "removed_license",
             "mismatch", "same_expiry", "expired_after_fetch", "no_expiry",
             "manual", "add_license", "ai_add_license",
             "ai_used", "ai_resolved", "ai_failed", "npi_substituted",

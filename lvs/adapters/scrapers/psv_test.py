@@ -2657,6 +2657,7 @@ async def run_state_orchestrated(
                 elif (state, prov_type_upper) in SKIP_UNLICENSED_PROV_TYPES:
                     trace.final_outcome = "Skip"
                     trace.final_reason = NA_PROV_TYPES.get((state, prov_type_upper), "")
+                    trace.no_licensure_required = True
                 # ABA rows whose license_id is a BACB certification number → always Skip.
                 elif (prov_type_upper == "ABA" and _is_bacb_license(row.get("license_id", ""))):
                     trace.final_outcome = "Skip"
