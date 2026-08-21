@@ -887,7 +887,6 @@ class PsvBrowser:
                         break
                     try:
                         _dt = self.config.results.detail_trigger
-<<<<<<< HEAD
                         _href = (await btn.get_attribute("href") or "").strip()
                         _is_pdf = (
                             getattr(_dt, "force_pdf", False)
@@ -921,7 +920,6 @@ class PsvBrowser:
                             if not _href:
                                 log.warning("[%s] force_pdf but empty href at idx=%d — using summary row",
                                             src, _idx)
-=======
                         _is_modal = getattr(_dt, "opens_modal", False)
                         # AG Grid boards use virtual scrolling: after extract_ag_grid
                         # scrolls through all rows the viewport sits at the bottom, so
@@ -946,7 +944,6 @@ class PsvBrowser:
                             if _is_pdf:
                                 _pdf_raw = await _scrape_pdf_detail(page, _href, self.config)
                                 _pdf_mapped = apply_field_map(_pdf_raw, self.config.detail.field_map)
->>>>>>> 1335c1cf36f50ba023e84369b1c7def2774253c1
                                 if _idx < len(raw_rows):
                                     _sr = raw_rows[_idx]
                                     for _k in ("full_name", "first_name", "last_name",
