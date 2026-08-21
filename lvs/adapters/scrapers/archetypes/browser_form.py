@@ -217,17 +217,21 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
             # On elicensesoftware.com boards (RI_HEALTH, NH_OPLC, IN_PLA) the
             # Details.aspx?result=<GUID> session keys are single-use: navigating
             # to the first detail invalidates subsequent GUIDs.  Reorder so the
-            # state-matching row (highest chance of being the correct record)
-            # is processed at idx=0 — it always succeeds; idx≥1 fall back to
-            # summary-row data via the exception handler below.
+            # best candidate row is processed at idx=0 — it always succeeds;
+            # idx≥1 fall back to summary-row data via the exception handler below.
+            # Scoring: Active status (primary) > state_code==board_state (secondary),
+            # so an Active record wins even when the board returns it after an expired one.
             _board_state = (config.identity.state or "").upper()
-            if _board_state and len(_summary_rows) > 1 and len(_direct_hrefs) > 1:
-                _best_idx = next(
-                    (i for i, r in enumerate(_summary_rows)
-                     if i < len(_direct_hrefs) and _direct_hrefs[i]
-                     and (getattr(r, "state_code", "") or "").upper() == _board_state),
-                    -1,
-                )
+            if len(_summary_rows) > 1 and len(_direct_hrefs) > 1:
+                def _row_score(i: int) -> tuple:
+                    if i >= len(_direct_hrefs) or not _direct_hrefs[i]:
+                        return (-1, -1)
+                    r = _summary_rows[i]
+                    return (
+                        1 if getattr(r, "status", None) is LicenseStatus.ACTIVE else 0,
+                        1 if _board_state and (getattr(r, "state_code", "") or "").upper() == _board_state else 0,
+                    )
+                _best_idx = max(range(len(_summary_rows)), key=_row_score)
                 if _best_idx > 0:
                     _direct_hrefs[0], _direct_hrefs[_best_idx] = (
                         _direct_hrefs[_best_idx], _direct_hrefs[0]

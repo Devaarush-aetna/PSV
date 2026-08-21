@@ -40,7 +40,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from engine.browser import _REAL_UA, _STEALTH, _STEALTH_ARGS
 from engine.evidence import capture_evidence
 from engine.extractor import extract_results_table, extract_detail, extract_th_td_multi
-from engine.post_processors import apply_field_map
+from engine.post_processors import apply_field_map, normalize_status
 from engine.models import BoardUnavailableError, LicenseStatus, SearchQuery
 from engine.output import map_to_license_record
 from engine.proxy import get_proxy_config
@@ -187,6 +187,7 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     # Form: https://aetnet.aetna.com/provider_services/cvo/geddi_forms/form_license.htm
     # Phone: 405-524-9094.
     ("OK", "CP"):   "OK Board of Examiners for Psychology — no automated lookup; submit License Verification Request Form (https://aetnet.aetna.com/provider_services/cvo/geddi_forms/form_license.htm); board faxes verification back (405-524-9094)",
+    ("OK", "PE"):   "OK Board of Examiners for Psychology — no automated lookup; submit License Verification Request Form (https://aetnet.aetna.com/provider_services/cvo/geddi_forms/form_license.htm); board faxes verification back (405-524-9094)",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -648,6 +649,15 @@ class PsvBrowser:
             raw_rows, _warn = await extract_results_table(page, self.config.results)
             if _warn:
                 log.warning("[%s] extract_results_table partial: %s", src, _warn)
+            # Drop ASP.NET pager artifact rows: NH_OPLC / RI_HEALTH render
+            # <td colspan="N"><span>1</span></td> inside #datagrid_results when
+            # the search yields no real records.  That row maps to full_name="1",
+            # license_number="" — a real record always has a license_number.
+            raw_rows = [
+                r for r in raw_rows
+                if not (r.get("full_name", "").strip().isdigit()
+                        and not r.get("license_number", "").strip())
+            ]
 
             # Opt-in name-mode pagination (results.paginate_summary_rows): boards like
             # AR_MEDBOARD order their name-search GridView alphabetically and show ~10
@@ -804,6 +814,7 @@ class PsvBrowser:
                     _lic_hint_u = _lic_hint.upper()
                     _lic_hint_num = re.sub(r'\D', '', _lic_hint_u).lstrip('0') or '0'
                     _lic_hint_has_alpha = bool(re.search(r'[A-Za-z]', _lic_hint_u))
+                    _lic_candidates = []
                     for _ri, _rw in enumerate(raw_rows):
                         _rw_lic = (_rw.get("license_number", "") or "").strip()
                         if not _rw_lic:
@@ -818,11 +829,32 @@ class PsvBrowser:
                             and _rw_lic_num == _lic_hint_num
                             and _rw_lic_has_alpha == _lic_hint_has_alpha
                         )
-                        if _exact_match or _numeric_match:
-                            _detail_targeted_idx = _ri
-                            log.info("[%s] License-hint: targeting detail idx=%d (lic=%s)",
-                                     src, _ri, _rw_lic)
-                            break
+                        if _exact_match:
+                            _lic_candidates.append((_ri, True))
+                        elif _numeric_match:
+                            _lic_candidates.append((_ri, False))
+                    if _lic_candidates:
+                        _sm = getattr(self.config.output, "status_map", None)
+                        _board_st = (
+                            getattr(self.config.identity, "state", None) or ""
+                        ).upper()
+                        def _lic_cand_score(item: tuple) -> tuple:
+                            _ci, _is_exact = item
+                            _r = raw_rows[_ci]
+                            _is_active = normalize_status(
+                                (_r.get("status") or "").strip(), _sm
+                            ) is LicenseStatus.ACTIVE
+                            _sc = (_r.get("state_code") or "").upper()
+                            _is_board_state = bool(
+                                _board_st and _sc == _board_st
+                            )
+                            return (_is_active, _is_board_state, _is_exact)
+                        _detail_targeted_idx = max(
+                            _lic_candidates, key=_lic_cand_score
+                        )[0]
+                        _rw_lic = (raw_rows[_detail_targeted_idx].get("license_number") or "").strip()
+                        log.info("[%s] License-hint: targeting detail idx=%d (lic=%s)",
+                                 src, _detail_targeted_idx, _rw_lic)
             # Name-mode license-hint narrowing: when searching by name but the query
             # still carries the original license number (e.g. license_number search
             # returned no results so the ladder fell back to first_name), scan the
@@ -2555,7 +2587,7 @@ async def run_state_orchestrated(
                 # CAPTCHA-blocked prov_type: skip immediately, skip all board calls
                 elif _captcha_reason := CAPTCHA_PROV_TYPES.get((state, prov_type_upper)):
                     trace.final_outcome = "Skip"
-                    trace.final_reason = "prov_type_captcha_blocked"
+                    trace.final_reason = _captcha_reason
                 # CO does not license DT/NUT/ABA — Skip immediately, no board queries needed.
                 elif state == "CO" and prov_type_upper in ("DT", "NUT", "ABA"):
                     trace.final_outcome = "Skip"

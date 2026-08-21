@@ -72,9 +72,6 @@ detail:
     timeout_ms: 15000
     fallback_selectors:
       - "td"
-    error_page_selectors:
-      - "td:has-text('too many requests')"
-      - "td:has-text('CAPTCHA')"
   strategies:
     - type: element_ids
       id_map:
