@@ -438,7 +438,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('MI', 'ABA'): ['MI_LARA'],
     ('MI', 'AP'): ['MI_LARA'],
     ('MI', 'AU'): ['MI_LARA'],
-    ('MI', 'CP'): ['MI_LARA'],
+    ('MI', 'CP'): ['MI_LARA', 'PSYPACT'],
     ('MI', 'DC'): ['MI_LARA'],
     ('MI', 'DDS'): ['MI_LARA'],
     ('MI', 'DMD'): ['MI_LARA'],
