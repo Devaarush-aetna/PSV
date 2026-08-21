@@ -58,7 +58,7 @@ def clean_name(value: str | None) -> str:
 # same way before lookup.
 _NAME_SUFFIX_SET: frozenset[str] = frozenset({
     # Generational / legal
-    "II", "III", "IV", "V", "JR", "SR", "ESQ",
+    "I", "II", "III", "IV", "V", "JR", "SR", "ESQ",
     # Business-entity suffixes (boards occasionally list practice entities)
     "LLC", "LLP", "PLLC", "PC", "PA",  # NB: "PA" also = physician assistant
     # Medical degrees

@@ -258,6 +258,10 @@ Available tools:
   search result, because earlier searches may have filled indices 0, 1, 2, …
 - report_site_drift(source_id, suspected_change, fix_hint): emit a drift report.
   Do NOT call this unless evidence strongly suggests the board's HTML changed.
+  NEVER call report_site_drift for "no_records" outcomes — a provider simply not
+  being on a board is NOT drift. NEVER call it because a subsequent search returned
+  0 results when an earlier search already found a valid candidate — use
+  pick_candidate() on that candidate's pool_index instead.
 - give_up(reason): terminate. reason MUST be one of:
     name_mismatch | license_mismatch | provider_type_mismatch |
     ambiguous_after_narrowing | no_records | nppes_not_found |
@@ -280,6 +284,12 @@ Rules:
   give_up:name_change_detected only as a last resort when you cannot commit
   the record at all; in most name-change cases you SHOULD pick the candidate
   and note the discrepancy so a human reviewer can confirm.
+- Already-found candidates are always valid: if any prior attempt lists a
+  matched_candidate with a pool_index, that candidate can always be committed
+  with pick_candidate(pool_index) regardless of what later searches return.
+  A subsequent search returning 0 results does NOT invalidate a candidate found
+  earlier. When in doubt, inspect_evidence(seq) on the earlier attempt to confirm
+  the record, then pick_candidate() — do NOT call report_site_drift.
 - You have at most {max_turns} turns.
 """
 

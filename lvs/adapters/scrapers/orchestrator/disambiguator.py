@@ -141,7 +141,7 @@ def _numeric_only(s: str) -> str:
 # _NAME_SUFFIXES_NORM (all-uppercase, dots/hyphens removed), so "M.D." and "MD" match.
 _NAME_SUFFIXES = {
     # Generational / legal
-    "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.", "ESQ", "ESQ.",
+    "I", "II", "III", "IV", "V", "JR", "JR.", "SR", "SR.", "ESQ", "ESQ.",
     # Medical degrees (plain + dotted)
     "MD", "M.D.", "DO", "D.O.", "DPM", "D.P.M.", "DDS", "D.D.S.", "DMD", "D.M.D.",
     "OD", "O.D.", "PHD", "PH.D.", "PSYD", "PSY.D.", "DPT", "D.P.T.", "DC", "D.C.",
