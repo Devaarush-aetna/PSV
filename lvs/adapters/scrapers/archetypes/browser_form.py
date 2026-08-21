@@ -397,29 +397,84 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
         buttons = page.locator(trigger_sel)
         num_buttons = await buttons.count()
         if num_buttons == 0:
-            records.extend(_summary_rows)
+            # Filter out pagination artifact rows: RI_HEALTH (and similar ASP.NET boards)
+            # render a <td colspan="N"><span>1</span></td> pager row inside #datagrid_results
+            # even when 0 real records matched.  That row maps to full_name="1",
+            # license_number="" — a real record always has a license_number.
+            records.extend(r for r in _summary_rows if r.license_number)
             break
+
+        # navigate_directly: collect all detail HREFs now, before navigating away from
+        # the results page.  Lets us page.goto() each detail URL directly — no back
+        # navigation needed between rows (safe for POST-based results pages like RI_HEALTH
+        # where go_back() fails after the first detail click).
+        _nav_directly = bool(
+            config.results.detail_trigger
+            and getattr(config.results.detail_trigger, "navigate_directly", False)
+        )
+        _direct_hrefs: list[str] = []
+        if _nav_directly:
+            _base = page.url
+            for _i in range(num_buttons):
+                _h = (await page.locator(trigger_sel).nth(_i).get_attribute("href") or "").strip()
+                _direct_hrefs.append(urljoin(_base, _h) if _h else "")
+            # On elicensesoftware.com boards (RI_HEALTH, NH_OPLC, IN_PLA) the
+            # Details.aspx?result=<GUID> session keys are single-use: navigating
+            # to the first detail invalidates subsequent GUIDs.  Reorder so the
+            # best candidate row is processed at idx=0 — it always succeeds;
+            # idx≥1 fall back to summary-row data via the exception handler below.
+            # Scoring: Active status (primary) > state_code==board_state (secondary),
+            # so an Active record wins even when the board returns it after an expired one.
+            _board_state = (config.identity.state or "").upper()
+            if len(_summary_rows) > 1 and len(_direct_hrefs) > 1:
+                def _row_score(i: int) -> tuple:
+                    if i >= len(_direct_hrefs) or not _direct_hrefs[i]:
+                        return (-1, -1)
+                    r = _summary_rows[i]
+                    return (
+                        1 if getattr(r, "status", None) is LicenseStatus.ACTIVE else 0,
+                        1 if _board_state and (getattr(r, "state_code", "") or "").upper() == _board_state else 0,
+                    )
+                _best_idx = max(range(len(_summary_rows)), key=_row_score)
+                if _best_idx > 0:
+                    _direct_hrefs[0], _direct_hrefs[_best_idx] = (
+                        _direct_hrefs[_best_idx], _direct_hrefs[0]
+                    )
+                    _summary_rows[0], _summary_rows[_best_idx] = (
+                        _summary_rows[_best_idx], _summary_rows[0]
+                    )
 
         for idx in range(num_buttons):
             try:
-                btns = page.locator(trigger_sel)
-                btn = btns.nth(idx)
                 url_before = page.url
 
-                try:
-                    if not await btn.is_visible(timeout=3000):
-                        log.info("Button idx=%d not visible — falling back to table summary for %d remaining row(s)",
+                if _nav_directly:
+                    # Direct navigation: skip all button interaction — use pre-collected HREF.
+                    if idx >= len(_direct_hrefs) or not _direct_hrefs[idx]:
+                        log.warning("[%s] navigate_directly: no href at idx=%d — using summary row",
+                                    config.identity.source_id, idx)
+                        if idx < len(_summary_rows):
+                            records.append(_summary_rows[idx])
+                        continue
+                    await page.goto(_direct_hrefs[idx])
+                else:
+                    btns = page.locator(trigger_sel)
+                    btn = btns.nth(idx)
+
+                    try:
+                        if not await btn.is_visible(timeout=3000):
+                            log.info("Button idx=%d not visible — falling back to table summary for %d remaining row(s)",
+                                     idx, max(0, len(_summary_rows) - idx))
+                            records.extend(_summary_rows[idx:])
+                            return records
+                    except Exception:
+                        log.info("Button idx=%d check failed — falling back to table summary for %d remaining row(s)",
                                  idx, max(0, len(_summary_rows) - idx))
                         records.extend(_summary_rows[idx:])
                         return records
-                except Exception:
-                    log.info("Button idx=%d check failed — falling back to table summary for %d remaining row(s)",
-                             idx, max(0, len(_summary_rows) - idx))
-                    records.extend(_summary_rows[idx:])
-                    return records
 
-                await btn.scroll_into_view_if_needed()
-                await asyncio.sleep(0.3)
+                    await btn.scroll_into_view_if_needed()
+                    await asyncio.sleep(0.3)
 
                 # ----------------------------------------------------------
                 # BRANCH A: Direct JSON API detail (e.g. PA_PALS)
@@ -569,15 +624,35 @@ async def _scrape_with_detail_clicks(page, config: SiteConfig, run_id: str, db, 
                         rec.status = _sr.status
                     if rec.expiration_date is None and _sr.expiration_date is not None:
                         rec.expiration_date = _sr.expiration_date
+                    if not rec.state_code and _sr.state_code:
+                        rec.state_code = _sr.state_code
                 records.append(rec)
 
             except Exception as exc:
                 log.error("Detail scrape failed (idx=%d): %s", idx, exc)
-                try:
-                    await _navigate_back(page, config)
-                except Exception:
-                    pass
+                if not _nav_directly:
+                    try:
+                        await _navigate_back(page, config)
+                    except Exception:
+                        pass
+                else:
+                    # navigate_directly: detail navigation failed (e.g. GUID
+                    # expired after the first hit on elicensesoftware.com boards).
+                    # Fall back to summary-row data so the candidate still reaches
+                    # the disambiguator.  State-reordering above ensures the correct
+                    # record was already processed at idx=0 with full detail.
+                    if idx < len(_summary_rows) and _summary_rows[idx].license_number:
+                        records.append(_summary_rows[idx])
+                        log.warning(
+                            "[%s] navigate_directly fallback (idx=%d): "
+                            "using summary row (lic=%s)",
+                            config.identity.source_id, idx,
+                            _summary_rows[idx].license_number,
+                        )
                 continue
+
+            if _nav_directly:
+                continue  # next goto() handles navigation — no back nav needed
 
             try:
                 await _navigate_back(page, config)

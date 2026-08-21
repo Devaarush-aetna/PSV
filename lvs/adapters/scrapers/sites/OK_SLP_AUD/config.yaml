@@ -11,12 +11,15 @@ identity:
   #   Inputs: input[name='last_name'], input[name='lic_number'], input[name='city'],
   #           select[name='lic_type_seq'] (license type dropdown).
   #   Submit: input[value='Search'].
-  #   Results in tr.report-body > td blocks with Name, License#, Type, Address, Dates, Status.
+  #   Results in tr.report-body > td blocks — each td is a card:
+  #     Line 1: "LastName, FirstName , LicenseType (#LicNum)"
+  #     Labeled fields: Work Number, Work Email, License Issue Date,
+  #                     License Expiration Date, Current Status.
   #   License types: Audiologists(0), Audiology Assistant(8),
   #     Speech Language Pathologists(10), SLP Assistant 20%(5), SLP Clinical Exp Year(4).
-  # The mimecast-protected URL redirects to the actual search form on pay.apps.ok.gov.
-  # Direct URL path unknown — using mimecast redirect link.
-  base_url: "https://url.usb.m.mimecastprotect.com/s/TSeMCm7WVgtW0Pp9EGpt9sDcRLlSq?domain=pay.apps.ok.gov"
+  # NOTE 2026-08-21: Direct URL confirmed as pay.apps.ok.gov/obespa/license/app/external_account_search.php;
+  # mimecast redirect link retired.
+  base_url: "https://pay.apps.ok.gov/obespa/license/app/external_account_search.php"
   archetype: classic_html_form
 
 search:
@@ -61,6 +64,51 @@ results:
     skip_first_row: false
     columns:
       0: full_name
+    custom_js: |
+      () => {
+        const LABEL_MAP = {
+          'Work Number': 'phone',
+          'Work Email': 'email',
+          'License Issue Date': 'issue_date',
+          'License Expiration Date': 'expiration_date',
+          'Current Status': 'status',
+        };
+        return [...document.querySelectorAll('tr.report-body')].map(row => {
+          const td = row.querySelector('td');
+          if (!td) return {};
+          const rec = {};
+          // Title is <strong style="font-size:110%">LastName, FirstName , LicenseType (#LicNum)</strong>
+          const titleEl = td.querySelector('strong[style]');
+          if (titleEl) {
+            const title = titleEl.textContent.trim();
+            const licMatch = title.match(/\(#(\d+)\)/);
+            if (licMatch) rec.license_number = licMatch[1];
+            const nameMatch = title.match(/^([^,]+),\s*(.+?)\s*,\s*(.+?)\s*\(#/);
+            if (nameMatch) {
+              rec.last_name    = nameMatch[1].trim();
+              rec.first_name   = nameMatch[2].trim();
+              rec.license_type = nameMatch[3].trim();
+              rec.full_name    = nameMatch[2].trim() + ' ' + nameMatch[1].trim();
+            }
+          }
+          // Labels use <strong> (no style attr); value is the next text node or <a> (email)
+          for (const strong of td.querySelectorAll('strong:not([style])')) {
+            const label = strong.textContent.trim().replace(/:$/, '');
+            const key = LABEL_MAP[label];
+            if (!key) continue;
+            let val = '';
+            let nxt = strong.nextSibling;
+            while (nxt) {
+              if (nxt.nodeType === 3 && nxt.textContent.trim()) { val = nxt.textContent.trim(); break; }
+              if (nxt.nodeName === 'A') { val = nxt.textContent.trim(); break; }
+              if (nxt.nodeName === 'STRONG') break;
+              nxt = nxt.nextSibling;
+            }
+            if (val) rec[key] = val;
+          }
+          return rec;
+        });
+      }
   has_detail_page: false
   pagination:
     enabled: false

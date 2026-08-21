@@ -1,10 +1,10 @@
-"""
-Board routing table — generated from board_routing_master.csv.
+﻿"""
+Board routing table â€” generated from board_routing_master.csv.
 
 Maps (state_abbr, psv_prov_type) -> [source_id, ...]
 Multiple boards are tried in list order; first Pass wins.
 
-  851 routing entries across 41 states and 44 provider types.
+  878 routing entries across 42 states and 44 provider types.
 """
 from __future__ import annotations
 
@@ -185,7 +185,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
 
     # ID
     ('ID', 'ABA'): ['ID_DOPL'],
-    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing — was causing no_routing fail (Aarush: see PSV run 20260813)
+    ('ID', 'AP'): ['ID_DOPL'],   # FIX: added AP (Acupuncturist) routing â€” was causing no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'AU'): ['ID_DOPL'],
     ('ID', 'CP'): ['ID_DOPL'],
     ('ID', 'DC'): ['ID_DOPL'],
@@ -202,7 +202,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('ID', 'OP'): ['ID_DOPL'],
     ('ID', 'OT'): ['ID_DOPL'],
     ('ID', 'PA'): ['ID_DOPL'],
-    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing — input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
+    ('ID', 'PAB'): ['ID_DOPL'],  # FIX: added PAB routing â€” input uses PAB but table only had PA; caused no_routing fail (Aarush: see PSV run 20260813)
     ('ID', 'PAS'): ['ID_DOPL'],
     ('ID', 'PH'): ['ID_DOPL'],
     ('ID', 'PN'): ['ID_DOPL'],
@@ -540,7 +540,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'NUT'): ['NC_DIETETICS'],
     ('NC', 'OD'): ['NC_OPTOMETRY'],
     ('NC', 'OP'): ['NC_OPTOMETRY'],
-    # OR = oral / maxillofacial surgeon — verified at the NC dental board; fall
+    # OR = oral / maxillofacial surgeon â€” verified at the NC dental board; fall
     # back to the medical board for dual-degree (MD) oral surgeons.
     ('NC', 'OR'): ['NC_DENTAL', 'NC_MEDBOARD'],
     ('NC', 'LPC'): ['NC_MENTAL_HEALTH', 'NC_DAC'],  # LCAS holders may be verified via NC_DAC
@@ -549,7 +549,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('NC', 'OP'): ['NC_OPTOMETRY'],
     # ('NC', 'OR'): ['NC_MEDBOARD', 'NC_DENTAL'],
     ('NC', 'OT'): ['NC_OT'],
-    # PC = pastoral counselor — certified by the NC Board of Pastoral Counseling
+    # PC = pastoral counselor â€” certified by the NC Board of Pastoral Counseling
     # (small integer certificate numbers, e.g. 83/122), NOT the addiction board.
     ('NC', 'PC'): ['NC_PASTORAL_COUNSELING'],
     ('NC', 'PT'): ['NC_PT'],
@@ -569,7 +569,8 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     # NH
     ('NH', 'ABA'): ['NH_OPLC'],
     ('NH', 'AU'): ['NH_OPLC'],
-    ('NH', 'CP'): ['NH_OPLC'],
+    ('NH', 'CP'): ['NH_OPLC', 'PSYPACT'],
+    ('NH', 'DAC'): ['NH_OPLC'],
     ('NH', 'DC'): ['NH_OPLC'],
     ('NH', 'DDS'): ['NH_OPLC'],
     ('NH', 'DMD'): ['NH_OPLC'],
@@ -730,14 +731,24 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('OH', 'SW'): ['OH_PROVIDERS_INDIVIDUAL'],
 
     # OK
+    ('OK', 'AT'): ['OK_MEDBOARD'],
     ('OK', 'AU'): ['OK_SLP_AUD'],
+    ('OK', 'CADC'): ['OK_ADAC'],
+    ('OK', 'CADCI'): ['OK_ADAC'],
+    ('OK', 'CNA'): ['OK_ODOHCS'],
     ('OK', 'DA'): ['OK_DENTAL'],
     ('OK', 'DAC'): ['OK_ADAC', 'OK_BEHAVIORAL_HEALTH'],
     ('OK', 'DDS'): ['OK_DENTAL'],
     ('OK', 'DMD'): ['OK_DENTAL'],
     ('OK', 'DO'): ['OK_OSTEO'],
     ('OK', 'DT'): ['OK_MEDBOARD'],
+    ('OK', 'EMT'): ['OK_ODOHCS'],
+    ('OK', 'HHA'): ['OK_ODOHCS'],
+    ('OK', 'LADC-MH'): ['OK_ADAC'],
+    ('OK', 'LBP'): ['OK_BEHAVIORAL_HEALTH'],
     ('OK', 'LC'): ['IBCLC_COMMISSION', 'OK_BEHAVIORAL_HEALTH'],
+    ('OK', 'LD'): ['OK_MEDBOARD'],
+    ('OK', 'LMFT'): ['OK_BEHAVIORAL_HEALTH'],
     ('OK', 'LPC'): ['OK_BEHAVIORAL_HEALTH'],
     ('OK', 'MD'): ['OK_MEDBOARD'],
     ('OK', 'OD'): ['OK_OPTOMETRY'],
@@ -746,7 +757,11 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('OK', 'PA'): ['OK_MEDBOARD'],
     ('OK', 'PAB'): ['OK_MEDBOARD'],
     ('OK', 'PAS'): ['OK_MEDBOARD'],
+    ('OK', 'PH'): ['OK_MEDBOARD'],
+    ('OK', 'POD'): ['OK_MEDBOARD'],
     ('OK', 'PT'): ['OK_MEDBOARD'],
+    ('OK', 'RC'): ['OK_MEDBOARD'],
+    ('OK', 'RDH'): ['OK_DENTAL'],
     ('OK', 'SH'): ['OK_SLP_AUD'],
     ('OK', 'ST'): ['OK_SLP_AUD'],
     ('OK', 'SW'): ['OK_SOCIALWORK'],
@@ -807,8 +822,35 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('PA', 'SH'): ['PA_PALS'],
     ('PA', 'SW'): ['PA_PALS'],
 
+    # RI
+    ('RI', 'ABA'): ['RI_HEALTH'],
+    ('RI', 'AP'): ['RI_HEALTH'],
+    ('RI', 'AU'): ['RI_HEALTH'],
+    ('RI', 'CP'): ['RI_HEALTH', 'PSYPACT'],
+    ('RI', 'DAC'): ['RI_HEALTH'],
+    ('RI', 'DC'): ['RI_HEALTH'],
+    ('RI', 'DO'): ['RI_HEALTH'],
+    ('RI', 'DT'): ['RI_HEALTH'],
+    ('RI', 'LC'): ['IBCLC_COMMISSION', 'RI_HEALTH'],
+    ('RI', 'LPC'): ['RI_HEALTH'],
+    ('RI', 'MD'): ['RI_HEALTH'],
+    ('RI', 'MW'): ['RI_HEALTH'],
+    ('RI', 'NP'): ['RI_HEALTH'],
+    ('RI', 'NPB'): ['RI_HEALTH'],
+    ('RI', 'OD'): ['RI_HEALTH'],
+    ('RI', 'OP'): ['RI_HEALTH'],
+    ('RI', 'OT'): ['RI_HEALTH'],
+    ('RI', 'PA'): ['RI_HEALTH'],
+    ('RI', 'PAS'): ['RI_HEALTH'],
+    ('RI', 'PH'): ['RI_HEALTH'],
+    ('RI', 'PN'): ['RI_HEALTH'],
+    ('RI', 'PT'): ['RI_HEALTH'],
+    ('RI', 'RNA'): ['RI_HEALTH'],
+    ('RI', 'SH'): ['RI_HEALTH'],
+    ('RI', 'SW'): ['RI_HEALTH'],
+
     # SC
-    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 — blocked in CAPTCHA_PROV_TYPES.
+    # SC LPC and SW boards at verify.llronline.com require reCAPTCHA v2 â€” blocked in CAPTCHA_PROV_TYPES.
     # SC_SCLLR_LPCMFT / SC_SCLLR_SW are out-of-state telehealth registries only (TLC/TLS format).
     ('SC', 'LC'): ['IBCLC_COMMISSION', 'SC_SCLLR_LPCMFT'],
     ('SC', 'LPC'): ['SC_SCLLR_LPCMFT'],
@@ -859,7 +901,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'DMD'): ['VA_DHP'],
     ('VA', 'DO'): ['VA_DHP'],
     ('VA', 'DP'): ['VA_DHP'],
-    # ('VA', 'DT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
+    # ('VA', 'DT') intentionally omitted â€” VA does not license DT/NUT (certification only); no_routing â†’ Skip/N/A
     ('VA', 'GNC'): ['VA_DHP'],
     ('VA', 'LC'): ['IBCLC_COMMISSION', 'VA_DHP'],
     ('VA', 'LPC'): ['VA_DHP'],
@@ -869,7 +911,7 @@ ROUTING: dict[tuple[str, str], list[str]] = {
     ('VA', 'NP'): ['VA_DHP'],
     ('VA', 'NPB'): ['VA_DHP'],
     ('VA', 'NPS'): ['VA_DHP'],
-    # ('VA', 'NUT') intentionally omitted — VA does not license DT/NUT (certification only); no_routing → Skip/N/A
+    # ('VA', 'NUT') intentionally omitted â€” VA does not license DT/NUT (certification only); no_routing â†’ Skip/N/A
     ('VA', 'OD'): ['VA_DHP'],
     ('VA', 'OP'): ['VA_DHP'],
     ('VA', 'OT'): ['VA_DHP'],

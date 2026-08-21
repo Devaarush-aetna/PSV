@@ -155,18 +155,50 @@ async def run_scraper(
             await page.wait_for_timeout(2000)
 
             # POST name search → list of profile stubs
-            search_result = await page.evaluate(
-                _JS_POST,
-                {"url": _SEARCH_URL, "body": json.dumps({"name": name})},
-            )
+            # The Accredible Spotlight API requires the structured text_search_query
+            # payload; a bare {"name": ...} body is silently ignored and returns 0 profiles.
+            # Search by last name (broader) and filter by first name after.
+            # Retry up to 3 times: the API occasionally returns 0 profiles for valid records
+            # when hit in rapid succession (rate-limiting / session expiry). Re-navigating
+            # to _DIR_URL before each retry refreshes the session cookie.
+            _search_payload = json.dumps({
+                "page": "1",
+                "page_size": 50,
+                "order": "",
+                "groups": [],
+                "organizations": [],
+                "lat": None,
+                "lng": None,
+                "viewport": None,
+                "skills": [],
+                "skill_category_ids": [],
+                "availability": [],
+                "custom_attributes": [],
+                "text_search_query": {"fields": ["name"], "value": last or name},
+            })
 
-            if search_result.get("error"):
-                log.warning("[PSYPACT] Search error: %s", search_result["error"])
-                await browser.close()
-                return results
-
-            profiles = search_result.get("profiles") or []
-            log.debug("[PSYPACT] Search '%s' → %d profiles", name, len(profiles))
+            profiles: list[Any] = []
+            for _attempt in range(3):
+                search_result = await page.evaluate(
+                    _JS_POST,
+                    {"url": _SEARCH_URL, "body": _search_payload},
+                )
+                if search_result.get("error"):
+                    log.warning("[PSYPACT] Search error: %s", search_result["error"])
+                    await browser.close()
+                    return results
+                profiles = search_result.get("profiles") or []
+                log.debug(
+                    "[PSYPACT] Search '%s' → %d profiles (attempt %d/3)",
+                    name, len(profiles), _attempt + 1,
+                )
+                if profiles:
+                    break
+                if _attempt < 2:
+                    log.debug("[PSYPACT] Empty result — waiting 3 s before retry")
+                    await page.wait_for_timeout(3000)
+                    await page.goto(_DIR_URL)
+                    await page.wait_for_timeout(2000)
 
             for profile in profiles:
                 uid = profile.get("id")

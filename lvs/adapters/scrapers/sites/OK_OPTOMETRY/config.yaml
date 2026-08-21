@@ -9,6 +9,8 @@ identity:
   #   Single keyword input (input#keywords) accepts last name OR license number.
   #   View button opens div.profile h2; Back-to-results returns.
   #   Pagination via [ng-click*='nextPageStart'].
+  # NOTE 2026-08-21: Results table has 8 cols:
+  #   [license_number, first_name, last_name, city, license_type, status, expiration_date, disciplinary_action].
   base_url: "https://obeo.portalus.thentiacloud.net/webs/portal/register/#"
   archetype: "thentia_cloud"
 
@@ -52,10 +54,13 @@ results:
     row_selector: "table tbody tr"
     cell_selector: "td"
     columns:
-      0: "name"
-      1: "license_number"
-      2: "license_type"
-      3: "status"
+      0: "license_number"
+      1: "first_name"
+      2: "last_name"
+      3: "city"
+      4: "license_type"
+      5: "status"
+      6: "expiration_date"
   has_detail_page: false
   detail_trigger:
     type: "view_button"
@@ -94,6 +99,7 @@ detail:
     "Original Date of Licensure": "issue_date"
     "Expiration Date": "expiration_date"
     "Expiry Date": "expiration_date"
+    "License Expiry Date": "expiration_date"
     "Address": "address"
     "Street": "address"
     "City": "city"

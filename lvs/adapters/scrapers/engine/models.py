@@ -336,6 +336,11 @@ class DetailTrigger(BaseModel):
     # handler via JS — immune to overlays (e.g. a cookie-consent banner) intercepting the
     # pointer — before waiting for the modal body to populate.
     opens_modal: bool = False
+    # Pre-collect all detail page HREFs before navigating to any, then use page.goto()
+    # for each instead of clicking.  Avoids back-navigation entirely — safe for boards
+    # whose results page is POST-based (ASP.NET __VIEWSTATE) and cannot be restored via
+    # page.go_back() after the first detail click (e.g. RI_HEALTH).
+    navigate_directly: bool = False
 
 
 class PaginationConfig(BaseModel):

@@ -18,6 +18,7 @@ CANONICAL_LADDER: tuple[str, ...] = (
     "license_number",
     "license_numeric_only",
     "license_and_last",       # license + last name (e.g. IBCLC credential_number search)
+    "license_and_first",      # license + first name — catches maiden/married name changes
     "first_and_last_typed",   # first+last WITH profession/board dropdown pre-set
     "first_and_last",
     "last_name",
