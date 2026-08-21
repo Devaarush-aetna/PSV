@@ -133,6 +133,5 @@ smoke_test:
   query: "5091"
   expect:
     min_records: 1
-    field_contains:
-      license_number: "5091"
-      full_name: "Tidwell"
+    license_number: "5091"
+    full_name_contains: "Tidwell"
