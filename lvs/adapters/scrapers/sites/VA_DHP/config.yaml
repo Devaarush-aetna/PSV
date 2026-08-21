@@ -131,8 +131,7 @@ transport:
   # Requires PROXY=proxy:9119 — dhp.virginiainteractive.org is blocked by Zscaler
   # on the corporate network without proxy bypass.
   proxy:
-    # enabled: true
-    enabled: false
+    enabled: true
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 evidence:

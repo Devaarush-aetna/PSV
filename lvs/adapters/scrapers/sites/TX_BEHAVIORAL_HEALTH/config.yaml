@@ -1,0 +1,137 @@
+identity:
+  source_id: TX_BEHAVIORAL_HEALTH
+  board_name: Texas Department of Licensing and Regulation - Behavior Analysts
+  state: TX
+  country: US
+  profession_codes: [ABA]
+  # Salesforce Experience Cloud / Vlocity OmniStudio SPA at core.tdlr.texas.gov.
+  # Inputs share class="vlocity-input slds-input"; IDs are dynamic per session.
+  # nth-match is unreliable — dropdown components (License Type, County) also render
+  # hidden <input> elements, corrupting positional counts.
+  # Use label-text anchoring instead: each field is wrapped in .slds-form-element
+  # with a <label> sibling; Playwright :has() pierces the LWC shadow DOM.
+  #   License Number  → label text "License Number"
+  #   Licensee Name   → label text "Licensee Name" (accepts Last Name, First Name, Full Name)
+  # Results render in a standard HTML table directly below the form — no detail page.
+  # Test record: License 5091 — Brittany Tidwell.
+  base_url: "https://core.tdlr.texas.gov/s/search-license-permit-holder"
+  archetype: classic_html_form
+
+search:
+  modes:
+    - mode: last_name
+      input_selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
+    - mode: first_name
+      input_selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
+    - mode: license_number
+      input_selector: ".slds-form-element:has(label:has-text('License Number')) input.vlocity-input"
+  form:
+    search_by_dropdown:
+      strategy: none
+    search_input:
+      selector: ".slds-form-element:has(label:has-text('Licensee Name')) input.vlocity-input"
+      fallback_selectors:
+        - "label:has-text('Licensee Name') ~ input.vlocity-input"
+        - "label:has-text('Licensee Name') + input"
+    search_button:
+      selector: "button.slds-button_brand"
+      fallback_selectors:
+        - "button:has-text('Search')"
+        - "button[type='submit']"
+  post_search_click: "runtime_omnistudio_flexcards-flex-datatable"
+  results_wait:
+    strategy: delay
+    timeout_ms: 2000
+    no_results_indicators:
+      - "no results found"
+      - "no records found"
+      - "0 results found"
+
+results:
+  type: table
+  table:
+    row_selector: "runtime_omnistudio-generated-flexcard >> tr[data-rowindex]"
+    cell_selector: "td[data-label] >> span.field-value"
+    skip_first_row: false
+    columns:
+      0: license_number
+      1: status
+      2: license_type
+      3: full_name
+      4: issue_date
+      5: expiration_date
+      6: city
+      7: zip_code
+      8: county
+  has_detail_page: false
+  pagination:
+    enabled: false
+    strategy: none
+
+detail:
+  wait:
+    strategy: delay
+    timeout_ms: 1000
+  strategies: []
+  field_map: {}
+
+output:
+  status_map:
+    "Active": active
+    "active": active
+    "ACTIVE": active
+    "Inactive": inactive
+    "inactive": inactive
+    "INACTIVE": inactive
+    "Expired": expired
+    "expired": expired
+    "EXPIRED": expired
+    "Suspended": suspended
+    "suspended": suspended
+    "Revoked": revoked
+    "revoked": revoked
+    "Cancelled": inactive
+  date_formats:
+    - "%m/%d/%Y"
+    - "%Y-%m-%d"
+    - "%m-%d-%Y"
+
+transport:
+  browser: chromium
+  headless: true
+  viewport:
+    width: 1920
+    height: 1600
+  timeout_ms: 60000
+  navigation_timeout_ms: 45000
+  rate_limit:
+    delay_between_requests_ms: 2000
+    max_concurrent: 1
+  retry:
+    max_attempts: 3
+    backoff_ms: [2000, 4000, 8000]
+    retry_on: ["timeout", "navigation_error", "network_error"]
+  proxy:
+    enabled: true
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+evidence:
+  capture_html: true
+  capture_screenshot: true
+  capture_on: ["search_results", "error"]
+  storage: local
+  local_path: "Evidence/TX_BEHAVIORAL_HEALTH/{run_id}/"
+
+compliance:
+  tos_review_date: "2026-08-12"
+  requires_captcha: false
+  requires_login: false
+  robots_txt_compliant: true
+
+smoke_test:
+  mode: license_number
+  query: "5091"
+  expect:
+    min_records: 1
+    license_number: "5091"
+    full_name_contains: "Tidwell"

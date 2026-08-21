@@ -69,7 +69,7 @@ _NICKNAME_PAIRS: list[tuple[str, str]] = [
     ("TIMOTHY", "TIM"), ("TIMOTHY", "TIMMY"),
     ("NICHOLAS", "NICK"), ("NICHOLAS", "NICKY"),
     ("NICHOLAS", "NIKLOS"), ("NICHOLAS", "NIKOLAS"), ("NICHOLAS", "NIKOLAOS"),
-    ("NICK", "NIKLOS"), ("NICK", "NIKOLAS"),
+    ("NICK", "NIKOLAS"),
     ("RICHARD", "RICK"), ("RICHARD", "RICH"), ("RICHARD", "DICK"),
     ("GERALD", "JERRY"),
     ("LAWRENCE", "LARRY"),

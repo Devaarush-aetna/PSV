@@ -152,25 +152,44 @@ def _normalize_license(lic: str) -> list[str]:
 
 
 def _name_consistent(first: str, last: str, cand_full: str) -> bool:
-    """Loose guard for exact-license hits: does any input name token appear among the
-    candidate's name tokens? Tolerant of married/reordered/multi-token names (NYSED
-    renders 'HOLMES JENNA BERGMAN WENTZEL' for an input of Jenna Wentzel) while still
-    rejecting an unrelated person who happens to share a license number in another
-    profession. Returns True when there is nothing to check against.
+    """Guard for exact-license hits: BOTH a first-name token AND a last-name token from
+    the input must appear among the candidate's name tokens. Using OR (either matches)
+    caused false positives — e.g. FOX MICHAEL accepted for input 'Michael Rogers' because
+    'Michael' matched, or SHAW SADIE accepted for 'Sharjeel Shaw' because 'Shaw' matched.
+    Absent constraints are skipped: if first is empty only last is checked, and vice versa.
+    Returns True when there is nothing to check against.
     """
-    inp = [t for t in re.split(r"[^A-Za-z0-9]+", f"{first} {last}".upper()) if len(t) > 1]
-    if not inp:
-        return True
     cand = [t for t in re.split(r"[^A-Za-z0-9]+", (cand_full or "").upper()) if len(t) > 1]
     cset = set(cand)
-    for tok in inp:
-        if tok in cset:
-            return True
-        # fuzzy per-token (handles minor spelling/OCR/transliteration differences)
-        for ct in cand:
-            if last_name_matches(tok, ct):
+
+    def _any_tok_matches(tokens: list[str]) -> bool:
+        for tok in tokens:
+            if tok in cset:
                 return True
-    return False
+            for ct in cand:
+                if last_name_matches(tok, ct):
+                    return True
+        return False
+
+    first_toks = [t for t in re.split(r"[^A-Za-z0-9]+", (first or "").upper()) if len(t) > 1]
+    last_toks = [t for t in re.split(r"[^A-Za-z0-9]+", (last or "").upper()) if len(t) > 1]
+
+    if not first_toks and not last_toks:
+        return True
+    if first_toks and not _any_tok_matches(first_toks):
+        return False
+    if last_toks and not _any_tok_matches(last_toks):
+        return False
+    return True
+
+
+def _is_usable_license(s: str) -> bool:
+    """Return True only if s looks like a real license number (≥4 consecutive digits).
+    Rejects placeholder strings like '1WCN', 'N/A', 'NONE', 'TBD' that appear in input
+    data when no real license is available. These should be treated as no-license-given
+    so the name-only fallback (Step 3) can run.
+    """
+    return bool(re.search(r"\d{4,}", s))
 
 
 def _candidate_codes(config: SiteConfig, query: SearchQuery) -> list[str]:
@@ -191,7 +210,9 @@ _PROFESSIONS_CACHE: dict[str, list[str]] = {}
 
 # Codes the /professions endpoint lists but that behave like "ALL" for a license lookup
 # (return HTTP 408 "must choose a specific profession") — skip them in the sweep.
-_ALL_LIKE_CODES = {"ALL", "029"}
+# "029" was previously listed here but removed: if it returns 408 the sweep's st==200
+# guard skips it harmlessly; if a license IS stored under 029 we need to find it.
+_ALL_LIKE_CODES = {"ALL"}
 
 
 async def _all_profession_codes(base: str, getter) -> list[str]:
@@ -327,6 +348,12 @@ async def scrape_ny_credentials(
                 first = (query.first_name or "").strip()
                 last = (query.last_name or "").strip()
                 lic_num = (query.license_number or "").strip()
+                # Treat placeholder license values (e.g. "1WCN", "N/A") as no-license-given
+                # so the name-only fallback can run. A real license has ≥4 consecutive digits.
+                if lic_num and not _is_usable_license(lic_num):
+                    log.info("[%s] license '%s' is a non-license placeholder — treating as blank",
+                             source_id, lic_num)
+                    lic_num = ""
 
                 # ── STEP 1: name search (harvest codes + direct exact match) ──
                 # NYSED's name endpoint returns each candidate's profession code AND
@@ -387,12 +414,21 @@ async def scrape_ny_credentials(
                         if chosen_detail is not None:
                             break
 
-                # ── STEP 3: name-only fallback — ONLY when no license was given ──
-                # When a license IS provided but no name-consistent record carries it,
-                # returning a same-name person with a DIFFERENT license would be a false
-                # match (the input license is wrong or not in NY). So the name-only pick
-                # is used solely for name-based queries with no license to verify.
-                if chosen_detail is None and not lic_num and gated:
+                # ── STEP 3: name-match fallback ─────────────────────────────
+                # Fires when the license sweep found nothing (input license absent, wrong,
+                # or not yet in NYSED) but the name search returned at least one
+                # name-consistent candidate. REQUIRES both first AND last to be present:
+                # single-component queries (license_and_first / license_and_last) risk
+                # picking a different person who shares only one name token — e.g.
+                # "Yehudah" alone matches 9 unrelated people, so gated[0] would be wrong.
+                # With both components, the AND-gate in _name_consistent ensures the pick
+                # is the right person. The record is returned WITHOUT licenseNumber so the
+                # disambiguator uses the name_only scoring profile and auto-selects via the
+                # name anchor (first+last ≥ 0.85 each). The real NYSED license remains in
+                # raw_fields for audit. This avoids escalating to the AI on a case that is
+                # simply wrong input data — the person clearly exists in NYSED.
+                _found_via_name_fallback = False
+                if chosen_detail is None and gated and first and last:
                     pick = gated[0]
                     st3, detail = await _get(
                         "byProfessionAndLicenseNumber",
@@ -400,10 +436,18 @@ async def scrape_ny_credentials(
                          "licenseNumber": _v(pick.get("licenseNumber"))})
                     if st3 == 200 and isinstance(detail, dict):
                         chosen_detail = detail
+                        _found_via_name_fallback = True
 
                 if chosen_detail is not None:
                     src = f"{base}/byProfessionAndLicenseNumber"
-                    records.append(_record_from_detail(chosen_detail, config, src, query))
+                    if _found_via_name_fallback:
+                        # Strip licenseNumber so the disambiguator uses name_only profile
+                        # (avoids license_mismatch escalation when input license is wrong).
+                        detail_no_lic = {k: v for k, v in chosen_detail.items()
+                                         if k != "licenseNumber"}
+                        records.append(_record_from_detail(detail_no_lic, config, src, query))
+                    else:
+                        records.append(_record_from_detail(chosen_detail, config, src, query))
     except Exception as exc:
         log.error("[%s] NY_CREDENTIALS fetch failed: %s", source_id, exc)
         await _emit_event(db, run_id, source_id, "scrape", "error", t0, 0, str(exc))

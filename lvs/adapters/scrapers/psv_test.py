@@ -183,16 +183,20 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
-    # SC LPC — verify.llronline.com/LicLookup/Counselors/Counselors.aspx?div=18
-    # (SC Board of Examiners for Professional Counselors, board value 18) enforces
-    # reCAPTCHA v2 Invisible (sitekey 6Lc2X-saAAAAAPC6HatgHFOd8rCxCl-2yPTh44PN).
-    # Headless Chromium scores below threshold, triggering a visual image challenge
-    # that cannot be solved programmatically. All SC LPC records blocked. 2026-08-20.
-    ("SC", "LPC"):  "SC Board of Professional Counselors (verify.llronline.com/LicLookup/Counselors/Counselors.aspx?div=18) — reCAPTCHA v2 blocks automated access",
-    # SC SW — verify.llronline.com/LicLookup/SW/SW.aspx?div=41
-    # (SC Board of Social Work Examiners, board value 41) same reCAPTCHA v2 sitekey.
-    # All SC SW/LCSW/BCSW records blocked. 2026-08-20.
-    ("SC", "SW"):   "SC Board of Social Work Examiners (verify.llronline.com/LicLookup/SW/SW.aspx?div=41) — reCAPTCHA v2 blocks automated access",
+    # TX Board of Nursing (nursingportal.bon.texas.gov) — reCAPTCHA-protected; covers RN, LPN,
+    ("TX", "MW"):  "TX Midwifery Board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NP"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NPB"): "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "NUT"): "TX Dietitians (TDLR) — reCAPTCHA-protected, automated access blocked",
+    ("TX", "PT"):  "TX PT board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "RN"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "RNA"): "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "SH"):  "TX Speech-Language Pathology & Audiology board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "AU"):  "TX Speech-Language Pathology & Audiology board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "DP"):  "TX Podiatric Medical Examiners board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "OT"):  "TX OT board — reCAPTCHA-protected, automated access blocked",
+    ("TX", "PN"):  "TX Board of Nursing — reCAPTCHA-protected, automated access blocked",
+    ("TX", "DT"):  "TX Department of Licensing and Regulation — reCAPTCHA-protected, automated access blocked",
 }
 
 # Maps (board_source_id, license_prefix_uppercase) → skip_reason.
@@ -882,17 +886,8 @@ class PsvBrowser:
                                     src, _timeout_s, _idx)
                         break
                     try:
-                        btn = page.locator(trigger_sel).nth(_idx)
-                        if not await btn.is_visible(timeout=3000):
-                            break
-                        # PDF detail: the trigger links to a PDF (e.g. NC_DAC's
-                        # /PractitionerLookup/Detail/{id} serves a "Credential Status"
-                        # letter as application/pdf even though the href lacks a .pdf
-                        # suffix). Download and parse it in-place instead of navigating —
-                        # navigating would let extract_detail capture the page's
-                        # "Credential Status" heading as the licensee name. No back-
-                        # navigation is needed since the browser never leaves the results.
                         _dt = self.config.results.detail_trigger
+<<<<<<< HEAD
                         _href = (await btn.get_attribute("href") or "").strip()
                         _is_pdf = (
                             getattr(_dt, "force_pdf", False)
@@ -926,37 +921,44 @@ class PsvBrowser:
                             if not _href:
                                 log.warning("[%s] force_pdf but empty href at idx=%d — using summary row",
                                             src, _idx)
+=======
+                        _is_modal = getattr(_dt, "opens_modal", False)
+                        # AG Grid boards use virtual scrolling: after extract_ag_grid
+                        # scrolls through all rows the viewport sits at the bottom, so
+                        # only the last rendered batch is in the DOM.  locator.nth(idx)
+                        # would then click the wrong row.  The extractor saves each
+                        # row's link href as "{col}_url" during extraction; use it here
+                        # to navigate directly instead of relying on DOM position.
+                        _stored_href = ""
+                        if _idx < len(raw_rows):
+                            for _rk, _rv in raw_rows[_idx].items():
+                                if isinstance(_rv, str) and _rv and str(_rk).endswith("_url"):
+                                    _stored_href = _rv
+                                    break
+                        if _stored_href and not _is_modal:
+                            from urllib.parse import urljoin as _urljoin
+                            _href = _urljoin(page.url, _stored_href)
+                            _is_pdf = (
+                                getattr(_dt, "force_pdf", False)
+                                or _href.lower().endswith(".pdf")
+                                or "pdf" in _href.lower().split("?")[0]
+                            )
+                            if _is_pdf:
+                                _pdf_raw = await _scrape_pdf_detail(page, _href, self.config)
+                                _pdf_mapped = apply_field_map(_pdf_raw, self.config.detail.field_map)
+>>>>>>> 1335c1cf36f50ba023e84369b1c7def2774253c1
                                 if _idx < len(raw_rows):
-                                    detailed.append(map_to_license_record(raw_rows[_idx], self.config, {}))
+                                    _sr = raw_rows[_idx]
+                                    for _k in ("full_name", "first_name", "last_name",
+                                               "license_number", "license_type",
+                                               "city", "state", "status",
+                                               "issue_date", "expiration_date"):
+                                        if not _pdf_mapped.get(_k) and _sr.get(_k):
+                                            _pdf_mapped[_k] = _sr[_k]
+                                detailed.append(map_to_license_record(_pdf_mapped, self.config, {}))
                                 continue
-                            _pdf_raw = await _scrape_pdf_detail(page, _href, self.config)
-                            _pdf_mapped = apply_field_map(_pdf_raw, self.config.detail.field_map)
-                            # Backfill from the summary row for anything the letter omitted
-                            # (e.g. the inactive-credential letter carries no license number).
-                            if _idx < len(raw_rows):
-                                _sr = raw_rows[_idx]
-                                for _k in ("full_name", "first_name", "last_name",
-                                           "license_number", "license_type",
-                                           "city", "state", "status",
-                                           "issue_date", "expiration_date"):
-                                    if not _pdf_mapped.get(_k) and _sr.get(_k):
-                                        _pdf_mapped[_k] = _sr[_k]
-                            detailed.append(map_to_license_record(_pdf_mapped, self.config, {}))
-                            continue
-                        if getattr(self.config.results.detail_trigger, "opens_modal", False):
-                            # Modal detail (no navigation): fire the row's own click handler
-                            # via JS so a cookie/consent overlay can't intercept the pointer,
-                            # then wait directly for the modal body to fill. Skips the
-                            # URL-change wait, which never fires for a modal and would burn
-                            # the full detail timeout on every row.
-                            try:
-                                await btn.evaluate("el => el.click()")
-                            except Exception:
-                                await btn.click()
-                        else:
-                            await btn.evaluate("el => el.removeAttribute('target')")
                             url_before = page.url
-                            await btn.click()
+                            await page.goto(_href)
                             try:
                                 await page.wait_for_function(
                                     "url => window.location.href !== url",
@@ -965,6 +967,68 @@ class PsvBrowser:
                                 )
                             except Exception:
                                 pass
+                        else:
+                            # Fallback: locate the link by DOM position (non-AG-Grid
+                            # boards, modals, or rows where no href was stored).
+                            btn = page.locator(trigger_sel).nth(_idx)
+                            if not await btn.is_visible(timeout=3000):
+                                break
+                            # PDF detail: the trigger links to a PDF (e.g. NC_DAC's
+                            # /PractitionerLookup/Detail/{id} serves a "Credential Status"
+                            # letter as application/pdf even though the href lacks a .pdf
+                            # suffix). Download and parse it in-place instead of navigating —
+                            # navigating would let extract_detail capture the page's
+                            # "Credential Status" heading as the licensee name. No back-
+                            # navigation is needed since the browser never leaves the results.
+                            _href = (await btn.get_attribute("href") or "").strip()
+                            _is_pdf = (
+                                getattr(_dt, "force_pdf", False)
+                                or _href.lower().endswith(".pdf")
+                                or "pdf" in _href.lower().split("?")[0]
+                            )
+                            if _is_pdf:
+                                if not _href:
+                                    log.warning("[%s] force_pdf but empty href at idx=%d — using summary row",
+                                                src, _idx)
+                                    if _idx < len(raw_rows):
+                                        detailed.append(map_to_license_record(raw_rows[_idx], self.config, {}))
+                                    continue
+                                _pdf_raw = await _scrape_pdf_detail(page, _href, self.config)
+                                _pdf_mapped = apply_field_map(_pdf_raw, self.config.detail.field_map)
+                                # Backfill from the summary row for anything the letter omitted
+                                # (e.g. the inactive-credential letter carries no license number).
+                                if _idx < len(raw_rows):
+                                    _sr = raw_rows[_idx]
+                                    for _k in ("full_name", "first_name", "last_name",
+                                               "license_number", "license_type",
+                                               "city", "state", "status",
+                                               "issue_date", "expiration_date"):
+                                        if not _pdf_mapped.get(_k) and _sr.get(_k):
+                                            _pdf_mapped[_k] = _sr[_k]
+                                detailed.append(map_to_license_record(_pdf_mapped, self.config, {}))
+                                continue
+                            if _is_modal:
+                                # Modal detail (no navigation): fire the row's own click handler
+                                # via JS so a cookie/consent overlay can't intercept the pointer,
+                                # then wait directly for the modal body to fill. Skips the
+                                # URL-change wait, which never fires for a modal and would burn
+                                # the full detail timeout on every row.
+                                try:
+                                    await btn.evaluate("el => el.click()")
+                                except Exception:
+                                    await btn.click()
+                            else:
+                                await btn.evaluate("el => el.removeAttribute('target')")
+                                url_before = page.url
+                                await btn.click()
+                                try:
+                                    await page.wait_for_function(
+                                        "url => window.location.href !== url",
+                                        url_before,
+                                        timeout=self.config.detail.wait.timeout_ms,
+                                    )
+                                except Exception:
+                                    pass
                         await _wait_for_detail_content(page, self.config)
                         raw = await extract_detail(page, self.config.detail)
                         await _try_out_of_state_tab(page, self.config, raw)
@@ -1291,7 +1355,7 @@ async def run_row(
     _svc_raw = row_data.get("svc_loc_state", "")
     _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
     if _svc_states and lic_state not in _svc_states:
-        return "N/A", (
+        return "Removed License", (
             f"License State ({lic_state}) not in Service Location State "
             f"({_svc_raw}) — PSV step N/A"
         ), ""
@@ -1958,7 +2022,7 @@ def _write_remove_license(rows: list[dict], output_dir: Path) -> None:
     if rows and "status" in rows[0]:
         svc_na_rows = [
             r for r in rows
-            if r.get("status") == "N/A"
+            if r.get("status") in ("N/A", "Removed License")
             and "not in Service Location State" in r.get("reason", "")
         ]
     else:
@@ -2017,11 +2081,11 @@ def write_results(results: list[dict], output_path: Path, append: bool) -> None:
             r["first_name"], r["middle_name"], r["last_name"],
             r["lic_state"], r["prov_type"], r["lic_type"], r["license_id"],
             r["status"], r.get("expiry_date", ""),
-            r["reason"] if r["status"] in ("Fail", "N/A") else "",
+            r["reason"] if r["status"] in ("Fail", "N/A", "Removed License") else "",
         ])
         if r["status"] == "Pass":
             fill = green
-        elif r["status"] == "N/A":
+        elif r["status"] in ("N/A", "Removed License"):
             fill = yellow
         else:
             fill = red
@@ -2581,7 +2645,7 @@ async def run_state_orchestrated(
                 _svc_raw = row.get("svc_loc_state", "")
                 _svc_states = [s.strip().upper() for s in _svc_raw.split(",") if s.strip()]
                 if _svc_states and row["lic_state"].upper() not in _svc_states:
-                    trace.final_outcome = "N/A"
+                    trace.final_outcome = "Removed License"
                     trace.final_reason = (
                         f"License State ({row['lic_state'].upper()}) not in Service Location State "
                         f"({_svc_raw}) — PSV step N/A"
@@ -2620,8 +2684,12 @@ async def run_state_orchestrated(
                                 "",
                             )
                     else:
-                        trace.final_outcome = "Fail"
+                        trace.final_outcome = "Skip"
                         trace.final_reason = "no_routing"
+                        trace.skip_reason_text = (
+                            f"No board routing configured for {state} {prov_type_upper} "
+                            f"— {state} does not issue a license for this provider type"
+                        )
                 else:
                     # --- Run rule-based ladder ---
                     ladder_result = await ladder_mod.run_ladder(

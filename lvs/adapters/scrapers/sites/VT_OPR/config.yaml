@@ -3,7 +3,7 @@ identity:
   board_name: "Vermont Office of Professional Regulation"
   state: "VT"
   country: "US"
-  profession_codes: ["LPC", "SW", "PSYCH", "MFT", "AC", "DC", "OD", "PT", "OT", "RN", "RPh", "DENT"]
+  profession_codes: ["LPC", "SW", "PSYCH", "MFT", "AC", "DC", "OD", "PT", "OT", "RN", "RPh", "DENT", "CP", "DP", "DT", "LAC", "NP", "OP", "PN"]
   # Pega Constellation SPA at secure.professionals.vermont.gov.
   # Search by license_number (format XXX.XXXXXXX) enables the DISPLAY RESULTS button via Pega
   # postValue XHR (keyup handler on pLookupNumber). use_keyboard_type fires keyup events that
@@ -68,6 +68,7 @@ output:
     "Suspended": suspended
     "Revoked": revoked
   date_formats:
+    - "%b %d, %Y"
     - "%m/%d/%Y"
     - "%Y-%m-%d"
 
