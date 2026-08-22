@@ -886,7 +886,11 @@ async def fill_search_form(page: Page, config: SiteConfig, query: SearchQuery, p
                 f"set_search_by failed for mode '{effective_query.mode}' — results may be from wrong search mode"
             )
     await asyncio.sleep(1.5)  # SPA re-renders after dropdown change
-    mode_cfg = next((m for m in config.search.modes if m.mode == query.mode), None)
+    # license_number_detail_expiry is a ladder-internal mode variant — fall back to
+    # the license_number mode config so board-specific pre_click (e.g. AR_MEDBOARD's
+    # radio-button selector) is executed correctly for secondary detail fetches.
+    _mode_key = "license_number" if query.mode == "license_number_detail_expiry" else query.mode
+    mode_cfg = next((m for m in config.search.modes if m.mode == _mode_key), None)
     # Per-mode pre_click: switch tabs or activate a panel BEFORE filling inputs so
     # that mode-specific fields (e.g. inside a hidden Bootstrap tab) are visible/enabled.
     if mode_cfg and mode_cfg.pre_click:

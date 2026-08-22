@@ -20,7 +20,7 @@ def _clean_value(v: str) -> str:
     """Strip zero-width chars and normalise whitespace.
 
     Accela (and others) inject non-breaking / unicode spaces (nbsp U+00A0,
-    narrow-nbsp U+202F, ideographic space, ...) between words. Python's r'\s'
+    narrow-nbsp U+202F, ideographic space, ...) between words. Python's r"\\s"
     matches all of them, so a single collapse converts them to ASCII spaces
     and squeezes runs -- e.g. 'Amy L Rodriguez' -> 'Amy L Rodriguez'.
     """
@@ -766,6 +766,18 @@ async def extract_results_table(page: Page, config: ResultsConfig) -> tuple[list
             if rec and any(v for v in rec.values() if isinstance(v, str) and v.strip()):
                 if any(not rec.get(f, "").strip() for f in (tbl_cfg.required_fields or [])):
                     continue
+                # Capture the first navigable anchor href from the row as a detail-URL hint.
+                # Stored as _url so the paginated-summary direct-detail path can navigate
+                # straight to the record's detail page without a secondary license-number search.
+                if not rec.get("_url"):
+                    try:
+                        _a_links = row.locator("a[href]")
+                        if await _a_links.count() > 0:
+                            _a_href = (await _a_links.first.get_attribute("href") or "").strip()
+                            if _a_href and not _a_href.lower().startswith("javascript:") and _a_href != "#":
+                                rec["_url"] = _a_href
+                    except Exception:
+                        pass
                 records.append(rec)
 
     except Exception as e:

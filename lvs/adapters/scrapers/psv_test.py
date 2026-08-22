@@ -183,6 +183,18 @@ CAPTCHA_PROV_TYPES: dict[tuple[str, str], str] = {
     ("AR", "NPB"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "PN"):   "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
     ("AR", "RNA"):  "AR State Board of Nursing (arsbn.boardsofnursing.org) — reCAPTCHA v2 blocks automated access",
+    # AR Physical Therapy Board (healthy.arkansas.gov/…/physical-therapy-board-roster-search/)
+    # Cloudflare bot protection added ~2026-08-22; blocks headless browser and DataTables AJAX.
+    ("AR", "PT"):   "AR Physical Therapy Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "PTA"):  "AR Physical Therapy Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    # AR Social Work Licensing Board (healthy.arkansas.gov/…/social-work-licensing-board-roster-search/)
+    # Same domain as AR_PTBS; Cloudflare protection added ~2026-08-22.
+    ("AR", "SW"):   "AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "LCSW"): "AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "LMSW"): "AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "LSW"):  "AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "PLMSW"):"AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
+    ("AR", "PLSW"): "AR Social Work Licensing Board (healthy.arkansas.gov) — Cloudflare bot protection blocks automated access",
     # OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked.
     # Covers RN, LPN/PN, NP/NPB, CRNA/RNA, MW (CNM/CNW). No OK_NURSING site configured.
     ("OK", "RN"):   "OK State Board of Nursing (okbn.boardsofnursing.org) — CAPTCHA-protected, automated access blocked",
@@ -937,12 +949,8 @@ class PsvBrowser:
                         break
                     try:
                         _dt = self.config.results.detail_trigger
-                        _href = (await btn.get_attribute("href") or "").strip()
-                        _is_pdf = (
-                            getattr(_dt, "force_pdf", False)
-                            or _href.lower().endswith(".pdf")
-                            or "pdf" in _href.lower().split("?")[0]
-                        )
+                        _href = ""
+                        _is_pdf = getattr(_dt, "force_pdf", False)
                         # BRANCH A: Direct JSON API detail (e.g. PA_PALS)
                         # When config.detail.api is set, the board's "detail link"
                         # opens a new _blank tab — Playwright's URL-change wait
@@ -1114,6 +1122,42 @@ class PsvBrowser:
                             break
                 if detailed:
                     return detailed
+            # Paginated-summary direct detail: the normal detail loop is skipped when
+            # _paginated_summary=True to avoid breaking the ASP.NET pager mid-pagination.
+            # After all summary rows are collected and a matching row is identified via
+            # _name_lic_indices, navigate directly to that row's stored href (_url) to
+            # extract the detail page (and thus the expiration date) in one targeted trip.
+            # This replaces the unreliable secondary license-number search in
+            # _fetch_detail_expiry for boards like AR_MEDBOARD where license-number
+            # searches return No Match for non-MD license types.
+            if _paginated_summary and _has_detail and _name_lic_indices:
+                for _pidx in list(_name_lic_indices):
+                    if _pidx < len(raw_rows) and raw_rows[_pidx].get("_url"):
+                        from urllib.parse import urljoin as _urljoin_pd
+                        _pd_url = _urljoin_pd(page.url, raw_rows[_pidx]["_url"])
+                        try:
+                            log.info("[%s] paginated-summary direct detail: idx=%d url=%s",
+                                     src, _pidx, _pd_url)
+                            await page.goto(_pd_url)
+                            await _wait_for_detail_content(page, self.config)
+                            _pd_raw = await extract_detail(page, self.config.detail)
+                            _sr = raw_rows[_pidx]
+                            for _k in ("license_type", "city", "state_code"):
+                                if not _pd_raw.get(_k) and _sr.get(_k):
+                                    _pd_raw[_k] = _sr[_k]
+                            if run_id:
+                                try:
+                                    await capture_evidence(page, self.config.evidence,
+                                                           stage="detail_page",
+                                                           run_id=run_id, source_id=src,
+                                                           state=state, query=query)
+                                except Exception:
+                                    pass
+                            raw_rows[_pidx] = _pd_raw
+                        except Exception as _pdet_err:
+                            log.warning("[%s] paginated-summary direct detail failed idx=%d: %s",
+                                        src, _pidx, _pdet_err)
+                        break  # only the best-matched row needs a detail fetch
             return [map_to_license_record(r, self.config, {}) for r in raw_rows]
         except BoardUnavailableError:
             # Board site is down/erroring — propagate so the ladder classifies the
